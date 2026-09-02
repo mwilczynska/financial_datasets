@@ -25,7 +25,6 @@ This is a derived model, not observed TMF history before 2009, and must be flagg
 |---|---|
 | CSV | `data/processed/long_term_us_treasury_3x.csv` |
 | Parquet | `data/processed/long_term_us_treasury_3x.parquet` |
-| Interim CSV | `data/interim/long_term_us_treasury_3x.csv` |
 | Manifest | `sources/manifests/long_term_us_treasury_3x.yml` |
 | Build metadata | `sources/manifests/long_term_us_treasury_3x_build.json` |
 | Citations | `sources/citations/long_term_us_treasury_3x.md` |

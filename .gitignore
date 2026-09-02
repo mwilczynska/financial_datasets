@@ -29,3 +29,6 @@ secrets*.yaml
 # Newly downloaded raw sources are local caches unless explicitly approved
 sources/raw/*
 !sources/raw/README.md
+
+# Intermediate build artifacts are local; final outputs live under data/processed/
+data/interim/*

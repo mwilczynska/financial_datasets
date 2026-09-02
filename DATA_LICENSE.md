@@ -1,8 +1,8 @@
 # Data licensing and redistribution
 
 This release includes generated CSV and Parquet datasets under
-data/processed/ and normalized interim CSVs under data/interim/ for research
-and backtesting use. There is no blanket license for those data files.
+data/processed/ for research and backtesting use. There is no blanket license
+for those data files.
 
 The MIT License applies to original source code only. Published outputs and
 derived series may incorporate third-party data whose terms restrict storage,

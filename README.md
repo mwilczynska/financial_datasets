@@ -4,7 +4,6 @@ Long-horizon daily asset-class datasets for Python portfolio backtesting.
 
 This repository publishes generated CSV and Parquet outputs for a set of
 long-history asset-class proxies. The public data lives under data/processed/
-and the normalized interim copies live under data/interim/.
 Most datasets begin on 1970-01-02, the first trading observation after the
 1970-01-01 target. CPI begins on 1970-01-01 because it is calendar-daily.
 The table below reports the first observation in each published processed CSV.
@@ -47,7 +46,14 @@ dataset in different formats.
 | GLBOND | Unhedged global bonds proxy | 1970-01-02 | [CSV](data/processed/global_bonds.csv) | [Parquet](data/processed/global_bonds.parquet) | [GLBOND](docs/methodology_glbond.md) |
 | GLSTBOND | Unhedged global short-term government bonds proxy | 1970-01-02 | [CSV](data/processed/global_short_term_bonds.csv) | [Parquet](data/processed/global_short_term_bonds.parquet) | [GLSTBOND](docs/methodology_glstbond.md) |
 
-The interim CSV mirrors are available in [data/interim](data/interim/).
+## Dataset methodology
+
+The Methodology link in the table above points to the corresponding document
+under [docs/](docs/). It explains how each dataset was built, including its
+asset definition, start date, source chain, transformations, update path,
+validation checks, and known caveats. Shared output and return conventions
+are described in [docs/methodology.md](docs/methodology.md), and the complete
+methodology index is [docs/dataset_methodologies.md](docs/dataset_methodologies.md).
 
 ## Output contract
 
@@ -70,8 +76,8 @@ index-level segments.
 3. Source chaining: older modeled or proxy segments are joined to later
    observed fund, ETF, index, or API segments without resetting levels at
    boundaries. Quality Flag identifies the segment where available.
-4. Output writing: each build writes an interim CSV, a processed CSV, a
-   processed Parquet file, and build metadata under sources/manifests/.
+4. Output writing: each build writes processed CSV/Parquet outputs and
+   build metadata under sources/manifests/. Interim artifacts are local-only and not published.
 5. Validation: tests check schema, date coverage, level positivity, return
    arithmetic, duplicate dates, segment behavior, and independent-source
    agreement.
@@ -110,20 +116,17 @@ To rebuild one dataset directly, run its corresponding script, for example:
 After an update, inspect the changed files and run:
 
     python -m pytest -q tests/validation
-    python src/audit_public_release.py
 
 ## Repository map
 
-- [src](src/): build, update, and audit scripts.
+- [src](src/): build and update scripts.
 - [data/processed](data/processed/): final public CSV and Parquet outputs.
-- [data/interim](data/interim/): normalized intermediate CSV outputs.
 - [docs/dataset_methodologies.md](docs/dataset_methodologies.md): methodology index.
 - [docs/source_registry.md](docs/source_registry.md): source classification and provenance.
 - [docs/validation.md](docs/validation.md): validation requirements and caveats.
 - [sources/manifests](sources/manifests/): machine-readable source and build metadata.
 - [sources/citations](sources/citations/): human-readable source notes.
 - [tests/validation](tests/validation/): contract and regression tests.
-- [PLAN.md](PLAN.md), [LOG.md](LOG.md), and [HANDOVER.md](HANDOVER.md): project decisions and history.
 
 ## Data rights
 
@@ -138,4 +141,4 @@ or using any output commercially.
 The public project identity is the GitHub handle mwilczynska. Do not add
 personal email addresses, real-name identities, local filesystem paths,
 credentials, private project references, or private profile details. See
-[SECURITY.md](SECURITY.md) and [PUBLIC_RELEASE.md](PUBLIC_RELEASE.md).
+[SECURITY.md](SECURITY.md).

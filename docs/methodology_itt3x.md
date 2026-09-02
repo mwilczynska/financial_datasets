@@ -33,7 +33,6 @@ This is a derived model, not observed TYD history before 2009, and must be flagg
 |---|---|
 | CSV | `data/processed/intermediate_term_us_treasury_3x.csv` |
 | Parquet | `data/processed/intermediate_term_us_treasury_3x.parquet` |
-| Interim CSV | `data/interim/intermediate_term_us_treasury_3x.csv` |
 | Manifest | `sources/manifests/intermediate_term_us_treasury_3x.yml` |
 | Build metadata | `sources/manifests/intermediate_term_us_treasury_3x_build.json` |
 | Citations | `sources/citations/intermediate_term_us_treasury_3x.md` |

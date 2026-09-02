@@ -110,7 +110,7 @@ Levels (`Close`, `Adj Close`) compound continuously from 100 without resetting a
 3. Determine source boundaries (Segment 0: `^IRX` dates 1970-01-02 .. 1984-01-03; Segment 1: `^SPGSCI` 1984-01-04 .. 1991-01-02; Segment 2: `^BCOM` 1991-01-03 .. 2006-02-06; Segment 3: DBC 2006-02-07 onward).
 4. Build Segment 0 returns by log-linear anchor interpolation; build Segment 1 returns by per-anchor-interval overlay of the `^SPGSCI` spot shape; keep Segments 2-3 as raw-ratio + collateral / observed ETF.
 5. Compound normalized `Close` (excess return) and `Adj Close` (total return) from 100 without resetting at boundaries.
-6. Write CSV to `data/interim/` and `data/processed/`, write Parquet, and write build metadata JSON.
+6. Write the processed CSV and Parquet outputs and build metadata JSON. Any interim copy is a local build artifact and is not published.
 
 ## Update Method
 

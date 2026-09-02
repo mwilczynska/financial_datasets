@@ -34,7 +34,7 @@ If `Adj Close` is not a true total-return level or defensible daily proxy, `Tota
 
 ## Minimum Coverage
 
-Core datasets must cover from `1970-01-01`. Because that date was not a U.S. equity trading day, the first observation for trading-day datasets may be the first available trading day at or immediately after that anchor. If a dataset cannot meet this standard, it must remain provisional until the exception is logged in `LOG.md` and `docs/source_registry.md`.
+Core datasets must cover from 1970-01-01. Because that date was not a U.S. equity trading day, the first observation for trading-day datasets may be the first available trading day at or immediately after that anchor. If a dataset cannot meet this standard, it must remain provisional until the exception is documented in its methodology file and docs/source_registry.md.
 
 Earlier history may be included when the source is documented, the data can be transformed into the canonical contract, validation can be performed against an independent source or methodology, and reconstruction assumptions are explicit.
 

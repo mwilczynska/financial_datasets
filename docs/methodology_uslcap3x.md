@@ -25,7 +25,6 @@ This is a derived model, not observed UPRO history before 2009, and must be flag
 |---|---|
 | CSV | `data/processed/us_large_cap_3x_sp500.csv` |
 | Parquet | `data/processed/us_large_cap_3x_sp500.parquet` |
-| Interim CSV | `data/interim/us_large_cap_3x_sp500.csv` |
 | Manifest | `sources/manifests/us_large_cap_3x_sp500.yml` |
 | Build metadata | `sources/manifests/us_large_cap_3x_sp500_build.json` |
 | Citations | `sources/citations/us_large_cap_3x_sp500.md` |

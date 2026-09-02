@@ -25,7 +25,6 @@ This is a derived model, not observed UGL history before 2008, and must be flagg
 |---|---|
 | CSV | `data/processed/gold_2x.csv` |
 | Parquet | `data/processed/gold_2x.parquet` |
-| Interim CSV | `data/interim/gold_2x.csv` |
 | Manifest | `sources/manifests/gold_2x.yml` |
 | Build metadata | `sources/manifests/gold_2x_build.json` |
 | Citations | `sources/citations/gold_2x.md` |
