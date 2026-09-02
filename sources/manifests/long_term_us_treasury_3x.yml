@@ -1,0 +1,87 @@
+asset_id: long_term_us_treasury_3x
+asset_name: 3x Daily-Reset Long-Term U.S. Treasury Total Return (TMF-like)
+backtest_alias: LTT3X
+base_asset_id: long_term_us_treasury
+derived: true
+minimum_start_date: 1970-01-01
+target_frequency: daily
+output_contract: yahoo_compatible_ohlcv_plus_returns
+status: complete_model_derived
+current_dataset_status: synthetic_3x_daily_reset_model_from_1970_plus_observed_tmf_returns_from_2009
+target_definition: >
+  TMF-like exposure: 3x the daily total return of a TLT-like long-term (20+ year) U.S.
+  Treasury series, reset daily, net of financing on the borrowed (2x) exposure and a
+  Direxion-style fund expense ratio.
+model_parameters:
+  leverage: 3.0
+  expense_ratio: 0.0106           # Direxion TMF total annual operating expense ratio (1.06%).
+  borrow_spread: 0.0053           # Spread over ^IRX, calibrated to the TMF live overlap.
+  financing_benchmark: "^IRX"     # 13-week T-bill discount yield (Yahoo).
+  financing_day_count: 360        # actual/360 financing accrual.
+  expense_day_count: 365          # actual/365 expense accrual.
+  daily_reset_formula: "lev_ret = 3*u - 2*((IRX/100 + spread)*days/360) - 0.0106*days/365"
+milestones:
+  - id: ltt3x-001
+    name: Define TMF-like 3x daily-reset asset contract
+    status: complete
+  - id: ltt3x-002
+    name: Search and classify sources (base LTT, ^IRX financing, TMF validation)
+    status: complete
+  - id: ltt3x-003
+    name: Implement build script with daily-reset compounding and financing/fee drag
+    status: complete
+  - id: ltt3x-004
+    name: Calibrate financing spread against TMF live overlap
+    status: complete
+  - id: ltt3x-005
+    name: Add validation fixtures and tests
+    status: complete
+  - id: ltt3x-006
+    name: Document methodology and caveats
+    status: complete
+sources:
+  - name: LTT (long_term_us_treasury)
+    role: underlying_daily_total_return
+    status: active
+    url: data/processed/long_term_us_treasury.csv
+    notes: >
+      Project TLT-like long-term Treasury total-return dataset. The Total Return column is the
+      daily underlying return ('u') driving the 3x daily-reset model. Fed yield-curve 25-year
+      par model before VUSTX, then VUSTX, then TLT.
+  - name: Yahoo Finance chart API ^IRX
+    role: financing_rate_benchmark_1970_present
+    status: active
+    url: https://query1.finance.yahoo.com/v8/finance/chart/%5EIRX
+    notes: >
+      13-week T-bill discount yield (annualized percent), daily from 1970-01-02. Financing
+      benchmark; a borrowing spread is added and the cost is applied to the 2x borrowed
+      exposure on an actual/360 basis.
+  - name: Yahoo Finance chart API TMF
+    role: observed_etf_return_source_and_calibration_target
+    status: active_from_2009
+    url: https://query1.finance.yahoo.com/v8/finance/chart/TMF
+    notes: >
+      Direxion Daily 20+ Year Treasury Bull 3X Shares. Inception 2009-04-16. Adjusted-close
+      daily returns are used from the first trading day after inception; the synthetic model is
+      calibrated to reproduce TMF over the live overlap.
+  - name: Direxion TMF prospectus
+    role: parameter_reference
+    status: reference
+    url: https://www.direxion.com/product/daily-20-year-treasury-bull-bear-3x-etfs
+    notes: >
+      Confirms 3x daily objective on the ICE U.S. Treasury 20+ Year Bond Index (the TLT
+      benchmark) and the ~1.06% expense ratio.
+validation:
+  required_independent_sources: 1
+  coverage_anchor_date: 1970-01-01
+  current_first_observation: 1970-01-02
+  live_overlap_target: TMF
+  required_checks:
+    - yahoo_schema
+    - duplicate_dates
+    - positive_levels
+    - return_arithmetic
+    - close_equals_adj_close
+    - synthetic_segment_matches_daily_reset_model
+    - observed_segment_matches_raw_tmf_adjusted_returns
+    - tmf_live_overlap_tracking

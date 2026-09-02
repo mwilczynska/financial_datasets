@@ -1,0 +1,37 @@
+asset_id: global_stocks
+asset_name: Global All-World Stocks Total-Return Proxy
+alias: GLSTOCK
+minimum_start_date: 1970-01-01
+target_frequency: daily
+output_contract: yahoo_compatible_ohlcv_plus_returns
+status: complete_model_derived_public_source_proxy
+sources:
+  - name: MSCI World gross annual total returns
+    role: early_annual_anchor
+    status: active_model_input
+    notes: Public annual gross total-return figures for MSCI World, used only to anchor 1970-1989 annual returns. Daily path is model-derived from USLCAP daily returns.
+  - name: USLCAP base dataset
+    role: early_daily_path_proxy
+    status: active_model_input
+    path: data/processed/us_large_cap_sp500.csv
+    notes: Supplies the daily return path for the 1970-1989 model segment before daily developed-market data is available.
+  - name: Kenneth French Data Library Developed 3 Factors Daily
+    role: developed_market_daily_total_return
+    status: active
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Developed_3_Factors_Daily_CSV.zip
+    notes: Daily developed-market Mkt-RF and RF series. Total return is Mkt-RF + RF.
+  - name: Yahoo Finance VT
+    role: observed_global_all_world_etf_total_return
+    status: active_from_2008
+    url: https://query1.finance.yahoo.com/v8/finance/chart/VT
+    notes: Vanguard Total World Stock ETF adjusted-close returns; includes developed and emerging markets net of ETF expenses.
+validation:
+  required_checks:
+    - yahoo_schema
+    - minimum_coverage
+    - duplicate_dates
+    - positive_levels
+    - return_arithmetic
+    - msci_annual_model_match
+    - raw_fama_french_segment_match
+    - raw_vt_segment_match

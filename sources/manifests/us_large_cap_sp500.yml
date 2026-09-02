@@ -1,0 +1,87 @@
+asset_id: us_large_cap_sp500
+asset_name: U.S. Large-Cap Equity / S&P 500 Equivalent
+minimum_start_date: 1970-01-01
+target_frequency: daily
+output_contract: yahoo_compatible_ohlcv_plus_returns
+status: in_progress
+milestones:
+  - id: us-large-cap-001
+    name: Documentation, source registry, citation, and test scaffold
+    status: complete
+  - id: us-large-cap-002
+    name: Source manifest for U.S. large-cap equity
+    status: complete
+  - id: us-large-cap-003
+    name: Yahoo-compatible daily price-index CSV from at least 1970-01-01
+    status: complete
+  - id: us-large-cap-004
+    name: Independent FRED overlap validation fixture and tests
+    status: complete
+  - id: us-large-cap-005
+    name: Parquet export
+    status: complete
+  - id: us-large-cap-006
+    name: Incremental update/stitching script
+    status: complete
+  - id: us-large-cap-007
+    name: Daily adjusted/total-return data back to 1970
+    status: complete
+sources:
+  - name: Yahoo Finance chart API
+    role: primary_price_index_and_post_1988_total_return_source
+    status: active
+    url: https://query1.finance.yahoo.com/v8/finance/chart/%5EGSPC
+    total_return_url: https://query1.finance.yahoo.com/v8/finance/chart/%5ESP500TR
+    notes: Primary source for S&P 500 price-index OHLCV and post-1988 daily S&P 500 total-return changes. Yahoo ^GSPC adjusted close is not used as total return.
+  - name: Kenneth French Data Library Portfolios Formed on ME Daily
+    role: pre_sp500tr_large_cap_total_return_source
+    status: active
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Portfolios_Formed_on_ME_daily_CSV.zip
+    selected_series: Average Value Weighted Returns -- Daily / Hi 30
+    notes: Daily CRSP-based U.S. large-cap/blend total-return proxy used before Yahoo ^SP500TR can supply daily return changes.
+  - name: S&P Dow Jones Indices S&P 500
+    role: authoritative_methodology_candidate
+    status: candidate
+    url: https://www.spglobal.com/spdji/en/indices/equity/sp-500/
+    notes: Authoritative index owner and methodology reference. Licensing must be reviewed before storing or redistributing data.
+  - name: FRED SP500
+    role: independent_validation
+    status: validation
+    url: https://fred.stlouisfed.org/series/SP500
+    notes: Daily close price index, not total return. FRED notes a 10-year daily-history limit for S&P and Dow Jones series.
+  - name: Yahoo Finance / yfinance
+    role: compatibility_reference_candidate
+    status: candidate
+    url: https://pypi.org/project/yfinance/
+    notes: Useful for Yahoo-style dataframe compatibility. Review Yahoo terms before storing downloaded data.
+  - name: Robert Shiller Data
+    role: long_history_reconstruction_candidate
+    status: rejected_for_daily_total_return_requirement
+    url: https://www.econ.yale.edu/~shiller/data.htm
+    notes: Not used because the current USLCAP adjusted-series requirement requires daily data and no estimates.
+  - name: Portfolio Visualizer Asset-Class Data Sources FAQ
+    role: future_asset_class_source_reference
+    status: candidate_reference
+    url: https://www.portfoliovisualizer.com/faq#marketData
+    notes: User-identified reference for future asset-class return source choices. Do not use as raw data without confirming export rights and reproducibility.
+  - name: Bogleheads Simba's Backtesting Spreadsheet
+    role: future_asset_class_source_reference
+    status: candidate_reference_unverified
+    url: https://www.bogleheads.org/wiki/Simba%27s_backtesting_spreadsheet
+    notes: User-identified reference. Direct fetch returned 403 on 2026-06-16; likely annual-return oriented, so do not use as a daily raw data source without verifying linked sources.
+validation:
+  required_independent_sources: 1
+  preferred_validation_source: FRED SP500
+  coverage_anchor_date: 1970-01-01
+  first_observation_rule: first_available_trading_day_at_or_after_coverage_anchor
+  current_fixture: tests/fixtures/fred_sp500_sample.csv
+  current_source_tolerance_index_points: 0.01
+  adjusted_close_requirement: populated_from_first_trading_observation_after_1970_anchor
+  required_checks:
+    - yahoo_schema
+    - minimum_coverage
+    - duplicate_dates
+    - non_positive_levels
+    - return_arithmetic
+    - independent_source_overlap
+    - source_boundary_discontinuity

@@ -1,0 +1,65 @@
+asset_id: intermediate_term_us_treasury
+asset_name: Intermediate-Term U.S. Treasury / IEF-like Total Return
+backtest_alias: ITT
+minimum_start_date: 1970-01-01
+target_frequency: daily
+output_contract: yahoo_compatible_ohlcv_plus_returns
+status: complete_model_derived
+current_dataset_status: fed_yield_curve_model_from_1970_plus_public_fund_returns_from_1991
+target_definition: IEF-like U.S. Treasury exposure, approximately 7-10 year remaining maturity, total return with coupons/distributions reinvested.
+milestones:
+  - id: itt-001
+    name: Define IEF-like asset contract
+    status: complete
+  - id: itt-002
+    name: Search and classify sources
+    status: complete
+  - id: itt-003
+    name: Implement provisional public fund-backed dataset
+    status: complete
+  - id: itt-004
+    name: Build 1970+ daily Treasury return history
+    status: complete
+  - id: itt-005
+    name: Add validation fixtures and tests
+    status: complete
+  - id: itt-006
+    name: Document methodology and caveats
+    status: complete
+sources:
+  - name: CRSP US Treasury Database
+    role: preferred_future_constituent_level_upgrade_source
+    status: candidate_upgrade
+    url: https://www.crsp.org/
+    notes: Daily Treasury issue prices/returns since 1961 are the preferred source for a true daily 1970+ 7-10 year Treasury total-return index with coupon payments.
+  - name: iShares IEF
+    role: target_definition_and_post_2002_public_return_source
+    status: active_from_2002
+    url: https://www.ishares.com/us/products/239456/ishares-710-year-treasury-bond-etf
+    notes: IEF tracks the ICE US Treasury 7-10 Year Bond Index and targets U.S. Treasury bonds with remaining maturities between 7 and 10 years.
+  - name: Yahoo Finance chart API IEF
+    role: daily_ief_adjusted_return_source
+    status: active_from_2002
+    url: https://query1.finance.yahoo.com/v8/finance/chart/IEF
+    notes: Used for public daily IEF close and adjusted-close returns after IEF has return history.
+  - name: Yahoo Finance chart API VFITX
+    role: pre_ief_public_intermediate_treasury_fund_proxy
+    status: active_from_1991
+    url: https://query1.finance.yahoo.com/v8/finance/chart/VFITX
+    notes: Used as a public intermediate-term Treasury mutual fund adjusted-return proxy before IEF has daily return history.
+  - name: Federal Reserve Nominal Yield Curve
+    role: primary_1970_1991_model_input
+    status: active
+    url: https://www.federalreserve.gov/data/nominal-yield-curve.htm
+    notes: Daily estimated nominal yield curve parameters and smoothed yields from 1961 to present. Used to model an 8.5-year constant-maturity par Treasury price and coupon-carry total returns before VFITX begins.
+validation:
+  required_independent_sources: 1
+  coverage_anchor_date: 1970-01-01
+  current_first_observation: 1970-01-02
+  required_checks:
+    - yahoo_schema
+    - duplicate_dates
+    - positive_levels
+    - return_arithmetic
+    - source_segment_daily_return_match
+    - ief_overlap_validation

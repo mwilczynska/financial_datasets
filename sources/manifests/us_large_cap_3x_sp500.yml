@@ -1,0 +1,86 @@
+asset_id: us_large_cap_3x_sp500
+asset_name: 3x Daily-Reset U.S. Large-Cap Total Return (UPRO-like)
+backtest_alias: USLCAP3X
+base_asset_id: us_large_cap_sp500
+derived: true
+minimum_start_date: 1970-01-01
+target_frequency: daily
+output_contract: yahoo_compatible_ohlcv_plus_returns
+status: complete_model_derived
+current_dataset_status: synthetic_3x_daily_reset_model_from_1970_plus_observed_upro_returns_from_2009
+target_definition: >
+  UPRO-like exposure: 3x the daily total return of the S&P 500, reset daily, net of
+  financing on the borrowed (2x) exposure and a ProShares-style fund expense ratio.
+model_parameters:
+  leverage: 3.0
+  expense_ratio: 0.0091           # ProShares UPRO annual expense ratio (0.91%).
+  borrow_spread: 0.0065           # Spread over ^IRX, calibrated to the UPRO live overlap.
+  financing_benchmark: "^IRX"     # 13-week T-bill discount yield (Yahoo).
+  financing_day_count: 360        # actual/360 financing accrual.
+  expense_day_count: 365          # actual/365 expense accrual.
+  daily_reset_formula: "lev_ret = 3*u - 2*((IRX/100 + spread)*days/360) - 0.0091*days/365"
+milestones:
+  - id: uslcap3x-001
+    name: Define UPRO-like 3x daily-reset asset contract
+    status: complete
+  - id: uslcap3x-002
+    name: Search and classify sources (base USLCAP, ^IRX financing, UPRO validation)
+    status: complete
+  - id: uslcap3x-003
+    name: Implement build script with daily-reset compounding and financing/fee drag
+    status: complete
+  - id: uslcap3x-004
+    name: Calibrate financing spread against UPRO live overlap
+    status: complete
+  - id: uslcap3x-005
+    name: Add validation fixtures and tests
+    status: complete
+  - id: uslcap3x-006
+    name: Document methodology and caveats
+    status: complete
+sources:
+  - name: USLCAP (us_large_cap_sp500)
+    role: underlying_daily_total_return
+    status: active
+    url: data/processed/us_large_cap_sp500.csv
+    notes: >
+      Project S&P 500 total-return dataset. The Total Return column is the daily underlying
+      return ('u') driving the 3x daily-reset model. French/CRSP large-cap before ^SP500TR,
+      then ^SP500TR.
+  - name: Yahoo Finance chart API ^IRX
+    role: financing_rate_benchmark_1970_present
+    status: active
+    url: https://query1.finance.yahoo.com/v8/finance/chart/%5EIRX
+    notes: >
+      13-week T-bill discount yield (annualized percent), daily from 1970-01-02. Used as the
+      financing benchmark; a borrowing spread is added and the cost is applied to the 2x
+      borrowed exposure on an actual/360 basis.
+  - name: Yahoo Finance chart API UPRO
+    role: observed_etf_return_source_and_calibration_target
+    status: active_from_2009
+    url: https://query1.finance.yahoo.com/v8/finance/chart/UPRO
+    notes: >
+      ProShares UltraPro S&P500. Inception 2009-06-25. Adjusted-close daily returns are used
+      directly from the first trading day after inception, and the synthetic model is calibrated
+      so its pre-inception methodology reproduces UPRO over the live overlap.
+  - name: ProShares UPRO prospectus
+    role: parameter_reference
+    status: reference
+    url: https://www.proshares.com/our-etfs/leveraged-and-inverse/upro
+    notes: >
+      Confirms 3x daily S&P 500 objective and the 0.91% expense ratio. Daily reset and
+      financing on borrowed exposure are inherent to the daily-objective structure.
+validation:
+  required_independent_sources: 1
+  coverage_anchor_date: 1970-01-01
+  current_first_observation: 1970-01-02
+  live_overlap_target: UPRO
+  required_checks:
+    - yahoo_schema
+    - duplicate_dates
+    - positive_levels
+    - return_arithmetic
+    - close_equals_adj_close
+    - synthetic_segment_matches_daily_reset_model
+    - observed_segment_matches_raw_upro_adjusted_returns
+    - upro_live_overlap_tracking

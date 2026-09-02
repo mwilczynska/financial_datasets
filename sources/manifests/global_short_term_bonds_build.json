@@ -1,0 +1,76 @@
+{
+  "asset_id": "global_short_term_bonds",
+  "asset_name": "Unhedged Global Short-Term (1-3yr) Government Bonds Total-Return Proxy",
+  "alias": "GLSTBOND",
+  "build_timestamp_utc": "2026-07-23T02:34:03.407741+00:00",
+  "row_count": 14258,
+  "first_date": "1970-01-02",
+  "last_date": "2026-07-22",
+  "csv_path": "data/processed/global_short_term_bonds.csv",
+  "csv_sha256": "4c4d060d8cb49a91ce098eeed41684f5a2ecfc1c70f7732f58e0ad2f2ca5398d",
+  "parquet_written": true,
+  "quality_flags": [
+    "model_direct_daily_fx_2y_yield_global_short_govt_bond_unhedged_net_of_fee",
+    "observed_shy_ishg_bwz_gdp_weighted_short_govt_bond_unhedged_net_of_fee"
+  ],
+  "blend_start": "2009-01-30",
+  "segment_counts": {
+    "model_direct_daily_fx_2y_yield_global_short_govt_bond_unhedged_net_of_fee": 9864,
+    "observed_shy_ishg_bwz_gdp_weighted_short_govt_bond_unhedged_net_of_fee": 4394
+  },
+  "early_countries": [
+    "USA",
+    "DEU",
+    "JPN",
+    "GBR",
+    "CAN",
+    "FRA",
+    "AUS",
+    "ITA",
+    "NLD",
+    "CHE",
+    "SWE",
+    "ESP",
+    "DNK",
+    "NOR",
+    "FIN",
+    "BEL"
+  ],
+  "bond_maturity_years": 2.0,
+  "daily_rate_countries": [
+    "USA",
+    "JPN",
+    "GBR"
+  ],
+  "daily_rate_coverage": {
+    "USA": {
+      "first": "1970-01-05",
+      "last": "2009-01-29",
+      "count": 9785
+    },
+    "JPN": {
+      "first": "1974-09-25",
+      "last": "2009-01-29",
+      "count": 8669
+    },
+    "GBR": {
+      "first": "1979-01-03",
+      "last": "2009-01-29",
+      "count": 7590
+    }
+  },
+  "representative_fee_annual": "0.0026",
+  "observed_symbols": [
+    "SHY",
+    "ISHG",
+    "BWZ"
+  ],
+  "us_gdp_weight_first": {
+    "year": 1870,
+    "weight": "0.2008096174951504317632074980613033894561"
+  },
+  "us_gdp_weight_last": {
+    "year": 2026,
+    "weight": "0.4631379278994452669217428412472860334023"
+  }
+}

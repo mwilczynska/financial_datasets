@@ -1,0 +1,118 @@
+asset_id: gold_2x
+asset_name: 2x Daily-Reset Gold Total Return (UGL-like)
+backtest_alias: GOLD2X
+base_asset_id: gold
+derived: true
+minimum_start_date: 1970-01-01
+target_frequency: daily
+output_contract: yahoo_compatible_ohlcv_plus_returns
+status: complete_model_derived
+current_dataset_status: synthetic_2x_daily_reset_model_from_1970_plus_observed_ugl_returns_from_2008
+target_definition: >
+  UGL-like exposure: 2x the daily performance of gold, reset daily, net of financing on the
+  borrowed (1x) exposure and a ProShares-style fund expense ratio.
+benchmark_note: >
+  UGL targets 2x the Bloomberg Gold Subindex (a COMEX-futures gold benchmark). This model uses
+  LBMA Gold Price PM spot (GOLDPM) as the underlying because that is the project's daily gold
+  series back to 1970. The calibrated borrowing spread absorbs the average gold futures
+  roll/storage and spot-vs-futures difference over the UGL overlap.
+timing_note: >
+  GOLDPM is the LBMA PM fix (~10:30am ET); UGL closes at 4pm ET. Day-over-day returns measured
+  ~5.5 hours apart decorrelate, so the daily UGL-vs-model correlation is only ~0.67. A US-close
+  gold ETF (GLD) tracks UGL at ~0.997, confirming the model logic; the gap is timing basis, not a
+  model error. Calibration therefore targets cumulative growth and the daily volatility ratio.
+calendar_note: >
+  GOLD2X iterates GOLDPM's dates, so it inherits GOLDPM's calendar: model era on the LBMA calendar,
+  observed era on the NYSE (GLD/UGL) calendar. Because the observed era is on the NYSE calendar,
+  every observed row lands on a UGL trading day and Adj Close is an exact constant multiple of UGL.
+  The holiday-flat path (observed_ugl_us_holiday_flat) is retained as a safety net but is 0 rows now.
+bugfix_note: >
+  2026-06-20: Fixed two bugs. (1) Holiday double-count: the previous build filled US-market holidays
+  with a synthetic 2x-gold day AND let UGL's reopen return span the same holiday, inflating GOLD2X
+  +33.8% (+1.89%/yr) above UGL over 2008-2026. (2) Calendar mismatch: with GOLDPM on the London
+  calendar, a return-intersection backtest drifted GOLD2X vs UGL ~+2%/yr on UK-bank-holiday days.
+  Both resolved by GOLDPM's observed era moving to the NYSE calendar (GOLD2X inherits it); observed
+  GOLD2X now reproduces UGL exactly. Also re-based the synthetic underlying onto GOLDPM's pure-spot
+  Price Return (GOLDPM Total Return now carries GLD's fee drag).
+model_parameters:
+  leverage: 2.0
+  expense_ratio: 0.0095           # ProShares UGL annual expense ratio (0.95%).
+  borrow_spread: 0.0093           # Spread over ^IRX, calibrated to the UGL live overlap (absorbs roll/storage).
+  financing_benchmark: "^IRX"     # 13-week T-bill discount yield (Yahoo).
+  financing_day_count: 360        # actual/360 financing accrual.
+  expense_day_count: 365          # actual/365 expense accrual.
+  daily_reset_formula: "lev_ret = 2*u - 1*((IRX/100 + spread)*days/360) - 0.0095*days/365"
+milestones:
+  - id: gold2x-001
+    name: Define UGL-like 2x daily-reset asset contract
+    status: complete
+  - id: gold2x-002
+    name: Search and classify sources (base GOLDPM, ^IRX financing, UGL validation, GLD timing cross-check)
+    status: complete
+  - id: gold2x-003
+    name: Implement build script with daily-reset compounding and financing/fee drag
+    status: complete
+  - id: gold2x-004
+    name: Calibrate financing spread against UGL live overlap (cumulative + volatility)
+    status: complete
+  - id: gold2x-005
+    name: Add validation fixtures and tests
+    status: complete
+  - id: gold2x-006
+    name: Document methodology and caveats
+    status: complete
+sources:
+  - name: GOLDPM (gold)
+    role: underlying_daily_price_return
+    status: active
+    url: data/processed/gold.csv
+    notes: >
+      Project gold dataset. The PRICE RETURN column (pure LBMA PM spot return) is the daily
+      underlying return ('u') driving the 2x daily-reset model, from 1970-01-02. Price Return (not
+      Total Return) is used because GOLDPM's Total Return now carries GLD's 0.40% expense drag; the
+      2x fund applies its own financing/fee so costs are counted once.
+  - name: Yahoo Finance chart API ^IRX
+    role: financing_rate_benchmark_1970_present
+    status: active
+    url: https://query1.finance.yahoo.com/v8/finance/chart/%5EIRX
+    notes: >
+      13-week T-bill discount yield (annualized percent), daily from 1970-01-02. Financing
+      benchmark; a borrowing spread is added and applied to the 1x borrowed exposure (actual/360).
+  - name: Yahoo Finance chart API UGL
+    role: observed_etf_return_source_and_calibration_target
+    status: active_from_2008
+    url: https://query1.finance.yahoo.com/v8/finance/chart/UGL
+    notes: >
+      ProShares Ultra Gold. Inception 2008-12-03. Adjusted-close daily returns used from the first
+      trading day after inception; the synthetic model is calibrated to reproduce UGL's cumulative
+      growth over the overlap.
+  - name: Yahoo Finance chart API GLD
+    role: timing_basis_cross_check
+    status: validation
+    url: https://query1.finance.yahoo.com/v8/finance/chart/GLD
+    notes: >
+      US-close gold ETF used only to demonstrate the timing basis: UGL daily returns vs 2x-GLD
+      correlate at ~0.997, while LBMA PM-fix returns vs same-day GLD correlate at ~0.66. Not used
+      in the production build.
+  - name: ProShares UGL prospectus
+    role: parameter_reference
+    status: reference
+    url: https://www.proshares.com/our-etfs/leveraged-and-inverse/ugl
+    notes: Confirms 2x daily gold objective (Bloomberg Gold Subindex) and the 0.95% expense ratio.
+validation:
+  required_independent_sources: 1
+  coverage_anchor_date: 1970-01-01
+  current_first_observation: 1970-01-02
+  live_overlap_target: UGL
+  required_checks:
+    - yahoo_schema
+    - duplicate_dates
+    - positive_levels
+    - return_arithmetic
+    - close_equals_adj_close
+    - no_synthetic_fills_in_observed_era
+    - holiday_flat_rows_have_zero_return
+    - synthetic_segment_matches_daily_reset_model_on_price_return
+    - observed_segment_matches_raw_ugl_adjusted_returns
+    - observed_dataset_tracks_ugl_cumulatively   # regression guard for the holiday double-count
+    - ugl_live_overlap_cumulative_and_volatility_tracking

@@ -1,0 +1,22 @@
+{
+  "asset_id": "cpi_inflation",
+  "asset_name": "U.S. CPI-U Inflation Index",
+  "alias": "CPI",
+  "source": "BLS CUSR0000SA0 (monthly CPI-U, seasonally adjusted)",
+  "source_url": "https://api.bls.gov/publicAPI/v2/timeseries/data/",
+  "source_series": "CUSR0000SA0",
+  "build_timestamp_utc": "2026-07-23T02:33:49.566159+00:00",
+  "row_count": 20658,
+  "first_date": "1970-01-01",
+  "last_date": "2026-07-23",
+  "latest_monthly_observation": "2026-06-01",
+  "csv_path": "data/processed/cpi_inflation.csv",
+  "csv_sha256": "bf1e72d43b9187b420d4f661783cfd6098eebd1b7ccbe64669b8059f44169baa",
+  "parquet_written": true,
+  "quality_flags": [
+    "carried_forward_latest_monthly_cpi_u_level",
+    "model_daily_log_interpolated_monthly_cpi_u",
+    "observed_bls_monthly_cpi_u_level"
+  ],
+  "notes": "Calendar-daily CPI deflator derived from monthly BLS CUSR0000SA0 observations."
+}

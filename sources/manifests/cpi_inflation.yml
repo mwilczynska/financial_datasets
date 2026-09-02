@@ -1,0 +1,33 @@
+asset_id: cpi_inflation
+asset_name: U.S. CPI-U Inflation Index
+alias: CPI
+minimum_start_date: 1970-01-01
+target_frequency: calendar_daily
+output_contract: yahoo_compatible_ohlcv_plus_returns
+status: complete_model_derived_from_monthly_cpi
+sources:
+  - name: BLS CPI-U All Urban Consumers, U.S. city average, all items, seasonally adjusted
+    role: primary_monthly_cpi_source
+    status: active
+    series_id: CUSR0000SA0
+    url: https://api.bls.gov/publicAPI/v2/timeseries/data/
+    notes: Monthly CPI-U index, 1982-84=100. Daily rows are derived from these monthly observations.
+  - name: FRED CPIAUCSL
+    role: validation_reference
+    status: validation
+    url: https://fred.stlouisfed.org/series/CPIAUCSL
+    notes: FRED republishes the same seasonally adjusted CPI-U concept. Initial direct FRED CSV retrieval timed out in this environment.
+method:
+  close: CPI-U level, 1982-84=100
+  adj_close: equal to Close
+  returns: daily inflation rate from the CPI level
+  daily_expansion: constant log interpolation between adjacent monthly observations; latest month carried forward until the next release
+validation:
+  required_checks:
+    - yahoo_schema
+    - calendar_daily_coverage
+    - duplicate_dates
+    - positive_levels
+    - return_arithmetic
+    - raw_bls_month_start_match
+    - interpolation_flags_present

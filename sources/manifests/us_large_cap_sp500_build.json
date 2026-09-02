@@ -1,0 +1,19 @@
+{
+  "asset_id": "us_large_cap_sp500",
+  "symbol": "^GSPC",
+  "total_return_symbol": "^SP500TR",
+  "source": "Yahoo Finance chart API (^GSPC price; ^SP500TR total return)",
+  "build_timestamp_utc": "2026-07-23T02:32:59.388962+00:00",
+  "row_count": 14259,
+  "first_date": "1970-01-02",
+  "last_date": "2026-07-22",
+  "csv_path": "data/processed/us_large_cap_sp500.csv",
+  "csv_sha256": "7761ea569b9067dbe28b7ba619c5d47783eac52fe09bea3c714b56e8f44c4794",
+  "parquet_written": true,
+  "first_adjusted_date": "1970-01-02",
+  "quality_flags": [
+    "observed_price_index_crsp_large_cap_total_return",
+    "observed_price_index_sp500_total_return"
+  ],
+  "notes": "Close is ^GSPC price index; Adj Close compounds daily total returns from Kenneth French/CRSP Hi 30 before ^SP500TR can supply daily returns, then ^SP500TR thereafter."
+}

@@ -1,0 +1,34 @@
+{
+  "asset_id": "intermediate_term_us_treasury_3x",
+  "alias": "ITT3X",
+  "base_asset_id": "intermediate_term_us_treasury",
+  "leverage": 3.0,
+  "expense_ratio": 0.0109,
+  "borrow_spread": 0.0019,
+  "financing_benchmark": "^IRX",
+  "observed_etf": "TYD",
+  "build_timestamp_utc": "2026-07-23T02:34:12.150762+00:00",
+  "row_count": 14183,
+  "first_date": "1970-01-02",
+  "last_date": "2026-07-22",
+  "synthetic_rows": 9841,
+  "observed_etf_rows": 4342,
+  "csv_path": "data/processed/intermediate_term_us_treasury_3x.csv",
+  "csv_sha256": "3cfc74da5cd6ef3e9324142a425987630b418eed268ac6b266246127a8bf7d9b",
+  "parquet_written": true,
+  "quality_flags": [
+    "model_3x_daily_reset_synthetic_from_itt_total_return_minus_financing_and_fee",
+    "observed_tyd_etf_adjusted_total_return"
+  ],
+  "calibration_vs_etf_overlap": {
+    "overlap_days": 4342,
+    "daily_return_correlation": 0.8811745909609254,
+    "annualized_tracking_error": 0.10224337829615383,
+    "mean_daily_return_diff": -1.2137915333642728e-05,
+    "cumulative_model_growth": 1.173385645597564,
+    "cumulative_etf_growth": 1.1734204619723085,
+    "cumulative_ratio_model_over_etf": 0.9999703291566213,
+    "etf_inception": "2009-04-16"
+  },
+  "notes": "Synthetic 3x daily-reset intermediate-Treasury total-return NAV: lev_ret = 3*ITT_total_return - 2*(^IRX/100)*days/360 - 0.0109*days/365. Close == Adj Close. Model-derived, not observed TYD history."
+}

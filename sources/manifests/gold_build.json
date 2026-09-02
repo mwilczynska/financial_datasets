@@ -1,0 +1,26 @@
+{
+  "asset_id": "gold",
+  "asset_name": "Gold (GLD-tracking, LBMA PM spot extended)",
+  "tracks_etf": "GLD",
+  "observed_era_calendar": "NYSE (GLD trading days)",
+  "gld_expense_ratio": 0.004,
+  "source": "LBMA Gold Price PM spot (price) minus GLD expense drag (total return)",
+  "source_url": "https://prices.lbma.org.uk/json/gold_pm.json",
+  "etf_source": "https://query1.finance.yahoo.com/v8/finance/chart/GLD",
+  "build_timestamp_utc": "2026-07-23T02:33:32.785975+00:00",
+  "row_count": 14222,
+  "first_date": "1970-01-02",
+  "last_date": "2026-07-22",
+  "model_rows": 8771,
+  "observed_gld_rows": 5310,
+  "observed_gld_ffill_close_rows": 141,
+  "csv_path": "data/processed/gold.csv",
+  "csv_sha256": "a335a47e4fc5b487160e32ac65b56ed330d6c7808c62c5d64f39d7cfe8f389b5",
+  "parquet_written": true,
+  "quality_flags": [
+    "model_gld_tracking_lbma_pm_spot_minus_gld_expense",
+    "observed_gld_etf_adjusted_total_return",
+    "observed_gld_us_open_lbma_holiday_close_gld_step"
+  ],
+  "notes": "Close = LBMA Gold Price PM USD/oz (pure spot). Adj Close = spot total return minus GLD expense drag (0.0040/yr, actual/365); models GLD before its 2004 inception. LBMA (London) trading calendar."
+}

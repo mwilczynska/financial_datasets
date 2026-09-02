@@ -1,0 +1,83 @@
+asset_id: global_short_term_bonds
+asset_name: Unhedged Global Short-Term (1-3yr) Government Bonds Total-Return Proxy
+alias: GLSTBOND
+minimum_start_date: 1970-01-01
+target_frequency: daily
+output_contract: yahoo_compatible_ohlcv_plus_returns
+status: complete_model_derived_public_source_proxy
+definition: >
+  ISHG-like in maturity (developed 1-3yr sovereign bonds) but global in scope (includes the
+  US), unhedged in USD, daily total return. Close / Price Return are gross of fees; Adj Close
+  / Total Return are net of a representative ~0.26%/yr fund expense drag.
+sources:
+  - name: Jorda-Schularick-Taylor Macrohistory Database
+    role: gdp_weights_and_pre_oecd_short_rate_fallback
+    status: active_model_input
+    url: https://www.macrohistory.net/database/
+    notes: Annual real GDP per capita (rgdpmad), population (pop) and exchange rates (xrusd) for 16 advanced economies supply the prior-year comparable-real-GDP basket weights and the US-vs-ex-US GDP split for the observed blend. Annual short (stir) and long (ltrate) rates, interpolated to a 2yr point, are the pre-OECD fallback for the monthly yield leg. NOTE: unlike GLBOND there is NO JST annual return anchor/overlay - JST's bond_tr is a 10yr long-bond return, the wrong level for a 1-3yr series, so the short series is built directly.
+  - name: BIS Daily Exchange Rates (WS_XRU via DBnomics)
+    role: daily_fx_leg_of_early_segment_path
+    status: active_model_input
+    url: https://api.db.nomics.world/v22/series/BIS/WS_XRU/
+    notes: Daily exchange rates (local currency per USD) for all 16 countries back to the 1950s-1971; euro-legacy countries use the chained .EUR. series. Provides genuine daily currency moves for the unhedged path. Key-less.
+  - name: OECD MEI 3-month interbank rate (IR3TIB01 via DBnomics)
+    role: monthly_short_rate_for_2yr_interpolation
+    status: active_model_input
+    url: https://api.db.nomics.world/v22/series/OECD/MEI/
+    notes: Monthly 3-month interbank rate per country. Interpolated linearly in maturity with the 10-year rate to a 2-year yield (0.25y and 10y nodes -> 2y).
+  - name: OECD MEI Long-Term Interest Rates (IRLTLT01 via DBnomics)
+    role: monthly_long_rate_for_2yr_interpolation
+    status: active_model_input
+    url: https://api.db.nomics.world/v22/series/OECD/MEI/
+    notes: Monthly 10-year government-bond yield per country. The 2yr yield is interpolated between this and the 3-month rate; a constant-maturity 2yr par bond is then repriced monthly (price move + coupon carry) and smoothed within month for all countries except the daily US/JP/UK legs.
+  - name: In-repo U.S. 1-3yr Treasury total return (STT)
+    role: daily_us_short_bond_leg
+    status: active_model_input
+    url: data/processed/short_term_us_treasury.csv
+    notes: Genuine daily US 2yr Treasury total return (Fed-yield-curve-derived short Treasury -> SHY), 1970+.
+  - name: MoF Japan historical JGB yields (2yr column)
+    role: daily_japan_short_bond_leg
+    status: active_model_input
+    url: https://www.mof.go.jp/jgbs/reference/interest_rate/data/jgbcm_all.csv
+    notes: Daily 2yr JGB yield, continuous from 1974-09-25 (the 1-9yr nodes start twelve years before the 10yr). Repriced daily as a 2yr par bond with coupon carry.
+  - name: Bank of England GLC nominal daily yield curve (2yr node)
+    role: daily_uk_short_bond_leg
+    status: active_model_input
+    url: https://www.bankofengland.co.uk/-/media/boe/files/statistics/yield-curves/glcnominalddata.zip
+    notes: Daily 2yr nominal spot gilt yield from 1979 ("4. nominal spot curve" sheet). Repriced daily as a 2yr par bond with coupon carry. The 39 MB archive is fetched but not committed; only the compact extracted 2yr series is persisted.
+  - name: iShares 1-3 Year Treasury Bond ETF
+    ticker: SHY
+    role: us_short_component_for_observed_gdp_weighted_blend
+    status: active_segment
+    url: https://query1.finance.yahoo.com/v8/finance/chart/SHY
+    notes: US 1-3yr Treasury adjusted-close (net-of-fee) total returns. Weighted by the US share of developed-market real GDP.
+  - name: iShares 1-3 Year International Treasury Bond ETF
+    ticker: ISHG
+    role: ex_us_short_component_for_observed_gdp_weighted_blend
+    status: active_segment
+    url: https://query1.finance.yahoo.com/v8/finance/chart/ISHG
+    notes: Developed ex-US 1-3yr sovereign adjusted-close total returns, unhedged. Averaged with BWZ for the ex-US leg.
+  - name: SPDR Bloomberg Short Term International Treasury Bond ETF
+    ticker: BWZ
+    role: ex_us_short_component_for_observed_gdp_weighted_blend
+    status: active_segment
+    url: https://query1.finance.yahoo.com/v8/finance/chart/BWZ
+    notes: Developed ex-US 1-3yr sovereign adjusted-close total returns, unhedged. Averaged with ISHG for the ex-US leg.
+method:
+  early_segment: Direct GDP-weighted basket (no JST overlay) of observed daily FX (BIS) and a constant-maturity 2yr par-bond total return - daily yields for US/JP/UK, monthly OECD 2yr-interpolated yields elsewhere. Net leg subtracts a representative fee.
+  observed_segment: GDP-weighted, annually-rebalanced net blend of SHY (US) and the ISHG/BWZ average (ex-US); Close adds the fee back to remain gross.
+  representative_fee_annual: 0.0026
+validation:
+  required_checks:
+    - yahoo_schema
+    - minimum_coverage
+    - duplicate_dates
+    - positive_levels
+    - return_arithmetic_close_and_adjclose
+    - net_of_fee_drag_matches_modeled_rate
+    - observed_gdp_weighted_blend_match
+    - early_segment_genuinely_daily
+    - early_segment_realistic_volatility
+    - early_segment_fx_event_directions
+    - basket_weights_economically_sane
+    - daily_short_rate_leg_coverage

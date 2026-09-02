@@ -1,0 +1,18 @@
+{
+  "asset_id": "intermediate_term_us_treasury",
+  "asset_name": "Intermediate-Term U.S. Treasury / IEF-like Total Return",
+  "source": "Federal Reserve nominal yield curve; Yahoo Finance chart API (VFITX and IEF adjusted close)",
+  "build_timestamp_utc": "2026-07-23T02:33:18.408502+00:00",
+  "row_count": 14183,
+  "first_date": "1970-01-02",
+  "last_date": "2026-07-22",
+  "csv_path": "data/processed/intermediate_term_us_treasury.csv",
+  "csv_sha256": "279f1fea49e17c0b652adc17e027f653310886d048cd70e599417cb5253a9783",
+  "parquet_written": true,
+  "quality_flags": [
+    "model_fed_yield_curve_8pt5y_par_treasury_total_return",
+    "observed_yahoo_ief_7_10_treasury_total_return",
+    "observed_yahoo_vfitx_intermediate_treasury_total_return_proxy"
+  ],
+  "notes": "IEF-like intermediate Treasury total-return proxy. Federal Reserve nominal yield curves are used for a synthetic 8.5-year par Treasury segment before VFITX; VFITX is used before IEF daily history is available."
+}

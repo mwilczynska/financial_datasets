@@ -1,0 +1,100 @@
+asset_id: intermediate_term_us_treasury_3x
+asset_name: 3x Daily-Reset Intermediate-Term U.S. Treasury Total Return (TYD-like)
+backtest_alias: ITT3X
+base_asset_id: intermediate_term_us_treasury
+derived: true
+minimum_start_date: 1970-01-01
+target_frequency: daily
+output_contract: yahoo_compatible_ohlcv_plus_returns
+status: complete_model_derived
+current_dataset_status: synthetic_3x_daily_reset_model_from_1970_plus_observed_tyd_returns_from_2009
+target_definition: >
+  TYD-like exposure: 3x the daily total return of an IEF-like intermediate-term (7-10 year)
+  U.S. Treasury series, reset daily, net of financing on the borrowed (2x) exposure and a
+  Direxion-style fund expense ratio.
+naming_note: >
+  The project backlog originally labelled "UST" as the 3x intermediate-Treasury ETF, but UST
+  (ProShares Ultra 7-10 Year Treasury) is a 2x fund. The genuine 3x 7-10 year Treasury ETF is
+  Direxion TYD, which is the calibration/validation target for this 3x dataset.
+model_parameters:
+  leverage: 3.0
+  expense_ratio: 0.0109           # Direxion TYD total annual operating expense ratio (~1.09%).
+  borrow_spread: 0.0019           # Spread over ^IRX, calibrated to the TYD live overlap.
+  financing_benchmark: "^IRX"     # 13-week T-bill discount yield (Yahoo).
+  financing_day_count: 360        # actual/360 financing accrual.
+  expense_day_count: 365          # actual/365 expense accrual.
+  daily_reset_formula: "lev_ret = 3*u - 2*((IRX/100 + spread)*days/360) - 0.0109*days/365"
+milestones:
+  - id: itt3x-001
+    name: Define TYD-like 3x daily-reset asset contract
+    status: complete
+  - id: itt3x-002
+    name: Search and classify sources (base ITT, ^IRX financing, TYD validation)
+    status: complete
+  - id: itt3x-003
+    name: Implement build script with daily-reset compounding and financing/fee drag
+    status: complete
+  - id: itt3x-004
+    name: Calibrate financing spread against TYD live overlap
+    status: complete
+  - id: itt3x-005
+    name: Add validation fixtures and tests
+    status: complete
+  - id: itt3x-006
+    name: Document methodology and caveats
+    status: complete
+sources:
+  - name: ITT (intermediate_term_us_treasury)
+    role: underlying_daily_total_return
+    status: active
+    url: data/processed/intermediate_term_us_treasury.csv
+    notes: >
+      Project IEF-like intermediate-Treasury total-return dataset. The Total Return column is the
+      daily underlying return ('u') driving the 3x daily-reset model. Fed yield-curve 8.5-year
+      par model before VFITX, then VFITX, then IEF.
+  - name: Yahoo Finance chart API ^IRX
+    role: financing_rate_benchmark_1970_present
+    status: active
+    url: https://query1.finance.yahoo.com/v8/finance/chart/%5EIRX
+    notes: >
+      13-week T-bill discount yield (annualized percent), daily from 1970-01-02. Financing
+      benchmark; a borrowing spread is added and the cost is applied to the 2x borrowed
+      exposure on an actual/360 basis.
+  - name: Yahoo Finance chart API TYD
+    role: observed_etf_return_source_and_calibration_target
+    status: active_from_2009
+    url: https://query1.finance.yahoo.com/v8/finance/chart/TYD
+    notes: >
+      Direxion Daily 7-10 Year Treasury Bull 3X Shares. Inception 2009-04-16. Adjusted-close
+      daily returns are used from the first trading day after inception. TYD is thinly traded;
+      its Yahoo closes are noisy/stale in 2014-2018, degrading full-overlap daily correlation,
+      so the spread is calibrated to cumulative growth (robust to mean-reverting stale-price
+      noise).
+  - name: Direxion TYD prospectus
+    role: parameter_reference
+    status: reference
+    url: https://www.direxion.com/product/daily-7-10-year-treasury-bull-bear-3x-etfs
+    notes: >
+      Confirms 3x daily objective on the ICE U.S. Treasury 7-10 Year Bond Index (the IEF
+      benchmark) and the ~1.09% expense ratio.
+  - name: ProShares UST
+    role: rejected_wrong_leverage
+    status: rejected
+    url: https://www.proshares.com/our-etfs/leveraged-and-inverse/ust
+    notes: >
+      UST is ProShares Ultra 7-10 Year Treasury, a 2x fund, despite the backlog's "3x UST"
+      label. Not used for this 3x dataset; it is the validation target for a future ITT2X.
+validation:
+  required_independent_sources: 1
+  coverage_anchor_date: 1970-01-01
+  current_first_observation: 1970-01-02
+  live_overlap_target: TYD
+  required_checks:
+    - yahoo_schema
+    - duplicate_dates
+    - positive_levels
+    - return_arithmetic
+    - close_equals_adj_close
+    - synthetic_segment_matches_daily_reset_model
+    - observed_segment_matches_raw_tyd_adjusted_returns
+    - tyd_live_overlap_tracking_cumulative_and_clean_era_correlation

@@ -1,0 +1,204 @@
+asset_id: broad_commodities
+asset_name: Broad Commodities / DBC-like Total Return
+backtest_alias: CMDTY
+minimum_start_date: 1970-01-02
+coverage_note: >
+  Coverage reaches 1970-01-02 via the S&P GSCI Total Return anchor (roll yield +
+  T-bill collateral + GSCI production weights). Segment 0 (1970-1983) is log-linearly
+  smoothed to daily because no free daily broad-commodity data exists before 1984;
+  Segment 1 (1984-1991) overlays the anchor onto the genuine daily ^SPGSCI spot shape.
+target_frequency: daily
+output_contract: yahoo_compatible_ohlcv_plus_returns
+status: complete_model_derived_with_gsci_total_return_anchor_1970_1991
+current_dataset_status: gsci_tr_anchor_smoothed_then_gsci_tr_with_spgsci_shape_then_bcom_er_then_dbc_etf
+target_definition: >
+  DBC-like broad diversified commodity futures total return. Close compounds the
+  excess-return (spot+roll) level; Adj Close compounds the total-return level
+  (excess return + T-bill collateral). Segments 0-1 (1970-1991) are anchored to the
+  S&P GSCI Total Return index; the anchor is a downsampled (~bi-monthly) republication.
+data_gaps:
+  - id: gsci_anchor_downsampled_republication
+    affected_segment: segments_0_1_1970_01_02_to_1991_01_02
+    severity: high
+    description: >
+      The 1970-1991 level is anchored to the S&P GSCI Total Return index obtained
+      from MacroMicro's free republication, downsampled to ~358 points (~57-day
+      spacing) and normalized to 100 at 1970-01-02. Adj Close tracks the index to
+      within ~5% at sample dates; intervening daily levels are interpolated
+      (Segment 0) or overlaid onto the ^SPGSCI spot shape (Segment 1). It is not a
+      licensed daily S&P feed. S&P GSCI is back-tested before its 1991 launch.
+  - id: segment0_daily_volatility_smoothed
+    affected_segment: segment_0_1970_01_02_to_1984_01_03
+    severity: high
+    description: >
+      No free daily broad-commodity data exists before 1984, so Segment 0 daily
+      rows are a constant-geometric (log-linear) interpolation of the GSCI TR
+      anchor. Interval-end levels are anchored, but within-period volatility,
+      drawdowns, and event timing are model-derived, not observed.
+  - id: segment1_shape_is_spot_level_is_total_return
+    affected_segment: segment_1_1984_01_04_to_1991_01_02
+    severity: medium
+    description: >
+      Segment 1 daily moves are genuine Yahoo ^SPGSCI spot returns, rescaled per
+      anchor interval so each interval compounds to the GSCI Total Return. The
+      roll yield and collateral that lift spot to total return are added as a
+      smooth per-interval overlay, not an observed daily roll. Restores realistic
+      daily volatility (~16%/yr).
+  - id: gsci_not_dbc_weighting
+    affected_segment: segments_0_1_1970_01_02_to_1991_01_02
+    severity: medium
+    description: >
+      The S&P GSCI is production-weighted and historically more energy-heavy than
+      DBC. It is the closest freely available long-history futures total-return
+      index in spirit, but its weights and roll rules differ from DBC/DBLCI.
+  - id: segment2_bcom_er_plus_project_collateral
+    affected_segment: segment_2_1991_01_03_to_2006_02_06
+    severity: medium
+    description: >
+      Segment 2 treats Yahoo ^BCOM as an excess-return index based on observed
+      annual behavior, then adds ^IRX collateral. Not independently validated
+      against licensed Bloomberg BCOM Total Return daily levels; a different
+      benchmark family from DBC.
+  - id: segment3_dbc_etf_net_return
+    affected_segment: segment_3_2006_02_07_to_present
+    severity: medium
+    description: >
+      Segment 3 uses DBC ETF Yahoo adjusted close, an investable net fund return
+      affected by ~0.89%/yr expenses, tracking, distributions, and Yahoo
+      adjustment methodology. Not the gross DBIQ Optimum Yield index total return.
+  - id: chain_methodology_breaks
+    affected_segment: full_series
+    severity: high
+    description: >
+      The series chains three exposure definitions: S&P GSCI Total Return
+      (Segments 0-1), Bloomberg Commodity excess return plus collateral
+      (Segment 2), and DBC ETF total return (Segment 3). The 1991 and 2006 splice
+      points are benchmark-family / methodology breaks. (The 1984 boundary is now
+      internal to the GSCI reconstruction.)
+  - id: model_segments_blank_ohlcv
+    affected_segment: segments_0_1_2
+    severity: low
+    description: >
+      Open, High, Low, and Volume are intentionally blank for model/index
+      segments. Backtests should use Close, Adj Close, and return columns.
+milestones:
+  - id: cmdty-001
+    name: Define commodity asset contract and backtest alias
+    status: complete
+  - id: cmdty-002
+    name: Search and classify sources; verify ^BCOM index type
+    status: complete
+  - id: cmdty-003
+    name: Design source chain
+    status: complete
+  - id: cmdty-004
+    name: Implement build_broad_commodities.py and update_broad_commodities.py
+    status: complete
+  - id: cmdty-005
+    name: Run build and inspect outputs
+    status: complete
+    notes: >
+      Current build has 14,163 rows from 1970-01-02 to 2026-06-25. Segment row counts:
+      GSCI-smoothed 3,487; GSCI-shape 1,768; BCOM 3,781; DBC 5,127.
+  - id: cmdty-006
+    name: Add validation tests
+    status: complete
+  - id: cmdty-007
+    name: Write methodology and documentation
+    status: complete
+  - id: cmdty-008
+    name: Replace precious-metals-only Segment 0 with broad commodity model
+    status: superseded
+    notes: >
+      The World Bank broad monthly model (2026-06) was itself superseded by the
+      GSCI Total Return anchor (cmdty-011).
+  - id: cmdty-011
+    name: Replace World Bank monthly spot model and spot-only GSCI segment with S&P GSCI Total Return anchor
+    status: complete
+    notes: >
+      2026-06-26. Adds roll yield + T-bill collateral + GSCI production weights to
+      1970-1991. Segment 0 smoothed; Segment 1 de-smoothed onto the daily ^SPGSCI
+      spot shape (~16%/yr vol). Validated: GSCI TR vs spot 3.08x/1.04x over 1984-91
+      implies ~9%/yr roll. The previous spot-only segment understated the era ~3x.
+  - id: cmdty-009
+    name: Replace downsampled GSCI anchor with licensed daily futures total-return history
+    status: candidate_upgrade
+    notes: >
+      Requires licensed daily S&P GSCI / Bloomberg BCOM total return, or a
+      constituent-level futures reconstruction phasing energy in as contracts launched.
+  - id: cmdty-010
+    name: Document current dataset gaps in detail
+    status: complete
+sources:
+  - name: S&P GSCI Total Return anchor (MacroMicro republication)
+    role: segments_0_1_1970_to_1991_total_return_anchor
+    status: active_anchor_static_file
+    url: https://en.macromicro.me/series/2692/sp-gsci-index
+    raw_file: sources/raw/broad_commodities_gsci_tr_macromicro.csv
+    notes: >
+      S&P GSCI Total Return Index, base 100 at 1970-01-02, ~bi-monthly (358 points),
+      extracted in-browser from the page's Highcharts object and committed as a
+      static historical file. Roll yield + collateral + GSCI production weights.
+  - name: Yahoo Finance chart API ^SPGSCI
+    role: segment_1_1984_to_1991_daily_spot_shape
+    status: active_segment_1_shape
+    url: https://query1.finance.yahoo.com/v8/finance/chart/%5ESPGSCI
+    notes: >
+      S&P GSCI Spot Index from 1984-01-03. Used for the daily spot SHAPE only,
+      rescaled per anchor interval to the GSCI Total Return.
+  - name: Yahoo Finance chart API ^BCOM
+    role: segment_2_1991_to_2006_excess_return
+    status: active_segment_2
+    url: https://query1.finance.yahoo.com/v8/finance/chart/%5EBCOM
+    notes: >
+      Bloomberg Commodity Index from 1991-01-02. Verified as Excess Return via 2021
+      annual return behavior. Adj Close adds ^IRX collateral.
+  - name: Yahoo Finance chart API DBC
+    role: segment_3_2006_to_present_total_return_etf
+    status: active_segment_3
+    url: https://query1.finance.yahoo.com/v8/finance/chart/DBC
+    notes: >
+      Invesco DB Commodity Index Tracking Fund. Yahoo adjusted close = observed
+      ETF total return.
+  - name: Yahoo Finance chart API ^IRX
+    role: collateral_rate_model_segments_0_1_and_2
+    status: active_collateral_source
+    url: https://query1.finance.yahoo.com/v8/finance/chart/%5EIRX
+    notes: >
+      CBOE 13-week T-bill annualized rate in percent. Daily collateral accrual =
+      IRX_close / 100 / 365. Also the Segment 0 trading calendar.
+  - name: World Bank Commodity Markets Pink Sheet Total Commodity Index
+    role: former_segment_0_1970_to_1984_broad_monthly_model
+    status: superseded_by_gsci_tr_anchor
+    url: https://thedocs.worldbank.org/en/doc/5d903e848db1d1b83e0ec8f744e55570-0350012021/related/CMO-Historical-Data-Monthly.xlsx
+    raw_file: sources/raw/broad_commodities_world_bank_cmo_monthly.xlsx
+    notes: >
+      Spot-only monthly broad index used for 1970-1983 until 2026-06-26. Replaced
+      by the GSCI Total Return anchor (no roll yield; non-DBC export-value weights).
+  - name: AQR Commodities for the Long Run (monthly, 1877+)
+    role: rejected_anchor_candidate
+    status: rejected_equal_weighted
+    url: https://www.aqr.com/Insights/Datasets/Commodities-for-the-Long-Run-Index-Level-Data-Monthly
+    notes: >
+      Freely downloadable roll-inclusive monthly TR back to 1877, but equal-weighted,
+      so not chosen as the energy-tilted DBC-like anchor.
+  - name: Bloomberg BCOM Total Return / S&P GSCI daily total return (licensed)
+    role: validation_and_upgrade_source
+    status: validation_candidate_licensed
+    notes: Licensed daily total-return history would be the ideal validation and quality upgrade.
+validation:
+  required_independent_sources: 1
+  coverage_anchor_date: 1970-01-01
+  current_first_observation: 1970-01-02
+  required_checks:
+    - yahoo_schema
+    - duplicate_dates
+    - positive_levels
+    - return_arithmetic
+    - total_return_is_collateralized_excess_return
+    - gsci_anchor_segment_present_and_growing
+    - adj_close_tracks_gsci_anchor
+    - spgsci_shape_segment_is_desmoothed
+    - dbc_segment_total_return_match
+    - bcom_segment_price_return_match
+    - quality_flag_counts

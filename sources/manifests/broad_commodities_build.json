@@ -1,0 +1,25 @@
+{
+  "asset_id": "broad_commodities",
+  "asset_name": "Broad Commodities / DBC-like Total Return",
+  "source": "S&P GSCI Total Return anchor (MacroMicro republication of the S&P GSCI Total Return Index, base 100 at 1970-01-02) for the 1970-1991 reconstruction: log-linear daily smoothing (Segment 0, 1970-1983) and Yahoo ^SPGSCI spot daily shape overlaid to the anchor (Segment 1, 1984-1991); Yahoo Finance chart API ^BCOM Bloomberg Commodity Excess Return + ^IRX T-bill collateral (Segment 2, 1991-2006); DBC adjusted close total-return ETF (Segment 3, 2006-present)",
+  "build_timestamp_utc": "2026-07-23T02:33:38.285263+00:00",
+  "row_count": 14181,
+  "first_date": "1970-01-02",
+  "last_date": "2026-07-22",
+  "csv_path": "data/processed/broad_commodities.csv",
+  "csv_sha256": "d50827632037cca013652aa831e18587ae61626533871d0c3d4fd27ddf2d21f9",
+  "parquet_written": true,
+  "quality_flags": [
+    "model_bcom_excess_return_plus_tbill_collateral",
+    "model_gsci_total_return_anchor_smoothed_daily",
+    "model_gsci_total_return_anchor_with_spgsci_spot_daily_shape",
+    "observed_yahoo_dbc_dblci_total_return_etf"
+  ],
+  "segment_row_counts": {
+    "model_gsci_total_return_anchor_smoothed_daily": 3487,
+    "observed_yahoo_dbc_dblci_total_return_etf": 5145,
+    "model_bcom_excess_return_plus_tbill_collateral": 3781,
+    "model_gsci_total_return_anchor_with_spgsci_spot_daily_shape": 1768
+  },
+  "coverage_note": "Segments 0-1 (1970-01-02 to 1991-01-02) reconstruct broad commodity TOTAL return from the S&P GSCI Total Return anchor (roll yield + T-bill collateral + GSCI production weights). Segment 0 (1970-1983) is log-linearly smoothed to daily because no free daily broad-commodity data exists before 1984; Segment 1 (1984-1991) overlays the anchor onto the daily ^SPGSCI spot shape for genuine daily moves. Close is the excess-return (spot+roll) level; Adj Close is the total-return level. S&P GSCI is back-tested before its 1991 launch."
+}

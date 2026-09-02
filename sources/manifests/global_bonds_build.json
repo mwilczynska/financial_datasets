@@ -1,0 +1,68 @@
+{
+  "asset_id": "global_bonds",
+  "asset_name": "Unhedged Global Bonds Total-Return Proxy",
+  "alias": "GLBOND",
+  "build_timestamp_utc": "2026-07-23T02:33:58.448738+00:00",
+  "row_count": 14258,
+  "first_date": "1970-01-02",
+  "last_date": "2026-07-22",
+  "csv_path": "data/processed/global_bonds.csv",
+  "csv_sha256": "7fdf06bf860d06f78136f072919d8072e8673288a77e87a7f13c4688c4402bbe",
+  "parquet_written": true,
+  "quality_flags": [
+    "model_jst_anchored_daily_fx_monthly_yield_global_govt_bond_unhedged",
+    "observed_bnd_bwx_unhedged_daily_rebalanced_proxy"
+  ],
+  "blend_start": "2007-10-11",
+  "segment_counts": {
+    "model_jst_anchored_daily_fx_monthly_yield_global_govt_bond_unhedged": 9536,
+    "observed_bnd_bwx_unhedged_daily_rebalanced_proxy": 4722
+  },
+  "jst_annual_years": [
+    1970,
+    2007
+  ],
+  "early_countries": [
+    "USA",
+    "DEU",
+    "JPN",
+    "GBR",
+    "CAN",
+    "FRA",
+    "AUS",
+    "ITA",
+    "NLD",
+    "CHE",
+    "SWE",
+    "ESP",
+    "DNK",
+    "NOR",
+    "FIN",
+    "BEL"
+  ],
+  "bond_maturity_years": 10.0,
+  "daily_rate_countries": [
+    "USA",
+    "JPN",
+    "GBR"
+  ],
+  "daily_rate_coverage": {
+    "USA": {
+      "first": "1970-01-05",
+      "last": "2007-10-10",
+      "count": 9457
+    },
+    "JPN": {
+      "first": "1986-07-08",
+      "last": "2007-10-10",
+      "count": 5364
+    },
+    "GBR": {
+      "first": "1979-01-03",
+      "last": "2007-10-10",
+      "count": 7262
+    }
+  },
+  "bnd_weight": "0.45",
+  "bwx_weight": "0.55"
+}

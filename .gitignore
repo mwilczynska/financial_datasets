@@ -1,0 +1,31 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+*.tmp
+*.log
+.claude/
+# Local agent and tool state
+.agents/
+.codex/
+
+# Credentials, secrets, and local key material
+.env
+.env.*
+!.env.example
+credentials*.json
+secrets*.json
+secrets*.yml
+secrets*.yaml
+*.pem
+*.key
+*.p12
+*.pfx
+*.sqlite
+*.sqlite3
+*.db
+
+# Newly downloaded raw sources are local caches unless explicitly approved
+sources/raw/*
+!sources/raw/README.md

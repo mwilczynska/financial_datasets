@@ -1,0 +1,67 @@
+asset_id: global_bonds
+asset_name: Unhedged Global Bonds Total-Return Proxy
+alias: GLBOND
+minimum_start_date: 1970-01-01
+target_frequency: daily
+output_contract: yahoo_compatible_ohlcv_plus_returns
+status: complete_model_derived_public_source_proxy
+sources:
+  - name: Jorda-Schularick-Taylor Macrohistory Database
+    role: annual_level_anchor_and_gdp_weights
+    status: active_model_input
+    url: https://www.macrohistory.net/database/
+    notes: Annual local-currency government bond total returns, exchange rates, real GDP per capita (rgdpmad), population, and nominal GDP for 16 advanced economies. Supplies the per-year level anchor and weights; each calendar year of the early segment is rescaled to compound to the recomputed JST basket. Weights use comparable real GDP (rgdpmad x pop), not nominal gdp/xrusd (whose units are inconsistent across countries and mis-weight the basket toward small economies).
+  - name: BIS Daily Exchange Rates (WS_XRU via DBnomics)
+    role: daily_fx_leg_of_early_segment_path
+    status: active_model_input
+    url: https://api.db.nomics.world/v22/series/BIS/WS_XRU/
+    notes: Daily exchange rates (local currency per USD) for all 16 countries back to the 1950s-1971; euro-legacy countries use the chained .EUR. series. Provides genuine daily currency moves for the unhedged path. Key-less.
+  - name: OECD MEI Long-Term Interest Rates (IRLTLT01 via DBnomics)
+    role: monthly_yield_leg_for_countries_without_a_daily_source
+    status: active_model_input
+    url: https://api.db.nomics.world/v22/series/OECD/MEI/
+    notes: Monthly 10-year government-bond yields per country. A constant-maturity 10y par bond is repriced monthly (price move + coupon carry) and smoothed within month. Used for all countries except the daily US/JP/UK legs, and for US/JP/UK before their daily-yield start. Countries without an early yield are basket-proxied until their yield history begins.
+  - name: In-repo U.S. 7-10y Treasury total return
+    role: daily_us_bond_leg
+    status: active_model_input
+    url: data/processed/intermediate_term_us_treasury.csv
+    notes: Genuine daily US bond total return (Fed-yield-curve-derived intermediate Treasury), 1970+. ~8.5y constant maturity; difference from 10y absorbed by the annual overlay.
+  - name: MoF Japan historical JGB yields
+    role: daily_japan_bond_leg
+    status: active_model_input
+    url: https://www.mof.go.jp/jgbs/reference/interest_rate/data/jgbcm_all.csv
+    notes: Daily 10y JGB yield, continuous from 1986-07-05 (cp932, Japanese-era dates). Repriced daily as a 10y par bond with coupon carry. Japan basket-proxied before 1986-07.
+  - name: Bank of England GLC nominal daily yield curve
+    role: daily_uk_bond_leg
+    status: active_model_input
+    url: https://www.bankofengland.co.uk/-/media/boe/files/statistics/yield-curves/glcnominalddata.zip
+    notes: Daily 10y nominal spot gilt yield from 1979 (Excel-in-zip, "4. nominal spot curve" sheet). Repriced daily as a 10y par bond with coupon carry. The 39 MB archive is fetched but not committed; only the compact extracted 10y series is persisted.
+  - name: Vanguard Total Bond Market ETF
+    ticker: BND
+    role: us_bond_component_for_observed_daily_blend
+    status: active_segment
+    url: https://query1.finance.yahoo.com/v8/finance/chart/BND
+    notes: U.S. aggregate bond adjusted-close total returns.
+  - name: SPDR Bloomberg International Treasury Bond ETF
+    ticker: BWX
+    role: international_unhedged_bond_component_for_observed_daily_blend
+    status: active_segment
+    url: https://query1.finance.yahoo.com/v8/finance/chart/BWX
+    notes: International sovereign bond adjusted-close total returns in local currencies, unhedged to USD.
+method:
+  early_segment: GDP-weighted basket of observed daily FX (BIS) and bond total returns (daily for US/JP/UK, monthly OECD elsewhere), rescaled per year to the JST annual basket
+  observed_segment: 45% BND plus 55% BWX adjusted-close daily returns, rebalanced daily
+validation:
+  required_checks:
+    - yahoo_schema
+    - minimum_coverage
+    - duplicate_dates
+    - positive_levels
+    - return_arithmetic
+    - jst_annual_anchor_invariant
+    - raw_bnd_bwx_blend_match
+    - early_segment_not_annual_smoothed
+    - early_segment_realistic_volatility
+    - early_segment_fx_event_directions
+    - basket_weights_economically_sane
+    - daily_rate_leg_coverage

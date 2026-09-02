@@ -1,0 +1,26 @@
+{
+  "asset_id": "global_stocks",
+  "asset_name": "Global All-World Stocks Total-Return Proxy",
+  "alias": "GLSTOCK",
+  "build_timestamp_utc": "2026-07-23T02:33:54.008767+00:00",
+  "row_count": 14418,
+  "first_date": "1970-01-02",
+  "last_date": "2026-07-22",
+  "csv_path": "data/processed/global_stocks.csv",
+  "csv_sha256": "7acfe1e4da371897d1d83b43ced976213437ce6667b299c2a85a60b6e624dd0a",
+  "parquet_written": true,
+  "quality_flags": [
+    "model_msci_world_annual_return_scaled_uslcap_daily_proxy",
+    "model_uslcap_daily_proxy_gap_until_ff_developed_daily",
+    "observed_fama_french_developed_market_total_return",
+    "observed_vt_etf_adjusted_total_return"
+  ],
+  "ff_developed_start": "1990-07-02",
+  "vt_inception": "2008-06-26",
+  "segment_counts": {
+    "model_msci_world_annual_return_scaled_uslcap_daily_proxy": 5054,
+    "model_uslcap_daily_proxy_gap_until_ff_developed_daily": 126,
+    "observed_fama_french_developed_market_total_return": 4694,
+    "observed_vt_etf_adjusted_total_return": 4544
+  }
+}

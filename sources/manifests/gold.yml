@@ -1,0 +1,91 @@
+asset_id: gold
+asset_name: Gold (GLD-tracking, LBMA PM spot extended to 1970)
+backtest_alias: GOLDPM
+tracks_etf: GLD
+minimum_start_date: 1970-01-01
+target_frequency: daily
+output_contract: yahoo_compatible_ohlcv_plus_returns
+status: in_progress
+definition_note: >
+  Close = LBMA Gold Price PM USD/oz (pure spot; Price Return is the pure spot return). Adj Close is
+  a GLD-tracking total-return index: spot minus GLD's 0.40% expense drag before GLD's 2004
+  inception, then observed GLD adjusted-close returns. Adj Close != Close (it carries the fee drag).
+  The pure-spot Price Return is retained as the 1x base for the derived GOLD2X dataset.
+calendar_note: >
+  Model era (1970 -> GLD inception) on the LBMA (London) calendar; observed era (GLD inception ->
+  present) on GLD's (NYSE) calendar so the dataset aligns with GLD day-for-day in return-based
+  backtests. A London-calendar series compared to a US-calendar ETF by intersecting daily returns
+  drifts on every UK-bank-holiday day (+47% cumulative GOLDPM vs GLD over 2004-2026); the NYSE
+  observed calendar removes that. UK-bank-holiday rows (no LBMA fix) carry a GLD-stepped Close.
+milestones:
+  - id: gold-001
+    name: Define asset contract
+    status: complete
+  - id: gold-002
+    name: Search and classify sources
+    status: complete
+  - id: gold-003
+    name: Select daily source chain back to 1970
+    status: complete
+  - id: gold-004
+    name: Implement source manifest and citations
+    status: complete
+  - id: gold-005
+    name: Build CSV and Parquet outputs
+    status: in_progress
+  - id: gold-006
+    name: Add incremental update/stitching script
+    status: in_progress
+  - id: gold-007
+    name: Add validation fixtures and tests
+    status: planned
+  - id: gold-008
+    name: Document methodology and caveats
+    status: in_progress
+sources:
+  - name: LBMA Gold Price PM
+    role: primary_gold_spot_price_source
+    status: active
+    url: https://prices.lbma.org.uk/json/gold_pm.json
+    notes: >
+      Daily PM gold price in USD per troy ounce. Drives Close / Price Return (pure spot) across all
+      of 1970-present, and the modeled Adj Close (spot minus GLD expense drag) before GLD inception.
+  - name: Yahoo Finance chart API GLD
+    role: gld_tracking_total_return_source
+    status: active_from_2004
+    url: https://query1.finance.yahoo.com/v8/finance/chart/GLD
+    notes: >
+      SPDR Gold Shares adjusted close. Drives Adj Close / Total Return from 2004-11-19 onward; Adj
+      Close is exactly proportional to GLD in this era. US-holiday rows (GLD not trading) held flat.
+  - name: GLD expense ratio (0.40%)
+    role: fee_drag_parameter
+    status: reference
+    url: https://www.ssga.com/us/en/intermediary/etfs/spdr-gold-shares-gld
+    notes: >
+      0.40%/yr modeled fee drag applied pre-2004 (actual/365). Corroborated by observed GLD-vs-spot
+      underperformance over the live overlap (~0.42%/yr mean daily difference).
+  - name: LBMA Gold Price AM
+    role: validation_reference
+    status: validation
+    url: https://prices.lbma.org.uk/json/gold_am.json
+    notes: Same benchmark administrator; useful for sanity checks but not an independent source.
+  - name: FRED GOLDPMGBD228NLBM
+    role: candidate_validation_source
+    status: candidate
+    url: https://fred.stlouisfed.org/series/GOLDPMGBD228NLBM
+    notes: FRED daily London PM gold price series. CSV endpoint timed out during initial implementation in this environment.
+validation:
+  required_independent_sources: 1
+  coverage_anchor_date: 1970-01-01
+  first_observation_rule: first_available_lbma_pm_fixing_at_or_after_coverage_anchor
+  required_checks:
+    - yahoo_schema
+    - minimum_coverage
+    - duplicate_dates
+    - non_positive_levels
+    - price_return_recomputes_from_close
+    - total_return_recomputes_from_adj_close
+    - adj_close_carries_fee_drag_below_close
+    - close_matches_raw_lbma_pm
+    - model_segment_applies_gld_expense_drag
+    - observed_segment_tracks_gld_exactly

@@ -1,0 +1,36 @@
+{
+  "asset_id": "gold_2x",
+  "alias": "GOLD2X",
+  "base_asset_id": "gold",
+  "base_return_column": "Price Return",
+  "leverage": 2.0,
+  "expense_ratio": 0.0095,
+  "borrow_spread": 0.0093,
+  "financing_benchmark": "^IRX",
+  "observed_etf": "UGL",
+  "build_timestamp_utc": "2026-07-23T02:34:14.923561+00:00",
+  "row_count": 14222,
+  "first_date": "1970-01-02",
+  "last_date": "2026-07-22",
+  "synthetic_rows": 9789,
+  "observed_etf_rows": 4433,
+  "us_holiday_flat_rows": 0,
+  "csv_path": "data/processed/gold_2x.csv",
+  "csv_sha256": "495aed62687eb823a95bb01838bd9677fb850a3e22ba5ee9db8561f238e696e5",
+  "parquet_written": true,
+  "quality_flags": [
+    "model_2x_daily_reset_synthetic_from_goldpm_spot_price_return_minus_financing_and_fee",
+    "observed_ugl_etf_adjusted_total_return"
+  ],
+  "calibration_vs_etf_overlap": {
+    "overlap_days": 4433,
+    "daily_return_correlation": 0.674048575009346,
+    "annualized_tracking_error": 0.2746492548198414,
+    "mean_daily_return_diff": 6.058934887805178e-05,
+    "cumulative_model_growth": 9.915560969707496,
+    "cumulative_etf_growth": 7.434327419066822,
+    "cumulative_ratio_model_over_etf": 1.3337536014726838,
+    "etf_inception": "2008-12-03"
+  },
+  "notes": "Synthetic 2x daily-reset gold total-return NAV: lev_ret = 2*GOLDPM_spot_price_return - 1*(^IRX/100)*days/360 - 0.0095*days/365. Uses GOLDPM Price Return (pure spot) so fund fees are applied once. Close == Adj Close. Model-derived, not observed UGL history."
+}
