@@ -29,22 +29,28 @@ Each row below links directly to the public CSV and Parquet files and to the
 dataset methodology. The CSV and Parquet versions contain the same processed
 dataset in different formats.
 
-| Alias | Dataset | Start date | CSV | Parquet | Methodology |
-|---|---|---|---|---|---|
-| USLCAP | U.S. large-cap equity / S&P 500-like series | 1970-01-02 | [CSV](data/processed/us_large_cap_sp500.csv) | [Parquet](data/processed/us_large_cap_sp500.parquet) | [USLCAP](docs/methodology_uslcap.md) |
-| USLCAP3X | 3x daily-reset U.S. large-cap series | 1970-01-02 | [CSV](data/processed/us_large_cap_3x_sp500.csv) | [Parquet](data/processed/us_large_cap_3x_sp500.parquet) | [USLCAP3X](docs/methodology_uslcap3x.md) |
-| STT | Short-term U.S. Treasury, SHY-like | 1970-01-02 | [CSV](data/processed/short_term_us_treasury.csv) | [Parquet](data/processed/short_term_us_treasury.parquet) | [STT](docs/methodology_stt.md) |
-| ITT | Intermediate-term U.S. Treasury, IEF-like | 1970-01-02 | [CSV](data/processed/intermediate_term_us_treasury.csv) | [Parquet](data/processed/intermediate_term_us_treasury.parquet) | [ITT](docs/methodology_itt.md) |
-| ITT3X | 3x daily-reset intermediate-term Treasury, TYD-like | 1970-01-02 | [CSV](data/processed/intermediate_term_us_treasury_3x.csv) | [Parquet](data/processed/intermediate_term_us_treasury_3x.parquet) | [ITT3X](docs/methodology_itt3x.md) |
-| LTT | Long-term U.S. Treasury, TLT-like | 1970-01-02 | [CSV](data/processed/long_term_us_treasury.csv) | [Parquet](data/processed/long_term_us_treasury.parquet) | [LTT](docs/methodology_ltt.md) |
-| LTT3X | 3x daily-reset long-term Treasury, TMF-like | 1970-01-02 | [CSV](data/processed/long_term_us_treasury_3x.csv) | [Parquet](data/processed/long_term_us_treasury_3x.parquet) | [LTT3X](docs/methodology_ltt3x.md) |
-| GOLDPM | Gold spot with a GLD-tracking adjusted series | 1970-01-02 | [CSV](data/processed/gold.csv) | [Parquet](data/processed/gold.parquet) | [GOLDPM](docs/methodology_goldpm.md) |
-| GOLD2X | 2x daily-reset gold, UGL-like | 1970-01-02 | [CSV](data/processed/gold_2x.csv) | [Parquet](data/processed/gold_2x.parquet) | [GOLD2X](docs/methodology_gold2x.md) |
-| CMDTY | Broad commodities, DBC-like | 1970-01-02 | [CSV](data/processed/broad_commodities.csv) | [Parquet](data/processed/broad_commodities.parquet) | [CMDTY](docs/methodology_cmdty.md) |
-| CPI | U.S. CPI-U daily model-derived deflator | 1970-01-01 | [CSV](data/processed/cpi_inflation.csv) | [Parquet](data/processed/cpi_inflation.parquet) | [CPI](docs/methodology_cpi.md) |
-| GLSTOCK | Global all-world stocks proxy | 1970-01-02 | [CSV](data/processed/global_stocks.csv) | [Parquet](data/processed/global_stocks.parquet) | [GLSTOCK](docs/methodology_glstock.md) |
-| GLBOND | Unhedged global bonds proxy | 1970-01-02 | [CSV](data/processed/global_bonds.csv) | [Parquet](data/processed/global_bonds.parquet) | [GLBOND](docs/methodology_glbond.md) |
-| GLSTBOND | Unhedged global short-term government bonds proxy | 1970-01-02 | [CSV](data/processed/global_short_term_bonds.csv) | [Parquet](data/processed/global_short_term_bonds.parquet) | [GLSTBOND](docs/methodology_glstbond.md) |
+| Alias | Dataset | Start date | End date | CSV | Parquet | Methodology |
+|---|---|---|---|---|---|---|
+| USLCAP | U.S. large-cap equity / S&P 500-like series | 1970-01-02 | 2026-07-22 | [CSV](data/processed/us_large_cap_sp500.csv) | [Parquet](data/processed/us_large_cap_sp500.parquet) | [USLCAP](docs/methodology_uslcap.md) |
+| USLCAP3X | 3x daily-reset U.S. large-cap series | 1970-01-02 | 2026-07-22 | [CSV](data/processed/us_large_cap_3x_sp500.csv) | [Parquet](data/processed/us_large_cap_3x_sp500.parquet) | [USLCAP3X](docs/methodology_uslcap3x.md) |
+| STT | Short-term U.S. Treasury, SHY-like | 1970-01-02 | 2026-07-22 | [CSV](data/processed/short_term_us_treasury.csv) | [Parquet](data/processed/short_term_us_treasury.parquet) | [STT](docs/methodology_stt.md) |
+| ITT | Intermediate-term U.S. Treasury, IEF-like | 1970-01-02 | 2026-07-22 | [CSV](data/processed/intermediate_term_us_treasury.csv) | [Parquet](data/processed/intermediate_term_us_treasury.parquet) | [ITT](docs/methodology_itt.md) |
+| ITT3X | 3x daily-reset intermediate-term Treasury, TYD-like | 1970-01-02 | 2026-07-22 | [CSV](data/processed/intermediate_term_us_treasury_3x.csv) | [Parquet](data/processed/intermediate_term_us_treasury_3x.parquet) | [ITT3X](docs/methodology_itt3x.md) |
+| LTT | Long-term U.S. Treasury, TLT-like | 1970-01-02 | 2026-07-22 | [CSV](data/processed/long_term_us_treasury.csv) | [Parquet](data/processed/long_term_us_treasury.parquet) | [LTT](docs/methodology_ltt.md) |
+| LTT3X | 3x daily-reset long-term Treasury, TMF-like | 1970-01-02 | 2026-07-22 | [CSV](data/processed/long_term_us_treasury_3x.csv) | [Parquet](data/processed/long_term_us_treasury_3x.parquet) | [LTT3X](docs/methodology_ltt3x.md) |
+| GOLDPM | Gold spot with a GLD-tracking adjusted series | 1970-01-02 | 2026-07-22 | [CSV](data/processed/gold.csv) | [Parquet](data/processed/gold.parquet) | [GOLDPM](docs/methodology_goldpm.md) |
+| GOLD2X | 2x daily-reset gold, UGL-like | 1970-01-02 | 2026-07-22 | [CSV](data/processed/gold_2x.csv) | [Parquet](data/processed/gold_2x.parquet) | [GOLD2X](docs/methodology_gold2x.md) |
+| CMDTY | Broad commodities, DBC-like | 1970-01-02 | 2026-07-22 | [CSV](data/processed/broad_commodities.csv) | [Parquet](data/processed/broad_commodities.parquet) | [CMDTY](docs/methodology_cmdty.md) |
+| CPI | U.S. CPI-U daily model-derived deflator | 1970-01-01 | 2026-07-23 | [CSV](data/processed/cpi_inflation.csv) | [Parquet](data/processed/cpi_inflation.parquet) | [CPI](docs/methodology_cpi.md) |
+| GLSTOCK | Global all-world stocks proxy | 1970-01-02 | 2026-07-22 | [CSV](data/processed/global_stocks.csv) | [Parquet](data/processed/global_stocks.parquet) | [GLSTOCK](docs/methodology_glstock.md) |
+| GLBOND | Unhedged global bonds proxy | 1970-01-02 | 2026-07-22 | [CSV](data/processed/global_bonds.csv) | [Parquet](data/processed/global_bonds.parquet) | [GLBOND](docs/methodology_glbond.md) |
+| GLSTBOND | Unhedged global short-term government bonds proxy | 1970-01-02 | 2026-07-22 | [CSV](data/processed/global_short_term_bonds.csv) | [Parquet](data/processed/global_short_term_bonds.parquet) | [GLSTBOND](docs/methodology_glstbond.md) |
+
+End dates are the latest observations currently included in the processed
+files. They can be updated through the documented update scripts as soon as
+the underlying sources publish newer observations, often immediately for daily
+sources, but later for delayed, monthly, or static sources. End dates may
+therefore differ across datasets and from the date on which an update is run.
 
 ## Dataset methodology
 
