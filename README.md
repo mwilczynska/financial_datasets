@@ -1,5 +1,7 @@
 # Financial Datasets
 
+[![Validation](https://github.com/mwilczynska/financial_datasets/actions/workflows/validation.yml/badge.svg)](https://github.com/mwilczynska/financial_datasets/actions/workflows/validation.yml)
+
 Long-horizon daily asset-class datasets for Python portfolio backtesting.
 
 This repository publishes generated CSV and Parquet outputs for a set of
@@ -11,6 +13,26 @@ The table below reports the first observation in each published processed CSV.
 Maintainer: mwilczynska
 Public repository: https://github.com/mwilczynska/financial_datasets
 
+![Long-horizon growth of selected asset-class total-return proxies](docs/assets/asset-class-growth.png)
+
+The chart compares six unlevered total-return proxies over their common
+published history. Levels are rebased to 100 and shown on a logarithmic scale;
+modeled and source-spliced periods remain subject to each dataset's methodology.
+
+## Quick start
+
+Load a published Parquet file and calculate daily total returns from its
+Yahoo-compatible adjusted-close column:
+
+```python
+import pandas as pd
+
+prices = pd.read_parquet(
+    "data/processed/us_large_cap_sp500.parquet",
+    columns=["Date", "Adj Close"],
+).set_index("Date")
+daily_total_return = prices["Adj Close"].pct_change()
+```
 ## What this project does
 
 The pipeline extends short live histories into long-horizon daily research
@@ -122,6 +144,12 @@ To rebuild one dataset directly, run its corresponding script, for example:
 After an update, inspect the changed files and run:
 
     python -m pytest -q tests/validation
+
+To regenerate the README chart and the 1280 x 640 social-preview asset:
+
+    python -m pip install -r requirements-visuals.txt
+    python src/create_readme_chart.py
+    python src/create_social_preview.py
 
 ## Repository map
 
