@@ -34,6 +34,9 @@ jobs:
           PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
         run: python -m pytest -q tests/validation tests/automation
 
+      - name: Check published README dates
+        run: python scripts/update_readme_dates.py --check
+
   incremental-catchup:
     if: github.event_name == 'pull_request'
     name: Clean Linux incremental catch-up
@@ -58,5 +61,20 @@ jobs:
         shell: bash
         run: |
           TARGET_DATE=$(TZ=America/New_York date -d yesterday +%F)
+          COMMITTED_LAST=$(python - <<'PY'
+          import csv
+          from pathlib import Path
+          from src.update_all_datasets import DATASET_TASKS
+          latest = ""
+          for task in DATASET_TASKS:
+              with (Path("data/processed") / f"{task.output_stem}.csv").open(newline="", encoding="utf-8") as handle:
+                  for row in csv.DictReader(handle):
+                      latest = max(latest, row["Date"])
+          print(latest)
+          PY
+          )
+          if [[ "$COMMITTED_LAST" > "$TARGET_DATE" ]]; then TARGET_DATE="$COMMITTED_LAST"; fi
           python src/update_all_datasets.py --end-date "$TARGET_DATE"
           python scripts/check_daily_diff.py --end-date "$TARGET_DATE"
+          python scripts/update_readme_dates.py
+          python scripts/update_readme_dates.py --check

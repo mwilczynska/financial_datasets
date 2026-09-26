@@ -12,3 +12,4 @@ for stem in ASSETS:
     for suffix in (".csv", ".parquet"):
         print(f"data/processed/{stem}{suffix}")
     print(f"sources/manifests/{stem}_build.json")
+print("README.md")

@@ -67,6 +67,11 @@ jobs:
       - name: Check publication diff and current sources
         run: python scripts/check_daily_diff.py --end-date "${{ steps.target.outputs.date }}"
 
+      - name: Synchronize README dataset dates
+        run: |
+          python scripts/update_readme_dates.py
+          python scripts/update_readme_dates.py --check
+
       - name: Commit and push validated outputs
         shell: bash
         run: |
