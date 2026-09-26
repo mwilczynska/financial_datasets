@@ -3,11 +3,11 @@
   "asset_name": "Unhedged Global Bonds Total-Return Proxy",
   "alias": "GLBOND",
   "build_timestamp_utc": "2026-07-23T02:33:58.448738+00:00",
-  "row_count": 14258,
+  "row_count": 14304,
   "first_date": "1970-01-02",
-  "last_date": "2026-07-22",
+  "last_date": "2026-09-25",
   "csv_path": "data/processed/global_bonds.csv",
-  "csv_sha256": "7fdf06bf860d06f78136f072919d8072e8673288a77e87a7f13c4688c4402bbe",
+  "csv_sha256": "58a31ecf18df4856213496581999277e5c3c56fd1a16b1c08f2332cf83070974",
   "parquet_written": true,
   "quality_flags": [
     "model_jst_anchored_daily_fx_monthly_yield_global_govt_bond_unhedged",
@@ -64,5 +64,26 @@
     }
   },
   "bnd_weight": "0.45",
-  "bwx_weight": "0.55"
+  "bwx_weight": "0.55",
+  "last_incremental_update_utc": "2026-09-26T17:11:57.299345+00:00",
+  "incremental_update": {
+    "overlap_anchor": "2026-07-07",
+    "requested_end_date": "2026-09-26",
+    "recent_sources": {
+      "BND": {
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/BND",
+        "path": "sources/raw/incremental/global_bonds_bnd.json",
+        "sha256": "89f2603d559b83a1322aa4ce7fa1b47897396e4064175bd226612f6d94dc18bf",
+        "first_date": "2026-06-23",
+        "last_date": "2026-09-25"
+      },
+      "BWX": {
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/BWX",
+        "path": "sources/raw/incremental/global_bonds_bwx.json",
+        "sha256": "a53e259f24e581165711af912dc26b3aa57615e98f097adcae0e103c517256a9",
+        "first_date": "2026-06-23",
+        "last_date": "2026-09-25"
+      }
+    }
+  }
 }
