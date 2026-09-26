@@ -113,7 +113,8 @@ index-level segments.
 The public release includes the generated outputs and small validation
 fixtures. Downloaded source caches under sources/raw/ are intentionally kept
 out of the public file set unless their source terms explicitly permit
-publication. The build and update scripts refetch them when needed.
+publication. Full builders fetch them when needed; ordinary updates use the
+committed processed files as their baseline and fetch only recent observations.
 
 ## How to update the datasets
 
@@ -125,25 +126,48 @@ Refresh the complete dependency graph. The end date is inclusive:
 
     python src/update_all_datasets.py --end-date YYYY-MM-DD
 
+This extends all 14 datasets from their committed processed CSVs. It fetches a
+14-calendar-day overlap, checks for revisions, appends new days, and rewrites
+CSV/Parquet together. CPI can revise recently carried-forward daily values when
+BLS releases a new monthly observation. The normal path does not reconstruct
+history or require excluded `sources/raw/` files. Use `--full-rebuild` only for
+a deliberate historical reconstruction with its required raw sources.
+
 Useful targeted commands:
 
     python src/update_all_datasets.py --only USLCAP GOLDPM GOLD2X
     python src/update_all_datasets.py --skip GLBOND GLSTBOND
     python src/update_all_datasets.py --refresh-static-sources
 
-The normal update path reuses cached historical inputs for GLBOND and
-GLSTBOND. Use refresh-static-sources only when those heavy static inputs
-should be downloaded again. A requested end date can be later than the last
+Use `--refresh-static-sources` only for a deliberate GLBOND/GLSTBOND full
+rebuild. A requested end date can be later than the last
 row when a market is closed, a source is delayed, or the source is monthly.
 
-To rebuild one dataset directly, run its corresponding script, for example:
+The [daily GitHub Actions workflow](.github/workflows/daily-refresh.yml) runs
+at 09:17 New York time, targeting the previous calendar day. It runs the update,
+validation tests, and [publication diff gate](scripts/check_daily_diff.py)
+before committing an explicit list of processed CSV/Parquet and build metadata
+files to `main`. A failure leaves `main` untouched and opens or comments on a
+failure issue assigned to the repository owner. Enable GitHub Actions failure
+emails in your GitHub notification settings; the issue is the durable alert.
+Use the workflow's manual **Run workflow** action with an optional `end_date`
+to catch up. A delayed or missed scheduled run is caught up by the next run,
+but GitHub cannot send a failure email for a run that never started. Monitor
+the workflow externally if missed-run alerts are required.
+
+To rebuild one dataset deliberately, run its build script. Its update script
+performs the ordinary incremental path:
 
     python src/build_gold.py --end-date YYYY-MM-DD --root .
     python src/update_gold.py --end-date YYYY-MM-DD --root .
 
 After an update, inspect the changed files and run:
 
-    python -m pytest -q tests/validation
+    python -m pytest -q tests/validation tests/automation
+
+For a local publication check after fetching new observations:
+
+    python scripts/check_daily_diff.py --end-date YYYY-MM-DD
 
 To regenerate the README chart and the 1280 x 640 social-preview asset:
 

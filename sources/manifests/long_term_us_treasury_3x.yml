@@ -85,3 +85,9 @@ validation:
     - synthetic_segment_matches_daily_reset_model
     - observed_segment_matches_raw_tmf_adjusted_returns
     - tmf_live_overlap_tracking
+
+automated_publication:
+  mode: incremental_from_committed_processed_csv
+  historical_raw_required: false
+  recent_source_validation: scripts/check_daily_diff.py
+  overlap_calendar_days: 14

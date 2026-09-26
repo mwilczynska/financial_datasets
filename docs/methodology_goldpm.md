@@ -117,10 +117,7 @@ a fee-dragged model). Putting the model era on the NYSE calendar too is a possib
 
 ## Update Method
 
-`src/update_gold.py` delegates to `build_gold.main()` and rebuilds the full chain from scratch
-(refetching the LBMA PM JSON and the GLD chart). The GLD splice cannot be incrementally
-re-stitched by a simple tail replacement, so a full rebuild keeps the continuous-level splice and
-the holiday handling correct.
+The ordinary update starts from the committed processed CSV and fetches recent LBMA Gold PM spot and Yahoo GLD adjusted-close data. It preserves unchanged history and extends the observed segment on the GLD calendar; UK holidays retain the documented GLD-stepped spot treatment. The full historical builder remains available with `--full-rebuild`.
 
 ## Tests
 

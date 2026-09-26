@@ -1,17 +1,7 @@
-"""Update the derived 3x U.S. large-cap (UPRO-like) dataset.
+"""Incrementally update us_large_cap_3x_sp500; use --full-rebuild for the historical builder."""
 
-This dataset is derived from the USLCAP base dataset plus live ^IRX and UPRO data, so an
-incremental stitch would have to recompute the full daily-reset compounding chain anyway.
-The update therefore rebuilds the whole series from the current base USLCAP CSV and freshly
-fetched ^IRX / UPRO chart data by delegating to the build script's ``main()``.
+from incremental_update import main_for_asset
 
-Refresh the USLCAP base dataset first (``src/update_us_large_cap_sp500.py``) so the derived
-3x series picks up the latest underlying total returns.
-"""
-
-from __future__ import annotations
-
-from build_us_large_cap_3x_sp500 import main
 
 if __name__ == "__main__":
-    main()
+    main_for_asset("us_large_cap_3x_sp500")

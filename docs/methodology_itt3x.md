@@ -102,11 +102,9 @@ mean-reverting stale-price noise, so it is the calibration target; daily fidelit
 the clean recent era (2019+ correlation > 0.95). The low implied spread (0.19%) also partly
 reflects TYD fee waivers.
 
-## Update method
+## Update Method
 
-`src/update_intermediate_treasury_3x.py` delegates to the build script's `main()`, rebuilding
-the full daily-reset chain from the current `ITT` CSV and freshly fetched `^IRX`/`TYD` data.
-Refresh `ITT` first (`src/update_intermediate_term_us_treasury.py`).
+The ordinary update starts from the committed processed CSV, fetches a 14-calendar-day Yahoo overlap, preserves unchanged historical rows, and compounds only revised or new observations. It rewrites CSV, Parquet, interim CSV, and build metadata together. A full historical reconstruction remains available with `--full-rebuild`; it requires the documented historical sources. The live input is Yahoo TYD adjusted-close return. The historical daily-reset model and `^IRX` inputs are preserved; update ITT first.
 
 ## Tests
 

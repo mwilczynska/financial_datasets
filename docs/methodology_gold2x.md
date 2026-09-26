@@ -125,11 +125,9 @@ clock-time of the gold base differs from UGL. Model and UGL daily volatilities m
 than daily tracking. The relatively large calibrated spread (0.93%) also absorbs gold futures
 roll/storage: UGL (futures-based) ran below 2x-spot cumulatively, consistent with contango.
 
-## Update method
+## Update Method
 
-`src/update_gold_2x.py` delegates to the build script's `main()`, rebuilding the full daily-reset
-chain from the current `GOLDPM` CSV and freshly fetched `^IRX`/`UGL` data. Refresh `GOLDPM` first
-(`src/update_gold.py`).
+The ordinary update starts from the committed processed CSV, fetches a 14-calendar-day Yahoo overlap, preserves unchanged historical rows, and compounds only revised or new observations. It rewrites CSV, Parquet, interim CSV, and build metadata together. A full historical reconstruction remains available with `--full-rebuild`; it requires the documented historical sources. The live input is Yahoo UGL adjusted-close return on the refreshed GOLDPM calendar; non-U.S. trading dates retain the documented flat holiday treatment. Historical daily-reset model rows are preserved.
 
 ## Tests
 

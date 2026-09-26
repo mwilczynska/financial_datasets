@@ -1,7 +1,7 @@
-"""Update the CPI inflation dataset by rebuilding from FRED CPIAUCSL."""
+"""Incrementally update cpi_inflation; use --full-rebuild for the historical builder."""
 
-from build_cpi_inflation import main
+from incremental_update import main_for_asset
 
 
 if __name__ == "__main__":
-    main()
+    main_for_asset("cpi_inflation")

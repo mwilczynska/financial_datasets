@@ -68,3 +68,9 @@ validation:
     - return_arithmetic
     - source_segment_daily_return_match
     - shy_overlap_validation
+
+automated_publication:
+  mode: incremental_from_committed_processed_csv
+  historical_raw_required: false
+  recent_source_validation: scripts/check_daily_diff.py
+  overlap_calendar_days: 14

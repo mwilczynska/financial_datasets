@@ -1,9 +1,7 @@
-"""Update the long-term U.S. Treasury dataset by rebuilding from current Yahoo chart data."""
+"""Incrementally update long_term_us_treasury; use --full-rebuild for the historical builder."""
 
-from __future__ import annotations
-
-from build_long_term_us_treasury import main
+from incremental_update import main_for_asset
 
 
 if __name__ == "__main__":
-    main()
+    main_for_asset("long_term_us_treasury")

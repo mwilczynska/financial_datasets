@@ -90,3 +90,9 @@ validation:
     - return_arithmetic
     - independent_source_overlap
     - source_boundary_discontinuity
+
+automated_publication:
+  mode: incremental_from_committed_processed_csv
+  historical_raw_required: false
+  recent_source_validation: scripts/check_daily_diff.py
+  overlap_calendar_days: 14

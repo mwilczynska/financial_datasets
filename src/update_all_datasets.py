@@ -1,7 +1,7 @@
 """Update every processed dataset in dependency order.
 
-This orchestrator delegates to the per-dataset update scripts so each source chain keeps
-its own build logic, raw-source caching, metadata writing, and CSV/Parquet synchronization.
+This orchestrator delegates to the per-dataset incremental update scripts. Each starts
+from the committed processed CSV; full historical builders are available explicitly.
 By default it requests data through today's date, then runs the validation suite after all
 updates succeed.
 
@@ -27,7 +27,7 @@ from pathlib import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_VALIDATION_ARGS = ("-m", "pytest", "-q", "tests/validation")
+DEFAULT_VALIDATION_ARGS = ("-m", "pytest", "-q", "tests/validation", "tests/automation")
 
 
 @dataclass(frozen=True)
@@ -37,7 +37,7 @@ class DatasetTask:
     output_stem: str
     update_script: str
     dependencies: tuple[str, ...] = ()
-    accepts_overlap_days: bool = False
+    accepts_overlap_days: bool = True
     accepts_refresh_static_sources: bool = False
     accepts_refresh_historical_sources: bool = False
 
@@ -88,15 +88,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--end-date", default=date.today().isoformat(), help="Inclusive end date requested from live sources, YYYY-MM-DD.")
     parser.add_argument("--root", default=str(PROJECT_ROOT), help="Project root. Defaults to this script's parent repository.")
     parser.add_argument("--python", default=sys.executable, help="Python executable used to run child update scripts.")
-    parser.add_argument("--overlap-days", type=int, default=10, help="Calendar-day overlap for the incremental USLCAP update.")
+    parser.add_argument("--overlap-days", type=int, default=14, help="Calendar-day overlap for every incremental dataset update.")
+    parser.add_argument("--full-rebuild", action="store_true", help="Run every historical builder explicitly instead of the daily incremental path.")
     parser.add_argument(
         "--refresh-static-sources",
         action="store_true",
-        help="For GLBOND/GLSTBOND, refetch heavy historical JST/BIS/OECD/MoF/BoE sources instead of reusing cached raw files.",
+        help="Run the GLBOND/GLSTBOND historical builders and refetch heavy JST/BIS/OECD/MoF/BoE inputs.",
     )
     parser.add_argument(
         "--refresh-historical-sources", action="store_true",
-        help="Try to refetch fixed historical inputs for USLCAP, STT, ITT, LTT, CMDTY, and GLSTOCK; valid caches remain available on source errors.",
+        help="Run historical builders for selected datasets and refresh their fixed historical inputs.",
     )
     parser.add_argument("--only", nargs="+", default=[], help="Only update these dataset aliases/ids/script names.")
     parser.add_argument("--skip", nargs="+", default=[], help="Skip these dataset aliases/ids/script names.")
@@ -165,6 +166,8 @@ def command_for_task(task: DatasetTask, args: argparse.Namespace, root: Path) ->
     ]
     if task.accepts_overlap_days:
         command.extend(["--overlap-days", str(args.overlap_days)])
+    if args.full_rebuild:
+        command.append("--full-rebuild")
     if task.accepts_refresh_static_sources and args.refresh_static_sources:
         command.append("--refresh-static-sources")
     if task.accepts_refresh_historical_sources and args.refresh_historical_sources:

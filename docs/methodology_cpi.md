@@ -49,7 +49,7 @@ Coverage starts on `1970-01-01`. The current build runs through `2026-06-19`; th
 
 ## Update Method
 
-`src/update_cpi_inflation.py` calls the full build. Rerun after each monthly CPI release to replace carried-forward rows with newly bracketed/interpolated values.
+The ordinary update starts from the committed processed CSV and fetches only recent BLS `CUSR0000SA0` monthly observations. A new release replaces the previously carried-forward days with documented log-interpolated levels from the preceding monthly anchor, then appends through the requested calendar day. Earlier history is preserved. The full historical builder remains available with `--full-rebuild`.
 
 ## Tests
 

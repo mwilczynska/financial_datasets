@@ -114,9 +114,7 @@ Levels (`Close`, `Adj Close`) compound continuously from 100 without resetting a
 
 ## Update Method
 
-The update script calls `main()` from the build script and rebuilds the full chain. The GSCI TR anchor and the pre-DBC portions of the Yahoo charts are historical inputs. Each ordinary update checks that the cached `^SPGSCI`, `^BCOM`, and `^IRX` files contain the required splice dates and enough observations, then fetches live `DBC` history through the requested end date. The historical cache is retained byte-for-byte. Build metadata records cache/fetch mode and SHA-256 for each Yahoo raw file. Run the per-dataset script with `--refresh-historical-sources` to try refetching historical charts; a failed refresh retains a valid cache. A missing or incomplete cache with an unavailable Yahoo source fails explicitly.
-
-Yahoo's `^BCOM` chart endpoint returned HTTP 404 ("No data found, symbol may be delisted") on 2026-09-26, including when the request ended in 2006. The versioned cached chart still contains the full 1991-2006 segment. This source access change does not alter historical return methodology or quality flags.
+The ordinary update starts from the committed processed CSV, fetches a 14-calendar-day Yahoo overlap, preserves unchanged historical rows, and compounds only revised or new observations. It rewrites CSV, Parquet, interim CSV, and build metadata together. A full historical reconstruction remains available with `--full-rebuild`; it requires the documented historical sources. The live input is Yahoo DBC. The GSCI/`^SPGSCI`/`^BCOM`/`^IRX` historical segments remain unchanged; `^BCOM` returned HTTP 404 on 2026-09-26, so a clean full rebuild still needs a permitted historical cache or a reviewed source decision.
 
 ## Tests
 

@@ -116,3 +116,9 @@ validation:
     - observed_segment_matches_raw_ugl_adjusted_returns
     - observed_dataset_tracks_ugl_cumulatively   # regression guard for the holiday double-count
     - ugl_live_overlap_cumulative_and_volatility_tracking
+
+automated_publication:
+  mode: incremental_from_committed_processed_csv
+  historical_raw_required: false
+  recent_source_validation: scripts/check_daily_diff.py
+  overlap_calendar_days: 14
