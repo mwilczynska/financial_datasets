@@ -1,5 +1,15 @@
 # Project Log
 
+## 2026-09-26 — Synchronize published README dates
+
+- Added a deterministic README date updater that reads the first and last `Date`
+  in each of the 14 processed CSVs and checks every published table row and
+  output link. The daily workflow runs it after the publication gate and stages
+  `README.md` with validated dataset changes. Hosted validation fails if the
+  committed README dates are stale.
+- Updated the displayed market-data end dates to 2026-09-25 and the CPI end date
+  to 2026-09-26, matching the first hosted incremental publication.
+
 ## 2026-09-26 — Incremental daily publication
 
 - Changed all 14 ordinary `update_*.py` paths to extend the committed processed
