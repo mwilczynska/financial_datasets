@@ -1,7 +1,7 @@
-"""Update the global stocks dataset by rebuilding its public-source chain."""
+"""Incrementally update global_stocks; use --full-rebuild for the historical builder."""
 
-from build_global_stocks import main
+from incremental_update import main_for_asset
 
 
 if __name__ == "__main__":
-    main()
+    main_for_asset("global_stocks")

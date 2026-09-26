@@ -215,3 +215,9 @@ validation:
     - historical_chart_cache_covers_splice_dates_and_minimum_rows
     - unavailable_historical_refresh_preserves_valid_cache
     - quality_flag_counts
+
+automated_publication:
+  mode: incremental_from_committed_processed_csv
+  historical_raw_required: false
+  recent_source_validation: scripts/check_daily_diff.py
+  overlap_calendar_days: 14

@@ -61,9 +61,7 @@ No monthly interpolation, estimated daily dividends, or fund backfills are used.
 
 ## Update Method
 
-`src/update_us_large_cap_sp500.py` reads the processed CSV, refetches a configurable overlap window from Yahoo, replaces overlapping rows by `Date`, de-duplicates, recomputes returns, and rewrites CSV and Parquet outputs together. The adjusted series preserves daily total-return coverage from 1970 onward; the update script does not overwrite earlier source-chain logic with ETF-only history.
-
-The fixed 1970-1988 Kenneth French/CRSP Hi 30 ZIP is validated and reused from `sources/raw/`. If missing or incomplete, the script refetches it; `--refresh-historical-sources` requests a refresh while retaining a valid cache if the source is unavailable. The current `^GSPC` and `^SP500TR` observations still come from Yahoo. Build metadata records the historical ZIP's cache/fetch mode and SHA-256.
+The ordinary update starts from the committed processed CSV, fetches a 14-calendar-day Yahoo overlap, preserves unchanged historical rows, and compounds only revised or new observations. It rewrites CSV, Parquet, interim CSV, and build metadata together. A full historical reconstruction remains available with `--full-rebuild`; it requires the documented historical sources. The live inputs are Yahoo `^GSPC` price OHLCV and `^SP500TR` total-return levels. The pre-1988 Kenneth French/CRSP segment is preserved from the committed baseline.
 
 ## Tests
 

@@ -65,3 +65,9 @@ validation:
     - early_segment_fx_event_directions
     - basket_weights_economically_sane
     - daily_rate_leg_coverage
+
+automated_publication:
+  mode: incremental_from_committed_processed_csv
+  historical_raw_required: false
+  recent_source_validation: scripts/check_daily_diff.py
+  overlap_calendar_days: 14

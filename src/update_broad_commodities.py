@@ -1,9 +1,7 @@
-"""Update the broad commodities dataset by rebuilding from current Yahoo chart data."""
+"""Incrementally update broad_commodities; use --full-rebuild for the historical builder."""
 
-from __future__ import annotations
-
-from build_broad_commodities import main
+from incremental_update import main_for_asset
 
 
 if __name__ == "__main__":
-    main()
+    main_for_asset("broad_commodities")

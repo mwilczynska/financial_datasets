@@ -31,3 +31,9 @@ validation:
     - return_arithmetic
     - raw_bls_month_start_match
     - interpolation_flags_present
+
+automated_publication:
+  mode: incremental_from_committed_processed_csv
+  historical_raw_required: false
+  recent_source_validation: scripts/check_daily_diff.py
+  revision_window: latest_monthly_observation_and_preceding_anchor

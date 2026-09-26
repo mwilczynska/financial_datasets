@@ -1,5 +1,29 @@
 # Validation
 
+## Unattended publication gate
+
+The daily GitHub Actions job must finish `src/update_all_datasets.py` (including
+`tests/validation` and `tests/automation`) and then pass
+`scripts/check_daily_diff.py` before it may stage a commit. The diff gate reads
+all 14 committed CSV baselines from Git, checks sorted unique dates, positive
+levels and return arithmetic, compares every CSV with its Parquet counterpart,
+verifies metadata hashes and row counts, rejects deleted dates and changes
+older than 21 calendar days (93 days for CPI monthly release revisions), and
+checks the latest output and source freshness. It also compares the recent
+output returns or CPI levels against the freshly fetched Yahoo/BLS/LBMA source
+responses. A weekend or holiday may add zero market rows, but the source and
+output may be no more than five calendar days behind the requested end date;
+CPI's daily output must reach the target date, with a monthly observation no
+older than 90 days. Any failure prevents the push.
+
+Historical raw-source tests may skip on hosted runners because the public
+repository deliberately excludes those files. The publication gate therefore
+requires the committed historical rows to remain unchanged outside the bounded
+revision window and performs mandatory, unskipped checks on the current tail.
+An unexpected skip in `tests/automation` or a missing current source response
+must block publication. Full historical rebuilds still require the raw-source
+validation tests and independent-source review.
+
 ## Acceptance Criteria
 
 For fixed historical inputs, validate the cached source's required splice dates, minimum row count, date order, duplicates, and large gaps before reuse. Where a Yahoo chart is cached, also validate its symbol and positive finite levels. On an optional refresh failure, retain the last valid cache byte-for-byte. If no valid cache and no usable live source exist, fail the update. A dataset's current tail must still be fetched from its live source and checked against raw returns; historical cache availability alone never makes an update current. These rules apply to USLCAP, STT, ITT, LTT, CMDTY, and GLSTOCK; GLBOND/GLSTBOND have their established static cache path.

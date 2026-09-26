@@ -95,13 +95,9 @@ The ~3.2% annualized tracking error reflects intrinsic daily-reset/path differen
 modeled NAV and the real fund (intraday execution, swap resets, securities lending, exact
 financing rate), not a level bias.
 
-## Update method
+## Update Method
 
-`src/update_us_large_cap_3x_sp500.py` delegates to the build script's `main()`, rebuilding the
-full daily-reset chain from the current `USLCAP` CSV and freshly fetched `^IRX`/`UPRO` data.
-Refresh `USLCAP` first (`src/update_us_large_cap_sp500.py`) so the derived series picks up the
-latest underlying total returns. A full rebuild is used because daily-reset compounding is
-path-dependent and cheap to recompute.
+The ordinary update starts from the committed processed CSV, fetches a 14-calendar-day Yahoo overlap, preserves unchanged historical rows, and compounds only revised or new observations. It rewrites CSV, Parquet, interim CSV, and build metadata together. A full historical reconstruction remains available with `--full-rebuild`; it requires the documented historical sources. The live input is Yahoo UPRO adjusted-close return. The historical daily-reset model and `^IRX` inputs are preserved; update USLCAP first.
 
 ## Tests
 

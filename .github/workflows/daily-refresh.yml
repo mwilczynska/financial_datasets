@@ -1,0 +1,121 @@
+name: Daily dataset refresh
+
+on:
+  schedule:
+    - cron: "17 9 * * *"
+      timezone: America/New_York
+  workflow_dispatch:
+    inputs:
+      end_date:
+        description: "Inclusive target date (YYYY-MM-DD); blank means yesterday in New York"
+        required: false
+        type: string
+
+concurrency:
+  group: daily-dataset-refresh
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  refresh:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install pinned dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Choose target date
+        id: target
+        shell: bash
+        env:
+          REQUESTED_DATE: ${{ inputs.end_date }}
+        run: |
+          if [[ -n "$REQUESTED_DATE" ]]; then
+            if [[ ! "$REQUESTED_DATE" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
+              echo "end_date must be YYYY-MM-DD" >&2
+              exit 1
+            fi
+            TARGET_DATE="$REQUESTED_DATE"
+          else
+            TARGET_DATE=$(TZ=America/New_York date -d yesterday +%F)
+          fi
+          echo "date=$TARGET_DATE" >> "$GITHUB_OUTPUT"
+          echo "Target date: $TARGET_DATE" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Incremental update and validation suite
+        env:
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
+        run: python src/update_all_datasets.py --end-date "${{ steps.target.outputs.date }}"
+
+      - name: Check publication diff and current sources
+        run: python scripts/check_daily_diff.py --end-date "${{ steps.target.outputs.date }}"
+
+      - name: Commit and push validated outputs
+        shell: bash
+        run: |
+          python - <<'PY'
+          import subprocess
+          import sys
+
+          allowed = subprocess.check_output([sys.executable, "scripts/stage_daily_outputs.py"], text=True).splitlines()
+          changed = subprocess.check_output(["git", "diff", "--name-only"], text=True).splitlines()
+          unexpected = sorted(set(changed) - set(allowed))
+          if unexpected:
+              raise SystemExit(f"Unexpected tracked changes after update: {unexpected}")
+          subprocess.run(["git", "add", "--", *allowed], check=True)
+          PY
+          if git diff --cached --quiet; then
+            echo "No data change to publish" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "data: daily refresh ${{ steps.target.outputs.date }}"
+          git push origin HEAD:main
+          echo "Committed and pushed validated outputs to main" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Record failure
+        if: failure()
+        shell: bash
+        run: |
+          echo "## Refresh failed" >> "$GITHUB_STEP_SUMMARY"
+          echo "No dataset output was pushed. Check the failed step and dataset in [this run]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)." >> "$GITHUB_STEP_SUMMARY"
+
+  notify_failure:
+    needs: refresh
+    if: always() && needs.refresh.result == 'failure'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Notify owner with a durable failure issue
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          RUN_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          BODY="Daily dataset refresh failed. No dataset outputs were pushed. Inspect the failed dataset and step: $RUN_URL"
+          ISSUE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search 'Daily dataset refresh failed in:title' --json number --jq '.[0].number')
+          if [[ -n "$ISSUE" ]]; then
+            gh issue comment "$ISSUE" --repo "$GITHUB_REPOSITORY" --body "$BODY"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "Daily dataset refresh failed" --body "$BODY" --assignee "$GITHUB_REPOSITORY_OWNER"
+          fi

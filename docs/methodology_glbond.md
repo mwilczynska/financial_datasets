@@ -103,12 +103,7 @@ until their data begins, but contribute genuine daily FX throughout.
 
 ## Update Method
 
-`src/update_global_bonds.py` rebuilds the full public-source chain (it calls the build
-`main()`). Ordinary daily updates reuse cached historical JST/BIS/OECD/MoF/BoE raw files
-from `sources/raw/` and refresh only the live BND/BWX Yahoo tail. Use
-`--refresh-static-sources` only when intentionally refetching the heavy historical inputs.
-Refresh the in-repo `ITT` dataset first, since the U.S. daily rate leg reads
-`intermediate_term_us_treasury.csv`.
+The ordinary update starts from the committed processed CSV, fetches a 14-calendar-day Yahoo overlap, preserves unchanged historical rows, and compounds only revised or new observations. It rewrites CSV, Parquet, interim CSV, and build metadata together. A full historical reconstruction remains available with `--full-rebuild`; it requires the documented historical sources. The live inputs are Yahoo BND and BWX adjusted-close returns, blended 45%/55% with daily rebalancing. The earlier JST/BIS/OECD/MoF/BoE history is preserved. Update ITT first.
 
 ## Tests
 

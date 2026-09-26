@@ -95,12 +95,9 @@ In the overlap the `LTT` underlying is TLT-based, so calibration cleanly compare
 TMF's actual 3x of the same index family. The ~3.7% annualized tracking error reflects intraday
 execution, swap/futures resets, and exact financing — not a level bias.
 
-## Update method
+## Update Method
 
-`src/update_long_term_treasury_3x.py` delegates to the build script's `main()`, rebuilding the
-full daily-reset chain from the current `LTT` CSV and freshly fetched `^IRX`/`TMF` data. Refresh
-`LTT` first (`src/update_long_term_us_treasury.py`). A full rebuild is used because daily-reset
-compounding is path-dependent and cheap to recompute.
+The ordinary update starts from the committed processed CSV, fetches a 14-calendar-day Yahoo overlap, preserves unchanged historical rows, and compounds only revised or new observations. It rewrites CSV, Parquet, interim CSV, and build metadata together. A full historical reconstruction remains available with `--full-rebuild`; it requires the documented historical sources. The live input is Yahoo TMF adjusted-close return. The historical daily-reset model and `^IRX` inputs are preserved; update LTT first.
 
 ## Tests
 

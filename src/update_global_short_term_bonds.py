@@ -1,7 +1,7 @@
-"""Update the global short-term bonds dataset by rebuilding its public-source chain."""
+"""Incrementally update global_short_term_bonds; use --full-rebuild for the historical builder."""
 
-from build_global_short_term_bonds import main
+from incremental_update import main_for_asset
 
 
 if __name__ == "__main__":
-    main()
+    main_for_asset("global_short_term_bonds")

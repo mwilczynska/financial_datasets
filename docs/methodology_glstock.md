@@ -32,7 +32,7 @@ Coverage starts on `1970-01-02`, the first USLCAP trading date after the 1970 an
 
 ## Update Method
 
-The fixed Fama/French developed-market daily returns used before VT inception are validated and reused from the cached ZIP. If the cache is missing or incomplete, the build refetches it; `--refresh-historical-sources` attempts a refresh while preserving a valid cache on source errors. Current VT adjusted-close data is fetched on every update. The build metadata records the historical ZIP's cache/fetch mode and SHA-256.
+The ordinary update starts from the committed processed CSV, fetches a 14-calendar-day Yahoo overlap, preserves unchanged historical rows, and compounds only revised or new observations. It rewrites CSV, Parquet, interim CSV, and build metadata together. A full historical reconstruction remains available with `--full-rebuild`; it requires the documented historical sources. The live input is Yahoo VT adjusted-close return; the earlier Fama/French and model segments are preserved.
 
 ## Source Chain
 
