@@ -20,8 +20,9 @@
 - A clean processed baseline ending around 2026-07-22 was extended through
   2026-09-25 for market datasets and 2026-09-26 for CPI. The resulting recent
   dates, quality flags, and returns were compared with the independently run
-  local historical builders; all dates and flags matched, with the observed
-  source-return differences documented by the publication gate. The local
+  local historical builders; all dates and flags matched. Most recent return
+  differences were zero at stored precision; the two global bond blends differed
+  by at most about 1e-7 in daily return after separate Yahoo retrievals. The local
   validation suite had 116 passes and 36 historical-raw skips; the new diff
   gate checks the unchanged history and mandatory recent source responses.
 - Added a 09:17 America/New_York GitHub Actions refresh with pinned direct

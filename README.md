@@ -155,7 +155,8 @@ to catch up. A delayed or missed scheduled run is caught up by the next run,
 but GitHub cannot send a failure email for a run that never started. Monitor
 the workflow externally if missed-run alerts are required.
 
-To rebuild one dataset directly, run its corresponding script, for example:
+To rebuild one dataset deliberately, run its build script. Its update script
+performs the ordinary incremental path:
 
     python src/build_gold.py --end-date YYYY-MM-DD --root .
     python src/update_gold.py --end-date YYYY-MM-DD --root .
