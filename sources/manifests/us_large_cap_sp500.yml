@@ -4,6 +4,11 @@ minimum_start_date: 1970-01-01
 target_frequency: daily
 output_contract: yahoo_compatible_ohlcv_plus_returns
 status: in_progress
+update_policy:
+  historical_cache: validate_and_reuse_fama_french_hi30_through_1988
+  historical_refresh_option: --refresh-historical-sources
+  live_sources: refetch_yahoo_gspc_and_sp500tr
+  provenance: build_metadata_historical_sources_mode_and_sha256
 milestones:
   - id: us-large-cap-001
     name: Documentation, source registry, citation, and test scaffold

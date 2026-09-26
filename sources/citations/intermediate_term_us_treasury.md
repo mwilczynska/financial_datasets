@@ -2,6 +2,10 @@
 
 Accessed: 2026-06-16
 
+## Update access decision (2026-09-26)
+
+The Fed nominal curve and Yahoo VFITX charts are needed only through the fixed 1991 and 2002 handoffs. Their local raw files were checked for coverage, row count, order, and gaps and reused. A missing or invalid file is refetched; a failed optional refresh retains a valid cache. Yahoo IEF remains the live source. Build metadata records historical file hashes and retrieval modes; existing source rights caveats remain.
+
 ## iShares IEF
 
 - URL: https://www.ishares.com/us/products/239456/ishares-710-year-treasury-bond-etf

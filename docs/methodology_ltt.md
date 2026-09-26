@@ -91,7 +91,7 @@ A true 1970+ constituent-level dataset should be built from CRSP/WRDS daily Trea
 
 ## Update Method
 
-`src/update_long_term_us_treasury.py` triggers a full rebuild from current source data (equivalent to re-running the build script). All three source segments are refetched in the same step.
+`src/update_long_term_us_treasury.py` rebuilds the full chain. It validates and reuses the fixed Fed curve (1970-1986), `^TYX` long yield (1977-1986), and VUSTX (1986-2002) raw caches, and refetches the live TLT segment. A missing or incomplete historical cache is refetched; if that source is unavailable, the update fails clearly. `--refresh-historical-sources` tries to refetch the historical inputs and preserves valid caches on fetch errors. Build metadata records the cache/fetch mode and SHA-256 of each historical file. This also avoids silently changing the Fed model to its 10-year yield fallback when `^TYX` is unavailable.
 
 ## Tests
 

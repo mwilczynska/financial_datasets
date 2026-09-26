@@ -43,6 +43,7 @@ python src\update_all_datasets.py --end-date 2026-06-30
 python src\update_all_datasets.py --only USLCAP GOLDPM GOLD2X
 python src\update_all_datasets.py --skip GLBOND --continue-on-error
 python src\update_all_datasets.py --refresh-static-sources
+python src\update_all_datasets.py --refresh-historical-sources
 ```
 
 Notes:
@@ -51,3 +52,4 @@ Notes:
 - The script delegates to the existing per-dataset update scripts rather than duplicating source logic.
 - `--only` and `--skip` accept aliases, asset ids, output stems, or update script stems. Derived datasets require their base dependency to be selected unless `--allow-stale-dependencies` is used.
 - `GLBOND` and `GLSTBOND` reuse cached historical JST/BIS/OECD/MoF/BoE raw files by default. Their daily refresh only needs the live ETF tail. Use `--refresh-static-sources` when you intentionally want to refetch those heavy historical inputs.
+- `USLCAP`, `STT`, `ITT`, `LTT`, `CMDTY`, and `GLSTOCK` validate and reuse fixed historical inputs while fetching their current market tails. Use `--refresh-historical-sources` to try refetching those historical inputs. A valid cache is preserved if an optional refresh fails; a missing or invalid cache with an unavailable source fails the update.

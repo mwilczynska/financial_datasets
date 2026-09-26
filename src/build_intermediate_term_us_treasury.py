@@ -14,6 +14,11 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import requests
 
+try:
+    from .historical_sources import load_historical_source, read_json, source_record, validate_dated_rows, validate_yahoo_chart, write_json
+except ImportError:  # direct script execution
+    from historical_sources import load_historical_source, read_json, source_record, validate_dated_rows, validate_yahoo_chart, write_json
+
 
 ASSET_ID = "intermediate_term_us_treasury"
 ASSET_NAME = "Intermediate-Term U.S. Treasury / IEF-like Total Return"
@@ -48,6 +53,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--end-date", default=date.today().isoformat(), help="Inclusive end date, YYYY-MM-DD.")
     parser.add_argument("--root", default=".", help="Project root.")
+    parser.add_argument("--refresh-historical-sources", action="store_true", help="Refetch fixed Fed and VFITX history; retain valid caches if unavailable.")
     return parser.parse_args()
 
 
@@ -338,7 +344,7 @@ def checksum(path: Path) -> str:
     return digest.hexdigest()
 
 
-def write_build_metadata(path: Path, rows: list[dict[str, str]], csv_path: Path, parquet_written: bool) -> None:
+def write_build_metadata(path: Path, rows: list[dict[str, str]], csv_path: Path, parquet_written: bool, historical_sources: dict | None = None) -> None:
     metadata = {
         "asset_id": ASSET_ID,
         "asset_name": ASSET_NAME,
@@ -351,6 +357,7 @@ def write_build_metadata(path: Path, rows: list[dict[str, str]], csv_path: Path,
         "csv_sha256": checksum(csv_path),
         "parquet_written": parquet_written,
         "quality_flags": sorted({row["Quality Flag"] for row in rows}),
+        "historical_sources": historical_sources or {},
         "notes": (
             "IEF-like intermediate Treasury total-return proxy. Federal Reserve nominal yield curves are used for a "
             "synthetic 8.5-year par Treasury segment before VFITX; VFITX is used before IEF daily history is available."
@@ -367,11 +374,26 @@ def main() -> None:
     raw_dir = root / "sources" / "raw"
     raw_dir.mkdir(parents=True, exist_ok=True)
 
-    fed_csv = fetch_fed_nominal_yield_curve()
-    vfitx_payload = fetch_chart(VFITX_SYMBOL, end_date)
+    fed_path = raw_dir / f"{ASSET_ID}_fed_nominal_yield_curve.csv"
+    fed_csv, fed_mode = load_historical_source(
+        fed_path,
+        lambda path: path.read_text(encoding="utf-8"),
+        lambda path, value: path.write_text(value, encoding="utf-8"),
+        lambda value: validate_dated_rows(
+            parse_fed_yield_curve_csv(value, date(1991, 10, 28)),
+            "1970-01-02", "1991-10-28", 5000, value_columns=(),
+        ),
+        fetch_fed_nominal_yield_curve,
+        refresh=args.refresh_historical_sources,
+    )
+    vfitx_path = raw_dir / f"{ASSET_ID}_yahoo_vfitx_chart.json"
+    vfitx_payload, vfitx_mode = load_historical_source(
+        vfitx_path, read_json, write_json,
+        lambda value: validate_yahoo_chart(value, VFITX_SYMBOL, chart_rows, "1991-10-28", "2002-07-30", 2600),
+        lambda: fetch_chart(VFITX_SYMBOL, end_date),
+        refresh=args.refresh_historical_sources,
+    )
     ief_payload = fetch_chart(IEF_SYMBOL, end_date)
-    (raw_dir / f"{ASSET_ID}_fed_nominal_yield_curve.csv").write_text(fed_csv, encoding="utf-8")
-    (raw_dir / f"{ASSET_ID}_yahoo_vfitx_chart.json").write_text(json.dumps(vfitx_payload), encoding="utf-8")
     (raw_dir / f"{ASSET_ID}_yahoo_ief_chart.json").write_text(json.dumps(ief_payload), encoding="utf-8")
 
     rows = build_normalized_rows(
@@ -389,7 +411,11 @@ def main() -> None:
     write_csv(interim_csv, rows)
     write_csv(processed_csv, rows)
     parquet_written = write_parquet_if_available(processed_csv, processed_parquet)
-    write_build_metadata(root / "sources" / "manifests" / f"{ASSET_ID}_build.json", rows, processed_csv, parquet_written)
+    write_build_metadata(
+        root / "sources" / "manifests" / f"{ASSET_ID}_build.json", rows, processed_csv, parquet_written,
+        {"fed_nominal_yield_curve": source_record(fed_path, fed_mode),
+         VFITX_SYMBOL: source_record(vfitx_path, vfitx_mode)},
+    )
 
     print(f"Wrote {len(rows)} rows to {processed_csv}")
     print(f"First date: {rows[0]['Date']}; last date: {rows[-1]['Date']}")

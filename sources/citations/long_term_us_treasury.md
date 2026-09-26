@@ -2,6 +2,10 @@
 
 Accessed: 2026-06-16
 
+## Update access decision (2026-09-26)
+
+The Fed nominal curve, Yahoo `^TYX` yield series, and Yahoo VUSTX chart are needed only through fixed 1986 and 2002 handoffs. Their local raw files were checked for coverage, row count, order, and gaps and reused. A missing or invalid file is refetched; a failed optional refresh retains a valid cache. Yahoo TLT remains the live source. This prevents an unavailable `^TYX` request from silently changing historical Fed-model yields. Build metadata records historical file hashes and retrieval modes; existing source rights caveats remain.
+
 ## iShares TLT
 
 - URL: https://www.ishares.com/us/products/239454/ishares-20-year-treasury-bond-etf

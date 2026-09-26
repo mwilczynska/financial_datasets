@@ -14,6 +14,11 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import requests
 
+try:
+    from .historical_sources import load_historical_source, read_json, source_record, validate_dated_rows, validate_yahoo_chart, write_json
+except ImportError:  # direct script execution
+    from historical_sources import load_historical_source, read_json, source_record, validate_dated_rows, validate_yahoo_chart, write_json
+
 
 ASSET_ID = "long_term_us_treasury"
 ASSET_NAME = "Long-Term U.S. Treasury / TLT-like Total Return"
@@ -51,6 +56,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--end-date", default=date.today().isoformat(), help="Inclusive end date, YYYY-MM-DD.")
     parser.add_argument("--root", default=".", help="Project root.")
+    parser.add_argument("--refresh-historical-sources", action="store_true", help="Refetch fixed Fed, VUSTX, and TYX history; retain valid caches if unavailable.")
     return parser.parse_args()
 
 
@@ -82,14 +88,10 @@ def fetch_fed_nominal_yield_curve() -> str:
 
 def fetch_tyx_yields(end_date: date) -> dict[str, float]:
     """Fetch daily 30-year Treasury yield (^TYX) from Yahoo Finance. Returns {date_str: decimal_yield}."""
-    try:
-        payload = fetch_chart(TYX_SYMBOL, end_date)
-        rows = chart_rows(payload)
-        # ^TYX is quoted in percent (e.g., 7.50 means 7.50%), so divide by 100
-        return {row["Date"]: float(row["Close"]) / 100.0 for row in rows if row["Close"] is not None}
-    except Exception as exc:
-        print(f"Warning: could not fetch {TYX_SYMBOL}: {exc}. Falling back to SVENY10/fitted-10y proxy.")
-        return {}
+    payload = fetch_chart(TYX_SYMBOL, end_date)
+    rows = chart_rows(payload)
+    # ^TYX is quoted in percent (e.g., 7.50 means 7.50%), so divide by 100
+    return {row["Date"]: float(row["Close"]) / 100.0 for row in rows if row["Close"] is not None}
 
 
 def parse_fed_yield_curve_csv(text: str, end_date: date) -> list[dict[str, float | str]]:
@@ -403,7 +405,7 @@ def checksum(path: Path) -> str:
     return digest.hexdigest()
 
 
-def write_build_metadata(path: Path, rows: list[dict[str, str]], csv_path: Path, parquet_written: bool) -> None:
+def write_build_metadata(path: Path, rows: list[dict[str, str]], csv_path: Path, parquet_written: bool, historical_sources: dict | None = None) -> None:
     metadata = {
         "asset_id": ASSET_ID,
         "asset_name": ASSET_NAME,
@@ -416,6 +418,7 @@ def write_build_metadata(path: Path, rows: list[dict[str, str]], csv_path: Path,
         "csv_sha256": checksum(csv_path),
         "parquet_written": parquet_written,
         "quality_flags": sorted({row["Quality Flag"] for row in rows}),
+        "historical_sources": historical_sources or {},
         "notes": (
             "TLT-like long Treasury total-return proxy. Federal Reserve nominal yield curves are used for a "
             "synthetic 25-year par Treasury segment before VUSTX; VUSTX is used before TLT daily history is available."
@@ -432,14 +435,37 @@ def main() -> None:
     raw_dir = root / "sources" / "raw"
     raw_dir.mkdir(parents=True, exist_ok=True)
 
-    fed_csv = fetch_fed_nominal_yield_curve()
-    vustx_payload = fetch_chart(VUSTX_SYMBOL, end_date)
+    fed_path = raw_dir / f"{ASSET_ID}_fed_nominal_yield_curve.csv"
+    fed_csv, fed_mode = load_historical_source(
+        fed_path,
+        lambda path: path.read_text(encoding="utf-8"),
+        lambda path, value: path.write_text(value, encoding="utf-8"),
+        lambda value: validate_dated_rows(
+            parse_fed_yield_curve_csv(value, date(1986, 5, 19)),
+            "1970-01-02", "1986-05-19", 4000, value_columns=(),
+        ),
+        fetch_fed_nominal_yield_curve,
+        refresh=args.refresh_historical_sources,
+    )
+    vustx_path = raw_dir / f"{ASSET_ID}_yahoo_vustx_chart.json"
+    vustx_payload, vustx_mode = load_historical_source(
+        vustx_path, read_json, write_json,
+        lambda value: validate_yahoo_chart(value, VUSTX_SYMBOL, chart_rows, "1986-05-19", "2002-07-30", 4000),
+        lambda: fetch_chart(VUSTX_SYMBOL, end_date),
+        refresh=args.refresh_historical_sources,
+    )
     tlt_payload = fetch_chart(TLT_SYMBOL, end_date)
-    tyx_by_date = fetch_tyx_yields(end_date)
-    (raw_dir / f"{ASSET_ID}_fed_nominal_yield_curve.csv").write_text(fed_csv, encoding="utf-8")
-    (raw_dir / f"{ASSET_ID}_yahoo_vustx_chart.json").write_text(json.dumps(vustx_payload), encoding="utf-8")
+    tyx_path = raw_dir / f"{ASSET_ID}_yahoo_tyx_chart.json"
+    tyx_by_date, tyx_mode = load_historical_source(
+        tyx_path, read_json, write_json,
+        lambda value: validate_dated_rows(
+            [{"Date": day, "Close": level} for day, level in sorted(value.items())],
+            "1977-02-15", "1986-05-19", 2200,
+        ),
+        lambda: fetch_tyx_yields(end_date),
+        refresh=args.refresh_historical_sources,
+    )
     (raw_dir / f"{ASSET_ID}_yahoo_tlt_chart.json").write_text(json.dumps(tlt_payload), encoding="utf-8")
-    (raw_dir / f"{ASSET_ID}_yahoo_tyx_chart.json").write_text(json.dumps(tyx_by_date), encoding="utf-8")
 
     rows = build_normalized_rows(
         parse_fed_yield_curve_csv(fed_csv, end_date),
@@ -457,7 +483,12 @@ def main() -> None:
     write_csv(interim_csv, rows)
     write_csv(processed_csv, rows)
     parquet_written = write_parquet_if_available(processed_csv, processed_parquet)
-    write_build_metadata(root / "sources" / "manifests" / f"{ASSET_ID}_build.json", rows, processed_csv, parquet_written)
+    write_build_metadata(
+        root / "sources" / "manifests" / f"{ASSET_ID}_build.json", rows, processed_csv, parquet_written,
+        {"fed_nominal_yield_curve": source_record(fed_path, fed_mode),
+         VUSTX_SYMBOL: source_record(vustx_path, vustx_mode),
+         TYX_SYMBOL: source_record(tyx_path, tyx_mode)},
+    )
 
     print(f"Wrote {len(rows)} rows to {processed_csv}")
     print(f"First date: {rows[0]['Date']}; last date: {rows[-1]['Date']}")

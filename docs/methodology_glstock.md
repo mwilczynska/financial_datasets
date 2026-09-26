@@ -30,6 +30,10 @@ There is no separate observed price index for the full 1970-present chain, so th
 
 Coverage starts on `1970-01-02`, the first USLCAP trading date after the 1970 anchor.
 
+## Update Method
+
+The fixed Fama/French developed-market daily returns used before VT inception are validated and reused from the cached ZIP. If the cache is missing or incomplete, the build refetches it; `--refresh-historical-sources` attempts a refresh while preserving a valid cache on source errors. Current VT adjusted-close data is fetched on every update. The build metadata records the historical ZIP's cache/fetch mode and SHA-256.
+
 ## Source Chain
 
 | Segment | Dates | Source | Quality flag |

@@ -7,6 +7,12 @@
 - `candidate`: requires more review before use.
 - `rejected`: reviewed and unsuitable for this project.
 
+## Historical cache policy (2026-09-26)
+
+Fixed historical inputs are validated for source identity where available, required splice dates, minimum observations, sorted unique dates, finite positive levels where applicable, and gaps before reuse. USLCAP caches the Kenneth French/CRSP Hi 30 ZIP (1970-1988); STT and ITT cache the Fed curve and VFISX/VFITX; LTT caches the Fed curve, `^TYX`, and VUSTX; GLSTOCK caches the Fama/French developed-market ZIP; CMDTY caches its pre-DBC Yahoo charts. GLBOND and GLSTBOND already cache their heavy JST/BIS/OECD/MoF/BoE historical inputs. Historical cache hashes and cache/fetch modes are recorded in build metadata for the newly covered datasets. A missing or invalid historical cache triggers retrieval and fails clearly if the source is unavailable. The live sources for each dataset continue to be fetched through the requested end date. `--refresh-historical-sources` in `update_all_datasets.py` requests optional refreshes for the fixed Yahoo/Fed/Fama inputs; `--refresh-static-sources` retains its existing meaning for global bonds. Source URLs, use, licensing, and validation caveats remain in the per-source entries below and the citation files.
+
+The per-alias cache and live-fetch decisions are listed in [Dataset Update Source Policy](update_source_policy.md).
+
 ## U.S. Large-Cap Equities / S&P 500 Equivalent
 
 ### S&P Dow Jones Indices
@@ -344,6 +350,7 @@ To be added after U.S. large-cap equities:
 - Endpoint: https://query1.finance.yahoo.com/v8/finance/chart/%5ESPGSCI
 - Role: Segment 1 (1984-01-04 to 1991-01-02) daily spot **shape** source. The daily `^SPGSCI` returns are rescaled per anchor interval so each interval compounds to the GSCI Total Return anchor — this supplies the daily shape (genuine moves and event timing, ~16%/yr vol), while the anchor supplies the level (roll + collateral).
 - Current finding: available daily from 1984-01-03 (10,703 rows as of 2026-06-26). `adj close == close` (spot index, no distributions).
+- Update path (2026-09-26): the build validates and reuses the versioned Yahoo chart cache for this fixed 1984-1991 segment. A forced historical refresh is optional.
 - Caveats:
   - Spot only — it supplies the shape, not the level. The roll/collateral that lift it to total return come from the GSCI TR anchor as a smooth per-interval overlay.
   - Pre-1991 GSCI data is retroactive back-history.
@@ -353,7 +360,7 @@ To be added after U.S. large-cap equities:
 - Status: `active_segment_2`
 - Endpoint: https://query1.finance.yahoo.com/v8/finance/chart/%5EBCOM
 - Role: Segment 2 (1991-01-03 to 2006-02-06) excess return (spot + roll yield) source.
-- Current finding: available daily from 1991-01-02 (8,900 rows as of 2026-06-12). `adj close == close` (no distributions). Verified as the Bloomberg Commodity **Excess Return** index by checking 2021 annual return (27.06%) against BCOM ER 2021 (~27.1%); the BCOM Spot Return 2021 (~25.5%) did not match.
+- Current finding: the versioned Yahoo chart cache contains daily values from 1991-01-02, including the full 1991-2006 segment. `adj close == close` (no distributions). Verified as the Bloomberg Commodity **Excess Return** index by checking 2021 annual return (27.06%) against BCOM ER 2021 (~27.1%); the BCOM Spot Return 2021 (~25.5%) did not match. On 2026-09-26 the live chart endpoint returned HTTP 404 ("No data found, symbol may be delisted") for both a full-range and a request ending in 2006. The build now validates and reuses the historical cache during ordinary updates, with an optional forced refresh.
 - Caveats:
   - Different commodity weights and index methodology from GSCI, World Bank, and DBC. The 1991 splice is a methodology switch, not a seamless continuation.
   - Yahoo index-type verification is indirect; the raw Yahoo payload does not provide official Bloomberg metadata.
@@ -376,6 +383,7 @@ To be added after U.S. large-cap equities:
 - Endpoint: https://query1.finance.yahoo.com/v8/finance/chart/%5EIRX
 - Role: Segment 0 trading calendar and T-bill collateral rate model for Segments 0, 1, and 2.
 - Current finding: available daily from 1970-01-02. The close column is the 13-week T-bill annualized rate in percent. Daily collateral accrual = `IRX_close / 100 / 365` (actual/365, matching the GSCI Total Return definition).
+- Update path (2026-09-26): CMDTY validates and reuses the versioned Yahoo `^IRX` chart through the 2006 splice; later IRX observations do not affect this dataset. The live `DBC` tail is fetched on every update.
 - Caveats:
   - `^IRX` is a proxy collateral rate; official index collateral conventions may differ by vendor and period.
   - In Segment 0 it is also used as a daily calendar for a monthly global commodity index, which is a project convention.

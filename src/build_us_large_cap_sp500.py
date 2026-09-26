@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import io
 import json
 import zipfile
 from datetime import date, datetime, time, timedelta, timezone
@@ -13,6 +14,11 @@ from pathlib import Path
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import requests
+
+try:
+    from .historical_sources import load_historical_source, source_record, validate_dated_rows
+except ImportError:  # direct script execution
+    from historical_sources import load_historical_source, source_record, validate_dated_rows
 
 
 ASSET_ID = "us_large_cap_sp500"
@@ -42,6 +48,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--end-date", default=date.today().isoformat(), help="Inclusive end date, YYYY-MM-DD.")
     parser.add_argument("--root", default=".", help="Project root.")
+    parser.add_argument("--refresh-historical-sources", action="store_true", help="Refetch the fixed Fama/French pre-1988 history; retain a valid cache if unavailable.")
     return parser.parse_args()
 
 
@@ -65,16 +72,27 @@ def fetch_chart(symbol: str, end_date: date, start_date: date = START_DATE) -> d
     return payload
 
 
-def fetch_ken_french_zip(raw_dir: Path) -> Path:
+def fetch_ken_french_zip(raw_dir: Path, refresh: bool = False) -> tuple[Path, str]:
     raw_dir.mkdir(parents=True, exist_ok=True)
     path = raw_dir / KEN_FRENCH_ZIP_NAME
-    if path.exists():
-        return path
 
-    response = requests.get(KEN_FRENCH_SIZE_PORTFOLIOS_URL, timeout=60, headers={"User-Agent": "Mozilla/5.0"})
-    response.raise_for_status()
-    path.write_bytes(response.content)
-    return path
+    def validate(content: bytes) -> None:
+        returns = load_ken_french_hi30_returns(io.BytesIO(content))
+        validate_dated_rows(
+            [{"Date": day} for day in sorted(returns)],
+            "1970-01-02", "1988-01-04", 4400, value_columns=(),
+        )
+
+    def fetch() -> bytes:
+        response = requests.get(KEN_FRENCH_SIZE_PORTFOLIOS_URL, timeout=60, headers={"User-Agent": "Mozilla/5.0"})
+        response.raise_for_status()
+        return response.content
+
+    _, mode = load_historical_source(
+        path, lambda source: source.read_bytes(), lambda target, value: target.write_bytes(value),
+        validate, fetch, refresh=refresh,
+    )
+    return path, mode
 
 
 def round_float(value: float | None) -> str:
@@ -150,7 +168,7 @@ def close_by_date(payload: dict) -> dict[str, float]:
     return values
 
 
-def load_ken_french_hi30_returns(zip_path: Path) -> dict[str, Decimal]:
+def load_ken_french_hi30_returns(zip_path: Path | io.BytesIO) -> dict[str, Decimal]:
     with zipfile.ZipFile(zip_path) as archive:
         text = archive.read(KEN_FRENCH_CSV_NAME).decode("utf-8", errors="replace")
 
@@ -269,7 +287,7 @@ def checksum(path: Path) -> str:
     return digest.hexdigest()
 
 
-def write_build_metadata(path: Path, rows: list[dict[str, str]], csv_path: Path, parquet_written: bool) -> None:
+def write_build_metadata(path: Path, rows: list[dict[str, str]], csv_path: Path, parquet_written: bool, historical_sources: dict | None = None) -> None:
     metadata = {
         "asset_id": ASSET_ID,
         "symbol": SYMBOL,
@@ -282,6 +300,7 @@ def write_build_metadata(path: Path, rows: list[dict[str, str]], csv_path: Path,
         "csv_path": csv_path.relative_to(path.parent.parent.parent).as_posix(),
         "csv_sha256": checksum(csv_path),
         "parquet_written": parquet_written,
+        "historical_sources": historical_sources or {},
         "first_adjusted_date": next((row["Date"] for row in rows if row["Adj Close"]), None),
         "quality_flags": sorted({row["Quality Flag"] for row in rows}),
         "notes": "Close is ^GSPC price index; Adj Close compounds daily total returns from Kenneth French/CRSP Hi 30 before ^SP500TR can supply daily returns, then ^SP500TR thereafter.",
@@ -298,7 +317,7 @@ def main() -> None:
 
     price_payload = fetch_chart(YAHOO_PRICE_SYMBOL, end_date)
     total_return_payload = fetch_chart(YAHOO_TOTAL_RETURN_SYMBOL, end_date)
-    ken_french_zip = fetch_ken_french_zip(raw_dir)
+    ken_french_zip, french_mode = fetch_ken_french_zip(raw_dir, refresh=args.refresh_historical_sources)
     raw_path = raw_dir / f"{ASSET_ID}_yahoo_chart.json"
     raw_path.parent.mkdir(parents=True, exist_ok=True)
     raw_path.write_text(json.dumps(price_payload), encoding="utf-8")
@@ -326,7 +345,10 @@ def main() -> None:
     write_csv(interim_csv, rows)
     write_csv(processed_csv, rows)
     parquet_written = write_parquet_if_available(processed_csv, processed_parquet)
-    write_build_metadata(root / "sources" / "manifests" / f"{ASSET_ID}_build.json", rows, processed_csv, parquet_written)
+    write_build_metadata(
+        root / "sources" / "manifests" / f"{ASSET_ID}_build.json", rows, processed_csv, parquet_written,
+        {"fama_french_hi30": source_record(ken_french_zip, french_mode)},
+    )
 
     print(f"Wrote {len(rows)} rows to {processed_csv}")
     if parquet_written:

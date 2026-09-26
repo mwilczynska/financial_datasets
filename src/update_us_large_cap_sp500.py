@@ -19,6 +19,7 @@ from build_us_large_cap_sp500 import (
     fetch_ken_french_zip,
     load_ken_french_hi30_returns,
     recompute_price_returns,
+    source_record,
     write_build_metadata,
     write_csv,
     write_parquet_if_available,
@@ -33,6 +34,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--end-date", default=date.today().isoformat(), help="Inclusive end date, YYYY-MM-DD.")
     parser.add_argument("--root", default=".", help="Project root.")
     parser.add_argument("--overlap-days", type=int, default=OVERLAP_DAYS, help="Calendar-day overlap to refetch.")
+    parser.add_argument("--refresh-historical-sources", action="store_true", help="Refetch fixed Fama/French pre-1988 history; retain valid cache if unavailable.")
     return parser.parse_args()
 
 
@@ -81,9 +83,10 @@ def main() -> None:
     new_rows = chart_rows(price_payload)
     merged = merge_rows(existing, new_rows)
     full_total_return_payload = fetch_chart(YAHOO_TOTAL_RETURN_SYMBOL, end_date=end_date)
+    french_zip, french_mode = fetch_ken_french_zip(raw_dir, refresh=args.refresh_historical_sources)
     merged = add_total_return_adjustment(
         merged,
-        load_ken_french_hi30_returns(fetch_ken_french_zip(raw_dir)),
+        load_ken_french_hi30_returns(french_zip),
         close_by_date(full_total_return_payload),
     )
 
@@ -93,7 +96,10 @@ def main() -> None:
     write_csv(interim_csv, merged)
     write_csv(processed_csv, merged)
     parquet_written = write_parquet_if_available(processed_csv, processed_parquet)
-    write_build_metadata(root / "sources" / "manifests" / f"{ASSET_ID}_build.json", merged, processed_csv, parquet_written)
+    write_build_metadata(
+        root / "sources" / "manifests" / f"{ASSET_ID}_build.json", merged, processed_csv, parquet_written,
+        {"fama_french_hi30": source_record(french_zip, french_mode)},
+    )
 
     print(f"Existing rows: {len(existing)}")
     print(f"Fetched rows: {len(new_rows)} from {start_date.isoformat()} through {end_date.isoformat()}")

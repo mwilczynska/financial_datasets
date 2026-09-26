@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import io
 import json
 import math
 import zipfile
@@ -14,6 +15,11 @@ from pathlib import Path
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import requests
+
+try:
+    from .historical_sources import load_historical_source, source_record, validate_dated_rows
+except ImportError:  # direct script execution
+    from historical_sources import load_historical_source, source_record, validate_dated_rows
 
 getcontext().prec = 40
 
@@ -92,6 +98,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--end-date", default=date.today().isoformat(), help="Inclusive end date, YYYY-MM-DD.")
     parser.add_argument("--root", default=".", help="Project root.")
+    parser.add_argument("--refresh-historical-sources", action="store_true", help="Refetch the fixed Fama/French pre-VT history; retain a valid cache if unavailable.")
     return parser.parse_args()
 
 
@@ -143,16 +150,30 @@ def close_series(payload: dict, field: str = "adjclose") -> dict[str, float]:
     return values
 
 
-def fetch_ken_french_zip(raw_dir: Path) -> Path:
+def fetch_ken_french_zip(raw_dir: Path, refresh: bool = False) -> tuple[Path, str]:
     raw_dir.mkdir(parents=True, exist_ok=True)
     path = raw_dir / KEN_FRENCH_ZIP_NAME
-    response = requests.get(KEN_FRENCH_DEVELOPED_DAILY_URL, timeout=60, headers={"User-Agent": "Mozilla/5.0"})
-    response.raise_for_status()
-    path.write_bytes(response.content)
-    return path
+
+    def validate(content: bytes) -> None:
+        returns = load_ff_developed_returns(io.BytesIO(content))
+        validate_dated_rows(
+            [{"Date": day} for day in sorted(returns)],
+            "1990-07-02", "2008-06-26", 4500, value_columns=(),
+        )
+
+    def fetch() -> bytes:
+        response = requests.get(KEN_FRENCH_DEVELOPED_DAILY_URL, timeout=60, headers={"User-Agent": "Mozilla/5.0"})
+        response.raise_for_status()
+        return response.content
+
+    _, mode = load_historical_source(
+        path, lambda source: source.read_bytes(), lambda target, value: target.write_bytes(value),
+        validate, fetch, refresh=refresh,
+    )
+    return path, mode
 
 
-def load_ff_developed_returns(zip_path: Path) -> dict[str, Decimal]:
+def load_ff_developed_returns(zip_path: Path | io.BytesIO) -> dict[str, Decimal]:
     with zipfile.ZipFile(zip_path) as archive:
         text = archive.read(KEN_FRENCH_CSV_NAME).decode("utf-8", errors="replace")
 
@@ -357,7 +378,7 @@ def main() -> None:
     end_date = date.fromisoformat(args.end_date)
 
     raw_dir = root / "sources" / "raw"
-    ff_zip = fetch_ken_french_zip(raw_dir)
+    ff_zip, ff_mode = fetch_ken_french_zip(raw_dir, refresh=args.refresh_historical_sources)
     vt_payload = fetch_chart(VT_SYMBOL, end_date, VT_FETCH_START)
     vt_raw = raw_dir / f"{ASSET_ID}_yahoo_vt_chart.json"
     vt_raw.write_text(json.dumps(vt_payload), encoding="utf-8")
@@ -366,6 +387,7 @@ def main() -> None:
     ff_returns = load_ff_developed_returns(ff_zip)
     vt_adj = close_series(vt_payload, "adjclose")
     rows, extra = build_rows(uslcap_returns, ff_returns, vt_adj, end_date)
+    extra["historical_sources"] = {"fama_french_developed_daily": source_record(ff_zip, ff_mode)}
     if not rows:
         raise RuntimeError("No global stock rows were built")
 

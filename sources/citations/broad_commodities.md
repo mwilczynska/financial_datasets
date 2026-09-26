@@ -1,6 +1,6 @@
 # Broad Commodities Source Notes
 
-Accessed: 2026-06-17 (Yahoo segments), 2026-06-26 (S&P GSCI Total Return anchor)
+Accessed: 2026-06-17 (Yahoo segments), 2026-06-26 (S&P GSCI Total Return anchor), 2026-09-26 (Yahoo availability recheck)
 
 ## S&P GSCI Total Return anchor - MacroMicro (Segments 0-1, 1970-1991)
 
@@ -25,6 +25,7 @@ Accessed: 2026-06-17 (Yahoo segments), 2026-06-26 (S&P GSCI Total Return anchor)
 - Use: Segment 2 (`1991-01-03` to `2006-02-06`) excess return; Adj Close adds `^IRX` collateral.
 - Finding: available daily from `1991-01-02`; adjusted close equals close. 2021 annual return matched BCOM excess-return behavior, so Yahoo `^BCOM` is treated as excess return.
 - Caveat: different weights/roll from GSCI and DBC; index-type validation is indirect (no official Bloomberg metadata in the payload).
+- Availability recheck (2026-09-26): the live Yahoo chart endpoint returned HTTP 404 with "No data found, symbol may be delisted" for a request ending in 2006 and for the full history. The versioned raw JSON remains the active historical source for the fixed 1991-2006 segment; its required dates and minimum row count are checked before every build. Yahoo data redistribution rights still require review.
 
 ## Yahoo Finance Chart API - DBC (Segment 3)
 
@@ -39,6 +40,7 @@ Accessed: 2026-06-17 (Yahoo segments), 2026-06-26 (S&P GSCI Total Return anchor)
 - Use: 13-week T-bill annualized rate for the collateral model and the Segment 0 trading calendar.
 - Finding: daily from `1970-01-02`; close is the rate in percent; daily accrual `IRX/100/365`.
 - Caveat: missing dates forward-filled. FRED DTB3/TB3MS is an equivalent public source but FRED CSV access was unreliable in prior sessions.
+- Update behavior: `^SPGSCI`, `^BCOM`, and `^IRX` are reused from validated versioned raw files for their fixed pre-DBC segments. DBC is refetched through the requested end date. A forced historical refresh may replace a cache only after coverage validation; failed refreshes preserve valid files. Build metadata records the source mode and SHA-256 for each Yahoo chart.
 
 ## Superseded / not used
 

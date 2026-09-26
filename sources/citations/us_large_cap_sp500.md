@@ -2,6 +2,10 @@
 
 Accessed: 2026-06-16
 
+## Update access decision (2026-09-26)
+
+The Kenneth French/CRSP Hi 30 ZIP is needed for the fixed 1970-1988 segment. The local file was validated for the required dates, row count, order, and gaps and reused without a new download. A missing or invalid file is refetched; a failed optional refresh retains a valid cache. Current `^GSPC`/`^SP500TR` observations remain live. Build metadata records the historical file hash and retrieval mode. Existing source licensing and redistribution caveats continue to apply.
+
 ## S&P Dow Jones Indices
 
 - URL: https://www.spglobal.com/spdji/en/indices/equity/sp-500/

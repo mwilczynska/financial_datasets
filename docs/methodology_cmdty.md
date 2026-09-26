@@ -28,7 +28,7 @@ Important: Segments 0-1 (1970-1991) are a reconstruction anchored to the S&P GSC
 | Update script | `src/update_broad_commodities.py` |
 | Test file | `tests/validation/test_broad_commodities_contract.py` |
 
-Coverage starts on `1970-01-02`. The current build spans 14,163 rows through `2026-06-25` (segment counts: GSCI-smoothed 3,487, GSCI-shape 1,768, BCOM 3,781, DBC 5,127).
+Coverage starts on `1970-01-02`. The 2026-09-26 update produced 14,227 rows through `2026-09-25` (segment counts: GSCI-smoothed 3,487, GSCI-shape 1,768, BCOM 3,781, DBC 5,191).
 
 ## Source Chain
 
@@ -105,7 +105,7 @@ Levels (`Close`, `Adj Close`) compound continuously from 100 without resetting a
 
 ## Build Method
 
-1. Fetch raw Yahoo chart data for `^SPGSCI`, `^BCOM`, `DBC`, and `^IRX`; store JSON under `sources/raw/`.
+1. Validate and reuse the historical Yahoo `^SPGSCI`, `^BCOM`, and `^IRX` charts under `sources/raw/`; fetch any missing or invalid chart. Fetch current `DBC` history from Yahoo and store its JSON under `sources/raw/`.
 2. Load the static S&P GSCI Total Return anchor from `sources/raw/broad_commodities_gsci_tr_macromicro.csv`.
 3. Determine source boundaries (Segment 0: `^IRX` dates 1970-01-02 .. 1984-01-03; Segment 1: `^SPGSCI` 1984-01-04 .. 1991-01-02; Segment 2: `^BCOM` 1991-01-03 .. 2006-02-06; Segment 3: DBC 2006-02-07 onward).
 4. Build Segment 0 returns by log-linear anchor interpolation; build Segment 1 returns by per-anchor-interval overlay of the `^SPGSCI` spot shape; keep Segments 2-3 as raw-ratio + collateral / observed ETF.
@@ -114,7 +114,9 @@ Levels (`Close`, `Adj Close`) compound continuously from 100 without resetting a
 
 ## Update Method
 
-The update script calls `main()` from the build script and rebuilds the full chain. The GSCI TR anchor is a static historical file; the live-updating part is the DBC tail from Yahoo.
+The update script calls `main()` from the build script and rebuilds the full chain. The GSCI TR anchor and the pre-DBC portions of the Yahoo charts are historical inputs. Each ordinary update checks that the cached `^SPGSCI`, `^BCOM`, and `^IRX` files contain the required splice dates and enough observations, then fetches live `DBC` history through the requested end date. The historical cache is retained byte-for-byte. Build metadata records cache/fetch mode and SHA-256 for each Yahoo raw file. Run the per-dataset script with `--refresh-historical-sources` to try refetching historical charts; a failed refresh retains a valid cache. A missing or incomplete cache with an unavailable Yahoo source fails explicitly.
+
+Yahoo's `^BCOM` chart endpoint returned HTTP 404 ("No data found, symbol may be delisted") on 2026-09-26, including when the request ended in 2006. The versioned cached chart still contains the full 1991-2006 segment. This source access change does not alter historical return methodology or quality flags.
 
 ## Tests
 
@@ -134,6 +136,7 @@ See `tests/validation/test_broad_commodities_contract.py`. Key assertions:
 | Adj Close tracks GSCI anchor | Adj Close stays within 5% of the GSCI TR anchor through 1970-1991 |
 | Segment 1 de-smoothed | Segment 1 annualized volatility > 8%; internal collateral ratio grows |
 | Quality flag counts | All rows assigned to exactly one expected source flag |
+| Historical cache handling | Valid BCOM cache avoids the live endpoint; a failed forced refresh preserves it; incomplete cache fails clearly |
 
 ## Current Gaps And Limitations
 

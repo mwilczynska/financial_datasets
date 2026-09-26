@@ -5,6 +5,11 @@ minimum_start_date: 1970-01-01
 target_frequency: daily
 output_contract: yahoo_compatible_ohlcv_plus_returns
 status: complete_model_derived_public_source_proxy
+update_policy:
+  historical_cache: validate_and_reuse_fama_french_developed_daily_through_vt_inception
+  historical_refresh_option: --refresh-historical-sources
+  live_source: refetch_yahoo_vt
+  provenance: build_metadata_historical_sources_mode_and_sha256
 sources:
   - name: MSCI World gross annual total returns
     role: early_annual_anchor

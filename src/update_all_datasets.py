@@ -39,6 +39,7 @@ class DatasetTask:
     dependencies: tuple[str, ...] = ()
     accepts_overlap_days: bool = False
     accepts_refresh_static_sources: bool = False
+    accepts_refresh_historical_sources: bool = False
 
     @property
     def script_path(self) -> Path:
@@ -65,14 +66,14 @@ class TaskResult:
 
 
 DATASET_TASKS: tuple[DatasetTask, ...] = (
-    DatasetTask("us_large_cap_sp500", "USLCAP", "us_large_cap_sp500", "update_us_large_cap_sp500.py", accepts_overlap_days=True),
-    DatasetTask("short_term_us_treasury", "STT", "short_term_us_treasury", "update_short_term_us_treasury.py"),
-    DatasetTask("intermediate_term_us_treasury", "ITT", "intermediate_term_us_treasury", "update_intermediate_term_us_treasury.py"),
-    DatasetTask("long_term_us_treasury", "LTT", "long_term_us_treasury", "update_long_term_us_treasury.py"),
+    DatasetTask("us_large_cap_sp500", "USLCAP", "us_large_cap_sp500", "update_us_large_cap_sp500.py", accepts_overlap_days=True, accepts_refresh_historical_sources=True),
+    DatasetTask("short_term_us_treasury", "STT", "short_term_us_treasury", "update_short_term_us_treasury.py", accepts_refresh_historical_sources=True),
+    DatasetTask("intermediate_term_us_treasury", "ITT", "intermediate_term_us_treasury", "update_intermediate_term_us_treasury.py", accepts_refresh_historical_sources=True),
+    DatasetTask("long_term_us_treasury", "LTT", "long_term_us_treasury", "update_long_term_us_treasury.py", accepts_refresh_historical_sources=True),
     DatasetTask("gold", "GOLDPM", "gold", "update_gold.py"),
-    DatasetTask("broad_commodities", "CMDTY", "broad_commodities", "update_broad_commodities.py"),
+    DatasetTask("broad_commodities", "CMDTY", "broad_commodities", "update_broad_commodities.py", accepts_refresh_historical_sources=True),
     DatasetTask("cpi_inflation", "CPI", "cpi_inflation", "update_cpi_inflation.py"),
-    DatasetTask("global_stocks", "GLSTOCK", "global_stocks", "update_global_stocks.py", ("us_large_cap_sp500",)),
+    DatasetTask("global_stocks", "GLSTOCK", "global_stocks", "update_global_stocks.py", ("us_large_cap_sp500",), accepts_refresh_historical_sources=True),
     DatasetTask("global_bonds", "GLBOND", "global_bonds", "update_global_bonds.py", ("intermediate_term_us_treasury",), accepts_refresh_static_sources=True),
     DatasetTask("global_short_term_bonds", "GLSTBOND", "global_short_term_bonds", "update_global_short_term_bonds.py", ("short_term_us_treasury",), accepts_refresh_static_sources=True),
     DatasetTask("us_large_cap_3x_sp500", "USLCAP3X", "us_large_cap_3x_sp500", "update_us_large_cap_3x_sp500.py", ("us_large_cap_sp500",)),
@@ -92,6 +93,10 @@ def parse_args() -> argparse.Namespace:
         "--refresh-static-sources",
         action="store_true",
         help="For GLBOND/GLSTBOND, refetch heavy historical JST/BIS/OECD/MoF/BoE sources instead of reusing cached raw files.",
+    )
+    parser.add_argument(
+        "--refresh-historical-sources", action="store_true",
+        help="Try to refetch fixed historical inputs for USLCAP, STT, ITT, LTT, CMDTY, and GLSTOCK; valid caches remain available on source errors.",
     )
     parser.add_argument("--only", nargs="+", default=[], help="Only update these dataset aliases/ids/script names.")
     parser.add_argument("--skip", nargs="+", default=[], help="Skip these dataset aliases/ids/script names.")
@@ -162,6 +167,8 @@ def command_for_task(task: DatasetTask, args: argparse.Namespace, root: Path) ->
         command.extend(["--overlap-days", str(args.overlap_days)])
     if task.accepts_refresh_static_sources and args.refresh_static_sources:
         command.append("--refresh-static-sources")
+    if task.accepts_refresh_historical_sources and args.refresh_historical_sources:
+        command.append("--refresh-historical-sources")
     return command
 
 

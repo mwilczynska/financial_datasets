@@ -6,6 +6,11 @@ target_frequency: daily
 output_contract: yahoo_compatible_ohlcv_plus_returns
 status: complete_model_derived
 current_dataset_status: fed_yield_curve_model_from_1970_plus_public_fund_returns_from_1991
+update_policy:
+  historical_cache: validate_and_reuse_fed_curve_and_vfitx_through_fixed_splices
+  historical_refresh_option: --refresh-historical-sources
+  live_source: refetch_yahoo_ief
+  provenance: build_metadata_historical_sources_mode_and_sha256
 target_definition: IEF-like U.S. Treasury exposure, approximately 7-10 year remaining maturity, total return with coupons/distributions reinvested.
 milestones:
   - id: itt-001

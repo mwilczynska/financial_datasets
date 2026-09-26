@@ -22,9 +22,9 @@ Column convention:
   Adj Close / Total Return = TOTAL-RETURN level (excess return + T-bill collateral).
   The backtester reads Adj Close.
 
-The S&P GSCI Total Return anchor is a static committed file
-(`sources/raw/broad_commodities_gsci_tr_macromicro.csv`); it is historical and
-does not change. Only the DBC tail refreshes from Yahoo on update.
+The S&P GSCI Total Return anchor and the Yahoo charts used before DBC inception
+are historical inputs retained in sources/raw. Only the DBC tail needs a live
+Yahoo request during ordinary updates.
 """
 
 from __future__ import annotations
@@ -53,6 +53,11 @@ IRX_SYMBOL = "^IRX"
 BROAD_MODEL_START = date(1970, 1, 2)
 # Static committed S&P GSCI Total Return anchor (base 100 at 1970-01-02).
 GSCI_ANCHOR_FILE = "broad_commodities_gsci_tr_macromicro.csv"
+HISTORICAL_CHARTS = {
+    SPGSCI_SYMBOL: ("spgsci", "1984-01-03", "1991-01-02", 1500),
+    BCOM_SYMBOL: ("bcom", "1991-01-02", "2006-02-06", 3500),
+    IRX_SYMBOL: ("irx", "1970-01-02", "2006-02-06", 8500),
+}
 
 SOURCE = (
     "S&P GSCI Total Return anchor (MacroMicro republication of the S&P GSCI Total "
@@ -109,6 +114,10 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--end-date", default=date.today().isoformat(), help="Inclusive end date YYYY-MM-DD.")
     parser.add_argument("--root", default=".", help="Project root directory.")
+    parser.add_argument(
+        "--refresh-historical-sources", action="store_true",
+        help="Try to refetch the historical ^SPGSCI, ^BCOM, and ^IRX Yahoo charts; retain valid cached charts if Yahoo is unavailable.",
+    )
     return parser.parse_args()
 
 
@@ -158,6 +167,67 @@ def chart_rows(payload: dict) -> list[dict]:
             "Adj Close": float(adjusted),
         })
     return rows
+
+
+def validate_historical_chart(payload: dict, symbol: str) -> None:
+    """Reject a truncated or wrong Yahoo chart before using it for a splice."""
+    stem, first_required, last_required, minimum_rows = HISTORICAL_CHARTS[symbol]
+    result = payload["chart"]["result"][0]
+    actual_symbol = result.get("meta", {}).get("symbol")
+    if actual_symbol != symbol:
+        raise ValueError(f"{stem} chart symbol is {actual_symbol!r}, expected {symbol!r}")
+    historical_rows = [
+        row for row in chart_rows(payload) if first_required <= row["Date"] <= last_required
+    ]
+    historical_dates = [row["Date"] for row in historical_rows]
+    if first_required not in historical_dates or last_required not in historical_dates or len(historical_dates) < minimum_rows:
+        raise ValueError(
+            f"{symbol} chart lacks the required {first_required} to {last_required} history "
+            f"({len(historical_dates)} rows; need at least {minimum_rows})"
+        )
+    if historical_dates != sorted(set(historical_dates)):
+        raise ValueError(f"{symbol} historical dates are duplicated or unsorted")
+    if any(not math.isfinite(row["Close"]) or row["Close"] <= 0 for row in historical_rows):
+        raise ValueError(f"{symbol} historical closes must be finite and positive")
+    if any(
+        (date.fromisoformat(day) - date.fromisoformat(prior)).days > 10
+        for prior, day in zip(historical_dates, historical_dates[1:])
+    ):
+        raise ValueError(f"{symbol} historical chart has a gap longer than 10 calendar days")
+
+
+def load_historical_chart(raw_dir: Path, symbol: str, end_date: date, refresh: bool = False) -> tuple[dict, str]:
+    """Use validated historical cache; optionally try Yahoo without losing the cache."""
+    stem = HISTORICAL_CHARTS[symbol][0]
+    path = raw_dir / f"{ASSET_ID}_yahoo_{stem}_chart.json"
+    cached = None
+    cache_error = None
+    if path.exists():
+        try:
+            cached = json.loads(path.read_text(encoding="utf-8"))
+            validate_historical_chart(cached, symbol)
+        except (ValueError, KeyError, IndexError, TypeError) as exc:
+            cached = None
+            cache_error = exc
+
+    if cached is not None and not refresh:
+        print(f"Using validated historical {symbol} cache: {path}")
+        return cached, "cached"
+
+    print(f"Fetching historical {symbol} ...")
+    start_date = START_DATE if symbol == IRX_SYMBOL else SPGSCI_START_DATE
+    try:
+        payload = fetch_chart(symbol, end_date, start_date=start_date)
+        validate_historical_chart(payload, symbol)
+    except (requests.RequestException, RuntimeError, ValueError, KeyError, IndexError, TypeError) as exc:
+        if cached is not None:
+            print(f"Historical {symbol} refresh unavailable ({exc}); retaining validated cache")
+            return cached, "cached_after_fetch_error"
+        detail = f"; cached chart invalid: {cache_error}" if cache_error else ""
+        raise RuntimeError(f"Historical {symbol} unavailable and no valid cache at {path}{detail}") from exc
+
+    path.write_text(json.dumps(payload), encoding="utf-8")
+    return payload, "fetched"
 
 
 def load_gsci_anchor(path: Path) -> list[tuple[str, float]]:
@@ -409,7 +479,10 @@ def checksum(path: Path) -> str:
     return digest.hexdigest()
 
 
-def write_build_metadata(path: Path, rows: list[dict[str, str]], csv_path: Path, parquet_written: bool) -> None:
+def write_build_metadata(
+    path: Path, rows: list[dict[str, str]], csv_path: Path, parquet_written: bool,
+    raw_source_modes: dict[str, str], raw_dir: Path,
+) -> None:
     quality_flags = {row["Quality Flag"] for row in rows}
     seg_counts = {flag: sum(1 for r in rows if r["Quality Flag"] == flag) for flag in quality_flags}
     metadata = {
@@ -425,6 +498,14 @@ def write_build_metadata(path: Path, rows: list[dict[str, str]], csv_path: Path,
         "parquet_written": parquet_written,
         "quality_flags": sorted(quality_flags),
         "segment_row_counts": seg_counts,
+        "raw_sources": {
+            symbol: {
+                "mode": mode,
+                "path": (raw_dir / f"{ASSET_ID}_yahoo_{symbol.lstrip('^').lower()}_chart.json").relative_to(path.parent.parent.parent).as_posix(),
+                "sha256": checksum(raw_dir / f"{ASSET_ID}_yahoo_{symbol.lstrip('^').lower()}_chart.json"),
+            }
+            for symbol, mode in raw_source_modes.items()
+        },
         "coverage_note": (
             "Segments 0-1 (1970-01-02 to 1991-01-02) reconstruct broad commodity TOTAL return "
             "from the S&P GSCI Total Return anchor (roll yield + T-bill collateral + GSCI "
@@ -446,19 +527,13 @@ def main() -> None:
     raw_dir = root / "sources" / "raw"
     raw_dir.mkdir(parents=True, exist_ok=True)
 
-    print(f"Fetching {SPGSCI_SYMBOL} ...")
-    spgsci_payload = fetch_chart(SPGSCI_SYMBOL, end_date, start_date=SPGSCI_START_DATE)
-    print(f"Fetching {BCOM_SYMBOL} ...")
-    bcom_payload = fetch_chart(BCOM_SYMBOL, end_date, start_date=SPGSCI_START_DATE)
+    spgsci_payload, spgsci_mode = load_historical_chart(raw_dir, SPGSCI_SYMBOL, end_date, args.refresh_historical_sources)
+    bcom_payload, bcom_mode = load_historical_chart(raw_dir, BCOM_SYMBOL, end_date, args.refresh_historical_sources)
     print(f"Fetching {DBC_SYMBOL} ...")
     dbc_payload = fetch_chart(DBC_SYMBOL, end_date, start_date=SPGSCI_START_DATE)
-    print(f"Fetching {IRX_SYMBOL} ...")
-    irx_payload = fetch_chart(IRX_SYMBOL, end_date, start_date=START_DATE)
+    irx_payload, irx_mode = load_historical_chart(raw_dir, IRX_SYMBOL, end_date, args.refresh_historical_sources)
 
-    (raw_dir / f"{ASSET_ID}_yahoo_spgsci_chart.json").write_text(json.dumps(spgsci_payload), encoding="utf-8")
-    (raw_dir / f"{ASSET_ID}_yahoo_bcom_chart.json").write_text(json.dumps(bcom_payload), encoding="utf-8")
     (raw_dir / f"{ASSET_ID}_yahoo_dbc_chart.json").write_text(json.dumps(dbc_payload), encoding="utf-8")
-    (raw_dir / f"{ASSET_ID}_yahoo_irx_chart.json").write_text(json.dumps(irx_payload), encoding="utf-8")
 
     gsci_anchor = load_gsci_anchor(raw_dir / GSCI_ANCHOR_FILE)
 
@@ -484,7 +559,12 @@ def main() -> None:
     write_csv(interim_csv, rows)
     write_csv(processed_csv, rows)
     parquet_written = write_parquet_if_available(processed_csv, processed_parquet)
-    write_build_metadata(root / "sources" / "manifests" / f"{ASSET_ID}_build.json", rows, processed_csv, parquet_written)
+    write_build_metadata(
+        root / "sources" / "manifests" / f"{ASSET_ID}_build.json",
+        rows, processed_csv, parquet_written,
+        {SPGSCI_SYMBOL: spgsci_mode, BCOM_SYMBOL: bcom_mode, DBC_SYMBOL: "fetched", IRX_SYMBOL: irx_mode},
+        raw_dir,
+    )
 
     smooth_count = sum(1 for r in rows if r["Quality Flag"] == GSCI_SMOOTHED_FLAG)
     shape_count = sum(1 for r in rows if r["Quality Flag"] == GSCI_SHAPE_FLAG)

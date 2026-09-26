@@ -11,6 +11,12 @@ target_frequency: daily
 output_contract: yahoo_compatible_ohlcv_plus_returns
 status: complete_model_derived_with_gsci_total_return_anchor_1970_1991
 current_dataset_status: gsci_tr_anchor_smoothed_then_gsci_tr_with_spgsci_shape_then_bcom_er_then_dbc_etf
+update_policy:
+  historical_yahoo_charts: validate_and_reuse_cached_spgsci_bcom_irx
+  historical_refresh_option: --refresh-historical-sources
+  live_tail: refetch_yahoo_dbc_through_requested_end_date
+  unavailable_historical_source: retain_valid_cache_or_fail_explicitly
+  provenance: build_metadata_records_raw_source_mode_and_sha256
 target_definition: >
   DBC-like broad diversified commodity futures total return. Close compounds the
   excess-return (spot+roll) level; Adj Close compounds the total-return level
@@ -143,6 +149,7 @@ sources:
     role: segment_1_1984_to_1991_daily_spot_shape
     status: active_segment_1_shape
     url: https://query1.finance.yahoo.com/v8/finance/chart/%5ESPGSCI
+    raw_file: sources/raw/broad_commodities_yahoo_spgsci_chart.json
     notes: >
       S&P GSCI Spot Index from 1984-01-03. Used for the daily spot SHAPE only,
       rescaled per anchor interval to the GSCI Total Return.
@@ -150,9 +157,12 @@ sources:
     role: segment_2_1991_to_2006_excess_return
     status: active_segment_2
     url: https://query1.finance.yahoo.com/v8/finance/chart/%5EBCOM
+    raw_file: sources/raw/broad_commodities_yahoo_bcom_chart.json
     notes: >
       Bloomberg Commodity Index from 1991-01-02. Verified as Excess Return via 2021
-      annual return behavior. Adj Close adds ^IRX collateral.
+      annual return behavior. Adj Close adds ^IRX collateral. The live Yahoo
+      endpoint returned HTTP 404 on 2026-09-26, including a historical-only
+      request; ordinary builds use the validated versioned chart cache.
   - name: Yahoo Finance chart API DBC
     role: segment_3_2006_to_present_total_return_etf
     status: active_segment_3
@@ -164,6 +174,7 @@ sources:
     role: collateral_rate_model_segments_0_1_and_2
     status: active_collateral_source
     url: https://query1.finance.yahoo.com/v8/finance/chart/%5EIRX
+    raw_file: sources/raw/broad_commodities_yahoo_irx_chart.json
     notes: >
       CBOE 13-week T-bill annualized rate in percent. Daily collateral accrual =
       IRX_close / 100 / 365. Also the Segment 0 trading calendar.
@@ -201,4 +212,6 @@ validation:
     - spgsci_shape_segment_is_desmoothed
     - dbc_segment_total_return_match
     - bcom_segment_price_return_match
+    - historical_chart_cache_covers_splice_dates_and_minimum_rows
+    - unavailable_historical_refresh_preserves_valid_cache
     - quality_flag_counts

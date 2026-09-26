@@ -8,6 +8,8 @@ from pathlib import Path
 
 import pytest
 
+from src import build_broad_commodities as commodity_builder
+
 
 DATASET = Path("data/processed/broad_commodities.csv")
 PARQUET_DATASET = Path("data/processed/broad_commodities.parquet")
@@ -262,3 +264,48 @@ def test_broad_commodities_quality_flag_counts():
     assert bcom_count > 3500
     assert dbc_count > 4500
     assert smooth_count + shape_count + bcom_count + dbc_count == len(rows)
+
+
+def test_historical_bcom_cache_avoids_live_request(tmp_path, monkeypatch):
+    if not RAW_BCOM.exists():
+        pytest.skip("Historical BCOM raw chart is unavailable")
+    cached = tmp_path / RAW_BCOM.name
+    cached.write_bytes(RAW_BCOM.read_bytes())
+
+    def unexpected_fetch(*args, **kwargs):
+        raise AssertionError("Valid historical BCOM cache should avoid a live request")
+
+    monkeypatch.setattr(commodity_builder, "fetch_chart", unexpected_fetch)
+    payload, mode = commodity_builder.load_historical_chart(tmp_path, "^BCOM", date(2026, 9, 26))
+    assert mode == "cached"
+    assert len(commodity_builder.chart_rows(payload)) > 3500
+
+
+def test_historical_bcom_refresh_preserves_cache_on_404(tmp_path, monkeypatch):
+    if not RAW_BCOM.exists():
+        pytest.skip("Historical BCOM raw chart is unavailable")
+    cached = tmp_path / RAW_BCOM.name
+    cached.write_bytes(RAW_BCOM.read_bytes())
+    original = cached.read_bytes()
+
+    def unavailable_fetch(*args, **kwargs):
+        raise commodity_builder.requests.HTTPError("404 Not Found")
+
+    monkeypatch.setattr(commodity_builder, "fetch_chart", unavailable_fetch)
+    payload, mode = commodity_builder.load_historical_chart(tmp_path, "^BCOM", date(2026, 9, 26), refresh=True)
+    assert mode == "cached_after_fetch_error"
+    assert cached.read_bytes() == original
+    assert len(commodity_builder.chart_rows(payload)) > 3500
+
+
+def test_historical_bcom_rejects_incomplete_cache(tmp_path, monkeypatch):
+    cached = tmp_path / RAW_BCOM.name
+    cached.write_text('{"chart":{"result":[{"meta":{"symbol":"^BCOM"},"timestamp":[],'
+                      '"indicators":{"quote":[{"close":[]}]}}]}}', encoding="utf-8")
+
+    def unavailable_fetch(*args, **kwargs):
+        raise commodity_builder.requests.HTTPError("404 Not Found")
+
+    monkeypatch.setattr(commodity_builder, "fetch_chart", unavailable_fetch)
+    with pytest.raises(RuntimeError, match="no valid cache"):
+        commodity_builder.load_historical_chart(tmp_path, "^BCOM", date(2026, 9, 26))

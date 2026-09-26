@@ -2,6 +2,10 @@
 
 Retrieval date: 2026-06-19
 
+## Update access decision (2026-09-26)
+
+The Fama/French developed-market daily ZIP is needed only through VT inception in 2008. The local ZIP was validated for its required 1990-2008 dates, row count, order, and gaps and reused. A missing or invalid ZIP is refetched; a failed optional refresh retains a valid cache. Yahoo VT remains the live source. Build metadata records the historical ZIP hash and retrieval mode; existing source rights caveats remain.
+
 ## MSCI World Annual Gross Total Returns
 
 - Finding: MSCI World has public annual gross total-return history beginning in 1970.
