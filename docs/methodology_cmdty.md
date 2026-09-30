@@ -43,11 +43,11 @@ Coverage starts on `1970-01-02`. The 2026-09-26 update produced 14,227 rows thro
 
 The 1970-1991 reconstruction is anchored to the **S&P GSCI Total Return Index**, obtained from MacroMicro's free republication (`https://en.macromicro.me/series/2692/sp-gsci-index`). The free tier serves the full 1970-present range normalized to 100 at 1970-01-02 but **downsampled to ~358 points (~57-day spacing)**; full daily history is paywalled. The series is retained in the local source cache `sources/raw/broad_commodities_gsci_tr_macromicro.csv` and does not change (it is historical). The raw cache is not part of the public release by default; only the DBC tail refreshes from Yahoo on update.
 
-Provenance and validation: the anchor was cross-checked against repo data. Over 1984-1991, the GSCI TR grew 3.08x while Yahoo `^SPGSCI` spot grew only 1.04x; T-bill collateral (~7.3%/yr) explains ~1.64x and the residual ~1.8x over 7 years implies ~9%/yr of roll yield, consistent with the energy-heavy, backwardated 1980s. Over 1991-2006 the GSCI TR grew 3.06x vs `^BCOM` excess return 1.83x (ratio ~1.67x), consistent with collateral plus GSCI's heavier energy tilt. This confirms the series is a genuine roll-inclusive, collateralized total return.
+Initial provenance check: the anchor's growth was compared with repo data. Those comparisons were interpreted as consistent with roll-inclusive, collateralized total return, but growth ratios alone do not establish series identity. The [2026-09-30 research](research/cmdty_daily_reconstruction.md) obtained an independent daily TR export for 1979-1991 and checked its identity against published SEC levels and annual returns. It also found level drift relative to current CMDTY. The original sparse anchor cache is absent from this checkout, so its identity, timestamps, and values still require direct verification.
 
 ### Segment 0 - GSCI TR anchor, smoothed (1970-1983)
 
-No free daily broad-commodity data exists before 1984 (Yahoo individual futures start ~2000; the only daily commodity series reaching 1970 is LBMA gold). Segment 0 therefore log-linearly interpolates the GSCI TR anchor onto the `^IRX` trading calendar:
+The initial build did not obtain a daily broad-commodity index before 1984, so Segment 0 log-linearly interpolates the GSCI TR anchor onto the `^IRX` trading calendar. Subsequent research acquired daily individual futures contracts reaching 1959 and a daily GSCI TR export starting 1979-12-27; these have not yet replaced production Segment 0:
 
 ```text
 Adj Close[t] = exp( interp_log_anchor(date[t]) )      # tracks the GSCI TR anchor
@@ -82,7 +82,7 @@ Levels (`Close`, `Adj Close`) compound continuously from 100 without resetting a
 
 ## Production Sources
 
-- **S&P GSCI Total Return anchor (MacroMicro)**: republished S&P GSCI Total Return Index, base 100 at 1970-01-02, ~bi-monthly. Static committed file. Roll yield + collateral + GSCI production weights for the 1970-1991 reconstruction.
+- **S&P GSCI Total Return anchor (MacroMicro)**: treated as a republished S&P GSCI Total Return Index, base 100 at 1970-01-02, ~bi-monthly. Static raw cache, not included in this checkout. Used as the roll/collateral/production-weighted level target for the 1970-1991 reconstruction; independent identity verification of that cache remains outstanding.
 - **Yahoo `^SPGSCI`**: S&P GSCI Spot Index, from `1984-01-03`. Used only for the daily spot **shape** in Segment 1.
 - **Yahoo `^BCOM`**: Bloomberg Commodity Index (excess return), from `1991-01-02`.
 - **Yahoo `DBC`**: Invesco DB Commodity Index Tracking Fund, from `2006-02-06`; Yahoo adjusted close for total return.
@@ -98,8 +98,8 @@ Levels (`Close`, `Adj Close`) compound continuously from 100 without resetting a
 
 ## Rejected or Limited Sources
 
-- Free daily commodity history before 1984 was not found: Yahoo individual futures start ~2000; the Stooq continuous git archive starts 1985-10 with no grains; DBnomics does not mirror FRED daily oil/metal series. Roll yield requires futures-curve data, which is not freely available pre-1990.
-- Free **daily** S&P GSCI Total Return is paywalled: Yahoo `^SPGSCITR` returns no usable history; the `GSG` ETF starts 2006; FRED/DBnomics carry no GSCI series; Investing.com and Barchart are blocked. MacroMicro's downsampled free series is used as the anchor.
+- Initial searches did not locate adequate free daily history before 1984. The 2026-09-30 research supersedes that assessment: TurtleTrader provides individual delivery histories reaching 1959, although the important early cattle constituent is still missing from the acquired archive panel.
+- A full daily GSCI TR extract for 1970-1991 has not been acquired. Automated Investing.com access failed, but the user obtained daily TR for 1979-1991 manually. This export supports a direct daily upgrade for that period after validation; the production build still uses MacroMicro's downsampled anchor.
 - AQR "Commodities for the Long Run" (monthly, roll-inclusive, back to 1877) is freely downloadable but equal-weighted, so it was not chosen as the energy-tilted DBC-like anchor.
 - Licensed daily S&P GSCI / Bloomberg BCOM total-return history, or a constituent-level futures reconstruction, remain the preferred quality upgrades.
 
@@ -143,9 +143,9 @@ See `tests/validation/test_broad_commodities_contract.py`. Key assertions:
 ### Segments 0-1: 1970-1991 - GSCI Total Return reconstruction
 
 1. **Anchor is downsampled and republished**: the GSCI TR anchor is MacroMicro's free ~bi-monthly republication of the S&P GSCI Total Return Index, not a licensed daily S&P feed. The level tracks the index to within a few percent at sample dates; intervening daily levels are interpolated (Segment 0) or overlaid (Segment 1).
-2. **Segment 0 daily volatility is smoothed**: no free daily broad-commodity data exists before 1984, so within-period volatility, drawdowns, and event timing in 1970-1983 are model-derived (constant-geometric interpolation). Month/interval-end levels are anchored; intraday path is not observed.
+2. **Segment 0 daily volatility is smoothed**: the production build still uses sparse anchors, so within-period volatility, drawdowns, and event timing in 1970-1983 are model-derived (constant-geometric interpolation). Suitable daily source leads and a 1979-onward daily TR export are now documented but not integrated. Month/interval-end levels are anchored; daily paths are not observed in this segment.
 3. **Segment 1 shape is spot, level is total return**: the daily shape comes from `^SPGSCI` spot, rescaled to the GSCI TR per anchor interval. Daily moves are genuine spot moves; the roll/collateral that lifts them to total return is added as a smooth per-interval overlay, not a daily-observed roll.
-4. **GSCI is not DBC**: the S&P GSCI is production-weighted and historically very energy-heavy (more so than DBC). It is the closest freely available long-history futures total-return index in spirit, but its weights and roll rules differ from DBC/DBLCI.
+4. **GSCI is not DBC**: the S&P GSCI is production-weighted and becomes energy-heavy in later decades. Its earliest basket is dominated by livestock and agriculture; energy is absent initially. Its weights and roll rules differ from DBC/DBLCI.
 5. **Back-calculated history**: the S&P GSCI launched in 1991; pre-1991 values are S&P's own back-tested reconstruction.
 6. **License**: the GSCI TR levels derive from S&P data via a third-party republication. Review licensing before redistributing derived data outside this project.
 
@@ -171,11 +171,21 @@ See `tests/validation/test_broad_commodities_contract.py`. Key assertions:
 ## Known Caveats Summary
 
 1. Segments 0-1 (1970-1991) are anchored to the S&P GSCI Total Return (roll + collateral + GSCI weights), but the anchor is a downsampled republication; Segment 0 daily volatility is smoothed and Segment 1's daily shape is spot.
-2. The S&P GSCI is energy-heavier than DBC, and is back-tested before 1991.
+2. The S&P GSCI has different exposures from DBC, becomes energy-heavy in later decades, and is back-tested before 1991.
 3. GSCI, BCOM, and DBC use different commodity universes and weighting/roll methodologies; the 1991 and 2006 splices are methodology breaks.
 4. Segment 3 is ETF net return, not gross index return.
 5. Official licensed daily total-return validation is unavailable for the pre-DBC history.
 
 ## Future Upgrade
 
-Replace the GSCI TR anchor with licensed **daily** S&P GSCI Total Return history (removing the downsampling/smoothing), or build a constituent-level futures reconstruction with documented contracts, rolls, weights, and collateral, phasing energy in as those contracts launched.
+Replace the sparse GSCI TR anchor with verified **daily** S&P GSCI Total Return history, starting with the acquired 1979-1991 export. For the unresolved 1970s, obtain full daily index history or build a constituent-level futures reconstruction with documented contracts, rolls, weights, and collateral. Phase each constituent in at its historical index admission, which may be later than its futures launch.
+
+The [2026-09-30 daily-data research](research/cmdty_daily_reconstruction.md)
+identifies freely downloadable individual daily futures histories reaching
+1959, vendor leads for missing early cattle and LME reference prices, a
+user-acquired daily TR export starting 1979-12-27, and a reproducible overlap
+experiment reviewed by Astra Max. Useful pre-1984 daily commodity data exists,
+although a complete validated 1970s GSCI basket has not yet been assembled. The research
+also documents collateral-calendar and anchor-boundary issues to address in
+an upgrade. The production construction described on this page remains the
+current published method.

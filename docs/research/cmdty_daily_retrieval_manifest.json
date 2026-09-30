@@ -1,0 +1,355 @@
+{
+  "sources": [
+    {
+      "path": "sources/raw/cmdty_daily_research/turtle_c.zip",
+      "source_url": "https://www.turtletrader.com/cddata/c.zip",
+      "kind": "individual_futures_archive",
+      "bytes": 990661,
+      "sha256": "29123fc772003e4f2a810fe08b0091c0dad730a04a087bc9edd1a4cf020d63f4",
+      "retrieval_timestamp_utc": null,
+      "documented_access_date": "2026-09-30",
+      "access_date_basis": "Research-session date; exact original fetch timestamp was not retained.",
+      "qualification": "Access does not establish redistribution permission; vendor prices and conventions require independent checks.",
+      "observed_coverage": {
+        "first_date": "1959-07-01",
+        "last_date": "2002-10-01",
+        "records": 68669,
+        "contracts": 217
+      }
+    },
+    {
+      "path": "sources/raw/cmdty_daily_research/turtle_s.zip",
+      "source_url": "https://www.turtletrader.com/cddata/s.zip",
+      "kind": "individual_futures_archive",
+      "bytes": 1258119,
+      "sha256": "f7455a8b4024860610b2d0972b10c90803077e5382fc1bf1c6e9421b7f39f8f0",
+      "retrieval_timestamp_utc": null,
+      "documented_access_date": "2026-09-30",
+      "access_date_basis": "Research-session date; exact original fetch timestamp was not retained.",
+      "qualification": "Access does not establish redistribution permission; vendor prices and conventions require independent checks.",
+      "observed_coverage": {
+        "first_date": "1959-07-01",
+        "last_date": "2002-10-01",
+        "records": 88422,
+        "contracts": 302
+      }
+    },
+    {
+      "path": "sources/raw/cmdty_daily_research/turtle_w.zip",
+      "source_url": "https://www.turtletrader.com/cddata/w.zip",
+      "kind": "individual_futures_archive",
+      "bytes": 859279,
+      "sha256": "8431768755cc8a91c9c0ed22237e9cd227c8125e74a1e56d9626afa30f4bd691",
+      "retrieval_timestamp_utc": null,
+      "documented_access_date": "2026-09-30",
+      "access_date_basis": "Research-session date; exact original fetch timestamp was not retained.",
+      "qualification": "Access does not establish redistribution permission; vendor prices and conventions require independent checks.",
+      "observed_coverage": {
+        "first_date": "1959-07-01",
+        "last_date": "2002-10-01",
+        "records": 62782,
+        "contracts": 216
+      }
+    },
+    {
+      "path": "sources/raw/cmdty_daily_research/turtle_sb.zip",
+      "source_url": "https://www.turtletrader.com/cddata/sb.zip",
+      "kind": "individual_futures_archive",
+      "bytes": 907632,
+      "sha256": "ed6543753e994b0a53e3dee3bc268b08ddd9efee88ea353fc653c84d8a34a63e",
+      "retrieval_timestamp_utc": null,
+      "documented_access_date": "2026-09-30",
+      "access_date_basis": "Research-session date; exact original fetch timestamp was not retained.",
+      "qualification": "Access does not establish redistribution permission; vendor prices and conventions require independent checks.",
+      "observed_coverage": {
+        "first_date": "1961-01-04",
+        "last_date": "2002-09-30",
+        "records": 71557,
+        "contracts": 208
+      }
+    },
+    {
+      "path": "sources/raw/cmdty_daily_research/turtle_si.zip",
+      "source_url": "https://www.turtletrader.com/cddata/si.zip",
+      "kind": "individual_futures_archive",
+      "bytes": 1241194,
+      "sha256": "236eb3199dbeab41145e2c8447dbdf6d57fcb06e512ef758c1dd6cfe3d0c75d0",
+      "retrieval_timestamp_utc": null,
+      "documented_access_date": "2026-09-30",
+      "access_date_basis": "Research-session date; exact original fetch timestamp was not retained.",
+      "qualification": "Access does not establish redistribution permission; vendor prices and conventions require independent checks.",
+      "observed_coverage": {
+        "first_date": "1963-06-13",
+        "last_date": "2002-10-01",
+        "records": 104660,
+        "contracts": 272
+      }
+    },
+    {
+      "path": "sources/raw/cmdty_daily_research/turtle_lh.zip",
+      "source_url": "https://www.turtletrader.com/cddata/lh.zip",
+      "kind": "individual_futures_archive",
+      "bytes": 895250,
+      "sha256": "8ff66f02308765f2ea53c4076df260b5055c257ae069d4de565b19b23ac37ecb",
+      "retrieval_timestamp_utc": null,
+      "documented_access_date": "2026-09-30",
+      "access_date_basis": "Research-session date; exact original fetch timestamp was not retained.",
+      "qualification": "Access does not establish redistribution permission; vendor prices and conventions require independent checks.",
+      "observed_coverage": {
+        "first_date": "1969-06-25",
+        "last_date": "2002-10-01",
+        "records": 68772,
+        "contracts": 229
+      }
+    },
+    {
+      "path": "sources/raw/cmdty_daily_research/turtle_ct.zip",
+      "source_url": "https://www.turtletrader.com/cddata/ct.zip",
+      "kind": "individual_futures_archive",
+      "bytes": 1019043,
+      "sha256": "a2e0ad692bc3d8f0ddd423fa96e0b4ddda6d41d48515ba54ef42d8c8c5d9dc63",
+      "retrieval_timestamp_utc": null,
+      "documented_access_date": "2026-09-30",
+      "access_date_basis": "Research-session date; exact original fetch timestamp was not retained.",
+      "qualification": "Access does not establish redistribution permission; vendor prices and conventions require independent checks.",
+      "observed_coverage": {
+        "first_date": "1959-07-01",
+        "last_date": "2004-06-01",
+        "records": 82303,
+        "contracts": 221
+      }
+    },
+    {
+      "path": "sources/raw/cmdty_daily_research/turtle_gc.zip",
+      "source_url": "https://www.turtletrader.com/cddata/gc.zip",
+      "kind": "individual_futures_archive",
+      "bytes": 1047048,
+      "sha256": "96292d22406bdcda93b30f995b9f531acfa1b6b7136fabc5ec69eb0e6453395a",
+      "retrieval_timestamp_utc": null,
+      "documented_access_date": "2026-09-30",
+      "access_date_basis": "Research-session date; exact original fetch timestamp was not retained.",
+      "qualification": "Access does not establish redistribution permission; vendor prices and conventions require independent checks.",
+      "observed_coverage": {
+        "first_date": "1974-12-31",
+        "last_date": "2002-10-01",
+        "records": 87586,
+        "contracts": 213
+      }
+    },
+    {
+      "path": "sources/raw/cmdty_daily_research/turtle_hg.zip",
+      "source_url": "https://www.turtletrader.com/cddata/hg.zip",
+      "kind": "individual_futures_archive",
+      "bytes": 1326032,
+      "sha256": "afb4b071f848e43e66e31200770870e487f141598a5c973d93f0f146594ddfd0",
+      "retrieval_timestamp_utc": null,
+      "documented_access_date": "2026-09-30",
+      "access_date_basis": "Research-session date; exact original fetch timestamp was not retained.",
+      "qualification": "Access does not establish redistribution permission; vendor prices and conventions require independent checks.",
+      "observed_coverage": {
+        "first_date": "1959-07-01",
+        "last_date": "2002-10-01",
+        "records": 118834,
+        "contracts": 319
+      }
+    },
+    {
+      "path": "sources/raw/cmdty_daily_research/turtle_ho.zip",
+      "source_url": "https://www.turtletrader.com/cddata/ho.zip",
+      "kind": "individual_futures_archive",
+      "bytes": 986918,
+      "sha256": "fa86d4a009cb2df2a557d2ce886cfe87db424b09d92dbdf2a4bb64c5793a9042",
+      "retrieval_timestamp_utc": null,
+      "documented_access_date": "2026-09-30",
+      "access_date_basis": "Research-session date; exact original fetch timestamp was not retained.",
+      "qualification": "Access does not establish redistribution permission; vendor prices and conventions require independent checks.",
+      "observed_coverage": {
+        "first_date": "1979-03-06",
+        "last_date": "2002-10-01",
+        "records": 77820,
+        "contracts": 277
+      }
+    },
+    {
+      "path": "sources/raw/cmdty_daily_research/turtle_cl.zip",
+      "source_url": "https://www.turtletrader.com/cddata/cl.zip",
+      "kind": "individual_futures_archive",
+      "bytes": 1137054,
+      "sha256": "2dad131a21a37ec1f81291d1fee7707edf8367972300bff9be697c94f3d15f25",
+      "retrieval_timestamp_utc": null,
+      "documented_access_date": "2026-09-30",
+      "access_date_basis": "Research-session date; exact original fetch timestamp was not retained.",
+      "qualification": "Access does not establish redistribution permission; vendor prices and conventions require independent checks.",
+      "observed_coverage": {
+        "first_date": "1983-03-30",
+        "last_date": "2002-10-01",
+        "records": 94240,
+        "contracts": 235
+      }
+    },
+    {
+      "path": "sources/raw/cmdty_daily_research/turtle_cr.zip",
+      "source_url": "https://www.turtletrader.com/cddata/cr.zip",
+      "kind": "individual_futures_archive",
+      "bytes": 174020,
+      "sha256": "f6f1ffec42416329c53db0327688b662f97d5133c6a228c69d9170168f9552dd",
+      "retrieval_timestamp_utc": null,
+      "documented_access_date": "2026-09-30",
+      "access_date_basis": "Research-session date; exact original fetch timestamp was not retained.",
+      "qualification": "Access does not establish redistribution permission; vendor prices and conventions require independent checks.",
+      "observed_coverage": {
+        "first_date": "1986-06-12",
+        "last_date": "2002-08-30",
+        "records": 15117,
+        "contracts": 84
+      }
+    },
+    {
+      "path": "sources/raw/cmdty_daily_research/turtle_kc.zip",
+      "source_url": "https://www.turtletrader.com/cddata/kc.zip",
+      "kind": "individual_futures_archive",
+      "bytes": 645616,
+      "sha256": "bb8819325fe2b5cfe1d7f3d06fecdc5f37472a4567b9c6753d7a8d16aed7ece1",
+      "retrieval_timestamp_utc": null,
+      "documented_access_date": "2026-09-30",
+      "access_date_basis": "Research-session date; exact original fetch timestamp was not retained.",
+      "qualification": "Access does not establish redistribution permission; vendor prices and conventions require independent checks.",
+      "observed_coverage": {
+        "first_date": "1973-08-17",
+        "last_date": "2002-10-01",
+        "records": 49238,
+        "contracts": 148
+      }
+    },
+    {
+      "path": "sources/raw/cmdty_daily_research/turtle_pb.zip",
+      "source_url": "https://www.turtletrader.com/cddata/pb.zip",
+      "kind": "individual_futures_archive",
+      "bytes": 703452,
+      "sha256": "92e266760d8ac54611e19112ec10d29a6509831d446037989dfa1b5ed1208c89",
+      "retrieval_timestamp_utc": null,
+      "documented_access_date": "2026-09-30",
+      "access_date_basis": "Research-session date; exact original fetch timestamp was not retained.",
+      "qualification": "Access does not establish redistribution permission; vendor prices and conventions require independent checks.",
+      "observed_coverage": {
+        "first_date": "1963-01-22",
+        "last_date": "2002-10-01",
+        "records": 53880,
+        "contracts": 195
+      }
+    },
+    {
+      "path": "sources/raw/cmdty_daily_research/yahoo_spgsci.json",
+      "source_url": "https://query1.finance.yahoo.com/v8/finance/chart/%5ESPGSCI?period1=441763200&period2=694224000&interval=1d",
+      "kind": "daily_index_comparison",
+      "bytes": 209091,
+      "sha256": "df55cd7f58b5a73c36790a0055feb21ea59cbb247c0f77078d65ea718c2f9af2",
+      "retrieval_timestamp_utc": null,
+      "documented_access_date": "2026-09-30",
+      "access_date_basis": "Research-session date; exact original fetch timestamp was not retained.",
+      "qualification": "Access does not establish redistribution permission; vendor prices and conventions require independent checks.",
+      "observed_coverage": {
+        "first_date": "1984-01-03",
+        "last_date": "1991-12-31",
+        "records": 2021,
+        "symbol": "^SPGSCI",
+        "exchange": "SNP",
+        "price_field": "close"
+      }
+    },
+    {
+      "path": "sources/raw/cmdty_daily_research/csi_factsheets.csv",
+      "source_url": "https://apps.csidata.com/factsheets.php?type=commodity&format=csv",
+      "kind": "vendor_coverage_claims",
+      "bytes": 478699,
+      "sha256": "8efcd4fe714416828eeb810ddba723fd9ad75e56e4769ef16e71b3f475b05d95",
+      "retrieval_timestamp_utc": null,
+      "documented_access_date": "2026-09-30",
+      "access_date_basis": "Research-session date; exact original fetch timestamp was not retained.",
+      "qualification": "Access does not establish redistribution permission; vendor prices and conventions require independent checks."
+    },
+    {
+      "path": "sources/raw/cmdty_daily_research/turtle_page.html",
+      "source_url": "https://www.turtletrader.com/hpd/",
+      "kind": "cached_source_page",
+      "bytes": 212270,
+      "sha256": "fd562c67ea3b127f6a60ed8d4e5dfdc9fa5f80e6dae2a3574d4a68cb9e7e3865",
+      "retrieval_timestamp_utc": null,
+      "documented_access_date": "2026-09-30",
+      "access_date_basis": "Research-session date; exact original fetch timestamp was not retained.",
+      "qualification": "Access does not establish redistribution permission; vendor prices and conventions require independent checks."
+    },
+    {
+      "path": "sources/raw/cmdty_daily_research/cycle_catalog.html",
+      "source_url": "https://cycle-trader.com/catalog/",
+      "kind": "cached_source_page",
+      "bytes": 91290,
+      "sha256": "c3a9560b5fc89d95bc0c2510fa025e752f281071c81c38048b11228f3bf6ed8f",
+      "retrieval_timestamp_utc": null,
+      "documented_access_date": "2026-09-30",
+      "access_date_basis": "Research-session date; exact original fetch timestamp was not retained.",
+      "qualification": "Access does not establish redistribution permission; vendor prices and conventions require independent checks."
+    },
+    {
+      "path": "sources/raw/cmdty_daily_research/cycle_live-cattle.html",
+      "source_url": "https://cycle-trader.com/data/live-cattle/",
+      "kind": "cached_source_page",
+      "bytes": 36392,
+      "sha256": "30dba1c9720ee6d81241b427cdfb82f1868d92c09f62108ff888e81aec20ed38",
+      "retrieval_timestamp_utc": null,
+      "documented_access_date": "2026-09-30",
+      "access_date_basis": "Research-session date; exact original fetch timestamp was not retained.",
+      "qualification": "Access does not establish redistribution permission; vendor prices and conventions require independent checks."
+    },
+    {
+      "path": "sources/raw/cmdty_daily_research/cycle_corn.html",
+      "source_url": "https://cycle-trader.com/data/corn/",
+      "kind": "cached_source_page",
+      "bytes": 36426,
+      "sha256": "d393c37e3a58f63da9572563399f02ce9196075254f6f6faa91979bdb9e7006d",
+      "retrieval_timestamp_utc": null,
+      "documented_access_date": "2026-09-30",
+      "access_date_basis": "Research-session date; exact original fetch timestamp was not retained.",
+      "qualification": "Access does not establish redistribution permission; vendor prices and conventions require independent checks."
+    },
+    {
+      "path": "sources/raw/cmdty_daily_research/cycle_soybeans.html",
+      "source_url": "https://cycle-trader.com/data/soybeans/",
+      "kind": "cached_source_page",
+      "bytes": 38105,
+      "sha256": "c5792a4a228b878f172fc5282ee84d98aa994355676424f42a5cf08306b4f6d5",
+      "retrieval_timestamp_utc": null,
+      "documented_access_date": "2026-09-30",
+      "access_date_basis": "Research-session date; exact original fetch timestamp was not retained.",
+      "qualification": "Access does not establish redistribution permission; vendor prices and conventions require independent checks."
+    },
+    {
+      "path": "sources/raw/cmdty_daily_research/cycle_wheat.html",
+      "source_url": "https://cycle-trader.com/data/wheat/",
+      "kind": "cached_source_page",
+      "bytes": 37221,
+      "sha256": "5a471e17f35d8623fbe133c73a0bf3a0c96d85f90e45a0abb812d0de1c9907f5",
+      "retrieval_timestamp_utc": null,
+      "documented_access_date": "2026-09-30",
+      "access_date_basis": "Research-session date; exact original fetch timestamp was not retained.",
+      "qualification": "Access does not establish redistribution permission; vendor prices and conventions require independent checks."
+    },
+    {
+      "path": "sources/raw/cmdty_daily_research/investing_gsci_tr_1979_1991.csv",
+      "source_url": "https://www.investing.com/indices/sp-gsci-commodity-total-return-historical-data",
+      "kind": "user_supplied_daily_tr_export",
+      "bytes": 217231,
+      "sha256": "4320308a7a5715337e28c2f601db19d14c3a67425ae9a7aae7cfe397d8fd5ad5",
+      "retrieval_timestamp_utc": null,
+      "documented_access_date": "2026-09-30",
+      "access_date_basis": "Research-session date; exact original fetch timestamp was not retained.",
+      "qualification": "Daily frequency, 12 official-reference date levels, and 12 independently published annual returns support GSCI TR identity. Sparse checks do not independently validate every daily value or establish publication rights. Pre-1991 history is back-calculated.",
+      "observed_coverage": {
+        "rows": 3035,
+        "first_date": "1979-12-27",
+        "last_date": "1991-12-31",
+        "price_field": "Price"
+      }
+    }
+  ]
+}

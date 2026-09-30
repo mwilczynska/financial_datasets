@@ -1,0 +1,1388 @@
+{
+  "archive_coverage": [
+    {
+      "symbol": "c",
+      "source_url": "https://www.turtletrader.com/cddata/c.zip",
+      "documented_access_date": "2026-09-30",
+      "sha256": "29123fc772003e4f2a810fe08b0091c0dad730a04a087bc9edd1a4cf020d63f4",
+      "bytes": 990661,
+      "contracts": 217,
+      "first_date": "1959-07-01",
+      "last_date": "2002-10-01",
+      "records": 68669,
+      "early_records": 32823,
+      "early_unique_dates": 5292,
+      "rejected_members": [
+        "CC02Z.TXT",
+        "CC02U.TXT"
+      ],
+      "parse_errors": [],
+      "duplicate_contract_dates": 0,
+      "nonpositive_closes": 0,
+      "ohlc_inconsistencies": 0,
+      "early_same_contract_moves_over_20pct": 1
+    },
+    {
+      "symbol": "s",
+      "source_url": "https://www.turtletrader.com/cddata/s.zip",
+      "documented_access_date": "2026-09-30",
+      "sha256": "f7455a8b4024860610b2d0972b10c90803077e5382fc1bf1c6e9421b7f39f8f0",
+      "bytes": 1258119,
+      "contracts": 302,
+      "first_date": "1959-07-01",
+      "last_date": "2002-10-01",
+      "records": 88422,
+      "early_records": 43363,
+      "early_unique_dates": 5290,
+      "rejected_members": [],
+      "parse_errors": [],
+      "duplicate_contract_dates": 0,
+      "nonpositive_closes": 0,
+      "ohlc_inconsistencies": 0,
+      "early_same_contract_moves_over_20pct": 0
+    },
+    {
+      "symbol": "w",
+      "source_url": "https://www.turtletrader.com/cddata/w.zip",
+      "documented_access_date": "2026-09-30",
+      "sha256": "8431768755cc8a91c9c0ed22237e9cd227c8125e74a1e56d9626afa30f4bd691",
+      "bytes": 859279,
+      "contracts": 216,
+      "first_date": "1959-07-01",
+      "last_date": "2002-10-01",
+      "records": 62782,
+      "early_records": 29635,
+      "early_unique_dates": 5292,
+      "rejected_members": [],
+      "parse_errors": [],
+      "duplicate_contract_dates": 0,
+      "nonpositive_closes": 0,
+      "ohlc_inconsistencies": 0,
+      "early_same_contract_moves_over_20pct": 0
+    },
+    {
+      "symbol": "sb",
+      "source_url": "https://www.turtletrader.com/cddata/sb.zip",
+      "documented_access_date": "2026-09-30",
+      "sha256": "ed6543753e994b0a53e3dee3bc268b08ddd9efee88ea353fc653c84d8a34a63e",
+      "bytes": 907632,
+      "contracts": 208,
+      "first_date": "1961-01-04",
+      "last_date": "2002-09-30",
+      "records": 71557,
+      "early_records": 39307,
+      "early_unique_dates": 5242,
+      "rejected_members": [],
+      "parse_errors": [],
+      "duplicate_contract_dates": 0,
+      "nonpositive_closes": 0,
+      "ohlc_inconsistencies": 0,
+      "early_same_contract_moves_over_20pct": 3
+    },
+    {
+      "symbol": "si",
+      "source_url": "https://www.turtletrader.com/cddata/si.zip",
+      "documented_access_date": "2026-09-30",
+      "sha256": "236eb3199dbeab41145e2c8447dbdf6d57fcb06e512ef758c1dd6cfe3d0c75d0",
+      "bytes": 1241194,
+      "contracts": 272,
+      "first_date": "1963-06-13",
+      "last_date": "2002-10-01",
+      "records": 104660,
+      "early_records": 53496,
+      "early_unique_dates": 5263,
+      "rejected_members": [],
+      "parse_errors": [],
+      "duplicate_contract_dates": 0,
+      "nonpositive_closes": 0,
+      "ohlc_inconsistencies": 0,
+      "early_same_contract_moves_over_20pct": 2
+    },
+    {
+      "symbol": "lh",
+      "source_url": "https://www.turtletrader.com/cddata/lh.zip",
+      "documented_access_date": "2026-09-30",
+      "sha256": "8ff66f02308765f2ea53c4076df260b5055c257ae069d4de565b19b23ac37ecb",
+      "bytes": 895250,
+      "contracts": 229,
+      "first_date": "1969-06-25",
+      "last_date": "2002-10-01",
+      "records": 68772,
+      "early_records": 43389,
+      "early_unique_dates": 5295,
+      "rejected_members": [
+        "LC02V.txt"
+      ],
+      "parse_errors": [],
+      "duplicate_contract_dates": 0,
+      "nonpositive_closes": 0,
+      "ohlc_inconsistencies": 0,
+      "early_same_contract_moves_over_20pct": 0
+    },
+    {
+      "symbol": "ct",
+      "source_url": "https://www.turtletrader.com/cddata/ct.zip",
+      "documented_access_date": "2026-09-30",
+      "sha256": "a2e0ad692bc3d8f0ddd423fa96e0b4ddda6d41d48515ba54ef42d8c8c5d9dc63",
+      "bytes": 1019043,
+      "contracts": 221,
+      "first_date": "1959-07-01",
+      "last_date": "2004-06-01",
+      "records": 82303,
+      "early_records": 37148,
+      "early_unique_dates": 5270,
+      "rejected_members": [],
+      "parse_errors": [],
+      "duplicate_contract_dates": 0,
+      "nonpositive_closes": 0,
+      "ohlc_inconsistencies": 0,
+      "early_same_contract_moves_over_20pct": 0
+    },
+    {
+      "symbol": "gc",
+      "source_url": "https://www.turtletrader.com/cddata/gc.zip",
+      "documented_access_date": "2026-09-30",
+      "sha256": "96292d22406bdcda93b30f995b9f531acfa1b6b7136fabc5ec69eb0e6453395a",
+      "bytes": 1047048,
+      "contracts": 213,
+      "first_date": "1974-12-31",
+      "last_date": "2002-10-01",
+      "records": 87586,
+      "early_records": 43582,
+      "early_unique_dates": 4027,
+      "rejected_members": [
+        "GC001F.txt"
+      ],
+      "parse_errors": [],
+      "duplicate_contract_dates": 0,
+      "nonpositive_closes": 0,
+      "ohlc_inconsistencies": 0,
+      "early_same_contract_moves_over_20pct": 0
+    },
+    {
+      "symbol": "hg",
+      "source_url": "https://www.turtletrader.com/cddata/hg.zip",
+      "documented_access_date": "2026-09-30",
+      "sha256": "afb4b071f848e43e66e31200770870e487f141598a5c973d93f0f146594ddfd0",
+      "bytes": 1326032,
+      "contracts": 319,
+      "first_date": "1959-07-01",
+      "last_date": "2002-10-01",
+      "records": 118834,
+      "early_records": 50855,
+      "early_unique_dates": 5263,
+      "rejected_members": [],
+      "parse_errors": [],
+      "duplicate_contract_dates": 0,
+      "nonpositive_closes": 0,
+      "ohlc_inconsistencies": 0,
+      "early_same_contract_moves_over_20pct": 0
+    },
+    {
+      "symbol": "ho",
+      "source_url": "https://www.turtletrader.com/cddata/ho.zip",
+      "documented_access_date": "2026-09-30",
+      "sha256": "fa86d4a009cb2df2a557d2ce886cfe87db424b09d92dbdf2a4bb64c5793a9042",
+      "bytes": 986918,
+      "contracts": 277,
+      "first_date": "1979-03-06",
+      "last_date": "2002-10-01",
+      "records": 77820,
+      "early_records": 30291,
+      "early_unique_dates": 2970,
+      "rejected_members": [],
+      "parse_errors": [],
+      "duplicate_contract_dates": 0,
+      "nonpositive_closes": 0,
+      "ohlc_inconsistencies": 1,
+      "early_same_contract_moves_over_20pct": 0
+    },
+    {
+      "symbol": "cl",
+      "source_url": "https://www.turtletrader.com/cddata/cl.zip",
+      "documented_access_date": "2026-09-30",
+      "sha256": "2dad131a21a37ec1f81291d1fee7707edf8367972300bff9be697c94f3d15f25",
+      "bytes": 1137054,
+      "contracts": 235,
+      "first_date": "1983-03-30",
+      "last_date": "2002-10-01",
+      "records": 94240,
+      "early_records": 24188,
+      "early_unique_dates": 1948,
+      "rejected_members": [],
+      "parse_errors": [],
+      "duplicate_contract_dates": 0,
+      "nonpositive_closes": 0,
+      "ohlc_inconsistencies": 0,
+      "early_same_contract_moves_over_20pct": 0
+    },
+    {
+      "symbol": "cr",
+      "source_url": "https://www.turtletrader.com/cddata/cr.zip",
+      "documented_access_date": "2026-09-30",
+      "sha256": "f6f1ffec42416329c53db0327688b662f97d5133c6a228c69d9170168f9552dd",
+      "bytes": 174020,
+      "contracts": 84,
+      "first_date": "1986-06-12",
+      "last_date": "2002-08-30",
+      "records": 15117,
+      "early_records": 4383,
+      "early_unique_dates": 1152,
+      "rejected_members": [],
+      "parse_errors": [],
+      "duplicate_contract_dates": 0,
+      "nonpositive_closes": 0,
+      "ohlc_inconsistencies": 0,
+      "early_same_contract_moves_over_20pct": 0
+    },
+    {
+      "symbol": "kc",
+      "source_url": "https://www.turtletrader.com/cddata/kc.zip",
+      "documented_access_date": "2026-09-30",
+      "sha256": "bb8819325fe2b5cfe1d7f3d06fecdc5f37472a4567b9c6753d7a8d16aed7ece1",
+      "bytes": 645616,
+      "contracts": 148,
+      "first_date": "1973-08-17",
+      "last_date": "2002-10-01",
+      "records": 49238,
+      "early_records": 28958,
+      "early_unique_dates": 4342,
+      "rejected_members": [],
+      "parse_errors": [],
+      "duplicate_contract_dates": 0,
+      "nonpositive_closes": 0,
+      "ohlc_inconsistencies": 0,
+      "early_same_contract_moves_over_20pct": 2
+    },
+    {
+      "symbol": "pb",
+      "source_url": "https://www.turtletrader.com/cddata/pb.zip",
+      "documented_access_date": "2026-09-30",
+      "sha256": "92e266760d8ac54611e19112ec10d29a6509831d446037989dfa1b5ed1208c89",
+      "bytes": 703452,
+      "contracts": 195,
+      "first_date": "1963-01-22",
+      "last_date": "2002-10-01",
+      "records": 53880,
+      "early_records": 31313,
+      "early_unique_dates": 5295,
+      "rejected_members": [
+        "PB0801.TXT"
+      ],
+      "parse_errors": [],
+      "duplicate_contract_dates": 0,
+      "nonpositive_closes": 0,
+      "ohlc_inconsistencies": 0,
+      "early_same_contract_moves_over_20pct": 0
+    }
+  ],
+  "illustrative_roll_coverage": {
+    "c": {
+      "valid_returns": 5312,
+      "missing_examples": []
+    },
+    "w": {
+      "valid_returns": 5312,
+      "missing_examples": []
+    },
+    "s": {
+      "valid_returns": 5308,
+      "missing_examples": [
+        [
+          "1973-06-21",
+          "S1973X"
+        ],
+        [
+          "1973-06-22",
+          "S1973X"
+        ],
+        [
+          "1973-06-28",
+          "S1973X"
+        ],
+        [
+          "1973-06-29",
+          "S1973X"
+        ]
+      ]
+    },
+    "sb": {
+      "valid_returns": 5207,
+      "missing_examples": [
+        [
+          "1970-02-12",
+          "SB1970H"
+        ],
+        [
+          "1970-02-13",
+          "SB1970K"
+        ],
+        [
+          "1970-10-12",
+          "SB1971H"
+        ],
+        [
+          "1970-10-13",
+          "SB1971H"
+        ],
+        [
+          "1970-11-11",
+          "SB1971H"
+        ],
+        [
+          "1970-11-12",
+          "SB1971H"
+        ],
+        [
+          "1971-02-12",
+          "SB1971K"
+        ],
+        [
+          "1971-02-16",
+          "SB1971K"
+        ],
+        [
+          "1971-10-11",
+          "SB1972H"
+        ],
+        [
+          "1971-10-12",
+          "SB1972H"
+        ],
+        [
+          "1971-10-25",
+          "SB1972H"
+        ],
+        [
+          "1971-10-26",
+          "SB1972H"
+        ]
+      ]
+    },
+    "si": {
+      "valid_returns": 5250,
+      "missing_examples": [
+        [
+          "1970-02-12",
+          "SI1970H"
+        ],
+        [
+          "1970-02-13",
+          "SI1970K"
+        ],
+        [
+          "1970-10-12",
+          "SI1970Z"
+        ],
+        [
+          "1970-10-13",
+          "SI1970Z"
+        ],
+        [
+          "1970-11-11",
+          "SI1970Z"
+        ],
+        [
+          "1970-11-12",
+          "SI1970Z"
+        ],
+        [
+          "1971-02-12",
+          "SI1971K"
+        ],
+        [
+          "1971-02-16",
+          "SI1971K"
+        ],
+        [
+          "1971-08-16",
+          "SI1971Z"
+        ],
+        [
+          "1971-08-17",
+          "SI1971Z"
+        ],
+        [
+          "1971-08-18",
+          "SI1971Z"
+        ],
+        [
+          "1971-08-19",
+          "SI1971Z"
+        ]
+      ]
+    },
+    "ct": {
+      "valid_returns": 5258,
+      "missing_examples": [
+        [
+          "1971-02-12",
+          "CT1971K"
+        ],
+        [
+          "1971-02-16",
+          "CT1971K"
+        ],
+        [
+          "1971-05-19",
+          "CT1971N"
+        ],
+        [
+          "1971-05-20",
+          "CT1971N"
+        ],
+        [
+          "1971-10-11",
+          "CT1971Z"
+        ],
+        [
+          "1971-10-12",
+          "CT1971Z"
+        ],
+        [
+          "1971-10-25",
+          "CT1971Z"
+        ],
+        [
+          "1971-10-26",
+          "CT1971Z"
+        ],
+        [
+          "1972-07-03",
+          "CT1972Z"
+        ],
+        [
+          "1972-07-05",
+          "CT1972Z"
+        ],
+        [
+          "1972-10-09",
+          "CT1972Z"
+        ],
+        [
+          "1972-10-10",
+          "CT1972Z"
+        ]
+      ]
+    },
+    "gc": {
+      "valid_returns": 4009,
+      "missing_examples": [
+        [
+          "1969-12-02",
+          "GC1970G"
+        ],
+        [
+          "1969-12-03",
+          "GC1970G"
+        ],
+        [
+          "1969-12-04",
+          "GC1970G"
+        ],
+        [
+          "1969-12-05",
+          "GC1970G"
+        ],
+        [
+          "1969-12-08",
+          "GC1970G"
+        ],
+        [
+          "1969-12-09",
+          "GC1970G"
+        ],
+        [
+          "1969-12-10",
+          "GC1970G"
+        ],
+        [
+          "1969-12-11",
+          "GC1970G"
+        ],
+        [
+          "1969-12-12",
+          "GC1970G"
+        ],
+        [
+          "1969-12-15",
+          "GC1970G"
+        ],
+        [
+          "1969-12-16",
+          "GC1970G"
+        ],
+        [
+          "1969-12-17",
+          "GC1970G"
+        ]
+      ]
+    },
+    "kc": {
+      "valid_returns": 4297,
+      "missing_examples": [
+        [
+          "1969-12-02",
+          "KC1970H"
+        ],
+        [
+          "1969-12-03",
+          "KC1970H"
+        ],
+        [
+          "1969-12-04",
+          "KC1970H"
+        ],
+        [
+          "1969-12-05",
+          "KC1970H"
+        ],
+        [
+          "1969-12-08",
+          "KC1970H"
+        ],
+        [
+          "1969-12-09",
+          "KC1970H"
+        ],
+        [
+          "1969-12-10",
+          "KC1970H"
+        ],
+        [
+          "1969-12-11",
+          "KC1970H"
+        ],
+        [
+          "1969-12-12",
+          "KC1970H"
+        ],
+        [
+          "1969-12-15",
+          "KC1970H"
+        ],
+        [
+          "1969-12-16",
+          "KC1970H"
+        ],
+        [
+          "1969-12-17",
+          "KC1970H"
+        ]
+      ]
+    },
+    "lh": {
+      "valid_returns": 5304,
+      "missing_examples": [
+        [
+          "1972-11-24",
+          "LH1973G"
+        ],
+        [
+          "1972-11-27",
+          "LH1973G"
+        ],
+        [
+          "1977-07-14",
+          "LH1977Q"
+        ],
+        [
+          "1977-07-15",
+          "LH1977V"
+        ],
+        [
+          "1978-11-24",
+          "LH1979G"
+        ],
+        [
+          "1978-11-27",
+          "LH1979G"
+        ],
+        [
+          "1983-11-25",
+          "LH1984G"
+        ],
+        [
+          "1983-11-28",
+          "LH1984G"
+        ]
+      ]
+    },
+    "ho": {
+      "valid_returns": 2796,
+      "missing_examples": [
+        [
+          "1969-12-02",
+          "HO1970F"
+        ],
+        [
+          "1969-12-03",
+          "HO1970F"
+        ],
+        [
+          "1969-12-04",
+          "HO1970F"
+        ],
+        [
+          "1969-12-05",
+          "HO1970F"
+        ],
+        [
+          "1969-12-08",
+          "HO1970F"
+        ],
+        [
+          "1969-12-09",
+          "HO1970F"
+        ],
+        [
+          "1969-12-10",
+          "HO1970F"
+        ],
+        [
+          "1969-12-11",
+          "HO1970F"
+        ],
+        [
+          "1969-12-12",
+          "HO1970G"
+        ],
+        [
+          "1969-12-15",
+          "HO1970G"
+        ],
+        [
+          "1969-12-16",
+          "HO1970G"
+        ],
+        [
+          "1969-12-17",
+          "HO1970G"
+        ]
+      ]
+    },
+    "cl": {
+      "valid_returns": 1922,
+      "missing_examples": [
+        [
+          "1969-12-02",
+          "CL1970F"
+        ],
+        [
+          "1969-12-03",
+          "CL1970F"
+        ],
+        [
+          "1969-12-04",
+          "CL1970F"
+        ],
+        [
+          "1969-12-05",
+          "CL1970F"
+        ],
+        [
+          "1969-12-08",
+          "CL1970F"
+        ],
+        [
+          "1969-12-09",
+          "CL1970F"
+        ],
+        [
+          "1969-12-10",
+          "CL1970F"
+        ],
+        [
+          "1969-12-11",
+          "CL1970F"
+        ],
+        [
+          "1969-12-12",
+          "CL1970G"
+        ],
+        [
+          "1969-12-15",
+          "CL1970G"
+        ],
+        [
+          "1969-12-16",
+          "CL1970G"
+        ],
+        [
+          "1969-12-17",
+          "CL1970G"
+        ]
+      ]
+    }
+  },
+  "metrics": {
+    "1970_1983": {
+      "current_cmdty": {
+        "rows": 3485,
+        "annualized_volatility": 0.03701748238136038,
+        "lag1_autocorrelation": 0.6365105823528285,
+        "best_day": 0.0140959576,
+        "worst_day": -0.0106761084,
+        "max_drawdown": -0.35279643603194666
+      },
+      "illustrative_equal_weight_grains_er": {
+        "rows": 3517,
+        "annualized_volatility": 0.21281843297701095,
+        "lag1_autocorrelation": 0.025039377859852316,
+        "best_day": 0.06633248135106785,
+        "worst_day": -0.07265452471249768,
+        "max_drawdown": -0.7028563484878795
+      }
+    },
+    "1984_1990": {
+      "current_cmdty": {
+        "rows": 1768,
+        "annualized_volatility": 0.1565750372099376,
+        "lag1_autocorrelation": 0.09885401206636464,
+        "best_day": 0.0795079419,
+        "worst_day": -0.0558380061,
+        "max_drawdown": -0.20618809844114683
+      },
+      "illustrative_equal_weight_grains_er": {
+        "rows": 1770,
+        "annualized_volatility": 0.16746366776795574,
+        "lag1_autocorrelation": 0.05449515308723707,
+        "best_day": 0.05191967584594808,
+        "worst_day": -0.05297646847928194,
+        "max_drawdown": -0.4307375148072531
+      }
+    },
+    "observed_gsci_spot_1984_1990": {
+      "rows": 1767,
+      "annualized_volatility": 0.15654858109259165,
+      "lag1_autocorrelation": 0.09848398692420449,
+      "best_day": 0.07822779373605981,
+      "worst_day": -0.05578721139121967,
+      "max_drawdown": -0.34216041091071636
+    }
+  },
+  "input_hashes": {
+    "published_cmdty_csv": "2d7e4b76fe6f9105d1d1068a60970a9ec34ffb3bc5a7e53ec4c381451e10b1b4",
+    "yahoo_spgsci": {
+      "sha256": "df55cd7f58b5a73c36790a0055feb21ea59cbb247c0f77078d65ea718c2f9af2",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/%5ESPGSCI?period1=441763200&period2=694224000&interval=1d"
+    }
+  },
+  "boundary_audit": {
+    "synthetic_full_anchor_return": 0.1,
+    "synthetic_anchor_endpoint": "1984-01-12",
+    "shape_segment_last_date": "1984-01-09",
+    "level_at_shape_end": 110.0,
+    "full_target_allocated_before_endpoint": true,
+    "note": "Structural reproduction only; actual historical bias cannot be measured without the original anchor cache."
+  },
+  "calculation_versions": {
+    "python": "3.14.0",
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "script_sha256": "b8d6bc0cdfe1fe25891b0a9294afe7ecd81ef93e7128224b9ec32a6a7f28a9d4",
+    "builder_sha256": "d4b6eb5c6ca2eca04dafed5a18e9d4ee8f6414bdea9a62b54440ac61718e2467"
+  },
+  "masked_endpoint_experiment_gsci_spot_only": [
+    {
+      "year": 1987,
+      "predictors": "grains_only",
+      "train_rows": 757,
+      "test_rows": 253,
+      "complete_prediction_rows": 253,
+      "fallback_rows": 0,
+      "fallback_policy": "Zero predicted log return only where a full predictor set is unavailable; apply the common drift bridge afterward. Diagnostic assumption, not observed market returns.",
+      "unavailable_dates_and_target_returns": {},
+      "raw_daily_correlation_on_complete_dates": 0.3713398125370914,
+      "full_target_growth": 0.031769934217730784,
+      "complete_case_target_growth_for_audit": 0.031769934217730784,
+      "max_endpoint_log_error": 1.214306433183765e-17,
+      "smoothed_rmse_bps": 77.97700448078864,
+      "daily_proxy_bridged_rmse_bps": 72.93666115504742,
+      "observed_daily_log_volatility": 0.125657163035793,
+      "smoothed_daily_log_volatility": 0.020156318013903857,
+      "daily_proxy_bridged_log_volatility": 0.06221299532879317,
+      "coefficients_unscaled": {
+        "c": 0.0674233913157631,
+        "s": 0.14834955209879822,
+        "w": 0.1260698633205446
+      }
+    },
+    {
+      "year": 1987,
+      "predictors": "available_multisector",
+      "train_rows": 737,
+      "test_rows": 253,
+      "complete_prediction_rows": 249,
+      "fallback_rows": 4,
+      "fallback_policy": "Zero predicted log return only where a full predictor set is unavailable; apply the common drift bridge afterward. Diagnostic assumption, not observed market returns.",
+      "unavailable_dates_and_target_returns": {
+        "1987-01-02": 0.005336791749389835,
+        "1987-01-05": -0.0024356695075028467,
+        "1987-11-27": 0.0023102339025899976,
+        "1987-11-30": -0.010948449752165579
+      },
+      "raw_daily_correlation_on_complete_dates": 0.7988474291325512,
+      "full_target_growth": 0.031769934217730784,
+      "complete_case_target_growth_for_audit": 0.03778953594182632,
+      "max_endpoint_log_error": 1.0408340855860843e-17,
+      "smoothed_rmse_bps": 77.97700448078864,
+      "daily_proxy_bridged_rmse_bps": 47.715317988931155,
+      "observed_daily_log_volatility": 0.125657163035793,
+      "smoothed_daily_log_volatility": 0.020156318013903857,
+      "daily_proxy_bridged_log_volatility": 0.10031858013094905,
+      "coefficients_unscaled": {
+        "c": 0.07690128971779103,
+        "s": 0.03972627718059645,
+        "w": 0.10777051565355429,
+        "sb": 0.026687683211800064,
+        "si": 0.020872237919916218,
+        "lh": 0.2457907915403468,
+        "ct": 0.03362681901636365,
+        "gc": 0.03727025057472237,
+        "ho": 0.2218727084821571,
+        "cl": -0.003999545655241792,
+        "kc": 0.058452389967357674
+      }
+    },
+    {
+      "year": 1988,
+      "predictors": "grains_only",
+      "train_rows": 1010,
+      "test_rows": 253,
+      "complete_prediction_rows": 253,
+      "fallback_rows": 0,
+      "fallback_policy": "Zero predicted log return only where a full predictor set is unavailable; apply the common drift bridge afterward. Diagnostic assumption, not observed market returns.",
+      "unavailable_dates_and_target_returns": {},
+      "raw_daily_correlation_on_complete_dates": 0.3582186886473113,
+      "full_target_growth": 0.12219315771503962,
+      "complete_case_target_growth_for_audit": 0.12219315771503962,
+      "max_endpoint_log_error": 1.3877787807814457e-17,
+      "smoothed_rmse_bps": 93.49778902232798,
+      "daily_proxy_bridged_rmse_bps": 87.86246443449066,
+      "observed_daily_log_volatility": 0.14981583371198673,
+      "smoothed_daily_log_volatility": 0.01810904619510235,
+      "daily_proxy_bridged_log_volatility": 0.0794212092022202,
+      "coefficients_unscaled": {
+        "c": 0.060552183481782595,
+        "s": 0.12643405933907648,
+        "w": 0.13325180938463882
+      }
+    },
+    {
+      "year": 1988,
+      "predictors": "available_multisector",
+      "train_rows": 986,
+      "test_rows": 253,
+      "complete_prediction_rows": 251,
+      "fallback_rows": 2,
+      "fallback_policy": "Zero predicted log return only where a full predictor set is unavailable; apply the common drift bridge afterward. Diagnostic assumption, not observed market returns.",
+      "unavailable_dates_and_target_returns": {
+        "1988-11-25": 0.00423303363711125,
+        "1988-11-28": 0.021313205211686226
+      },
+      "raw_daily_correlation_on_complete_dates": 0.9002318279714597,
+      "full_target_growth": 0.12219315771503962,
+      "complete_case_target_growth_for_audit": 0.09414320109655977,
+      "max_endpoint_log_error": 1.3877787807814457e-17,
+      "smoothed_rmse_bps": 93.49778902232798,
+      "daily_proxy_bridged_rmse_bps": 43.62743215616252,
+      "observed_daily_log_volatility": 0.14981583371198673,
+      "smoothed_daily_log_volatility": 0.01810904619510235,
+      "daily_proxy_bridged_log_volatility": 0.11691658957912311,
+      "coefficients_unscaled": {
+        "c": 0.0655619546347018,
+        "s": 0.02964613909779418,
+        "w": 0.10242702663392106,
+        "sb": 0.02561544485753421,
+        "si": 0.014097613510978086,
+        "lh": 0.2202511157853607,
+        "ct": 0.023892703984703084,
+        "gc": 0.04375616139466486,
+        "ho": 0.2266159679624091,
+        "cl": 0.02069371601620034,
+        "kc": 0.04306948880044786
+      }
+    },
+    {
+      "year": 1989,
+      "predictors": "grains_only",
+      "train_rows": 1263,
+      "test_rows": 252,
+      "complete_prediction_rows": 252,
+      "fallback_rows": 0,
+      "fallback_policy": "Zero predicted log return only where a full predictor set is unavailable; apply the common drift bridge afterward. Diagnostic assumption, not observed market returns.",
+      "unavailable_dates_and_target_returns": {},
+      "raw_daily_correlation_on_complete_dates": 0.2220870968711058,
+      "full_target_growth": 0.12385443242948874,
+      "complete_case_target_growth_for_audit": 0.12385443242948874,
+      "max_endpoint_log_error": 2.0816681711721685e-17,
+      "smoothed_rmse_bps": 76.01557128986639,
+      "daily_proxy_bridged_rmse_bps": 74.65450732972906,
+      "observed_daily_log_volatility": 0.12339410920352702,
+      "smoothed_daily_log_volatility": 0.024629398361236576,
+      "daily_proxy_bridged_log_volatility": 0.04938450951827954,
+      "coefficients_unscaled": {
+        "c": 0.05024968154577652,
+        "s": 0.12652539290662618,
+        "w": 0.10228186646745849
+      }
+    },
+    {
+      "year": 1989,
+      "predictors": "available_multisector",
+      "train_rows": 1237,
+      "test_rows": 252,
+      "complete_prediction_rows": 248,
+      "fallback_rows": 4,
+      "fallback_policy": "Zero predicted log return only where a full predictor set is unavailable; apply the common drift bridge afterward. Diagnostic assumption, not observed market returns.",
+      "unavailable_dates_and_target_returns": {
+        "1989-07-03": -0.004332473744959153,
+        "1989-07-05": 0.009392434604003075,
+        "1989-11-24": 0.0027934848261439438,
+        "1989-11-27": -0.009543492624538352
+      },
+      "raw_daily_correlation_on_complete_dates": 0.8791596384366914,
+      "full_target_growth": 0.12385443242948874,
+      "complete_case_target_growth_for_audit": 0.1258713328926711,
+      "max_endpoint_log_error": 6.938893903907228e-18,
+      "smoothed_rmse_bps": 76.01557128986639,
+      "daily_proxy_bridged_rmse_bps": 38.313704635256826,
+      "observed_daily_log_volatility": 0.12339410920352702,
+      "smoothed_daily_log_volatility": 0.024629398361236576,
+      "daily_proxy_bridged_log_volatility": 0.09027342991425763,
+      "coefficients_unscaled": {
+        "c": 0.057315035994435645,
+        "s": 0.03094382124841176,
+        "w": 0.0888271927762114,
+        "sb": 0.028111475110042396,
+        "si": 0.0088494064544975,
+        "lh": 0.20952450061444458,
+        "ct": 0.031437080878431785,
+        "gc": 0.05091514006822037,
+        "ho": 0.21243685438985654,
+        "cl": 0.06177480882313939,
+        "kc": 0.04206004678751289
+      }
+    },
+    {
+      "year": 1990,
+      "predictors": "grains_only",
+      "train_rows": 1515,
+      "test_rows": 252,
+      "complete_prediction_rows": 252,
+      "fallback_rows": 0,
+      "fallback_policy": "Zero predicted log return only where a full predictor set is unavailable; apply the common drift bridge afterward. Diagnostic assumption, not observed market returns.",
+      "unavailable_dates_and_target_returns": {},
+      "raw_daily_correlation_on_complete_dates": 0.20993742286939962,
+      "full_target_growth": 0.06137515667408148,
+      "complete_case_target_growth_for_audit": 0.06137515667408148,
+      "max_endpoint_log_error": 2.0816681711721685e-17,
+      "smoothed_rmse_bps": 168.57407097901213,
+      "daily_proxy_bridged_rmse_bps": 164.77956067095982,
+      "observed_daily_log_volatility": 0.2746168909229993,
+      "smoothed_daily_log_volatility": 0.05931057731866021,
+      "daily_proxy_bridged_log_volatility": 0.06947689271883471,
+      "coefficients_unscaled": {
+        "c": 0.035517603903009946,
+        "s": 0.12539981223832436,
+        "w": 0.10370759265804363
+      }
+    },
+    {
+      "year": 1990,
+      "predictors": "available_multisector",
+      "train_rows": 1485,
+      "test_rows": 252,
+      "complete_prediction_rows": 245,
+      "fallback_rows": 7,
+      "fallback_policy": "Zero predicted log return only where a full predictor set is unavailable; apply the common drift bridge afterward. Diagnostic assumption, not observed market returns.",
+      "unavailable_dates_and_target_returns": {
+        "1990-08-13": -0.0010980714879514908,
+        "1990-08-14": 0.004763400711815802,
+        "1990-11-23": 0.03682760879538849,
+        "1990-11-26": 0.01894370004430712,
+        "1990-12-24": 0.00023663362990644643,
+        "1990-12-26": 0.023088592300910094,
+        "1990-12-31": 0.012613384647858217
+      },
+      "raw_daily_correlation_on_complete_dates": 0.9456190465382384,
+      "full_target_growth": 0.06137515667408148,
+      "complete_case_target_growth_for_audit": -0.0340250699111169,
+      "max_endpoint_log_error": 1.3877787807814457e-17,
+      "smoothed_rmse_bps": 168.57407097901213,
+      "daily_proxy_bridged_rmse_bps": 91.87479500346554,
+      "observed_daily_log_volatility": 0.2746168909229993,
+      "smoothed_daily_log_volatility": 0.05931057731866021,
+      "daily_proxy_bridged_log_volatility": 0.1541023638438923,
+      "coefficients_unscaled": {
+        "c": 0.04520465027422991,
+        "s": 0.03619889861205587,
+        "w": 0.08909155215584884,
+        "sb": 0.029202254700080203,
+        "si": 0.012119404897745361,
+        "lh": 0.2017075464104866,
+        "ct": 0.03026674648221097,
+        "gc": 0.0375477194649655,
+        "ho": 0.20397583447788004,
+        "cl": 0.08764468982012834,
+        "kc": 0.039463620233387474
+      }
+    }
+  ],
+  "user_supplied_daily_tr_audit": {
+    "source_url": "https://www.investing.com/indices/sp-gsci-commodity-total-return-historical-data",
+    "delivery": "User-supplied CSV; source inferred from requested page and export filename, not authenticated official index metadata.",
+    "price_field": "Price",
+    "rows": 3035,
+    "first_date": "1979-12-27",
+    "last_date": "1991-12-31",
+    "weekend_observations": 0,
+    "largest_calendar_gap_days": 5,
+    "printed_change_max_absolute_error": 5.003024613267539e-05,
+    "printed_change_errors_above_rounding_tolerance": 0,
+    "duplicate_dates": 0,
+    "annual_coverage_and_returns": [
+      {
+        "year": 1979,
+        "rows": 3,
+        "first_date": "1979-12-27",
+        "last_date": "1979-12-31",
+        "calendar_year_return_if_prior_close_available": null
+      },
+      {
+        "year": 1980,
+        "rows": 252,
+        "first_date": "1980-01-02",
+        "last_date": "1980-12-31",
+        "calendar_year_return_if_prior_close_available": 0.11084246096481021
+      },
+      {
+        "year": 1981,
+        "rows": 253,
+        "first_date": "1981-01-02",
+        "last_date": "1981-12-31",
+        "calendar_year_return_if_prior_close_available": -0.2300894238586002
+      },
+      {
+        "year": 1982,
+        "rows": 253,
+        "first_date": "1982-01-04",
+        "last_date": "1982-12-31",
+        "calendar_year_return_if_prior_close_available": 0.1155863619333084
+      },
+      {
+        "year": 1983,
+        "rows": 252,
+        "first_date": "1983-01-03",
+        "last_date": "1983-12-30",
+        "calendar_year_return_if_prior_close_available": 0.16255247691015962
+      },
+      {
+        "year": 1984,
+        "rows": 253,
+        "first_date": "1984-01-03",
+        "last_date": "1984-12-31",
+        "calendar_year_return_if_prior_close_available": 0.010505167229130752
+      },
+      {
+        "year": 1985,
+        "rows": 253,
+        "first_date": "1985-01-02",
+        "last_date": "1985-12-31",
+        "calendar_year_return_if_prior_close_available": 0.10012605096617433
+      },
+      {
+        "year": 1986,
+        "rows": 253,
+        "first_date": "1986-01-02",
+        "last_date": "1986-12-31",
+        "calendar_year_return_if_prior_close_available": 0.02044697488719316
+      },
+      {
+        "year": 1987,
+        "rows": 253,
+        "first_date": "1987-01-02",
+        "last_date": "1987-12-31",
+        "calendar_year_return_if_prior_close_available": 0.23773860097929145
+      },
+      {
+        "year": 1988,
+        "rows": 253,
+        "first_date": "1988-01-04",
+        "last_date": "1988-12-30",
+        "calendar_year_return_if_prior_close_available": 0.279349462717555
+      },
+      {
+        "year": 1989,
+        "rows": 252,
+        "first_date": "1989-01-03",
+        "last_date": "1989-12-29",
+        "calendar_year_return_if_prior_close_available": 0.38280810251686814
+      },
+      {
+        "year": 1990,
+        "rows": 252,
+        "first_date": "1990-01-02",
+        "last_date": "1990-12-31",
+        "calendar_year_return_if_prior_close_available": 0.29077409020743894
+      },
+      {
+        "year": 1991,
+        "rows": 253,
+        "first_date": "1991-01-02",
+        "last_date": "1991-12-31",
+        "calendar_year_return_if_prior_close_available": -0.06134301224333305
+      }
+    ],
+    "published_cmdty_comparison": {
+      "1980_1983": {
+        "common_dates": 996,
+        "return_interval_count": 995,
+        "return_comparison": "Level changes between consecutive common close dates; unmatched dates are aggregated into their enclosing interval, not omitted.",
+        "downloaded_tr_metrics_on_own_calendar": {
+          "rows": 1010,
+          "annualized_volatility": 0.13575949090506179,
+          "lag1_autocorrelation": 0.02909766401237545,
+          "best_day": 0.03327531344338985,
+          "worst_day": -0.038598124625922714,
+          "max_drawdown": -0.3241868966163659
+        },
+        "downloaded_tr_metrics_on_common_intervals": {
+          "rows": 995,
+          "annualized_volatility": 0.1365348599311118,
+          "lag1_autocorrelation": 0.025800058335498966,
+          "best_day": 0.03327531344338985,
+          "worst_day": -0.038598124625922714,
+          "max_drawdown": -0.3241868966163658
+        },
+        "published_cmdty_metrics_on_common_intervals": {
+          "rows": 995,
+          "annualized_volatility": 0.02641545634490118,
+          "lag1_autocorrelation": 0.6537947130516144,
+          "best_day": 0.007703157161525809,
+          "worst_day": -0.007309655913430357,
+          "max_drawdown": -0.27441653388321385
+        },
+        "raw_return_correlation_common_intervals": 0.18497215718566806,
+        "daily_log_return_rmse_common_intervals_bps": 84.53278270733661,
+        "downloaded_tr_growth_between_common_endpoints": 0.09984113229347202,
+        "published_cmdty_growth_between_common_endpoints": 0.12965658937032165,
+        "normalized_level_ratio_at_end": 1.0271088761834868,
+        "normalized_level_ratio_min": 0.948996489912333,
+        "normalized_level_ratio_max": 1.1637380997084261
+      },
+      "1984_1990": {
+        "common_dates": 1768,
+        "return_interval_count": 1767,
+        "return_comparison": "Level changes between consecutive common close dates; unmatched dates are aggregated into their enclosing interval, not omitted.",
+        "downloaded_tr_metrics_on_own_calendar": {
+          "rows": 1769,
+          "annualized_volatility": 0.1548709092044603,
+          "lag1_autocorrelation": 0.08483456784061796,
+          "best_day": 0.07893565856244789,
+          "worst_day": -0.05518438792683855,
+          "max_drawdown": -0.2027753876126026
+        },
+        "downloaded_tr_metrics_on_common_intervals": {
+          "rows": 1767,
+          "annualized_volatility": 0.15479354191769895,
+          "lag1_autocorrelation": 0.0854998583573315,
+          "best_day": 0.07893565856244789,
+          "worst_day": -0.05518438792683855,
+          "max_drawdown": -0.2027753876126025
+        },
+        "published_cmdty_metrics_on_common_intervals": {
+          "rows": 1767,
+          "annualized_volatility": 0.15661927668162964,
+          "lag1_autocorrelation": 0.09887478650180813,
+          "best_day": 0.07950794192011856,
+          "worst_day": -0.05583800610300704,
+          "max_drawdown": -0.2061880985193053
+        },
+        "raw_return_correlation_common_intervals": 0.9903547032637996,
+        "daily_log_return_rmse_common_intervals_bps": 13.689948562702154,
+        "downloaded_tr_growth_between_common_endpoints": 2.2676416899749743,
+        "published_cmdty_growth_between_common_endpoints": 2.0385537948277808,
+        "normalized_level_ratio_at_end": 0.9298919781045675,
+        "normalized_level_ratio_min": 0.9298919781045675,
+        "normalized_level_ratio_max": 1.0174500304475333
+      }
+    },
+    "independent_reference_checks": {
+      "sec_2006_filing": {
+        "url": "https://www.sec.gov/rules/sro/nyse/2006/34-53658.pdf",
+        "pages": "29-30",
+        "checks": [
+          {
+            "date": "1980-01-02",
+            "reference": 692.4,
+            "downloaded": 692.4,
+            "absolute_error": 0.0
+          },
+          {
+            "date": "1981-01-02",
+            "reference": 764.66,
+            "downloaded": 764.66,
+            "absolute_error": 0.0
+          },
+          {
+            "date": "1982-01-04",
+            "reference": 593.61,
+            "downloaded": 593.61,
+            "absolute_error": 0.0
+          },
+          {
+            "date": "1983-01-03",
+            "reference": 657.98,
+            "downloaded": 657.98,
+            "absolute_error": 0.0
+          },
+          {
+            "date": "1984-01-03",
+            "reference": 747.23,
+            "downloaded": 747.23,
+            "absolute_error": 0.0
+          },
+          {
+            "date": "1985-01-03",
+            "reference": 760.67,
+            "downloaded": 760.67,
+            "absolute_error": 0.0
+          },
+          {
+            "date": "1986-01-02",
+            "reference": 833.67,
+            "downloaded": 833.67,
+            "absolute_error": 0.0
+          },
+          {
+            "date": "1987-01-02",
+            "reference": 868.83,
+            "downloaded": 868.83,
+            "absolute_error": 0.0
+          },
+          {
+            "date": "1988-01-04",
+            "reference": 1105.18,
+            "downloaded": 1105.1801,
+            "absolute_error": 9.999999997489795e-05
+          },
+          {
+            "date": "1989-01-03",
+            "reference": 1371.33,
+            "downloaded": 1371.33,
+            "absolute_error": 0.0
+          },
+          {
+            "date": "1990-01-02",
+            "reference": 1937.46,
+            "downloaded": 1937.46,
+            "absolute_error": 0.0
+          },
+          {
+            "date": "1991-01-02",
+            "reference": 2346.03,
+            "downloaded": 2346.0259,
+            "absolute_error": 0.004100000000107684
+          }
+        ],
+        "all_within_quoted_rounding": true
+      },
+      "kaplan_lummer_1997_official_gsci_series": {
+        "url": "https://www.etf.com/docs/20040913_GSCI.pdf",
+        "location": "Appendix A, page 13; preface and endnote 3 identify official Goldman Sachs TR data",
+        "checks": [
+          {
+            "year": 1980,
+            "reference_return_pct": 11.08,
+            "downloaded_return_pct": 11.08424609648102,
+            "absolute_error_percentage_points": 0.0042460964810207
+          },
+          {
+            "year": 1981,
+            "reference_return_pct": -23.01,
+            "downloaded_return_pct": -23.00894238586002,
+            "absolute_error_percentage_points": 0.0010576141399809558
+          },
+          {
+            "year": 1982,
+            "reference_return_pct": 11.56,
+            "downloaded_return_pct": 11.558636193330841,
+            "absolute_error_percentage_points": 0.001363806669159473
+          },
+          {
+            "year": 1983,
+            "reference_return_pct": 16.26,
+            "downloaded_return_pct": 16.25524769101596,
+            "absolute_error_percentage_points": 0.004752308984041775
+          },
+          {
+            "year": 1984,
+            "reference_return_pct": 1.05,
+            "downloaded_return_pct": 1.0505167229130752,
+            "absolute_error_percentage_points": 0.0005167229130751405
+          },
+          {
+            "year": 1985,
+            "reference_return_pct": 10.01,
+            "downloaded_return_pct": 10.012605096617433,
+            "absolute_error_percentage_points": 0.0026050966174331336
+          },
+          {
+            "year": 1986,
+            "reference_return_pct": 2.04,
+            "downloaded_return_pct": 2.044697488719316,
+            "absolute_error_percentage_points": 0.0046974887193158565
+          },
+          {
+            "year": 1987,
+            "reference_return_pct": 23.77,
+            "downloaded_return_pct": 23.773860097929145,
+            "absolute_error_percentage_points": 0.003860097929145212
+          },
+          {
+            "year": 1988,
+            "reference_return_pct": 27.93,
+            "downloaded_return_pct": 27.9349462717555,
+            "absolute_error_percentage_points": 0.00494627175550022
+          },
+          {
+            "year": 1989,
+            "reference_return_pct": 38.28,
+            "downloaded_return_pct": 38.280810251686816,
+            "absolute_error_percentage_points": 0.0008102516868149223
+          },
+          {
+            "year": 1990,
+            "reference_return_pct": 29.08,
+            "downloaded_return_pct": 29.077409020743893,
+            "absolute_error_percentage_points": 0.002590979256105186
+          },
+          {
+            "year": 1991,
+            "reference_return_pct": -6.13,
+            "downloaded_return_pct": -6.134301224333305,
+            "absolute_error_percentage_points": 0.0043012243333047095
+          }
+        ],
+        "all_within_published_rounding": true
+      }
+    },
+    "spot_overlap": {
+      "rows": 2020,
+      "first_date": "1984-01-03",
+      "last_date": "1991-12-31",
+      "daily_return_correlation": 0.9921112256455878,
+      "tr_growth": 2.0671947057800137,
+      "spot_growth": -0.16495963446315742
+    },
+    "qualification": "Daily frequency, 12 official-reference date levels, and 12 independently published annual returns support GSCI TR identity. Sparse checks do not independently validate every daily value or establish publication rights. Pre-1991 history is back-calculated."
+  },
+  "collateral_audit": {
+    "implemented_accumulation_factor": 2.9646938843589483,
+    "calendar_gap_accumulation_factor_using_same_implied_rates": 4.890929270745394,
+    "omitted_calendar_days": 2416,
+    "note": "Sensitivity using same-row implied rates, not an official GSCI collateral reconstruction; production uses one accrual per row."
+  }
+}
