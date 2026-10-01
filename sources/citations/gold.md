@@ -1,50 +1,31 @@
-# Gold Source Notes
+# Gold source notes
 
-Accessed: 2026-06-16; revised 2026-06-20 (redefined to track GLD including fees).
+Revised 2026-09-30: GLD adopted from its earliest daily quote, 2004-11-18.
 
-## Dataset intent
+- Yahoo chart: https://query1.finance.yahoo.com/v8/finance/chart/GLD
+- Issuer: https://www.ssga.com/us/en/individual/etfs/spdr-gold-shares-gld
+- Original historical LBMA: https://prices.lbma.org.uk/json/gold_pm.json
 
-`GOLDPM` is built to behave like holding the SPDR Gold Shares ETF (`GLD`), **including its fee
-drag**, extended back to 1970. `Close` stays pure LBMA PM spot; `Adj Close` is GLD-tracking
-(spot minus 0.40% expense drag pre-2004, then observed GLD).
+The full Yahoo request from 2004-01-01 through 2026-09-29 returned 5,499 usable
+close/adjusted-close observations, beginning 2004-11-18. Retrieval dates, coverage,
+and hashes are in gold build metadata and the ignored source retrieval manifest
+under `sources/raw/gld_switch_2026_09_30/`. The chart is cached locally as
+`sources/raw/gold_yahoo_gld_chart.json`.
 
-## LBMA Gold Price PM
+The issuer reports inception 2004-11-18 and 0.40% expenses. Expenses reduce gold
+represented per share. GLD prices can differ from NAV and have US-close timing;
+scaled prices are indices rather than exact USD/oz spot quotes. No additional
+GLD expense is deducted from observed returns.
 
-- URL: https://prices.lbma.org.uk/json/gold_pm.json
-- Public page: https://www.lbma.org.uk/prices-and-data/precious-metal-prices
-- Use: drives `Close` / `Price Return` (pure spot) across all of 1970-present, and the modeled
-  `Adj Close` (spot minus GLD expense drag) before GLD's 2004 inception.
-- Finding: LBMA provides daily Gold PM fixing data back to 1968. The JSON values include USD per troy ounce as the first value.
-- Caveat: this is a spot/fixing price series struck at the London PM fix (~10am ET), not the US
-  4pm close. It excludes storage, insurance, financing, taxes, transaction costs, and futures
-  collateral yield.
+Published 1970-01-02–2004-11-17 rows remain unchanged: historical spot Close and
+modeled expense-adjusted returns. Both GLD indices anchor to the preceding
+modeled levels with zero first-quote return, then follow GLD on its NYSE calendar.
+Pre-inception history is a model. LBMA's current 403 no longer blocks ordinary
+updates; explicit historical LBMA refresh still requires source access.
 
-## SPDR Gold Shares (GLD) — Yahoo chart API
+GOLD2X retains historical spot inputs via
+`sources/derived/gold_2x_historical_spot_returns.csv` and its provenance JSON.
+These preserved published inputs include the old GLD-stepped UK holidays.
 
-- URL: https://query1.finance.yahoo.com/v8/finance/chart/GLD
-- Use: drives `Adj Close` / `Total Return` from 2004-11-19 onward; `Adj Close` is exactly
-  proportional to GLD's adjusted close in this era (the modern series *is* GLD).
-- Finding: GLD inception 2004-11-18; adjusted close reflects the fund's gold-per-share erosion
-  from its 0.40% expense ratio. Over 2004-2026 GLD underperformed pure spot by ~0.49%/yr (mostly
-  the fee), which is exactly the drag this dataset now folds in.
-- Caveat: GLD closes at 4pm ET vs the LBMA PM fix; day-to-day timing differs but is zero-mean for
-  cumulative return.
-- Calendar: the observed era is built on **GLD's (NYSE) trading calendar**, not the London/LBMA
-  calendar. This is essential because the project backtester compares series by intersecting daily
-  returns and compounding; a London-calendar gold series vs a US-calendar ETF drifts on every
-  UK-bank-holiday day (it produced a spurious +47% cumulative GOLDPM-vs-GLD gap over 2004-2026
-  even though the levels were proportional). On UK bank holidays (no LBMA fix) Close is stepped by
-  GLD's move so the series stays on GLD's calendar without inventing a London fixing.
-
-## LBMA Gold Price AM
-
-- URL: https://prices.lbma.org.uk/json/gold_am.json
-- Use: same-administrator sanity reference.
-- Caveat: this is not an independent source from LBMA PM, but it can help detect gross data problems.
-
-## FRED Gold PM
-
-- URL: https://fred.stlouisfed.org/series/GOLDPMGBD228NLBM
-- Use: candidate validation source for the same London PM gold price.
-- Finding: FRED requires an API key for metadata API access; graph CSV timed out in this environment during initial implementation.
-- Caveat: source appears to mirror London PM fixing data, so it is not methodologically independent from LBMA.
+Yahoo access/redistribution rights remain unresolved. An open-source client
+does not license its data: https://github.com/ranaroussi/yfinance

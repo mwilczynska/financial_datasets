@@ -19,6 +19,7 @@ from build_gold_2x import (  # noqa: E402
     close_series,
     make_irx_lookup,
     _synthetic_return,
+    load_base_price_returns,
 )
 
 DATASET = Path("data/processed/gold_2x.csv")
@@ -209,10 +210,9 @@ def test_observed_dataset_tracks_ugl_cumulatively():
 
 def test_synthetic_segment_matches_daily_reset_model():
     rows = read_csv(DATASET)
-    base_rows = read_csv(BASE_DATASET)
-    # The 2x model builds on GOLDPM's pure-spot Price Return (not Total Return, which now carries
-    # GLD's expense drag).
-    base_tr = {r["Date"]: (Decimal(r["Price Return"]) if r["Price Return"] else None) for r in base_rows}
+    # The model uses pre-GLD spot and the frozen spot input through UGL inception,
+    # rather than reinterpreting modern GLD prices as fee-free spot.
+    base_tr = dict(load_base_price_returns(BASE_DATASET.resolve()))
     get_irx = make_irx_lookup(load_raw(IRX_RAW))
 
     level = Decimal("100")

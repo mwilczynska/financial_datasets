@@ -1,0 +1,11 @@
+{
+  "created_utc": "2026-09-30T19:41:13.026727+00:00",
+  "source": "Previously published data/processed/gold.csv Price Return",
+  "source_csv_sha256": "0d6cf10ba4b5acd805a387c41f897e45c421b817acaf155ec9fdb9294ebb217b",
+  "original_spot_url": "https://prices.lbma.org.uk/json/gold_pm.json",
+  "first_date": "2004-11-18",
+  "last_date": "2008-12-03",
+  "row_count": 1018,
+  "sha256": "cdac516b47f7adb4517ad8b4c5b895055c356a1be68571c6446e1babe9e7ac92",
+  "notes": "Frozen NYSE-calendar spot returns, including old GLD-stepped UK holidays; synthetic GOLD2X input only."
+}

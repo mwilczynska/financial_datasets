@@ -60,8 +60,8 @@ dataset in different formats.
 | ITT3X | 3x daily-reset intermediate-term Treasury, TYD-like | 1970-01-02 | 2026-09-25 | [CSV](data/processed/intermediate_term_us_treasury_3x.csv) | [Parquet](data/processed/intermediate_term_us_treasury_3x.parquet) | [ITT3X](docs/methodology_itt3x.md) |
 | LTT | Long-term U.S. Treasury, TLT-like | 1970-01-02 | 2026-09-25 | [CSV](data/processed/long_term_us_treasury.csv) | [Parquet](data/processed/long_term_us_treasury.parquet) | [LTT](docs/methodology_ltt.md) |
 | LTT3X | 3x daily-reset long-term Treasury, TMF-like | 1970-01-02 | 2026-09-25 | [CSV](data/processed/long_term_us_treasury_3x.csv) | [Parquet](data/processed/long_term_us_treasury_3x.parquet) | [LTT3X](docs/methodology_ltt3x.md) |
-| GOLDPM | Gold spot with a GLD-tracking adjusted series | 1970-01-02 | 2026-09-25 | [CSV](data/processed/gold.csv) | [Parquet](data/processed/gold.parquet) | [GOLDPM](docs/methodology_goldpm.md) |
-| GOLD2X | 2x daily-reset gold, UGL-like | 1970-01-02 | 2026-09-25 | [CSV](data/processed/gold_2x.csv) | [Parquet](data/processed/gold_2x.parquet) | [GOLD2X](docs/methodology_gold2x.md) |
+| GOLDPM | Gold — GLD price and total return with modeled history | 1970-01-02 | 2026-09-29 | [CSV](data/processed/gold.csv) | [Parquet](data/processed/gold.parquet) | [GOLDPM](docs/methodology_goldpm.md) |
+| GOLD2X | 2x daily-reset gold, UGL-like | 1970-01-02 | 2026-09-29 | [CSV](data/processed/gold_2x.csv) | [Parquet](data/processed/gold_2x.parquet) | [GOLD2X](docs/methodology_gold2x.md) |
 | CMDTY | Broad commodities, DBC-like | 1970-01-02 | 2026-09-25 | [CSV](data/processed/broad_commodities.csv) | [Parquet](data/processed/broad_commodities.parquet) | [CMDTY](docs/methodology_cmdty.md) |
 | CPI | U.S. CPI-U daily model-derived deflator | 1970-01-01 | 2026-09-26 | [CSV](data/processed/cpi_inflation.csv) | [Parquet](data/processed/cpi_inflation.parquet) | [CPI](docs/methodology_cpi.md) |
 | GLSTOCK | Global all-world stocks proxy | 1970-01-02 | 2026-09-25 | [CSV](data/processed/global_stocks.csv) | [Parquet](data/processed/global_stocks.parquet) | [GLSTOCK](docs/methodology_glstock.md) |

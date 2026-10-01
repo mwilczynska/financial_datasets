@@ -16,10 +16,12 @@ the dataset NAV is now an exact constant multiple of UGL (CAGR gap 0.0000%), gua
 
 - Path: `data/processed/gold.csv`
 - Use: underlying daily return (`u`) for the 2x daily-reset model.
-- Finding: the **`Price Return`** column is the pure LBMA Gold Price PM spot return, covering
-  1970-01-02 to present. Price Return (not Total Return) is used because GOLDPM was redefined to
-  track GLD: its `Total Return`/`Adj Close` now carry GLD's 0.40% expense drag. Building the 2x
-  fund on the pure-spot price return keeps fund fees counted once.
+- Finding: the model preserves GOLDPM spot Price Return before 2004-11-18 and the
+  frozen previously published spot input through 2008-12-03 in
+  `sources/derived/gold_2x_historical_spot_returns.csv`. Modern GOLDPM follows GLD
+  and includes GLD expenses, so its new ETF returns are not the fee-free model input.
+  Archive provenance records the original dataset hash, derived hash, and dates.
+  Original model rows remain unchanged; observed UGL supplies later returns.
 - Caveat: this is the LBMA PM fix (~10:30am ET / 3pm London), a spot fixing, not a futures or ETF
   return. See the timing note below.
 

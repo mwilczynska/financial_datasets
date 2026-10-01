@@ -2,21 +2,21 @@
   "asset_id": "gold_2x",
   "alias": "GOLD2X",
   "base_asset_id": "gold",
-  "base_return_column": "Price Return",
+  "base_return_column": "Pre-GLD Price Return plus preserved spot returns through UGL inception",
   "leverage": 2.0,
   "expense_ratio": 0.0095,
   "borrow_spread": 0.0093,
   "financing_benchmark": "^IRX",
   "observed_etf": "UGL",
   "build_timestamp_utc": "2026-07-23T02:34:14.923561+00:00",
-  "row_count": 14268,
+  "row_count": 14270,
   "first_date": "1970-01-02",
-  "last_date": "2026-09-25",
+  "last_date": "2026-09-29",
   "synthetic_rows": 9789,
   "observed_etf_rows": 4433,
   "us_holiday_flat_rows": 0,
   "csv_path": "data/processed/gold_2x.csv",
-  "csv_sha256": "af9756a6d7cbc196d67a442a3f0d255fe4dfde293b9be1a6ffb2f182ac4833cc",
+  "csv_sha256": "d492528ad794fca3aa53ddd0832a924ec9a3985705e80085e5565124aa7b9e4a",
   "parquet_written": true,
   "quality_flags": [
     "model_2x_daily_reset_synthetic_from_goldpm_spot_price_return_minus_financing_and_fee",
@@ -33,18 +33,31 @@
     "etf_inception": "2008-12-03"
   },
   "notes": "Synthetic 2x daily-reset gold total-return NAV: lev_ret = 2*GOLDPM_spot_price_return - 1*(^IRX/100)*days/360 - 0.0095*days/365. Uses GOLDPM Price Return (pure spot) so fund fees are applied once. Close == Adj Close. Model-derived, not observed UGL history.",
-  "last_incremental_update_utc": "2026-09-26T17:12:03.604221+00:00",
+  "last_incremental_update_utc": "2026-09-30T23:24:03.907154+00:00",
   "incremental_update": {
-    "overlap_anchor": "2026-07-22",
-    "requested_end_date": "2026-09-26",
+    "overlap_anchor": "2026-09-25",
+    "requested_end_date": "2026-09-29",
     "recent_sources": {
       "UGL": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/UGL",
         "path": "sources/raw/incremental/gold_2x_ugl.json",
-        "sha256": "8ae011d8ff124d9aea17d6da4f8f89b91ccfb3685efa42524dcf394292c020c0",
-        "first_date": "2026-06-23",
-        "last_date": "2026-09-25"
+        "sha256": "3c887e3fb9f9f7c5910ad12569843340a3ec72f657c3cf7270e6810de7868b7f",
+        "first_date": "2026-08-27",
+        "last_date": "2026-09-29"
       }
     }
-  }
+  },
+  "historical_spot_returns": {
+    "path": "sources/derived/gold_2x_historical_spot_returns.csv",
+    "created_utc": "2026-09-30T19:41:13.026727+00:00",
+    "source": "Previously published data/processed/gold.csv Price Return",
+    "source_csv_sha256": "0d6cf10ba4b5acd805a387c41f897e45c421b817acaf155ec9fdb9294ebb217b",
+    "original_spot_url": "https://prices.lbma.org.uk/json/gold_pm.json",
+    "first_date": "2004-11-18",
+    "last_date": "2008-12-03",
+    "row_count": 1018,
+    "sha256": "cdac516b47f7adb4517ad8b4c5b895055c356a1be68571c6446e1babe9e7ac92",
+    "notes": "Frozen NYSE-calendar spot returns, including old GLD-stepped UK holidays; synthetic GOLD2X input only."
+  },
+  "calibration_note": "Existing statistics describe the prior spot-based study; not recalibrated against GLD."
 }

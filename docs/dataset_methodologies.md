@@ -7,7 +7,7 @@ This file is an index. Each dataset has its own methodology file in `docs/`.
 | Alias | Asset | File | Status |
 |---|---|---|---|
 | `USLCAP` | U.S. Large-Cap Equity / S&P 500 | [methodology_uslcap.md](methodology_uslcap.md) | complete |
-| `GOLDPM` | Gold — GLD-tracking (LBMA PM spot extended to 1970) | [methodology_goldpm.md](methodology_goldpm.md) | production built; Adj Close tracks GLD incl. fees, observed GLD from 2004 |
+| `GOLDPM` | Gold — GLD from 2004-11-18, modeled history to 1970 | [methodology_goldpm.md](methodology_goldpm.md) | production built; both indices track GLD from its first quote |
 | `ITT` | Intermediate-Term U.S. Treasury (IEF-like, 7-10 yr) | [methodology_itt.md](methodology_itt.md) | complete model-derived |
 | `LTT` | Long-Term U.S. Treasury (TLT-like, 20+ yr) | [methodology_ltt.md](methodology_ltt.md) | complete model-derived |
 | `STT` | Short-Term U.S. Treasury (SHY-like, 1-3 yr) | [methodology_stt.md](methodology_stt.md) | complete model-derived |

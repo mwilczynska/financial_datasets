@@ -40,9 +40,22 @@ This is a derived model, not observed UGL history before 2008, and must be flagg
   observed UGL rows 4,411; US-holiday flat rows 0 (observed era on the NYSE calendar). UGL
   inception 2008-12-03.
 
+## Model inputs preserved after the GLD switch (2026-09-30)
+
+GOLDPM now follows GLD from 2004-11-18; those ETF returns include GLD expenses.
+The leveraged model retains pre-GLD GOLDPM spot returns and the frozen input
+`sources/derived/gold_2x_historical_spot_returns.csv` through 2008-12-03
+(1,018 rows, including original GLD-stepped UK holidays). Adjacent JSON records
+the original dataset and archive hashes. Existing historical GOLD2X rows remain
+unchanged. Missing preserved inputs fail rather than substitute GLD returns.
+
+The calibration figures below describe the prior spot-based study. Post-UGL
+GLD returns are not a live spot calibration feed; a full build omits that
+diagnostic without suitable historical spot data. Daily updates use Yahoo UGL.
+
 ## Sources
 
-- **Underlying** (`active`): `GOLDPM` (`data/processed/gold.csv`) **`Price Return`** column — the
+- **Underlying** (`active`): pre-GLD `GOLDPM` and preserved historical spot returns — the
   pure LBMA Gold Price PM spot return, from 1970-01-02. (GOLDPM's `Total Return` now carries GLD's
   0.40% expense drag; the 2x fund builds on the pure-spot price return and applies its own
   financing/fee so costs are counted once.)
@@ -116,7 +129,7 @@ returns, and the shipped series is checked directly against UGL.
 
 Unlike the equity/Treasury leveraged datasets (~0.997 daily correlation), the daily UGL-vs-model
 correlation is low — and roughly constant across all years. The cause is a **timing basis**:
-`GOLDPM` is the LBMA PM fix (~10:30am ET) while UGL closes at 4pm ET, so day-over-day returns are
+In the original calibration, the spot base is the LBMA PM fix (~10:30am ET) while UGL closes at 4pm ET, so day-over-day returns are
 measured ~5.5 hours apart. A direct check confirms this: over 2008-2026, **UGL daily returns vs
 2x-GLD daily returns (both at the US close) correlate at 0.997**, while **LBMA PM-fix returns vs
 same-day GLD returns correlate at only 0.66**. The model logic is therefore correct; only the

@@ -257,31 +257,25 @@ To be added after U.S. large-cap equities:
 
 ## Gold (GLD-tracking) / GOLDPM
 
-`GOLDPM` is built to track SPDR Gold Shares (`GLD`) including its fee drag, extended to 1970.
-`Close` = LBMA PM pure spot (drives `Price Return`); `Adj Close` = GLD-tracking total return
-(spot − 0.40% expense drag pre-2004, then observed GLD).
+`GOLDPM` preserves the pre-GLD spot/expense model and follows both Yahoo GLD
+price and adjusted close from its earliest quote, 2004-11-18. Modern Close is
+an ETF index, not USD/oz. See [methodology](methodology_goldpm.md).
 
 ### LBMA Gold Price PM
 
-- Status: `active`
+- Status: `historical_only`; endpoint returned HTTP 403 on 2026-09-30.
 - URL: https://prices.lbma.org.uk/json/gold_pm.json
-- Public page: https://www.lbma.org.uk/prices-and-data/precious-metal-prices
-- Role: drives `Close` / `Price Return` (pure spot) across 1970-present and the modeled `Adj Close`
-  before GLD inception.
-- Current finding: public JSON endpoint is reachable and provides daily PM gold prices back before 1970. The first JSON value is USD per troy ounce.
-- Caveats:
-  - This is a daily benchmark/fixing price (London PM, ~10am ET), not OHLCV and not the US close.
-  - It is not a futures total-return index and not an ETF return series.
+- Role: original pre-GLD model. Published history is retained by ordinary builds.
+- Neither daily updates nor publication validation requests LBMA.
 
 ### SPDR Gold Shares (GLD) — Yahoo chart API
 
-- Status: `active_from_2004`
+- Status: `active_from_2004_11_18`
 - URL: https://query1.finance.yahoo.com/v8/finance/chart/GLD
-- Role: drives `Adj Close` / `Total Return` from 2004-11-19; `Adj Close` is exactly proportional to
-  GLD's adjusted close in this era.
-- Current finding: GLD inception 2004-11-18; adjusted close embeds the 0.40% expense erosion. GLD
-  underperformed pure spot by ~0.49%/yr over 2004-2026 (mostly the fee), the drag folded in here.
-- Caveat: 4pm ET close vs the LBMA PM fix; zero-mean for cumulative return. US-holiday rows flat.
+- Role: both observed indices; full coverage verified through 2026-09-29.
+- Both columns anchor to prior modeled levels; splice-date returns are zero.
+- Expenses are embedded. US-close timing and premium/discount differ from
+  London spot. Yahoo access/redistribution rights remain unresolved.
 
 ### US-close gold base (COMEX futures / Stooq) — deferred daily-fidelity upgrade
 
@@ -563,12 +557,11 @@ post-inception return source; `GLD` is a timing-basis cross-check only.
 - Status: `active`
 - Path: `data/processed/gold.csv`
 - Role: underlying daily return (`u`) for the 2x daily-reset model.
-- Current finding: the **`Price Return`** column is the pure LBMA Gold Price PM spot return from
-  1970-01-02. Price Return (not Total Return) is used because GOLDPM was redefined to track GLD —
-  its Total Return now carries GLD's 0.40% expense drag — so the 2x fund builds on pure spot and
-  applies its own financing/fee once. (Holiday double-count fixed 2026-06-20; see methodology.)
-- Caveats: LBMA PM fix (~10:30am ET), a spot fixing struck ~5.5 hours before UGL's 4pm US close
-  (timing basis, see below).
+- Input: unchanged pre-GLD GOLDPM spot returns plus frozen previously published
+  spot returns in `sources/derived/gold_2x_historical_spot_returns.csv` through
+  2008-12-03. Modern GOLDPM follows GLD and includes GLD expenses; it is not the
+  fee-free leveraged-model input. The archive includes GLD-stepped UK holidays.
+- Existing leveraged model and subsequent observed UGL history are preserved.
 
 ### Yahoo Finance / ^IRX (financing benchmark)
 

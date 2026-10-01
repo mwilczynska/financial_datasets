@@ -12,7 +12,7 @@ The public repository excludes downloaded files under `sources/raw/`. A fresh ch
 | STT | Fed nominal curve and VFISX through fixed handoffs | Yahoo SHY |
 | ITT | Fed nominal curve and VFITX through fixed handoffs | Yahoo IEF |
 | LTT | Fed nominal curve, `^TYX`, and VUSTX through fixed handoffs | Yahoo TLT |
-| GOLDPM | None; LBMA spot is also used for current `Close` | LBMA Gold PM and Yahoo GLD |
+| GOLDPM | Published pre-GLD model; explicit LBMA refresh optional | Yahoo GLD close and adjusted close only |
 | CMDTY | GSCI TR anchor and validated `^SPGSCI`, `^BCOM`, `^IRX` charts | Yahoo DBC |
 | CPI | None; monthly BLS observations determine the latest deflator | BLS `CUSR0000SA0` |
 | GLSTOCK | Fixed MSCI annual anchors and Fama/French developed-market ZIP through VT inception | Yahoo VT and refreshed USLCAP dependency |
@@ -21,6 +21,6 @@ The public repository excludes downloaded files under `sources/raw/`. A fresh ch
 | USLCAP3X | `^IRX` for historical leverage model | Yahoo UPRO, refreshed USLCAP dependency |
 | LTT3X | `^IRX` for historical leverage model | Yahoo TMF, refreshed LTT dependency |
 | ITT3X | `^IRX` for historical leverage model | Yahoo TYD, refreshed ITT dependency |
-| GOLD2X | `^IRX` for historical leverage model | Yahoo UGL, refreshed GOLDPM dependency |
+| GOLD2X | `^IRX` and preserved spot inputs through UGL inception | Yahoo UGL, refreshed GOLDPM dependency |
 
 `python src/update_all_datasets.py --refresh-historical-sources` invokes the historical builders for USLCAP, STT, ITT, LTT, CMDTY, and GLSTOCK. `--refresh-static-sources` invokes the historical GLBOND and GLSTBOND builders. Neither option permits an unavailable current source to be silently replaced with an old raw file. The unattended workflow never uses either option.

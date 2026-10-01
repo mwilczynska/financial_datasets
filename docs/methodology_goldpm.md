@@ -1,157 +1,85 @@
-# GOLDPM — Gold (GLD-tracking, LBMA PM spot extended to 1970)
+# GOLDPM — Gold (GLD price and total return, modeled history to 1970)
 
-Dataset identifier: `gold`
+Dataset identifier: `gold`; compatibility alias: `GOLDPM`.
 
-Backtest alias: `GOLDPM`
+On 2026-09-30 the entire observed price segment switched to GLD from its earliest
+available daily quote, **2004-11-18**, replacing live LBMA PM dependence. The alias
+is retained for consumers; modern prices are no longer London PM fixings.
 
-Status: production dataset built; tracks SPDR Gold Shares (`GLD`) including fees
+## Columns and sources
 
-## Asset Definition
+| Segment | Calendar | Close / Price Return | Adj Close / Total Return |
+|---|---|---|---|
+| 1970-01-02–2004-11-17 | Historical LBMA/London | Published LBMA PM USD/oz and spot returns | Published spot model less 0.40% annual GLD expense accrual, actual/365 |
+| 2004-11-18 onward | GLD/NYSE trading dates | Constant multiple of Yahoo GLD market close and its daily returns | Constant multiple of Yahoo GLD adjusted close and its daily returns |
 
-`GOLDPM` is designed to behave like an investment in the SPDR Gold Shares ETF (`GLD`) —
-**including GLD's fee/expense drag** — extended back to 1970, long before GLD's 2004 inception.
-This lets long-horizon backtests be consistent with actually holding `GLD`.
+Observed levels are **indices, not USD-per-ounce quotes**. GLD's prices already
+include fund expenses; no additional GLD fee is deducted. OHLC fields other than
+Close, and Volume, remain blank because outputs are stitched indices.
 
-- `Close`: LBMA Gold Price PM in USD per troy ounce — the recognizable **pure spot price** of
-  gold, kept fee-free across the whole 1970→now history. `Price Return` is its daily return and
-  is therefore the pure spot return.
-- `Adj Close`: a **GLD-tracking total-return index**:
-  - 1970-01-02 → GLD inception (2004-11-18): pure spot return **minus GLD's expense drag**
-    (0.40%/yr, accrued actual/365). Models what GLD would have returned had it existed.
-  - From GLD inception onward: **observed GLD adjusted-close daily returns**. `Adj Close` is
-    exactly proportional to GLD's adjusted close in this segment — the modern era *is* GLD.
-  - `Total Return` is the daily return of `Adj Close`.
+## Stitch at GLD's first available quote
 
-Because `Adj Close` carries the fee drag, it diverges below `Close` over time; the two are **no
-longer equal** (this is the deliberate change from the earlier pure-spot definition).
+The downloaded full chart starts on 2004-11-18. Missing that quote is an error;
+the splice must not move to a later date. With `C0` and `A0` the final modeled
+levels on 2004-11-17, and `P0` and `Q0` the first GLD close and adjusted close:
 
-### Why two return columns
+```
+Close[t]     = C0 * GLD_close[t] / P0
+Adj Close[t] = A0 * GLD_adjusted_close[t] / Q0
+```
 
-The pure-spot `Price Return` is retained because the derived 2x dataset (`gold_2x` / `GOLD2X`)
-builds on it: a leveraged gold fund tracks the gold *price*, then applies its own financing and
-fee. Using `Price Return` as the 2x base ensures fund fees are counted exactly once (the GLD
-expense drag in GOLDPM's `Total Return` is not propagated into the 2x model).
+Both first GLD levels equal the preceding modeled levels. Splice-date returns
+are zero: no cross-instrument return from a London quote into the initial ETF
+quote can be observed. From GLD's second quote onward, returns follow GLD exactly.
+The previous adjusted-return series used this same first-quote anchor.
 
-## Output Files
+Pre-GLD rows remain unchanged. All observed dates follow GLD; UK holidays need
+no LBMA fallback. `Close` retains historical spot units only before GLD; the
+modern column has the documented ETF-index definition.
 
-| File | Path |
-|---|---|
-| CSV | `data/processed/gold.csv` |
-| Parquet | `data/processed/gold.parquet` |
-| Manifest | `sources/manifests/gold.yml` |
-| Citation notes | `sources/citations/gold.md` |
-| Build script | `src/build_gold.py` |
-| Update script | `src/update_gold.py` |
-| Test file | `tests/validation/test_gold_contract.py` |
+## Builds and daily updates
 
-Coverage starts on `1970-01-02`, the first available LBMA PM observation after the `1970-01-01`
-anchor.
+`python src/build_gold.py --end-date YYYY-MM-DD --root .` preserves the published
+pre-GLD model from `data/processed/gold.csv`, retrieves full GLD history, and
+rebuilds the entire observed segment. The committed dataset supplies the model
+in a fresh checkout. LBMA is not requested.
 
-## Source Chain
+`--refresh-historical-sources` explicitly requests LBMA to reconstruct the model;
+that optional operation still requires historical source access. The failed
+2026-09-30 endpoint is not bypassed or silently substituted.
 
-| Segment | Dates | Calendar | Source | `Adj Close` construction |
-|---|---|---|---|---|
-| Model (GLD-tracking) | 1970-01-02 → before GLD inception | LBMA (London) | LBMA Gold Price PM (spot) | spot return × (1 − 0.40%·days/365) |
-| Observed GLD | GLD inception → present | **NYSE (GLD days)** | Yahoo `GLD` adjusted close | GLD daily total return; `Adj Close` ∝ GLD |
+`python src/update_gold.py --end-date YYYY-MM-DD` checks a recent Yahoo overlap
+and compounds GLD price and adjusted returns. The publication gate checks both
+returns against current GLD quotes. Neither ordinary updating nor the gate uses
+LBMA. CSV, Parquet, and build metadata are kept together; source hashes, coverage,
+the pre-GLD model hash, and the first-quote splice are recorded in metadata.
 
-### Calendar handling (why the observed era is on the NYSE calendar)
+Outputs: `data/processed/gold.csv`, `gold.parquet`. Definitions:
+`sources/manifests/gold.yml`; citations: `sources/citations/gold.md`.
 
-GLD trades on the US/NYSE calendar; the LBMA fix is on the London calendar. The two differ — UK
-bank holidays (Easter Monday, early May, August bank holiday, Boxing Day, …) and US market
-holidays don't line up. A backtester that compares two series by **intersecting their daily-return
-dates and compounding** (which is exactly how the external backtesting scripts compare them) will, on
-every calendar-mismatch day, drop one series' return while the other folds the move into a spanning
-return. With GOLDPM on the London calendar this produced a spurious **+1.96%/yr (+47% cumulative)**
-GOLDPM-vs-GLD gap over 2004-2026, even though the *levels* were perfectly proportional.
+Quality flags:
 
-So the **observed era runs on GLD's (NYSE) trading calendar**: one row per GLD trading day, `Adj
-Close = scale · GLD_adj`. This makes the dataset align with GLD day-for-day, so a return-based
-backtest reproduces GLD with no calendar drift.
+- `model_gld_tracking_lbma_pm_spot_minus_gld_expense`: historical model.
+- `observed_gld_etf_price_and_adjusted_total_return`: both indices from GLD.
 
-- `Close` is the LBMA PM fix on days London fixed (the vast majority).
-- On NYSE-open / LBMA-closed days (UK bank holidays, ~6/yr, flag
-  `observed_gld_us_open_lbma_holiday_close_gld_step`) there is no LBMA fix, so `Close` is **stepped
-  by GLD's move** from the prior row (gold traded globally even though London didn't fix). Across
-  the gap this telescopes back to the next LBMA fix, keeping `Close` anchored to the LBMA series
-  while leaving `Price Return` realistic.
+## GOLD2X dependency
 
-The pre-2004 **model era stays on the LBMA calendar** (there is no US ETF to align with then; it is
-a fee-dragged model). Putting the model era on the NYSE calendar too is a possible future tidy-up.
+GLD returns include its expenses and must not replace the fee-free underlying
+of the historical leveraged model. GOLD2X retains pre-GLD spot returns plus
+`sources/derived/gold_2x_historical_spot_returns.csv` for 2004-11-18–2008-12-03.
+These 1,018 frozen observations come from the previously published GOLDPM data,
+including its GLD-stepped UK holidays. They are not independent daily fixings.
+Existing synthetic leveraged history and observed UGL history are preserved.
 
-## Production Sources
+## Validation and limitations
 
-- **LBMA Gold Price PM JSON** (`https://prices.lbma.org.uk/json/gold_pm.json`): daily PM gold
-  prices back before 1970; first value in each row's `v` array is USD per troy ounce. Drives
-  `Close`/`Price Return` throughout and the modeled `Adj Close` pre-2004.
-- **Yahoo `GLD` chart API**: SPDR Gold Shares adjusted close, drives `Adj Close` from 2004-11-19.
+Checks cover the exact inception date, continuous splice, both GLD scales,
+trading dates, arithmetic, positive levels, CSV/Parquet agreement, unchanged
+historical modeling, update repeatability, and unavailable-source protection.
+Historical raw LBMA comparisons apply only to the model segment.
 
-## Validation / Reference Sources
-
-- **GLD expense ratio (0.40%)**: the modeled fee drag. Corroborated by the observed GLD-vs-spot
-  underperformance over the live overlap (~0.42%/yr mean daily difference, full-window gap
-  ~0.49%/yr).
-- **LBMA Gold Price AM JSON**: same-administrator sanity reference; not independent.
-- **FRED `GOLDPMGBD228NLBM`**: candidate validation; likely mirrors the same London PM benchmark.
-
-## Rejected or Limited Sources
-
-- **Stooq / COMEX continuous futures (US-close base)**: a US-close gold base (e.g. `GC=F`, ~1:30pm
-  ET settle) would raise *daily* correlation with GLD from ~0.65 (PM fix) to ~0.89, but Stooq is
-  blocked in this environment and Yahoo `GC=F` only reaches 2000. The timing basis is zero-mean
-  for cumulative return, so this is a daily-fidelity upgrade only, deferred until a futures source
-  is available. See caveats.
-
-## Build Method
-
-1. Fetch the LBMA Gold Price PM JSON (`sources/raw/gold_lbma_gold_pm.json`) and the Yahoo `GLD`
-   chart (`sources/raw/gold_yahoo_gld_chart.json`).
-2. For each LBMA observation ≥ 1970-01-01: set `Close` = USD PM fixing; `Price Return` = daily
-   return of `Close`.
-3. Build `Adj Close` as a running index anchored at the first `Close`:
-   - Pre-GLD: multiply by spot gross return × `(1 − 0.0040·days/365)`.
-   - Splice at GLD inception (continuous level): fix `scale = level / GLD_adj`, then
-     `Adj Close = scale · GLD_adj`. Hold flat on US-holiday rows where GLD did not trade.
-4. `Total Return` = daily return of `Adj Close`.
-5. Set per-segment `Source` / `Quality Flag` / `Source Notes`.
-6. Write CSV (interim + processed), Parquet, and build metadata.
-
-## Update Method
-
-The ordinary update starts from the committed processed CSV and fetches recent LBMA Gold PM spot and Yahoo GLD adjusted-close data. It preserves unchanged history and extends the observed segment on the GLD calendar; UK holidays retain the documented GLD-stepped spot treatment. The full historical builder remains available with `--full-rebuild`.
-
-## Tests
-
-`tests/validation/test_gold_contract.py` covers:
-
-- Yahoo-compatible schema and required columns.
-- Coverage from the first observation after 1970-01-01; unique, sorted dates.
-- Positive `Close` and `Adj Close`; `Adj Close == Close` on row 1 and `Adj Close < Close` at the
-  end (fee drag present).
-- `Price Return` recomputes from `Close`; `Total Return` recomputes from `Adj Close`.
-- `Close` exactly matches the raw LBMA PM source (> 10,000 rows).
-- Model segment: `Total Return == spot price return − GLD expense accrual` (actual/365).
-- Observed segment: `Adj Close` is exactly proportional to raw `GLD` adjusted close (tracking is
-  perfect to within 1e-9), and the observed-era dates are **exactly GLD's trading days** (so a
-  backtester's date intersection keeps every GLD day — no calendar drift). UK-bank-holiday rows
-  (`..._close_gld_step`) carry a GLD-stepped `Close`, not an LBMA fix.
-
-## Independent Check Findings
-
-Over the GLD overlap (2004-11-18 → 2026-06-19) the **redefined** `Adj Close` tracks `GLD` exactly
-(CAGR gap 0.0000%, constant level ratio). For reference, the previous pure-spot definition
-*outperformed* GLD by ~0.49%/yr over the same window — essentially all of which was GLD's 0.40%
-expense ratio, the rest zero-mean timing noise. The redefinition folds that fee in so the series
-matches GLD.
-
-## Caveats
-
-- **Includes GLD fees by design.** `Adj Close` is intentionally *not* pure spot; it carries
-  GLD's expense drag so it matches a real GLD holding. Use `Close` / `Price Return` for pure spot.
-- **Timing basis (daily only).** Pre-2004 the model is struck at the LBMA PM fix (~10am ET), not
-  the US 4pm close. This degrades day-to-day alignment with US-close gold instruments but does not
-  bias cumulative return. A US-close base (COMEX futures) is a future daily-fidelity upgrade.
-- **Calendars switch at 2004.** The model era is on the London calendar, the observed era on the
-  NYSE calendar. For GLD/UGL comparisons (entirely in the observed era) this is exact; a pre-2004
-  multi-asset backtest still mixes London-calendar gold with NYSE-calendar US assets (a small,
-  pre-existing approximation that moving the model era to the NYSE calendar would remove).
-- **Pre-2004 is a model**, not observed GLD history; flagged `model_gld_tracking_...`.
+Pre-2004 is modeled GLD exposure. GLD's US-close timing and premium/discount can
+differ from spot fixings. A constant multiple of GLD does not recover USD/oz,
+because gold represented per share declines with expenses. Yahoo access and
+redistribution terms remain an unresolved data-rights constraint; a client
+library licence does not grant rights to the data.

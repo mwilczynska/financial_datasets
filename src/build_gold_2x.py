@@ -4,10 +4,10 @@ This dataset models a 2x daily-reset leveraged gold fund (ProShares Ultra Gold, 
 back to 1970, long before UGL's 2008 inception.
 
 Method:
-  * Underlying daily return is taken from the project's GOLDPM dataset
-    (``data/processed/gold.csv``, column ``Price Return``), the pure LBMA Gold Price PM spot
-    return. GOLDPM's ``Total Return`` now carries GLD's expense drag, so the leveraged fund builds
-    on the pure-spot ``Price Return`` and applies its own financing/fee (costs counted once).
+  * Underlying daily return uses the unchanged pre-GLD GOLDPM spot returns and
+    frozen previously published spot returns through UGL inception. Modern GOLDPM
+    follows GLD and includes GLD expenses, so its ETF returns must not become the
+    fee-free input of this model. Financing and the leveraged fund's fee are applied once.
   * The synthetic 2x daily-reset return is::
 
         lev_ret = L * u - (L-1) * financing_daily - expense_daily
@@ -51,6 +51,9 @@ getcontext().prec = 40
 ASSET_ID = "gold_2x"
 ALIAS = "GOLD2X"
 BASE_ASSET_ID = "gold"
+HISTORICAL_SPOT_RETURNS = "sources/derived/gold_2x_historical_spot_returns.csv"
+GLD_FIRST_DATE = "2004-11-18"
+UGL_FIRST_DATE = "2008-12-03"
 
 ETF_SYMBOL = "UGL"
 ETF_FETCH_START = date(2008, 1, 1)
@@ -84,7 +87,7 @@ ETF_SOURCE = "Yahoo Finance chart API (UGL adjusted-close total return)"
 HOLIDAY_SOURCE = "UGL not trading (LBMA-open / US-market-closed holiday); NAV held flat"
 SYNTH_NOTES = (
     "Synthetic 2x daily-reset gold total-return NAV: lev_ret = 2*GOLDPM_spot_price_return "
-    "- 1*(^IRX/100)*days/360 - 0.0095*days/365. Uses GOLDPM Price Return (pure spot) so fund fees "
+    "- 1*(^IRX/100)*days/360 - 0.0095*days/365. Uses preserved historical spot inputs so fund fees "
     "are applied once. Close == Adj Close. Model-derived, not observed UGL history."
 )
 ETF_NOTES = "Observed UGL ETF adjusted-close daily total return. Close == Adj Close (normalized 2x NAV level)."
@@ -155,19 +158,45 @@ def round_decimal(value: Decimal) -> str:
 
 
 def load_base_price_returns(base_csv: Path) -> list[tuple[str, Decimal | None]]:
-    """Return [(date, price_return_or_None)] in date order from the base dataset.
+    """Load historical spot inputs on GOLDPM's calendar, preserving the 2x model.
 
-    Uses GOLDPM's ``Price Return`` (pure spot, derived from ``Close``) rather than ``Total Return``.
-    GOLDPM's ``Total Return`` now carries GLD's expense drag; the leveraged fund must build on the
-    pure-spot price return and apply its own financing/fee so costs are not double-counted.
+    Pre-GLD spot returns come from GOLDPM; GLD-era modeled returns come from the
+    immutable archive through UGL inception. Later underlying values are unused.
     """
     if not base_csv.exists():
         raise RuntimeError(f"Base dataset not found: {base_csv}. Build {BASE_ASSET_ID} first.")
+    archive_path = base_csv.parents[2] / HISTORICAL_SPOT_RETURNS
+    archived: dict[str, Decimal] = {}
+    if archive_path.exists():
+        provenance_path = archive_path.with_suffix(".json")
+        if not provenance_path.is_file():
+            raise RuntimeError("Missing archived GOLD2X spot-return provenance")
+        provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
+        if provenance.get("sha256") != checksum(archive_path):
+            raise RuntimeError("Archived GOLD2X spot-return checksum mismatch")
+        with archive_path.open(newline="", encoding="utf-8") as handle:
+            records = list(csv.DictReader(handle))
+        dates = [r["Date"] for r in records]
+        if (len(dates) != 1018 or dates != sorted(set(dates))
+                or dates[0] != GLD_FIRST_DATE or dates[-1] != UGL_FIRST_DATE):
+            raise RuntimeError("Invalid archived GOLD2X spot-return coverage")
+        archived = {r["Date"]: Decimal(r["Price Return"]) for r in records}
+        if any(not v.is_finite() or v <= -1 for v in archived.values()):
+            raise RuntimeError("Invalid archived GOLD2X spot return")
     rows: list[tuple[str, Decimal | None]] = []
     with base_csv.open(newline="", encoding="utf-8") as handle:
         for row in csv.DictReader(handle):
             pr = row["Price Return"].strip()
-            rows.append((row["Date"], Decimal(pr) if pr else None))
+            day = row["Date"]
+            if row["Quality Flag"] == "observed_gld_etf_price_and_adjusted_total_return":
+                if day <= UGL_FIRST_DATE and day not in archived:
+                    raise RuntimeError(f"Missing preserved GOLD2X spot input on {day}; GLD returns include GLD fees")
+                # After UGL inception the underlying return is unused. Do not
+                # mislabel GLD returns as a live fee-free spot calibration feed.
+                value = archived.get(day)
+            else:
+                value = Decimal(pr) if pr else None
+            rows.append((day, value))
     rows.sort(key=lambda item: item[0])
     return rows
 
@@ -352,7 +381,11 @@ def write_build_metadata(path: Path, rows: list[dict[str, str]], csv_path: Path,
         "asset_id": ASSET_ID,
         "alias": ALIAS,
         "base_asset_id": BASE_ASSET_ID,
-        "base_return_column": "Price Return",
+        "base_return_column": "Price Return before GLD; archived historical spot returns through UGL inception",
+        "historical_spot_returns": {
+            "path": HISTORICAL_SPOT_RETURNS,
+            "sha256": checksum(path.parent.parent.parent / HISTORICAL_SPOT_RETURNS),
+        },
         "leverage": float(LEVERAGE),
         "expense_ratio": float(EXPENSE_RATIO),
         "borrow_spread": float(BORROW_SPREAD),

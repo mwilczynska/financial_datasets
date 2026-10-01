@@ -59,7 +59,7 @@ ASSETS = {
     "short_term_us_treasury": Asset("short_term_us_treasury", "price_adj", ("SHY",), expected_flag="observed_yahoo_shy_1_3_treasury_total_return"),
     "intermediate_term_us_treasury": Asset("intermediate_term_us_treasury", "price_adj", ("IEF",), expected_flag="observed_yahoo_ief_7_10_treasury_total_return"),
     "long_term_us_treasury": Asset("long_term_us_treasury", "price_adj", ("TLT",), expected_flag="observed_yahoo_tlt_20_plus_treasury_total_return"),
-    "gold": Asset("gold", "gold", ("GLD",), expected_flag="observed_gld_etf_adjusted_total_return"),
+    "gold": Asset("gold", "gold", ("GLD",), expected_flag=gold_build.ETF_FLAG),
     "broad_commodities": Asset("broad_commodities", "price_adj", ("DBC",), expected_flag="observed_yahoo_dbc_dblci_total_return_etf"),
     "cpi_inflation": Asset("cpi_inflation", "cpi"),
     "global_stocks": Asset("global_stocks", "adj_only", ("VT",), expected_flag="observed_vt_etf_adjusted_total_return"),
@@ -245,18 +245,6 @@ def build_recent_rows(asset: Asset, root: Path, anchor: dict[str, str], end: dat
         primary = asset.symbols[0]
         dates = [day for day in windows[primary] if anchor_day < day <= end.isoformat()]
 
-    if asset.kind == "gold":
-        response = session.get(gold_build.LBMA_GOLD_PM_URL, timeout=60)
-        response.raise_for_status()
-        lbma_payload = response.json()
-        spot = {item["d"]: float(item["v"][0]) for item in lbma_payload
-                if item.get("v") and item["v"][0] is not None and item["d"] <= end.isoformat()}
-        raw_path = root / "sources" / "raw" / "incremental" / "gold_lbma_pm.json"
-        raw_path.write_text(json.dumps(lbma_payload), encoding="utf-8")
-        records["LBMA_GOLD_PM"] = {"url": gold_build.LBMA_GOLD_PM_URL,
-            "path": raw_path.relative_to(root).as_posix(), "sha256": checksum(raw_path),
-            "first_date": min(spot), "last_date": max(spot)}
-
     previous_date = date.fromisoformat(anchor_day)
     previous_quotes = {symbol: preceding_value(series, anchor_day, "adj") for symbol, series in windows.items()}
     previous_closes = {symbol: preceding_value(series, anchor_day, "close") for symbol, series in windows.items()}
@@ -290,17 +278,12 @@ def build_recent_rows(asset: Asset, root: Path, anchor: dict[str, str], end: dat
         elif asset.kind == "gold":
             quote_row = windows["GLD"][day]
             total_ret = ratio(quote_row["adj"], previous_quotes["GLD"])
-            if day in spot:
-                close_level = Decimal(str(spot[day]))
-                overrides = {"Quality Flag": gold_build.ETF_FLAG, "Source": gold_build.ETF_SOURCE,
-                             "Source Notes": gold_build.ETF_NOTES}
-            else:
-                close_level *= Decimal("1") + ratio(quote_row["adj"], previous_quotes["GLD"])
-                overrides = {"Quality Flag": gold_build.ETF_FFILL_FLAG,
-                    "Source": gold_build.ETF_FFILL_SOURCE, "Source Notes": gold_build.ETF_FFILL_NOTES}
-            price_ret = close_level / Decimal(anchor["Close"] if not rows else rows[-1]["Close"]) - Decimal("1")
+            price_ret = ratio(quote_row["close"], previous_closes["GLD"])
+            close_level *= Decimal("1") + price_ret
             adj_level *= Decimal("1") + total_ret
-            row = new_row(day, close_level, adj_level, price_ret, total_ret, template, **overrides)
+            row = new_row(day, close_level, adj_level, price_ret, total_ret, template,
+                **{"Quality Flag": gold_build.ETF_FLAG, "Source": gold_build.ETF_SOURCE,
+                   "Source Notes": gold_build.ETF_NOTES})
         elif asset.kind == "global_bond":
             bnd = windows["BND"].get(day)
             bwx = windows["BWX"].get(day)
@@ -446,8 +429,8 @@ def update_asset(stem: str, root: Path, end: date, overlap_days: int = 14,
         anchor = anchor_candidates[-1]
         anchor_day = anchor["Date"]
         if asset.expected_flag and anchor["Quality Flag"] != asset.expected_flag:
-            # GOLDPM and GOLD2X have a second observed flag on cross-market holidays.
-            permitted = {gold_build.ETF_FFILL_FLAG} if asset.kind == "gold" else ({gold2x_build.HOLIDAY_FLAG} if asset.kind == "gold2x" else set())
+            # GOLD2X can carry a flat row when UGL did not trade on a base date.
+            permitted = {gold2x_build.HOLIDAY_FLAG} if asset.kind == "gold2x" else set()
             if anchor["Quality Flag"] not in permitted:
                 raise RuntimeError(f"{stem} is not in its documented observed segment at {anchor_day}")
         windows, records = source_window(root, asset, end, date.fromisoformat(anchor_day), session)

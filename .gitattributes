@@ -1,0 +1,2 @@
+# Keep the frozen historical input byte-identical for its recorded SHA-256.
+sources/derived/gold_2x_historical_spot_returns.csv -text

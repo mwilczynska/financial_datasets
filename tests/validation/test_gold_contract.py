@@ -21,9 +21,8 @@ RETURN_TOLERANCE = Decimal("0.0000000001")
 SEGMENT_TOLERANCE = Decimal("0.000000001")  # 1e-9 for spliced/observed-segment checks
 
 MODEL_FLAG = "model_gld_tracking_lbma_pm_spot_minus_gld_expense"
-ETF_FLAG = "observed_gld_etf_adjusted_total_return"
-FFILL_FLAG = "observed_gld_us_open_lbma_holiday_close_gld_step"
-OBSERVED_FLAGS = {ETF_FLAG, FFILL_FLAG}
+ETF_FLAG = "observed_gld_etf_price_and_adjusted_total_return"
+OBSERVED_FLAGS = {ETF_FLAG}
 GLD_EXPENSE_RATIO = Decimal("0.0040")
 
 
@@ -87,7 +86,7 @@ def test_gold_minimum_coverage_and_unique_sorted_dates():
 
 
 def test_gold_levels_positive_and_adj_close_carries_fee_drag():
-    """Close is pure spot; Adj Close tracks GLD (with fee), so it ends below Close."""
+    """Pre-inception modeled fee drag is retained in the two GLD index scales."""
     rows = read_csv(DATASET)
 
     for row in rows:
@@ -101,7 +100,7 @@ def test_gold_levels_positive_and_adj_close_carries_fee_drag():
 
 
 def test_gold_price_return_recomputes_from_close():
-    """Price Return is the pure spot return derived from Close."""
+    """Price Return recomputes from historical spot / modern GLD-linked Close."""
     rows = read_csv(DATASET)
     previous_close: Decimal | None = None
     for row in rows:
@@ -141,16 +140,12 @@ def test_gold_close_matches_raw_lbma_pm_source():
 
     checked = 0
     for row in rows:
-        if row["Quality Flag"] == FFILL_FLAG:
-            # NYSE-open / LBMA-closed day: no LBMA fix that date; Close is GLD-stepped, not an LBMA value.
-            assert row["Date"] not in raw_by_date
-            assert decimal_value(row["Close"]) > 0
-        else:
+        if row["Quality Flag"] == MODEL_FLAG:
             assert row["Date"] in raw_by_date
             assert decimal_value(row["Close"]) == raw_by_date[row["Date"]]
             checked += 1
 
-    assert checked > 10000
+    assert checked > 8000
 
 
 def test_gold_model_segment_applies_gld_expense_drag():
@@ -186,22 +181,38 @@ def test_gold_observed_segment_tracks_gld_exactly():
 
     ratios: list[Decimal] = []
     observed_dates: list[str] = []
-    ffill_rows = 0
+    raw = json.loads(RAW_GLD.read_text(encoding="utf-8"))["chart"]["result"][0]
+    closes = raw["indicators"]["quote"][0]["close"]
+    gld_close = {datetime.fromtimestamp(ts, timezone.utc).date().isoformat(): Decimal(str(v))
+                 for ts, v in zip(raw["timestamp"], closes) if v is not None}
+    price_ratios: list[Decimal] = []
     for row in rows:
         if row["Quality Flag"] in OBSERVED_FLAGS:
             assert row["Date"] in gld, f"observed row {row['Date']} has no GLD obs"
             ratios.append(decimal_value(row["Adj Close"]) / gld[row["Date"]])
+            price_ratios.append(decimal_value(row["Close"]) / gld_close[row["Date"]])
             observed_dates.append(row["Date"])
-            if row["Quality Flag"] == FFILL_FLAG:
-                ffill_rows += 1
 
     assert len(ratios) > 4000  # GLD observed segment row count
     rmin, rmax = min(ratios), max(ratios)
     # Constant proportionality => GOLDPM Adj Close *is* GLD (rescaled) in the modern era.
     assert (rmax - rmin) / rmin <= SEGMENT_TOLERANCE
+    assert (max(price_ratios) - min(price_ratios)) / min(price_ratios) <= SEGMENT_TOLERANCE
 
     # Observed dates must be exactly GLD's trading days (so the backtester's date intersection
     # keeps every GLD day -- no calendar-mismatch drift).
-    gld_after = sorted(d for d in gld if d >= min(observed_dates))
+    assert min(observed_dates) == min(gld) == "2004-11-18"
+    gld_after = sorted(d for d in gld if d <= rows[-1]["Date"])
     assert observed_dates == gld_after
-    assert ffill_rows > 50  # NYSE-open / LBMA-closed UK bank holidays
+
+
+def test_gold_first_gld_quote_stitches_without_a_level_jump():
+    rows = read_csv(DATASET)
+    index = next(i for i, r in enumerate(rows) if r["Quality Flag"] == ETF_FLAG)
+    before, first = rows[index - 1], rows[index]
+    assert before["Date"] == "2004-11-17"
+    assert first["Date"] == "2004-11-18"
+    for column in ("Close", "Adj Close"):
+        assert first[column] == before[column]
+    assert Decimal(first["Price Return"]) == Decimal(first["Total Return"]) == 0
+    assert {r["Quality Flag"] for r in rows} == {MODEL_FLAG, ETF_FLAG}

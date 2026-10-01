@@ -77,16 +77,6 @@ def check_source_tail(stem: str, rows: list[dict[str, str]], windows: dict, root
     asset = ASSETS[stem]
     examined_days.update(row["Date"] for row in rows[-10:])
     tail = [row for row in rows if row["Date"] in examined_days]
-    lbma: dict[str, float] = {}
-    if asset.kind == "gold":
-        path = root / "sources" / "raw" / "incremental" / "gold_lbma_pm.json"
-        if not path.is_file():
-            fail(stem, "missing LBMA Gold PM response")
-        payload = json.loads(path.read_text(encoding="utf-8"))
-        lbma = {item["d"]: float(item["v"][0]) for item in payload
-                if item.get("v") and item["v"][0] is not None}
-        if not lbma or (date.fromisoformat(rows[-1]["Date"]) - date.fromisoformat(max(lbma))).days > 5:
-            fail(stem, "LBMA Gold PM response is stale")
     for row in tail:
         day = row["Date"]
         kind = asset.kind
@@ -111,9 +101,10 @@ def check_source_tail(stem: str, rows: list[dict[str, str]], windows: dict, root
             total = quote_return(series, day, "adj")
             price = quote_return(series, day, "close") if kind == "price_adj" else total
         elif kind == "gold":
+            price = quote_return(windows["GLD"], day, "close")
             total = quote_return(windows["GLD"], day, "adj")
-            if day in lbma and abs(float(row["Close"]) - lbma[day]) > 1e-8:
-                fail(stem, f"gold spot level disagrees with LBMA on {day}")
+            if row["Quality Flag"] != asset.expected_flag:
+                fail(stem, f"gold has an unexpected observed-source flag on {day}")
         elif kind == "global_bond":
             if day not in windows["BND"] or day not in windows["BWX"]:
                 fail(stem, f"missing bond blend observation on {day}")

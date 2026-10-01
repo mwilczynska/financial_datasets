@@ -2,6 +2,8 @@ asset_id: gold_2x
 asset_name: 2x Daily-Reset Gold Total Return (UGL-like)
 backtest_alias: GOLD2X
 base_asset_id: gold
+historical_spot_returns: sources/derived/gold_2x_historical_spot_returns.csv
+historical_spot_note: Preserve original spot inputs through UGL inception; modern GLD returns include GLD expenses.
 derived: true
 minimum_start_date: 1970-01-01
 target_frequency: daily
@@ -13,11 +15,11 @@ target_definition: >
   borrowed (1x) exposure and a ProShares-style fund expense ratio.
 benchmark_note: >
   UGL targets 2x the Bloomberg Gold Subindex (a COMEX-futures gold benchmark). This model uses
-  LBMA Gold Price PM spot (GOLDPM) as the underlying because that is the project's daily gold
+  preserved LBMA Gold Price PM spot inputs as the historical underlying because that is the project's daily gold
   series back to 1970. The calibrated borrowing spread absorbs the average gold futures
   roll/storage and spot-vs-futures difference over the UGL overlap.
 timing_note: >
-  GOLDPM is the LBMA PM fix (~10:30am ET); UGL closes at 4pm ET. Day-over-day returns measured
+  In the original spot calibration, gold uses the LBMA PM fix (~10:30am ET); UGL closes at 4pm ET. Day-over-day returns measured
   ~5.5 hours apart decorrelate, so the daily UGL-vs-model correlation is only ~0.67. A US-close
   gold ETF (GLD) tracks UGL at ~0.997, confirming the model logic; the gap is timing basis, not a
   model error. Calibration therefore targets cumulative growth and the daily volatility ratio.
@@ -67,7 +69,7 @@ sources:
     status: active
     url: data/processed/gold.csv
     notes: >
-      Project gold dataset. The PRICE RETURN column (pure LBMA PM spot return) is the daily
+      Pre-GLD gold Price Return plus preserved original spot returns through UGL inception is the daily
       underlying return ('u') driving the 2x daily-reset model, from 1970-01-02. Price Return (not
       Total Return) is used because GOLDPM's Total Return now carries GLD's 0.40% expense drag; the
       2x fund applies its own financing/fee so costs are counted once.
