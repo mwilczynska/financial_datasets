@@ -48,8 +48,12 @@ before the unattended workflow resumes from that baseline. The daily job must
 not be allowed to rewrite decades of history as a routine refresh. Its existing
 publication guard correctly rejects such a change against the old baseline.
 
-Implementation, verification, and the migration commit are local. No repository
-push, workflow rerun, issue message, or closure was performed. The scheduled job
-will use this fix after the commit reaches GitHub's main branch. It removes the
-specific LBMA HTTP 403 failure; other required sources can still fail independently.
-Commodities research is separate.
+Migration commit `cf22cae` was pushed to GitHub main in merge commit `ac31498`,
+which also retained the September 27–28 automated refreshes. Post-merge
+validation passed: 129 tests passed and 32 historical-cache checks skipped.
+Both gold publication checks also passed against the committed GLD baseline.
+
+The scheduled job now uses the GLD fix. It removes the specific LBMA HTTP 403
+failure; other required sources can still fail independently. No manual daily
+workflow rerun, issue message, or closure was performed. Commodities research
+is separate.

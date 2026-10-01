@@ -24,8 +24,8 @@ timing_note: >
   gold ETF (GLD) tracks UGL at ~0.997, confirming the model logic; the gap is timing basis, not a
   model error. Calibration therefore targets cumulative growth and the daily volatility ratio.
 calendar_note: >
-  GOLD2X iterates GOLDPM's dates, so it inherits GOLDPM's calendar: model era on the LBMA calendar,
-  observed era on the NYSE (GLD/UGL) calendar. Because the observed era is on the NYSE calendar,
+  GOLD2X iterates GOLDPM's dates: LBMA calendar before 2004-11-18 and GLD/NYSE afterward.
+  The synthetic segment spans both calendars; the observed UGL era is on the NYSE calendar,
   every observed row lands on a UGL trading day and Adj Close is an exact constant multiple of UGL.
   The holiday-flat path (observed_ugl_us_holiday_flat) is retained as a safety net but is 0 rows now.
 bugfix_note: >
@@ -69,10 +69,10 @@ sources:
     status: active
     url: data/processed/gold.csv
     notes: >
-      Pre-GLD gold Price Return plus preserved original spot returns through UGL inception is the daily
-      underlying return ('u') driving the 2x daily-reset model, from 1970-01-02. Price Return (not
-      Total Return) is used because GOLDPM's Total Return now carries GLD's 0.40% expense drag; the
-      2x fund applies its own financing/fee so costs are counted once.
+      Pre-GLD GOLDPM Price Return plus the frozen previously published spot returns through
+      2008-12-03 supplies the modeled underlying ('u'). Modern GOLDPM price and adjusted returns
+      both include GLD expenses and must not replace the fee-free input. The archive includes
+      the earlier GLD-stepped UK holidays; the 2x model applies its own financing and fee once.
   - name: Yahoo Finance chart API ^IRX
     role: financing_rate_benchmark_1970_present
     status: active
@@ -93,9 +93,8 @@ sources:
     status: validation
     url: https://query1.finance.yahoo.com/v8/finance/chart/GLD
     notes: >
-      US-close gold ETF used only to demonstrate the timing basis: UGL daily returns vs 2x-GLD
-      correlate at ~0.997, while LBMA PM-fix returns vs same-day GLD correlate at ~0.66. Not used
-      in the production build.
+      Original timing-study reference. GLD now sets the post-2004 base calendar and GOLDPM
+      indices, but its ETF returns are not the preserved GOLD2X historical spot input.
   - name: ProShares UGL prospectus
     role: parameter_reference
     status: reference

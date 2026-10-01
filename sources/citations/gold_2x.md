@@ -1,6 +1,8 @@
 # 2x Gold (UGL-like) Source Notes
 
-Accessed: 2026-06-17; revised 2026-06-20 (holiday double-count fix; re-based to Price Return).
+Accessed: 2026-06-17; revised 2026-09-30 after the GLD source migration.
+The calibration and holiday study below records earlier findings; the current
+model-input chain is described separately.
 
 ## Holiday double-count fix (2026-06-20)
 
@@ -22,8 +24,9 @@ the dataset NAV is now an exact constant multiple of UGL (CAGR gap 0.0000%), gua
   and includes GLD expenses, so its new ETF returns are not the fee-free model input.
   Archive provenance records the original dataset hash, derived hash, and dates.
   Original model rows remain unchanged; observed UGL supplies later returns.
-- Caveat: this is the LBMA PM fix (~10:30am ET / 3pm London), a spot fixing, not a futures or ETF
-  return. See the timing note below.
+- Caveat: the preserved inputs use historical London PM timing, with the old
+  GLD-stepped UK holidays after 2004. They are not a current spot feed or
+  independent fixings on every date. See the timing study below.
 
 ## Yahoo Finance Chart API — ^IRX (financing benchmark)
 
@@ -47,7 +50,8 @@ the dataset NAV is now an exact constant multiple of UGL (CAGR gap 0.0000%), gua
 ## Yahoo Finance Chart API — GLD (timing-basis cross-check)
 
 - Endpoint: https://query1.finance.yahoo.com/v8/finance/chart/GLD
-- Use: a US-close gold ETF used only to diagnose the UGL-vs-model timing basis (not in the build).
+- Use: original timing-study reference. GLD now supplies GOLDPM's observed
+  calendar and indices, but its ETF returns do not replace GOLD2X's spot model input.
 - Finding: over 2008-2026, **UGL daily returns vs 2x-GLD daily returns correlate at 0.997** (both
   struck at the 4pm ET US close), confirming the 2x daily-reset model logic is correct. By
   contrast, **LBMA PM-fix returns vs same-day GLD returns correlate at only 0.658**. The ~0.66

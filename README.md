@@ -76,6 +76,12 @@ the underlying sources publish newer observations, often immediately for daily
 sources, but later for delayed, monthly, or static sources. End dates may
 therefore differ across datasets and from the date on which an update is run.
 
+Gold (`GOLDPM`) follows GLD from its first daily quote, **2004-11-18**, stitched
+to the preserved earlier model. Modern `Close` is a scaled GLD price index,
+not a USD-per-ounce spot quote; GLD expenses are already included. Daily gold
+updates use Yahoo GLD only. [Gold methodology](docs/methodology_goldpm.md)
+documents the join and the historical spot inputs preserved for `GOLD2X`.
+
 ## Dataset methodology
 
 The Methodology link in the table above points to the corresponding document

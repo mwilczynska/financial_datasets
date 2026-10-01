@@ -36,9 +36,9 @@ This is a derived model, not observed UGL history before 2008, and must be flagg
 
 - First observation: `1970-01-02` (base level 100).
 - Last observation: most recent UGL trading day from Yahoo.
-- Current build: 14,200 rows, 1970-01-02 to 2026-06-18. Synthetic rows 9,789 (all pre-inception);
-  observed UGL rows 4,411; US-holiday flat rows 0 (observed era on the NYSE calendar). UGL
-  inception 2008-12-03.
+- The preserved synthetic segment has 9,789 rows, through UGL inception
+  (2008-12-03). Current coverage and observed row counts are recorded in
+  `sources/manifests/gold_2x_build.json` and the README dataset table.
 
 ## Model inputs preserved after the GLD switch (2026-09-30)
 
@@ -49,31 +49,36 @@ The leveraged model retains pre-GLD GOLDPM spot returns and the frozen input
 the original dataset and archive hashes. Existing historical GOLD2X rows remain
 unchanged. Missing preserved inputs fail rather than substitute GLD returns.
 
+Historical rows retain their original provenance strings. References to GOLDPM
+spot returns in those rows describe the preserved original input, not the
+current GLD price-return column.
+
 The calibration figures below describe the prior spot-based study. Post-UGL
 GLD returns are not a live spot calibration feed; a full build omits that
 diagnostic without suitable historical spot data. Daily updates use Yahoo UGL.
 
 ## Sources
 
-- **Underlying** (`active`): pre-GLD `GOLDPM` and preserved historical spot returns — the
-  pure LBMA Gold Price PM spot return, from 1970-01-02. (GOLDPM's `Total Return` now carries GLD's
-  0.40% expense drag; the 2x fund builds on the pure-spot price return and applies its own
-  financing/fee so costs are counted once.)
+- **Underlying** (`active`): GOLDPM spot `Price Return` before 2004-11-18, then
+  the frozen previously published spot-return input through 2008-12-03. The
+  archive includes the earlier GLD-stepped UK holidays. Modern GOLDPM's price
+  and adjusted returns both reflect GLD expenses and are not substituted here.
 - **Financing benchmark** (`active`): Yahoo `^IRX` 13-week T-bill discount yield.
 - **Observed ETF / calibration target** (`active_from_2008`): Yahoo `UGL` adjusted close.
-- **Timing cross-check** (`validation`): Yahoo `GLD` (US-close gold ETF) — used only to diagnose
-  the timing basis, not in the production build.
+- **Timing cross-check** (`validation`): Yahoo `GLD` was used in the original
+  calibration study. Its trading dates set the post-2004 GOLDPM/GOLD2X calendar;
+  its new ETF returns are not the historical leveraged-model input.
 - **Parameter reference**: ProShares UGL prospectus (2x daily gold; 0.95% ER).
 
 ## Build method
 
-Same daily-reset construction as the other leveraged datasets, with `L = 2` and the `GOLDPM`
-pure-spot `Price Return` (`u`) base:
+Same daily-reset construction as the other leveraged datasets, with `L = 2`
+and preserved historical spot inputs (`u`):
 
 ```
 financing_daily = (IRX_t/100 + spread) * days_t / 360
 expense_daily   = expense_ratio * days_t / 365
-lev_ret_t       = 2 * u_t - 1 * financing_daily - expense_daily   # u = GOLDPM Price Return
+lev_ret_t       = 2 * u_t - 1 * financing_daily - expense_daily   # u = preserved spot return
 level_t         = level_{t-1} * (1 + lev_ret_t)      # starts at 100
 ```
 
@@ -86,9 +91,9 @@ level_t         = level_{t-1} * (1 + lev_ret_t)      # starts at 100
 
 ### Trading-calendar handling (inherits GOLDPM's NYSE observed calendar)
 
-`GOLD2X` iterates the `GOLDPM` dates, so it inherits GOLDPM's calendar: the **model era is on the
-LBMA calendar and the observed era on the NYSE (GLD/UGL) calendar**. Because the observed era is
-already on the NYSE calendar, every observed `GOLD2X` row lands on a UGL trading day, so `Adj Close`
+`GOLD2X` iterates the `GOLDPM` dates: the calendar is LBMA before 2004-11-18 and
+GLD/NYSE afterward. Its synthetic segment therefore spans both calendars.
+The observed UGL era uses the NYSE calendar; every observed row lands on a UGL trading day, so `Adj Close`
 is an exact constant multiple of UGL (CAGR gap 0.0000%, guarded by
 `test_observed_dataset_tracks_ugl_cumulatively`). The holiday-flat path
 (`observed_ugl_us_holiday_flat`) is retained as a safety net but is effectively never needed now
@@ -121,11 +126,12 @@ over the overlap:
 
 This calibration compares the *continuous synthetic model* to UGL. The shipped dataset uses observed
 UGL returns after inception, so its observed era matches UGL exactly (see the bug-fix note above).
-Note: the build's reported `calibration_vs_etf_overlap` ratio (~1.33) is computed on GOLDPM's
-*observed-era Price Return*, which now runs on the NYSE calendar; the LBMA-fix-vs-US-close timing
-basis interacting with that calendar inflates a daily-reset continuous model. The authoritative
-spread check (`test_model_tracks_ugl_over_live_overlap`) therefore recomputes on raw LBMA-calendar
-returns, and the shipped series is checked directly against UGL.
+The retained `calibration_vs_etf_overlap` ratio (~1.33) comes from the older
+NYSE-calendar spot-input study. It is historical metadata, not a diagnostic
+recomputed from modern GLD returns. A fresh full build reports no live spot
+overlap diagnostic because the frozen model input ends at UGL inception.
+The optional spread check (`test_model_tracks_ugl_over_live_overlap`) uses raw
+historical LBMA-calendar returns; the observed dataset is checked against UGL.
 
 Unlike the equity/Treasury leveraged datasets (~0.997 daily correlation), the daily UGL-vs-model
 correlation is low — and roughly constant across all years. The cause is a **timing basis**:
@@ -157,8 +163,8 @@ The ordinary update starts from the committed processed CSV, fetches a 14-calend
 - **Regression guard:** in the observed era `Adj Close` is an exact constant multiple of raw UGL
   (`test_observed_dataset_tracks_ugl_cumulatively`) — catches any return of the holiday
   double-count or a calendar mismatch.
-- Synthetic segment independently recomputed from `GOLDPM` `Price Return` + raw `^IRX` matches the
-  dataset.
+- Synthetic segment independently recomputed from pre-GLD GOLDPM returns,
+  preserved historical spot inputs, and raw `^IRX` matches the dataset.
 - Live-overlap spread calibration recomputed on **raw LBMA-calendar** spot returns vs UGL:
   cumulative ratio within 0.90-1.10; daily volatility ratio within 0.80-1.20; correlation > 0.5
   (acknowledging the timing basis).
@@ -169,11 +175,12 @@ The ordinary update starts from the committed processed CSV, fetches a 14-calend
 - **Benchmark mismatch**: UGL's benchmark is the futures-based Bloomberg Gold Subindex; the model
   underlying is LBMA PM spot. The calibrated spread absorbs the average roll/storage difference,
   but the synthetic series is not a true futures-based 2x gold history.
-- **Timing basis**: daily returns are struck at the LBMA PM fix, not the US 4pm close, so daily
-  alignment with UGL is limited (~0.67). For US-close-aligned daily backtests this is a real
-  difference; cumulative and volatility behavior are sound.
+- **Historical model timing**: the spot inputs use London PM timing, with the
+  documented GLD-stepped UK holidays after 2004. The original continuous-model
+  comparison had limited daily alignment with UGL (~0.67). The shipped observed
+  UGL segment follows actual ETF adjusted returns at the US close.
 - **Volatility decay / path dependence**: the leveraged series is not a simple 2x multiple of
   long-horizon gold returns; daily reset plus financing/fee drag compounds path-dependently.
-- A future upgrade could rebuild the underlying on a US-close gold series (e.g. GLD from 2004,
-  COMEX front futures earlier) to raise daily UGL fidelity, and/or add the UGL benchmark's
-  futures roll explicitly.
+- A separate future leveraged-model study could use a US-close underlying or
+  model futures rolls explicitly. GLD's adoption for GOLDPM did not authorize
+  replacing GOLD2X's historical spot inputs or double-counting GLD expenses.

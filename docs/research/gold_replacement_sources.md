@@ -69,7 +69,7 @@ underlying observation times align. The weak return correlation means that
 naive conversion is unsuitable for direct adoption without investigating lag
 and fixing definitions.
 
-## Proposed trial and integration
+## Original spot-source trial proposal (superseded by GLD selection)
 
 1. Obtain a free Gold-API.com key and configure it as a local secret and, when
    integration is ready, a GitHub Actions secret. No account was created or key

@@ -32,7 +32,7 @@
     "cumulative_ratio_model_over_etf": 1.3337536014726838,
     "etf_inception": "2008-12-03"
   },
-  "notes": "Synthetic 2x daily-reset gold total-return NAV: lev_ret = 2*GOLDPM_spot_price_return - 1*(^IRX/100)*days/360 - 0.0095*days/365. Uses GOLDPM Price Return (pure spot) so fund fees are applied once. Close == Adj Close. Model-derived, not observed UGL history.",
+  "notes": "Synthetic 2x daily-reset gold total-return NAV: lev_ret = 2*GOLDPM_spot_price_return - 1*(^IRX/100)*days/360 - 0.0095*days/365. Uses preserved historical spot inputs so fund fees are applied once. Close == Adj Close. Model-derived, not observed UGL history.",
   "last_incremental_update_utc": "2026-09-30T23:24:03.907154+00:00",
   "incremental_update": {
     "overlap_anchor": "2026-09-25",

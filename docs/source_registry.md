@@ -277,12 +277,12 @@ an ETF index, not USD/oz. See [methodology](methodology_goldpm.md).
 - Expenses are embedded. US-close timing and premium/discount differ from
   London spot. Yahoo access/redistribution rights remain unresolved.
 
-### US-close gold base (COMEX futures / Stooq) — deferred daily-fidelity upgrade
+### COMEX futures / Stooq — former replacement candidate
 
-- Status: `blocked` (Stooq returns an anti-bot challenge in this environment; Yahoo `GC=F` only
-  reaches 2000-08).
-- Role: a US-4pm-aligned gold base would raise daily correlation with GLD from ~0.65 (PM fix) to
-  ~0.89; deferred because the timing basis does not bias cumulative return.
+- Status: `not_selected`; GLD was selected on 2026-09-30 for the observed segment.
+- Historical evaluation: Stooq returned a browser challenge; Yahoo `GC=F` supplied
+  futures data rather than the requested spot fixing. Futures would require their
+  own contract, roll, and observation-time methodology.
 
 ### LBMA Gold Price AM
 
@@ -548,9 +548,11 @@ ProShares **UST** is a **2x** fund despite the backlog's "3x UST" label.
 
 ## 2x Gold (UGL-like) / GOLD2X
 
-Derived leveraged dataset. The underlying exposure is the project's own `GOLDPM` LBMA PM spot
-series; `^IRX` supplies the financing benchmark; `UGL` is the live-overlap calibration and
-post-inception return source; `GLD` is a timing-basis cross-check only.
+Derived leveraged dataset. Historical modeling uses pre-GLD GOLDPM spot returns
+and the frozen previously published spot input through UGL inception. `^IRX`
+supplies financing; observed UGL supplies subsequent returns. GLD sets the
+post-2004 base calendar and was a timing cross-check in the earlier study, but
+its current ETF returns are not the fee-free leveraged-model input.
 
 ### GOLDPM base dataset (gold)
 
@@ -582,7 +584,8 @@ post-inception return source; `GLD` is a timing-basis cross-check only.
 
 - Status: `validation`
 - Endpoint: https://query1.finance.yahoo.com/v8/finance/chart/GLD
-- Role: diagnostic only (not in the build). UGL daily returns vs 2x-GLD correlate at ~0.997 (both
+- Role: original diagnostic, not a GOLD2X return source. GLD now supplies the base
+  trading calendar. In the earlier study, UGL daily returns vs 2x-GLD correlate at ~0.997 (both
   at US close), while LBMA PM-fix returns vs same-day GLD correlate at ~0.66 — proving the modest
   UGL-vs-model correlation is the LBMA-fix vs US-close clock offset, and the 2x model logic is right.
 
