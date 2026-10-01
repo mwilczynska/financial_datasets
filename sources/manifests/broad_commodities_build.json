@@ -1,27 +1,25 @@
 {
   "asset_id": "broad_commodities",
   "asset_name": "Broad Commodities / DBC-like Total Return",
-  "source": "S&P GSCI Total Return anchor (MacroMicro republication of the S&P GSCI Total Return Index, base 100 at 1970-01-02) for the 1970-1991 reconstruction: log-linear daily smoothing (Segment 0, 1970-1983) and Yahoo ^SPGSCI spot daily shape overlaid to the anchor (Segment 1, 1984-1991); Yahoo Finance chart API ^BCOM Bloomberg Commodity Excess Return + ^IRX T-bill collateral (Segment 2, 1991-2006); DBC adjusted close total-return ETF (Segment 3, 2006-present)",
-  "build_timestamp_utc": "2026-07-23T02:33:38.285263+00:00",
+  "source": "Pinned Trading_Commo public GSCI daily ER/TR workbook (author-claimed Bloomberg PX_LAST; provider back-calculated before 1991-05-01), on preserved CMDTY dates through 1991-01-02; Yahoo ^BCOM excess return plus ^IRX collateral through 2006-02-06; Yahoo DBC ETF thereafter",
+  "build_timestamp_utc": "2026-10-01T02:13:40.386407+00:00",
   "row_count": 14228,
   "first_date": "1970-01-02",
   "last_date": "2026-09-28",
   "csv_path": "data/processed/broad_commodities.csv",
-  "csv_sha256": "d31df07d79f778ce48069c383342e2784d837c4d3dfbd58da921b4685f8856d7",
+  "csv_sha256": "6fd799eaac01d2a31bceebc1936bf2e6b501e91fb43a7fa89ec10c3b458f52f2",
   "parquet_written": true,
   "quality_flags": [
+    "backcalculated_gsci_daily_excess_and_total_return",
     "model_bcom_excess_return_plus_tbill_collateral",
-    "model_gsci_total_return_anchor_smoothed_daily",
-    "model_gsci_total_return_anchor_with_spgsci_spot_daily_shape",
     "observed_yahoo_dbc_dblci_total_return_etf"
   ],
   "segment_row_counts": {
-    "model_gsci_total_return_anchor_smoothed_daily": 3487,
-    "observed_yahoo_dbc_dblci_total_return_etf": 5145,
+    "backcalculated_gsci_daily_excess_and_total_return": 5255,
     "model_bcom_excess_return_plus_tbill_collateral": 3781,
-    "model_gsci_total_return_anchor_with_spgsci_spot_daily_shape": 1768
+    "observed_yahoo_dbc_dblci_total_return_etf": 5192
   },
-  "coverage_note": "Segments 0-1 (1970-01-02 to 1991-01-02) reconstruct broad commodity TOTAL return from the S&P GSCI Total Return anchor (roll yield + T-bill collateral + GSCI production weights). Segment 0 (1970-1983) is log-linearly smoothed to daily because no free daily broad-commodity data exists before 1984; Segment 1 (1984-1991) overlays the anchor onto the daily ^SPGSCI spot shape for genuine daily moves. Close is the excess-return (spot+roll) level; Adj Close is the total-return level. S&P GSCI is back-tested before its 1991 launch.",
+  "coverage_note": "Daily GSCI ER and TR sampled on preserved CMDTY dates through 1991-01-02. Provider back-calculation before the 1991-05-01 launch; weekday holiday fills may occur. Close uses ER, Adj Close uses TR; no sparse-anchor smoothing, spot overlay or additional IRX accrual in this segment. Later BCOM plus collateral and DBC ETF definitions remain distinct.",
   "last_incremental_update_utc": "2026-09-29T18:39:54.895445+00:00",
   "incremental_update": {
     "overlap_anchor": "2026-09-25",
@@ -35,5 +33,115 @@
         "last_date": "2026-09-28"
       }
     }
-  }
+  },
+  "methodology_version": "daily_gsci_er_tr_v1",
+  "raw_sources": {
+    "GSCI_ER_TR": {
+      "url": "https://raw.githubusercontent.com/yessinemx/Trading_Commo/f5ecf1507fb9cc98ffcc1f69c217793f5f9272a3/data/GSCI_Data.xlsx",
+      "commit": "f5ecf1507fb9cc98ffcc1f69c217793f5f9272a3",
+      "path": "sources/raw/broad_commodities_gsci_daily.xlsx",
+      "sha256": "918e4046300180e0274781bfa6f1f5dcf2dc7df61b9229f9d4a9ea124da2a9f8",
+      "bytes": 442834,
+      "mode": "copied_verified_research_snapshot",
+      "retrieved_utc": "2026-09-30T19:27:22.095696+00:00",
+      "sheet": "Donn\u00e9es GSCI",
+      "source_columns": {
+        "Close": "GSCI_ER",
+        "Adj Close": "GSCI_TR"
+      },
+      "observed_rows": 14609,
+      "observed_first_date": "1970-01-02",
+      "observed_last_date": "2025-12-31",
+      "used_first_date": "1970-01-02",
+      "used_last_date": "1991-01-02",
+      "provenance": "Public author-claimed Bloomberg PX_LAST extraction; original terminal extraction not authenticated.",
+      "fill": "NON_TRADING_WEEKDAYS / PREVIOUS_VALUE; holidays may carry the previous level.",
+      "index_launch_date": "1991-05-01",
+      "early_history": "provider_back_calculated",
+      "redistribution_rights": "No verified grant to redistribute Bloomberg/S&P observations or derived outputs.",
+      "reference_checks": {
+        "annual_tr_checks_passed": 22,
+        "sec_tr_level_checks_passed": 22,
+        "max_annual_error_percentage_points": 0.004946271755496741,
+        "max_sec_level_error": 0.004,
+        "annual_reference_url": "https://www.etf.com/docs/20040913_GSCI.pdf",
+        "sec_reference_url": "https://www.sec.gov/files/rules/sro/nyse/2006/34-53658.pdf"
+      }
+    },
+    "BCOM_IRX_DBC": {
+      "mode": "preserved_versioned_processed_return_ratios",
+      "csv_path": "data/processed/broad_commodities.csv",
+      "csv_sha256": "d31df07d79f778ce48069c383342e2784d837c4d3dfbd58da921b4685f8856d7",
+      "git_commit": "20396a64b4203cb9d06b4d096e473f268a57684b",
+      "git_blob": "d0b200724beeb67ad6e0504df71da447f01399f0",
+      "local_archive": "sources/raw/cmdty_baselines/d31df07d79f778ce48069c383342e2784d837c4d3dfbd58da921b4685f8856d7.csv",
+      "qualification": "Historical Yahoo chart caches were unavailable. Later returns were preserved, not re-fetched or re-validated against vendor feeds."
+    }
+  },
+  "historical_calendar": {
+    "asset_id": "broad_commodities",
+    "calendar_file": "sources/derived/broad_commodities_gsci_calendar.csv",
+    "sha256": "22c8176d209ce07481e7adab51af1dce3472873228a2718a74ceacece3e3b630",
+    "row_count": 5255,
+    "first_date": "1970-01-02",
+    "last_date": "1991-01-02",
+    "preserved_utc_date": "2026-09-30",
+    "baseline_csv": "data/processed/broad_commodities.csv",
+    "baseline_csv_sha256": "d31df07d79f778ce48069c383342e2784d837c4d3dfbd58da921b4685f8856d7",
+    "baseline_git_commit": "20396a64b4203cb9d06b4d096e473f268a57684b",
+    "baseline_git_blob": "d0b200724beeb67ad6e0504df71da447f01399f0",
+    "origin": "Existing published CMDTY dates: IRX calendar through 1984-01-03, then SPGSCI calendar through 1991-01-02.",
+    "policy": "Sample source ER/TR levels on these dates before calculating returns. Preserve skipped-date growth; retain flat rows.",
+    "qualification": "This preserves the project observation calendar; it is not a universal commodity trading-session calendar."
+  },
+  "redistribution_status": "No verified grant to redistribute Bloomberg/S&P observations or derived outputs.",
+  "gsci_migration": {
+    "timestamp_utc": "2026-10-01T02:13:40.384594+00:00",
+    "baseline": {
+      "csv_path": "data/processed/broad_commodities.csv",
+      "csv_sha256": "d31df07d79f778ce48069c383342e2784d837c4d3dfbd58da921b4685f8856d7",
+      "git_commit": "20396a64b4203cb9d06b4d096e473f268a57684b",
+      "git_blob": "d0b200724beeb67ad6e0504df71da447f01399f0",
+      "local_archive": "sources/raw/cmdty_baselines/d31df07d79f778ce48069c383342e2784d837c4d3dfbd58da921b4685f8856d7.csv"
+    },
+    "early_rows_replaced": 5255,
+    "later_rows_preserved": 8973,
+    "calendar_unchanged": true,
+    "level_scale_factors": {
+      "Close": "0.6168038422611391632949649661",
+      "Adj Close": "1.064583273529977751173100274"
+    },
+    "max_later_ratio_error": {
+      "Close": "2.67235306941016E-13",
+      "Adj Close": "4.3118751181590E-14"
+    },
+    "later_return_columns_unchanged": true,
+    "splice_checks": {
+      "1991-01-03": {
+        "prior_date": "1991-01-02",
+        "source_flag": "model_bcom_excess_return_plus_tbill_collateral",
+        "Close": {
+          "baseline_return": "-0.0091000366211566351619994463",
+          "migrated_return": "-0.0091000366212266620136101902"
+        },
+        "Adj Close": {
+          "baseline_return": "-0.0089252038589024973281478959",
+          "migrated_return": "-0.0089252038589086395461942877"
+        }
+      },
+      "2006-02-07": {
+        "prior_date": "2006-02-06",
+        "source_flag": "observed_yahoo_dbc_dblci_total_return_etf",
+        "Close": {
+          "baseline_return": "-0.0289256504492168522908695391",
+          "migrated_return": "-0.0289256504492181471482689282"
+        },
+        "Adj Close": {
+          "baseline_return": "-0.0289255364384310801684047817",
+          "migrated_return": "-0.0289255364384422937632827570"
+        }
+      }
+    }
+  },
+  "parquet_sha256": "ffbbaac959a8750c688900ac71f9517fc3137e0d67f7da544cdc41a297a273c9"
 }

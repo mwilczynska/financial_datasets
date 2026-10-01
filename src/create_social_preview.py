@@ -86,7 +86,7 @@ def build_social_preview(root: Path, output: Path) -> tuple[int, int]:
     )
     fig.text(
         0.065,
-        0.895,
+        0.875,
         "Long-horizon daily asset-class datasets for Python portfolio backtesting",
         ha="left",
         fontsize=10.5,
@@ -94,7 +94,7 @@ def build_social_preview(root: Path, output: Path) -> tuple[int, int]:
     )
     fig.text(
         0.065,
-        0.855,
+        0.83,
         f"Selected total-return proxies | {common_start:%Y-%m-%d} to {common_end:%Y-%m-%d}",
         ha="left",
         fontsize=9,

@@ -1,4 +1,4 @@
-"""Create the static asset-class chart used by the repository README.
+"""Create the 1920 x 1080 asset-class chart used by the repository README.
 
 The chart is intentionally generated from the published processed CSV files so
 that it can be refreshed after a dataset update.  It uses each series' total
@@ -21,6 +21,11 @@ import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import pandas as pd
 from matplotlib.ticker import FuncFormatter, LogLocator
+
+
+WIDTH_PX = 1920
+HEIGHT_PX = 1080
+DPI = 150
 
 
 DATASETS = OrderedDict(
@@ -82,7 +87,7 @@ def build_chart(root: Path, output: Path) -> tuple[pd.Timestamp, pd.Timestamp]:
         raise ValueError("Selected datasets do not have a shared date range")
 
     colors = ["#1769aa", "#00897b", "#6a3d9a", "#34495e", "#c58b00", "#d95f02"]
-    fig, ax = plt.subplots(figsize=(12.8, 7.2), dpi=180)
+    fig, ax = plt.subplots(figsize=(WIDTH_PX / DPI, HEIGHT_PX / DPI), dpi=DPI)
     fig.patch.set_facecolor("#ffffff")
     ax.set_facecolor("#ffffff")
 
@@ -128,7 +133,7 @@ def build_chart(root: Path, output: Path) -> tuple[pd.Timestamp, pd.Timestamp]:
     )
     fig.text(
         0.08,
-        0.925,
+        0.908,
         f"Indexed to 100 on {common_start:%Y-%m-%d}; common history through {common_end:%Y-%m-%d}",
         ha="left",
         fontsize=10,
@@ -159,7 +164,7 @@ def build_chart(root: Path, output: Path) -> tuple[pd.Timestamp, pd.Timestamp]:
     output.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(
         output,
-        dpi=180,
+        dpi=DPI,
         facecolor=fig.get_facecolor(),
         edgecolor="none",
         metadata={"Software": "financial_datasets create_readme_chart.py"},

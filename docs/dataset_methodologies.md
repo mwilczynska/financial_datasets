@@ -11,7 +11,7 @@ This file is an index. Each dataset has its own methodology file in `docs/`.
 | `ITT` | Intermediate-Term U.S. Treasury (IEF-like, 7-10 yr) | [methodology_itt.md](methodology_itt.md) | complete model-derived |
 | `LTT` | Long-Term U.S. Treasury (TLT-like, 20+ yr) | [methodology_ltt.md](methodology_ltt.md) | complete model-derived |
 | `STT` | Short-Term U.S. Treasury (SHY-like, 1-3 yr) | [methodology_stt.md](methodology_stt.md) | complete model-derived |
-| `CMDTY` | Broad Commodities (DBC-like, diversified futures total return) | [methodology_cmdty.md](methodology_cmdty.md) | complete model-derived; covers 1970-present (1970-1991 anchored to S&P GSCI Total Return — roll yield + collateral; 1970-1983 smoothed daily, 1984-1991 de-smoothed onto ^SPGSCI spot shape) |
+| `CMDTY` | Broad Commodities (DBC-like, diversified futures total return) | [methodology_cmdty.md](methodology_cmdty.md) | daily GSCI ER/TR on preserved dates through January 1991, then BCOM plus collateral and DBC ETF; early provider back-calculation, weekday fills and unresolved redistribution rights |
 | `USLCAP3X` | 3x Daily-Reset U.S. Large Cap (UPRO-like) | [methodology_uslcap3x.md](methodology_uslcap3x.md) | complete model-derived; derived 3x daily-reset model from USLCAP (1970-2009), observed UPRO returns from 2009 |
 | `LTT3X` | 3x Daily-Reset Long-Term Treasury (TMF-like) | [methodology_ltt3x.md](methodology_ltt3x.md) | complete model-derived; derived 3x daily-reset model from LTT (1970-2009), observed TMF returns from 2009 |
 | `ITT3X` | 3x Daily-Reset Intermediate-Term Treasury (TYD-like) | [methodology_itt3x.md](methodology_itt3x.md) | complete model-derived; derived 3x daily-reset model from ITT (1970-2009), observed TYD returns from 2009 |

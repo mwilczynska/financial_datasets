@@ -15,9 +15,11 @@ Public repository: https://github.com/mwilczynska/financial_datasets
 
 ![Long-horizon growth of selected asset-class total-return proxies](docs/assets/asset-class-growth.png)
 
-The chart compares six unlevered total-return proxies over their common
-published history. Levels are rebased to 100 and shown on a logarithmic scale;
-modeled and source-spliced periods remain subject to each dataset's methodology.
+The 1920 × 1080 chart compares six unlevered total-return proxies over their
+common published history, 1970-01-02–2026-09-28. Levels are rebased to 100 and
+shown on a logarithmic scale; modeled and source-spliced periods remain subject
+to each dataset's methodology. The commodity curve includes the daily GSCI
+replacement described below.
 
 ## Quick start
 
@@ -81,6 +83,16 @@ to the preserved earlier model. Modern `Close` is a scaled GLD price index,
 not a USD-per-ounce spot quote; GLD expenses are already included. Daily gold
 updates use Yahoo GLD only. [Gold methodology](docs/methodology_goldpm.md)
 documents the join and the historical spot inputs preserved for `GOLD2X`.
+
+Broad commodities (`CMDTY`) uses paired **daily GSCI excess-return and
+total-return levels from 1970-01-02 through 1991-01-02**, replacing the sparse
+anchor reconstruction and spot-shape overlay. The migration preserves all
+observation dates and later BCOM/DBC return ratios. `Close` tracks excess return
+before DBC; `Adj Close` tracks total return. The GSCI segment is provider
+back-calculated history preceding the index's May 1991 launch, and source
+holidays may carry prior levels. The [CMDTY methodology](docs/methodology_cmdty.md)
+records source checks, benchmark changes, rights caveats, and the independent
+Astra Max research and implementation reviews.
 
 ## Dataset methodology
 
@@ -179,7 +191,8 @@ For a local publication check after fetching new observations:
 
     python scripts/check_daily_diff.py --end-date YYYY-MM-DD
 
-To regenerate the README chart and the 1280 x 640 social-preview asset:
+To regenerate the 1920 × 1080 (1080p) README chart and the 1280 × 640
+social-preview asset from the current processed CSVs:
 
     python -m pip install -r requirements-visuals.txt
     python src/create_readme_chart.py
@@ -203,6 +216,11 @@ Published outputs can incorporate third-party data, and model-derived files
 can inherit restrictions from their inputs. Review [DATA_LICENSE.md](DATA_LICENSE.md),
 the relevant manifest, and the relevant citation note before redistributing
 or using any output commercially.
+
+For CMDTY's daily GSCI source, vendor and derived-output redistribution rights
+remain unverified. Public availability of the workbook and this repository's
+code license do not establish those rights; see the
+[source notes](sources/citations/broad_commodities.md).
 
 ## Privacy and security
 

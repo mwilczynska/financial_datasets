@@ -9,6 +9,13 @@ derived series may incorporate third-party data whose terms restrict storage,
 redistribution, commercial use, or publication. Publishing an output here does
 not grant additional rights to upstream data.
 
+CMDTY's early daily GSCI ER/TR segment uses a public workbook whose vendor
+data and derived-output redistribution rights remain unverified. The workbook's
+availability and any code license do not establish a grant for its data.
+Source identity, coverage, corroboration, and the unresolved rights are recorded
+in [the CMDTY source notes](sources/citations/broad_commodities.md) and
+[manifest](sources/manifests/broad_commodities.yml).
+
 Before redistributing or using a file commercially:
 
 1. Check its source manifest under sources/manifests/.

@@ -1,0 +1,628 @@
+{
+  "research_date": "2026-09-30",
+  "source_snapshot_commit": "f5ecf1507fb9cc98ffcc1f69c217793f5f9272a3",
+  "coverage": {
+    "all_rows": 14609,
+    "first_date": "1970-01-02",
+    "last_date": "2025-12-31",
+    "1970s_rows": 2607,
+    "1970_1991_rows": 5738,
+    "calendar": "All Monday-Friday dates; upstream previous-value fill on non-trading weekdays.",
+    "duplicate_dates": 0,
+    "missing_or_nonfinite_values": 0,
+    "nonpositive_levels": 0
+  },
+  "1970s_daily_shape": {
+    "distinct_log_returns_rounded_8decimals": 2507,
+    "joint_unchanged_weekday_rows": 92,
+    "all_weekday_log_return_vol": 0.16126669624066622,
+    "historical_price_precision_note": "Early levels are rounded; zero moves alone cannot identify holidays or prove a market was inactive."
+  },
+  "annual_TR_reference_checks": [
+    {
+      "year": 1970,
+      "reference_pct": 15.1,
+      "workbook_pct": 15.100000000000001,
+      "within_reference_rounding": true
+    },
+    {
+      "year": 1971,
+      "reference_pct": 21.08,
+      "workbook_pct": 21.077324066029558,
+      "within_reference_rounding": true
+    },
+    {
+      "year": 1972,
+      "reference_pct": 42.43,
+      "workbook_pct": 42.42967853042479,
+      "within_reference_rounding": true
+    },
+    {
+      "year": 1973,
+      "reference_pct": 74.96,
+      "workbook_pct": 74.95591717466874,
+      "within_reference_rounding": true
+    },
+    {
+      "year": 1974,
+      "reference_pct": 39.51,
+      "workbook_pct": 39.51392288421114,
+      "within_reference_rounding": true
+    },
+    {
+      "year": 1975,
+      "reference_pct": -17.22,
+      "workbook_pct": -17.22223368903383,
+      "within_reference_rounding": true
+    },
+    {
+      "year": 1976,
+      "reference_pct": -11.92,
+      "workbook_pct": -11.923700286747286,
+      "within_reference_rounding": true
+    },
+    {
+      "year": 1977,
+      "reference_pct": 10.37,
+      "workbook_pct": 10.37001387198142,
+      "within_reference_rounding": true
+    },
+    {
+      "year": 1978,
+      "reference_pct": 31.61,
+      "workbook_pct": 31.606217616580313,
+      "within_reference_rounding": true
+    },
+    {
+      "year": 1979,
+      "reference_pct": 33.81,
+      "workbook_pct": 33.81149138535899,
+      "within_reference_rounding": true
+    },
+    {
+      "year": 1980,
+      "reference_pct": 11.08,
+      "workbook_pct": 11.08424609648102,
+      "within_reference_rounding": true
+    },
+    {
+      "year": 1981,
+      "reference_pct": -23.01,
+      "workbook_pct": -23.00894238586002,
+      "within_reference_rounding": true
+    },
+    {
+      "year": 1982,
+      "reference_pct": 11.56,
+      "workbook_pct": 11.558636193330841,
+      "within_reference_rounding": true
+    },
+    {
+      "year": 1983,
+      "reference_pct": 16.26,
+      "workbook_pct": 16.25524769101596,
+      "within_reference_rounding": true
+    },
+    {
+      "year": 1984,
+      "reference_pct": 1.05,
+      "workbook_pct": 1.0505167229130752,
+      "within_reference_rounding": true
+    },
+    {
+      "year": 1985,
+      "reference_pct": 10.01,
+      "workbook_pct": 10.012605096617433,
+      "within_reference_rounding": true
+    },
+    {
+      "year": 1986,
+      "reference_pct": 2.04,
+      "workbook_pct": 2.044697488719316,
+      "within_reference_rounding": true
+    },
+    {
+      "year": 1987,
+      "reference_pct": 23.77,
+      "workbook_pct": 23.773860097929145,
+      "within_reference_rounding": true
+    },
+    {
+      "year": 1988,
+      "reference_pct": 27.93,
+      "workbook_pct": 27.9349462717555,
+      "within_reference_rounding": true
+    },
+    {
+      "year": 1989,
+      "reference_pct": 38.28,
+      "workbook_pct": 38.280810251686816,
+      "within_reference_rounding": true
+    },
+    {
+      "year": 1990,
+      "reference_pct": 29.08,
+      "workbook_pct": 29.07741430716202,
+      "within_reference_rounding": true
+    },
+    {
+      "year": 1991,
+      "reference_pct": -6.13,
+      "workbook_pct": -6.134341928508236,
+      "within_reference_rounding": true
+    }
+  ],
+  "SEC_dated_TR_reference_checks": [
+    {
+      "date": "1970-01-02",
+      "reference_level": 100,
+      "workbook_level": 100.0,
+      "matches_to_published_precision": true
+    },
+    {
+      "date": "1971-01-04",
+      "reference_level": 115.78,
+      "workbook_level": 115.78,
+      "matches_to_published_precision": true
+    },
+    {
+      "date": "1972-01-03",
+      "reference_level": 138.9,
+      "workbook_level": 138.9,
+      "matches_to_published_precision": true
+    },
+    {
+      "date": "1973-01-02",
+      "reference_level": 198.45,
+      "workbook_level": 198.45,
+      "matches_to_published_precision": true
+    },
+    {
+      "date": "1974-01-02",
+      "reference_level": 354.32,
+      "workbook_level": 354.32,
+      "matches_to_published_precision": true
+    },
+    {
+      "date": "1975-01-02",
+      "reference_level": 478.5,
+      "workbook_level": 478.5,
+      "matches_to_published_precision": true
+    },
+    {
+      "date": "1976-01-02",
+      "reference_level": 400.02,
+      "workbook_level": 400.02,
+      "matches_to_published_precision": true
+    },
+    {
+      "date": "1977-01-03",
+      "reference_level": 351.05,
+      "workbook_level": 351.05,
+      "matches_to_published_precision": true
+    },
+    {
+      "date": "1978-01-03",
+      "reference_level": 390.02,
+      "workbook_level": 390.02,
+      "matches_to_published_precision": true
+    },
+    {
+      "date": "1979-01-02",
+      "reference_level": 515.25,
+      "workbook_level": 515.25,
+      "matches_to_published_precision": true
+    },
+    {
+      "date": "1980-01-02",
+      "reference_level": 692.4,
+      "workbook_level": 692.4,
+      "matches_to_published_precision": true
+    },
+    {
+      "date": "1981-01-02",
+      "reference_level": 764.66,
+      "workbook_level": 764.66,
+      "matches_to_published_precision": true
+    },
+    {
+      "date": "1982-01-04",
+      "reference_level": 593.61,
+      "workbook_level": 593.61,
+      "matches_to_published_precision": true
+    },
+    {
+      "date": "1983-01-03",
+      "reference_level": 657.98,
+      "workbook_level": 657.98,
+      "matches_to_published_precision": true
+    },
+    {
+      "date": "1984-01-03",
+      "reference_level": 747.23,
+      "workbook_level": 747.23,
+      "matches_to_published_precision": true
+    },
+    {
+      "date": "1985-01-03",
+      "reference_level": 760.67,
+      "workbook_level": 760.67,
+      "matches_to_published_precision": true
+    },
+    {
+      "date": "1986-01-02",
+      "reference_level": 833.67,
+      "workbook_level": 833.67,
+      "matches_to_published_precision": true
+    },
+    {
+      "date": "1987-01-02",
+      "reference_level": 868.83,
+      "workbook_level": 868.83,
+      "matches_to_published_precision": true
+    },
+    {
+      "date": "1988-01-04",
+      "reference_level": 1105.18,
+      "workbook_level": 1105.18,
+      "matches_to_published_precision": true
+    },
+    {
+      "date": "1989-01-03",
+      "reference_level": 1371.33,
+      "workbook_level": 1371.33,
+      "matches_to_published_precision": true
+    },
+    {
+      "date": "1990-01-02",
+      "reference_level": 1937.46,
+      "workbook_level": 1937.46,
+      "matches_to_published_precision": true
+    },
+    {
+      "date": "1991-01-02",
+      "reference_level": 2346.03,
+      "workbook_level": 2346.026,
+      "matches_to_published_precision": true
+    }
+  ],
+  "all_22_annual_checks_pass": true,
+  "all_22_SEC_level_checks_pass": true,
+  "duke_monthly_checks": {
+    "GSCI-TR": {
+      "1970s_months": 120,
+      "1970_1991_months": 264,
+      "exact_1970s_month_end_matches": 120,
+      "max_absolute_1970s_difference": 0.0,
+      "max_absolute_1970_1991_difference": 0.0005900000001020089
+    },
+    "GSCI-ER": {
+      "1970s_months": 120,
+      "1970_1991_months": 264,
+      "exact_1970s_month_end_matches": 120,
+      "max_absolute_1970s_difference": 0.0,
+      "max_absolute_1970_1991_difference": 4.400000000259752e-05
+    },
+    "Spot": {
+      "1970s_months": 120,
+      "1970_1991_months": 264,
+      "exact_1970s_month_end_matches": 120,
+      "max_absolute_1970s_difference": 0.0,
+      "max_absolute_1970_1991_difference": 4.900000001839544e-05
+    }
+  },
+  "monthly_comparison_gate_pass": true,
+  "investing_comparison": {
+    "common_dates": 3035,
+    "first_date": "1979-12-27",
+    "last_date": "1991-12-31",
+    "exact_level_matches": 2671,
+    "max_absolute_level_difference": 0.0010000000002037268,
+    "maximum_relative_difference_bps": 0.004425963588960968,
+    "daily_common_interval_log_return_correlation": 0.9999999999895731,
+    "daily_common_interval_log_return_rmse_bps": 0.0004577249404008784,
+    "log_return_pairs_matching_to_1e_7": 3000,
+    "return_pairs": 3034
+  },
+  "investing_comparison_gate_pass": true,
+  "investing_dates_missing_in_workbook": 0,
+  "quantpedia_comparison_1980_1991": {
+    "common_dates": 3032,
+    "first_date": "1980-01-02",
+    "last_date": "1991-12-31",
+    "exact_level_matches": 2668,
+    "max_absolute_level_difference": 0.0010000000002037268,
+    "maximum_relative_difference_bps": 0.004425963588960968,
+    "daily_common_interval_log_return_correlation": 0.9999999999895688,
+    "daily_common_interval_log_return_rmse_bps": 0.000457951406122857,
+    "log_return_pairs_matching_to_1e_7": 2997,
+    "return_pairs": 3031
+  },
+  "public_database_corroboration": {
+    "available": true,
+    "sha256": "deecf9a9cca87f79f60543b1390ed731f6553782bd4f456038f152141d37faed",
+    "rows": 13151,
+    "first_date": "1970-01-01",
+    "last_date": "2020-06-05",
+    "asset_metadata": [
+      {
+        "name": "SP500 GSCI Total Return Index (commodity and infl.)  ",
+        "ticker": "COM",
+        "exchange": "",
+        "currency": "",
+        "isin": "",
+        "source": "https://tradingeconomics.com/commodity/gsci (Not sure)         ",
+        "frequency": "D",
+        "asset_class": "commodity",
+        "treatment_type": "prices",
+        "maturity": null
+      }
+    ],
+    "1970s_comparison": {
+      "common_dates": 2607,
+      "first_date": "1970-01-02",
+      "last_date": "1979-12-31",
+      "exact_level_matches": 419,
+      "max_absolute_level_difference": 5.684341886080801e-13,
+      "maximum_relative_difference_bps": 1.1102230246251565e-11,
+      "daily_common_interval_log_return_correlation": 0.9999999999999998,
+      "daily_common_interval_log_return_rmse_bps": 6.054594787749772e-12,
+      "log_return_pairs_matching_to_1e_7": 2606,
+      "return_pairs": 2606
+    },
+    "1970_1991_comparison": {
+      "common_dates": 5738,
+      "first_date": "1970-01-02",
+      "last_date": "1991-12-31",
+      "exact_level_matches": 635,
+      "max_absolute_level_difference": 0.09900000000152431,
+      "maximum_relative_difference_bps": 0.8668849932558231,
+      "daily_common_interval_log_return_correlation": 0.9999992198495661,
+      "daily_common_interval_log_return_rmse_bps": 0.12491972349249231,
+      "log_return_pairs_matching_to_1e_7": 4611,
+      "return_pairs": 5737
+    },
+    "qualification": "Separate public delivery with uncertain upstream source and documented cleaning. Later daily errors and level drift disqualify it as a preferred production source."
+  },
+  "published_CMDTY_comparisons": {
+    "1970_1979": {
+      "common_level_dates": 2488,
+      "first_date": "1970-01-02",
+      "last_date": "1979-12-31",
+      "workbook": {
+        "return_observations": 2487,
+        "annualized_simple_return_std": 0.16508291526115354,
+        "annualized_log_return_std": 0.1650190971665784,
+        "lag_one_log_return_autocorrelation": 0.03466697097287681,
+        "max_drawdown": -0.41985888892848233,
+        "drawdown_trough_date": "1977-08-15",
+        "growth_between_endpoints": 5.8656
+      },
+      "published": {
+        "return_observations": 2487,
+        "annualized_simple_return_std": 0.04016743380526606,
+        "annualized_log_return_std": 0.04010765773752413,
+        "lag_one_log_return_autocorrelation": 0.6268019047743378,
+        "max_drawdown": -0.3527964380565537,
+        "drawdown_trough_date": "1976-11-01",
+        "growth_between_endpoints": 5.692721598294001
+      },
+      "common_interval_log_return_correlation": 0.2027005869870242,
+      "common_interval_log_return_rmse_bps": 101.86022971807802,
+      "calendar_note": "Both paths use the same published CMDTY dates. Gaps yield common multi-day intervals; no target return rows are discarded before cumulation."
+    },
+    "1970_1983": {
+      "common_level_dates": 3486,
+      "first_date": "1970-01-02",
+      "last_date": "1983-12-30",
+      "workbook": {
+        "return_observations": 3485,
+        "annualized_simple_return_std": 0.15746081231942774,
+        "annualized_log_return_std": 0.15743519175861037,
+        "lag_one_log_return_autocorrelation": 0.03316761448618721,
+        "max_drawdown": -0.41985888892848233,
+        "drawdown_trough_date": "1977-08-15",
+        "growth_between_endpoints": 6.6152999999999995
+      },
+      "published": {
+        "return_observations": 3485,
+        "annualized_simple_return_std": 0.037017482364364425,
+        "annualized_log_return_std": 0.03696800212765105,
+        "lag_one_log_return_autocorrelation": 0.63730451301802,
+        "max_drawdown": -0.3527964380565537,
+        "drawdown_trough_date": "1976-11-01",
+        "growth_between_endpoints": 6.56916505173
+      },
+      "common_interval_log_return_correlation": 0.20077201569986414,
+      "common_interval_log_return_rmse_bps": 97.20014469217072,
+      "calendar_note": "Both paths use the same published CMDTY dates. Gaps yield common multi-day intervals; no target return rows are discarded before cumulation."
+    },
+    "1980_1983": {
+      "common_level_dates": 998,
+      "first_date": "1980-01-02",
+      "last_date": "1983-12-30",
+      "workbook": {
+        "return_observations": 997,
+        "annualized_simple_return_std": 0.13639774042043612,
+        "annualized_log_return_std": 0.1365026195564509,
+        "lag_one_log_return_autocorrelation": 0.02359445792342316,
+        "max_drawdown": -0.32418689661636513,
+        "drawdown_trough_date": "1981-12-15",
+        "growth_between_endpoints": 0.09984113229347202
+      },
+      "published": {
+        "return_observations": 997,
+        "annualized_simple_return_std": 0.02629429441792199,
+        "annualized_log_return_std": 0.026287817197046183,
+        "lag_one_log_return_autocorrelation": 0.6594152814534017,
+        "max_drawdown": -0.2744165338832131,
+        "drawdown_trough_date": "1981-12-03",
+        "growth_between_endpoints": 0.12965658937032165
+      },
+      "common_interval_log_return_correlation": 0.18370575399370512,
+      "common_interval_log_return_rmse_bps": 84.48662149365845,
+      "calendar_note": "Both paths use the same published CMDTY dates. Gaps yield common multi-day intervals; no target return rows are discarded before cumulation."
+    },
+    "1984_1990": {
+      "common_level_dates": 1768,
+      "first_date": "1984-01-03",
+      "last_date": "1990-12-31",
+      "workbook": {
+        "return_observations": 1767,
+        "annualized_simple_return_std": 0.1547935517467567,
+        "annualized_log_return_std": 0.15474043127689302,
+        "lag_one_log_return_autocorrelation": 0.08622124203343229,
+        "max_drawdown": -0.20277545035609545,
+        "drawdown_trough_date": "1990-12-12",
+        "growth_between_endpoints": 2.267641823802577
+      },
+      "published": {
+        "return_observations": 1767,
+        "annualized_simple_return_std": 0.15661927668162964,
+        "annualized_log_return_std": 0.15660357973903993,
+        "lag_one_log_return_autocorrelation": 0.09957493454651273,
+        "max_drawdown": -0.20618809851930597,
+        "drawdown_trough_date": "1990-12-12",
+        "growth_between_endpoints": 2.0385537948277808
+      },
+      "common_interval_log_return_correlation": 0.990330198589501,
+      "common_interval_log_return_rmse_bps": 13.68995287406419,
+      "calendar_note": "Both paths use the same published CMDTY dates. Gaps yield common multi-day intervals; no target return rows are discarded before cumulation."
+    }
+  },
+  "annual_common_calendar_volatility": [
+    {
+      "year": 1970,
+      "daily_log_return_vol": 0.09794819649405861,
+      "published_log_return_vol": 0.015824949455305336
+    },
+    {
+      "year": 1971,
+      "daily_log_return_vol": 0.08664256471085001,
+      "published_log_return_vol": 0.02008194644978613
+    },
+    {
+      "year": 1972,
+      "daily_log_return_vol": 0.10738629522686563,
+      "published_log_return_vol": 0.025737110340116224
+    },
+    {
+      "year": 1973,
+      "daily_log_return_vol": 0.22910566780043673,
+      "published_log_return_vol": 0.05309342103112587
+    },
+    {
+      "year": 1974,
+      "daily_log_return_vol": 0.23477756416832496,
+      "published_log_return_vol": 0.06798811842076531
+    },
+    {
+      "year": 1975,
+      "daily_log_return_vol": 0.22113356266270415,
+      "published_log_return_vol": 0.04770588677341083
+    },
+    {
+      "year": 1976,
+      "daily_log_return_vol": 0.16765820253484864,
+      "published_log_return_vol": 0.034715457076304246
+    },
+    {
+      "year": 1977,
+      "daily_log_return_vol": 0.11798598790440332,
+      "published_log_return_vol": 0.03049893775213538
+    },
+    {
+      "year": 1978,
+      "daily_log_return_vol": 0.14673875168515277,
+      "published_log_return_vol": 0.030870684682298786
+    },
+    {
+      "year": 1979,
+      "daily_log_return_vol": 0.1512769622633103,
+      "published_log_return_vol": 0.017233389210967783
+    },
+    {
+      "year": 1980,
+      "daily_log_return_vol": 0.17877097752116658,
+      "published_log_return_vol": 0.042388051451203605
+    },
+    {
+      "year": 1981,
+      "daily_log_return_vol": 0.13379687777452004,
+      "published_log_return_vol": 0.0138983531706131
+    },
+    {
+      "year": 1982,
+      "daily_log_return_vol": 0.12173244330729313,
+      "published_log_return_vol": 0.011421120313976192
+    },
+    {
+      "year": 1983,
+      "daily_log_return_vol": 0.0979924665004804,
+      "published_log_return_vol": 0.019007364556023792
+    }
+  ],
+  "ER_TR_ratio_diagnostic": [
+    {
+      "date": "1970-01-02",
+      "source_ER": 100.0,
+      "source_TR": 100.0,
+      "source_TR_over_ER": 1.0,
+      "published_ER": 100.0,
+      "published_TR": 100.0,
+      "published_TR_over_ER": 1.0
+    },
+    {
+      "date": "1979-12-31",
+      "source_ER": 360.12,
+      "source_TR": 686.56,
+      "source_TR_over_ER": 1.9064756192380317,
+      "published_ER": 436.0333280378,
+      "published_TR": 669.2721598294,
+      "published_TR_over_ER": 1.534910560257404
+    },
+    {
+      "date": "1983-12-30",
+      "source_ER": 251.47,
+      "source_TR": 761.53,
+      "source_TR_over_ER": 3.0283135165228456,
+      "published_ER": 363.4673853733,
+      "published_TR": 756.916505173,
+      "published_TR_over_ER": 2.082488101086724
+    },
+    {
+      "date": "1991-01-02",
+      "source_ER": 458.48,
+      "source_TR": 2346.026,
+      "source_TR_over_ER": 5.11696475309719,
+      "published_ER": 743.3157327932,
+      "published_TR": 2203.7036071598,
+      "published_TR_over_ER": 2.964693884358961
+    }
+  ],
+  "ER_TR_ratio_interpretation": "Direct ER/TR identifies a substantially different cumulative TR-to-ER uplift from the current modeled stripping. Calendar omissions and bill-yield conventions remain separate explanations; the ratio alone does not assign all discrepancy to weekends.",
+  "source_independence_note": "Deliveries and publication vintages differ; independence of their upstream index calculations is not established. Sparse published references do not independently validate every daily 1970s value.",
+  "manual_investing_input": {
+    "file": "sources/raw/cmdty_daily_research/investing_gsci_tr_1979_1991.csv",
+    "sha256": "4320308a7a5715337e28c2f601db19d14c3a67425ae9a7aae7cfe397d8fd5ad5",
+    "source_url": "https://www.investing.com/indices/sp-gsci-commodity-total-return-historical-data",
+    "exact_retrieval_timestamp": null,
+    "documented_access_date": "2026-09-30"
+  },
+  "production_before": {
+    "published_cmdty_sha256": "2d7e4b76fe6f9105d1d1068a60970a9ec34ffb3bc5a7e53ec4c381451e10b1b4",
+    "production_builder_sha256": "d4b6eb5c6ca2eca04dafed5a18e9d4ee8f6414bdea9a62b54440ac61718e2467"
+  },
+  "calculation_versions": {
+    "python": "3.14.0",
+    "pandas": "3.0.3",
+    "numpy": "2.4.6",
+    "script_sha256": "e61f7ac513d3814c1e769eef84ac0e6f53d6499cb0c66628aad56d7bff8c8979"
+  },
+  "figure_created": true,
+  "production_after": {
+    "published_cmdty_sha256": "2d7e4b76fe6f9105d1d1068a60970a9ec34ffb3bc5a7e53ec4c381451e10b1b4",
+    "production_builder_sha256": "d4b6eb5c6ca2eca04dafed5a18e9d4ee8f6414bdea9a62b54440ac61718e2467"
+  },
+  "production_files_unchanged": true
+}

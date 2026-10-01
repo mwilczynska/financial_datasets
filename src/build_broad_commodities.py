@@ -1,104 +1,75 @@
-"""Build a Yahoo-compatible DBC-like broad commodities total-return dataset.
+"""Build CMDTY from daily GSCI ER/TR, BCOM plus collateral, and DBC ETF returns.
 
-Source chain (1970-present), all normalized to 100 at 1970-01-02 and compounded
-continuously across splices:
-
-  Segment 0 (1970-01-02 .. 1984-01-03): S&P GSCI Total Return anchor, log-linear
-      daily smoothing on the ^IRX trading calendar. The anchor is the only
-      roll-inclusive, collateralized broad commodity total-return series that
-      reaches 1970; daily volatility is smoothed (no free daily broad-commodity
-      data exists before 1984), but the LEVEL carries genuine roll yield, T-bill
-      collateral and the GSCI production-weighted composition.
-  Segment 1 (1984-01-04 .. 1991-01-02): Yahoo ^SPGSCI spot DAILY SHAPE overlaid
-      (per anchor interval) onto the S&P GSCI Total Return anchor. This injects
-      the roll yield and collateral the spot index omits (~9%/yr roll + ~7%/yr
-      T-bill in that era) while preserving real daily spot moves and event timing.
-  Segment 2 (1991-01-03 .. 2006-02-06): Yahoo ^BCOM Bloomberg Commodity Excess
-      Return (spot + roll) + ^IRX T-bill collateral.
-  Segment 3 (2006-02-07 .. present): Yahoo DBC observed total-return ETF.
-
-Column convention:
-  Close / Price Return = EXCESS-RETURN level (spot + roll, no collateral).
-  Adj Close / Total Return = TOTAL-RETURN level (excess return + T-bill collateral).
-  The backtester reads Adj Close.
-
-The S&P GSCI Total Return anchor and the Yahoo charts used before DBC inception
-are historical inputs retained in sources/raw. Only the DBC tail needs a live
-Yahoo request during ordinary updates.
+1970-01-02 .. 1991-01-02: pinned daily GSCI ER/TR, on preserved CMDTY dates.
+1991-01-03 .. 2006-02-06: BCOM excess return plus the existing IRX model.
+2006-02-07 .. present: DBC ETF close and adjusted-close returns.
+Close is excess-return growth before DBC and ETF price growth thereafter;
+Adj Close is total-return growth. Both start at 100 and splice independently.
+--migrate-gsci replaces the early source and rescales existing later levels
+independently, preserving BCOM/DBC return ratios without historical Yahoo feeds.
+Ordinary updates use update_broad_commodities.py.
 """
-
 from __future__ import annotations
 
 import argparse
 import bisect
 import csv
 import hashlib
+import io
 import json
 import math
+import subprocess
+from collections import Counter
 from datetime import date, datetime, time, timedelta, timezone
+from decimal import Decimal
 from pathlib import Path
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import requests
 
+if __package__:
+    from . import gsci_daily
+else:
+    import gsci_daily
 
 ASSET_ID = "broad_commodities"
 ASSET_NAME = "Broad Commodities / DBC-like Total Return"
 START_DATE = date(1970, 1, 1)
-SPGSCI_START_DATE = date(1984, 1, 1)
-SPGSCI_SYMBOL = "^SPGSCI"
-BCOM_SYMBOL = "^BCOM"
-DBC_SYMBOL = "DBC"
-IRX_SYMBOL = "^IRX"
 BROAD_MODEL_START = date(1970, 1, 2)
-# Static committed S&P GSCI Total Return anchor (base 100 at 1970-01-02).
-GSCI_ANCHOR_FILE = "broad_commodities_gsci_tr_macromicro.csv"
+BCOM_SYMBOL, DBC_SYMBOL, IRX_SYMBOL = "^BCOM", "DBC", "^IRX"
+GSCI_END = gsci_daily.SPLICE_DATE
+BCOM_FIRST_RETURN = "1991-01-03"
+DBC_OVERLAP = "2006-02-06"
+DBC_FIRST_RETURN = "2006-02-07"
 HISTORICAL_CHARTS = {
-    SPGSCI_SYMBOL: ("spgsci", "1984-01-03", "1991-01-02", 1500),
-    BCOM_SYMBOL: ("bcom", "1991-01-02", "2006-02-06", 3500),
-    IRX_SYMBOL: ("irx", "1970-01-02", "2006-02-06", 8500),
+    BCOM_SYMBOL: ("bcom", GSCI_END, DBC_OVERLAP, 3500),
+    IRX_SYMBOL: ("irx", GSCI_END, DBC_OVERLAP, 3500),
 }
-
-SOURCE = (
-    "S&P GSCI Total Return anchor (MacroMicro republication of the S&P GSCI Total "
-    "Return Index, base 100 at 1970-01-02) for the 1970-1991 reconstruction: "
-    "log-linear daily smoothing (Segment 0, 1970-1983) and Yahoo ^SPGSCI spot daily "
-    "shape overlaid to the anchor (Segment 1, 1984-1991); "
-    "Yahoo Finance chart API ^BCOM Bloomberg Commodity Excess Return + ^IRX T-bill "
-    "collateral (Segment 2, 1991-2006); DBC adjusted close total-return ETF "
-    "(Segment 3, 2006-present)"
-)
-YAHOO_COLUMNS = ["Date", "Open", "High", "Low", "Close", "Adj Close", "Volume"]
-PROJECT_COLUMNS = ["Price Return", "Total Return", "Source", "Quality Flag", "Source Notes"]
-OUTPUT_COLUMNS = YAHOO_COLUMNS + PROJECT_COLUMNS
-
-GSCI_SMOOTHED_FLAG = "model_gsci_total_return_anchor_smoothed_daily"
-GSCI_SHAPE_FLAG = "model_gsci_total_return_anchor_with_spgsci_spot_daily_shape"
+GSCI_FLAG = "backcalculated_gsci_daily_excess_and_total_return"
 BCOM_FLAG = "model_bcom_excess_return_plus_tbill_collateral"
 DBC_FLAG = "observed_yahoo_dbc_dblci_total_return_etf"
-
-GSCI_SMOOTHED_NOTES = (
-    "S&P GSCI TOTAL RETURN ANCHOR, SMOOTHED. Adj Close follows the S&P GSCI Total "
-    "Return Index (roll yield + T-bill collateral + GSCI production weights), "
-    "republished by MacroMicro at ~bi-monthly resolution and base 100 at 1970-01-02, "
-    "log-linearly interpolated to daily ^IRX trading dates. Close strips the daily "
-    "^IRX T-bill collateral to give the excess-return (spot+roll) level. No free daily "
-    "broad-commodity data exists before 1984, so within-period daily volatility is "
-    "SMOOTHED (model-derived), but the level carries genuine roll yield and collateral. "
-    "S&P GSCI is back-tested before its 1991 launch."
+LEGACY_GSCI_FLAGS = {
+    "model_gsci_total_return_anchor_smoothed_daily",
+    "model_gsci_total_return_anchor_with_spgsci_spot_daily_shape",
+}
+SOURCE = (
+    "Pinned Trading_Commo public GSCI daily ER/TR workbook (author-claimed Bloomberg PX_LAST; "
+    "provider back-calculated before 1991-05-01), on preserved CMDTY dates through 1991-01-02; "
+    "Yahoo ^BCOM excess return plus ^IRX collateral through 2006-02-06; Yahoo DBC ETF thereafter"
 )
-GSCI_SHAPE_NOTES = (
-    "S&P GSCI TOTAL RETURN ANCHOR with ^SPGSCI SPOT DAILY SHAPE. Adj Close uses the "
-    "daily Yahoo ^SPGSCI spot-index return shape, scaled by a constant per-anchor-interval "
-    "overlay so each ~bi-monthly interval compounds to the S&P GSCI Total Return anchor. "
-    "This injects the roll yield and T-bill collateral the spot index omits (~9%/yr roll + "
-    "~7%/yr collateral in 1984-1991) while preserving genuine daily spot moves and event "
-    "timing. Close strips the daily ^IRX collateral to give the excess-return level."
+GSCI_SOURCE = "S&P GSCI daily ER/TR via Trading_Commo public workbook (author-claimed Bloomberg extract)"
+GSCI_NOTES = (
+    "S&P GSCI daily EXCESS RETURN (Close: spot + roll) and TOTAL RETURN (Adj Close: ER + collateral), "
+    "normalized separately to 100 at 1970-01-02. Provider back-calculated history before the "
+    "1991-05-01 index launch. Public workbook author claims Bloomberg PX_LAST; terminal extraction "
+    "not authenticated. Source uses previous-value fill on non-trading weekdays; holidays may carry "
+    "levels. Sampled on preserved CMDTY dates before calculating returns. GSCI weights and roll "
+    "differ from DBC. Redistribution rights remain unverified."
 )
 BCOM_NOTES = (
     "Bloomberg Commodity Excess Return Index via Yahoo ^BCOM (spot + roll yield; no collateral). "
-    "Adj Close adds daily ^IRX T-bill collateral accrual (IRX%/100/365 per day). "
-    "Index methodology change from the GSCI Total Return anchor at the 1991 boundary: different "
+    "Adj Close adds daily ^IRX T-bill collateral accrual (IRX%/100/365 per observation). "
+    "Index methodology change from daily GSCI ER/TR at the 1991 boundary: different "
     "commodity weights and a different index family."
 )
 DBC_NOTES = (
@@ -108,16 +79,19 @@ DBC_NOTES = (
     "Index methodology change from BCOM Excess Return + T-bill model at the 2006 boundary. "
     "DBC uses optimum-yield rolling (different from BCOM roll rules). ~0.89% annual expense drag."
 )
+YAHOO_COLUMNS = ["Date", "Open", "High", "Low", "Close", "Adj Close", "Volume"]
+PROJECT_COLUMNS = ["Price Return", "Total Return", "Source", "Quality Flag", "Source Notes"]
+OUTPUT_COLUMNS = YAHOO_COLUMNS + PROJECT_COLUMNS
+RETURN_TOLERANCE = Decimal("1e-10")
+checksum = gsci_daily.checksum
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--end-date", default=date.today().isoformat(), help="Inclusive end date YYYY-MM-DD.")
     parser.add_argument("--root", default=".", help="Project root directory.")
-    parser.add_argument(
-        "--refresh-historical-sources", action="store_true",
-        help="Try to refetch the historical ^SPGSCI, ^BCOM, and ^IRX Yahoo charts; retain valid cached charts if Yahoo is unavailable.",
-    )
+    parser.add_argument("--migrate-gsci", action="store_true", help="Replace GSCI and preserve all later returns; no Yahoo requests.")
+    parser.add_argument("--refresh-historical-sources", action="store_true", help="Try to refetch BCOM/IRX; retain valid caches on failure.")
     return parser.parse_args()
 
 
@@ -126,11 +100,10 @@ def unix_seconds(day: date) -> int:
 
 
 def fetch_chart(symbol: str, end_date: date, start_date: date = START_DATE) -> dict:
-    period1 = unix_seconds(start_date)
-    period2 = unix_seconds(end_date + timedelta(days=1))
     url = (
         f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}"
-        f"?period1={period1}&period2={period2}&interval=1d&events=history&includeAdjustedClose=true"
+        f"?period1={unix_seconds(start_date)}&period2={unix_seconds(end_date + timedelta(days=1))}"
+        "&interval=1d&events=history&includeAdjustedClose=true"
     )
     response = requests.get(url, timeout=60, headers={"User-Agent": "Mozilla/5.0"})
     response.raise_for_status()
@@ -143,81 +116,55 @@ def fetch_chart(symbol: str, end_date: date, start_date: date = START_DATE) -> d
 
 def chart_rows(payload: dict) -> list[dict]:
     result = payload["chart"]["result"][0]
-    timestamps = result.get("timestamp") or []
     quote = result["indicators"]["quote"][0]
-    adjclose_list = result.get("indicators", {}).get("adjclose", [{}])[0].get("adjclose", [])
+    adjusted = result.get("indicators", {}).get("adjclose", [{}])[0].get("adjclose", [])
     meta = result.get("meta", {})
-    timezone_name = meta.get("exchangeTimezoneName", "America/New_York")
     try:
-        exchange_tz = ZoneInfo(timezone_name)
+        exchange_tz = ZoneInfo(meta.get("exchangeTimezoneName", "America/New_York"))
     except ZoneInfoNotFoundError:
         exchange_tz = timezone(timedelta(seconds=int(meta.get("gmtoffset", 0))))
-
     rows = []
-    for index, timestamp in enumerate(timestamps):
+    for index, timestamp in enumerate(result.get("timestamp") or []):
         close = quote.get("close", [None])[index]
-        adjusted = adjclose_list[index] if index < len(adjclose_list) else close
         if close is None:
             continue
-        if adjusted is None:
-            adjusted = close
-        rows.append({
-            "Date": datetime.fromtimestamp(timestamp, exchange_tz).date().isoformat(),
-            "Close": float(close),
-            "Adj Close": float(adjusted),
-        })
+        adj = adjusted[index] if index < len(adjusted) else close
+        rows.append({"Date": datetime.fromtimestamp(timestamp, exchange_tz).date().isoformat(),
+                     "Close": float(close), "Adj Close": float(close if adj is None else adj)})
     return rows
 
 
 def validate_historical_chart(payload: dict, symbol: str) -> None:
-    """Reject a truncated or wrong Yahoo chart before using it for a splice."""
-    stem, first_required, last_required, minimum_rows = HISTORICAL_CHARTS[symbol]
-    result = payload["chart"]["result"][0]
-    actual_symbol = result.get("meta", {}).get("symbol")
-    if actual_symbol != symbol:
-        raise ValueError(f"{stem} chart symbol is {actual_symbol!r}, expected {symbol!r}")
-    historical_rows = [
-        row for row in chart_rows(payload) if first_required <= row["Date"] <= last_required
-    ]
-    historical_dates = [row["Date"] for row in historical_rows]
-    if first_required not in historical_dates or last_required not in historical_dates or len(historical_dates) < minimum_rows:
-        raise ValueError(
-            f"{symbol} chart lacks the required {first_required} to {last_required} history "
-            f"({len(historical_dates)} rows; need at least {minimum_rows})"
-        )
-    if historical_dates != sorted(set(historical_dates)):
+    stem, first, last, minimum = HISTORICAL_CHARTS[symbol]
+    actual = payload["chart"]["result"][0].get("meta", {}).get("symbol")
+    if actual != symbol:
+        raise ValueError(f"{stem} chart symbol is {actual!r}, expected {symbol!r}")
+    rows = [row for row in chart_rows(payload) if first <= row["Date"] <= last]
+    dates = [row["Date"] for row in rows]
+    if first not in dates or last not in dates or len(dates) < minimum:
+        raise ValueError(f"{symbol} chart lacks required {first} to {last} history ({len(dates)} rows; need {minimum})")
+    if dates != sorted(set(dates)):
         raise ValueError(f"{symbol} historical dates are duplicated or unsorted")
-    if any(not math.isfinite(row["Close"]) or row["Close"] <= 0 for row in historical_rows):
+    if any(not math.isfinite(row["Close"]) or row["Close"] <= 0 for row in rows):
         raise ValueError(f"{symbol} historical closes must be finite and positive")
-    if any(
-        (date.fromisoformat(day) - date.fromisoformat(prior)).days > 10
-        for prior, day in zip(historical_dates, historical_dates[1:])
-    ):
+    if any((date.fromisoformat(day) - date.fromisoformat(prior)).days > 10 for prior, day in zip(dates, dates[1:])):
         raise ValueError(f"{symbol} historical chart has a gap longer than 10 calendar days")
 
 
 def load_historical_chart(raw_dir: Path, symbol: str, end_date: date, refresh: bool = False) -> tuple[dict, str]:
-    """Use validated historical cache; optionally try Yahoo without losing the cache."""
-    stem = HISTORICAL_CHARTS[symbol][0]
-    path = raw_dir / f"{ASSET_ID}_yahoo_{stem}_chart.json"
-    cached = None
-    cache_error = None
+    path = raw_dir / f"{ASSET_ID}_yahoo_{HISTORICAL_CHARTS[symbol][0]}_chart.json"
+    cached, cache_error = None, None
     if path.exists():
         try:
             cached = json.loads(path.read_text(encoding="utf-8"))
             validate_historical_chart(cached, symbol)
         except (ValueError, KeyError, IndexError, TypeError) as exc:
-            cached = None
-            cache_error = exc
-
+            cached, cache_error = None, exc
     if cached is not None and not refresh:
         print(f"Using validated historical {symbol} cache: {path}")
         return cached, "cached"
-
-    print(f"Fetching historical {symbol} ...")
-    start_date = START_DATE if symbol == IRX_SYMBOL else SPGSCI_START_DATE
     try:
-        payload = fetch_chart(symbol, end_date, start_date=start_date)
+        payload = fetch_chart(symbol, end_date, start_date=date.fromisoformat(GSCI_END))
         validate_historical_chart(payload, symbol)
     except (requests.RequestException, RuntimeError, ValueError, KeyError, IndexError, TypeError) as exc:
         if cached is not None:
@@ -225,359 +172,359 @@ def load_historical_chart(raw_dir: Path, symbol: str, end_date: date, refresh: b
             return cached, "cached_after_fetch_error"
         detail = f"; cached chart invalid: {cache_error}" if cache_error else ""
         raise RuntimeError(f"Historical {symbol} unavailable and no valid cache at {path}{detail}") from exc
-
     path.write_text(json.dumps(payload), encoding="utf-8")
     return payload, "fetched"
 
 
-def load_gsci_anchor(path: Path) -> list[tuple[str, float]]:
-    """Load the S&P GSCI Total Return anchor (Date,GSCI_TR_Index), sorted by date."""
-    if not path.exists():
-        raise RuntimeError(
-            f"S&P GSCI Total Return anchor not found: {path}. This is a static committed "
-            "file (MacroMicro republication of the S&P GSCI TR Index); it cannot be refetched "
-            "programmatically."
-        )
-    anchor: list[tuple[str, float]] = []
-    with path.open(newline="", encoding="utf-8") as handle:
-        for row in csv.DictReader(handle):
-            anchor.append((row["Date"], float(row["GSCI_TR_Index"])))
-    anchor.sort(key=lambda item: item[0])
-    if not anchor or anchor[0][0] != BROAD_MODEL_START.isoformat():
-        raise RuntimeError("GSCI anchor must start at 1970-01-02")
-    return anchor
+def round_float(value: float | Decimal) -> str:
+    rounded = f"{value:.10f}".rstrip("0").rstrip(".")
+    return "0" if rounded == "-0" else rounded
 
 
-def round_float(value: float) -> str:
-    return f"{float(value):.10f}".rstrip("0").rstrip(".")
-
-
-def build_normalized_rows(
-    spgsci_raw: list[dict],
-    bcom_raw: list[dict],
-    dbc_raw: list[dict],
-    irx_raw: list[dict],
-    gsci_anchor: list[tuple[str, float]],
-) -> list[dict[str, str]]:
-    spgsci = {row["Date"]: float(row["Close"]) for row in spgsci_raw}
-    bcom = {row["Date"]: float(row["Close"]) for row in bcom_raw}
-    dbc_close = {row["Date"]: float(row["Close"]) for row in dbc_raw}
-    dbc_adj = {row["Date"]: float(row["Adj Close"]) for row in dbc_raw}
-    # IRX close is the annualized T-bill rate in percent (e.g., 5.25 = 5.25% per year)
-    irx = {row["Date"]: float(row["Close"]) for row in irx_raw if row.get("Close")}
-    irx_sorted = sorted(irx)
-
-    def get_irx_rate(day: str) -> float:
-        """Return the IRX rate for the given day with forward-fill for missing dates."""
-        if day in irx:
-            return irx[day]
-        idx = bisect.bisect_right(irx_sorted, day) - 1
-        return irx[irx_sorted[idx]] if idx >= 0 else 5.0
-
-    def daily_collateral(day: str) -> float:
-        """One-day T-bill collateral growth factor (actual/365)."""
-        return 1.0 + get_irx_rate(day) / 100.0 / 365.0
-
-    # --- Segment boundaries (unchanged) ---------------------------------------
-    spgsci_dates = sorted(spgsci)
-    if len(spgsci_dates) < 2:
-        raise RuntimeError("SPGSCI history too short to splice")
-    spgsci_return_start = spgsci_dates[1]
-
-    bcom_dates = sorted(bcom)
-    if len(bcom_dates) < 2:
-        raise RuntimeError("BCOM history too short to splice")
-    bcom_return_start = bcom_dates[1]
-
-    dbc_dates = sorted(dbc_close)
-    if len(dbc_dates) < 2:
-        raise RuntimeError("DBC history too short to splice")
-    dbc_return_start = dbc_dates[1]
-
-    model_start = BROAD_MODEL_START.isoformat()
-    seg0 = sorted(d for d in irx_sorted if model_start <= d < spgsci_return_start)
-    seg1 = sorted(d for d in spgsci if spgsci_return_start <= d < bcom_return_start)
-    seg2 = sorted(d for d in bcom if bcom_return_start <= d < dbc_return_start)
-    seg3 = sorted(d for d in dbc_close if d >= dbc_return_start)
-
-    if not seg0:
-        raise RuntimeError("No IRX dates for Segment 0")
-    if not seg1:
-        raise RuntimeError("No SPGSCI dates for Segment 1")
-
-    seg0_set, seg1_set, seg2_set, seg3_set = set(seg0), set(seg1), set(seg2), set(seg3)
-    all_dates = sorted(seg0_set | seg1_set | seg2_set | seg3_set)
-
-    # --- GSCI Total Return anchor helpers -------------------------------------
-    anchor_ords = [date.fromisoformat(d).toordinal() for d, _ in gsci_anchor]
-    anchor_logs = [math.log(v) for _, v in gsci_anchor]
-
-    def anchor_log_level(day: str) -> float:
-        """Log-linear interpolation of the GSCI TR anchor (extrapolates flat past ends)."""
-        o = date.fromisoformat(day).toordinal()
-        if o <= anchor_ords[0]:
-            return anchor_logs[0]
-        if o >= anchor_ords[-1]:
-            return anchor_logs[-1]
-        i = bisect.bisect_right(anchor_ords, o) - 1
-        o0, o1 = anchor_ords[i], anchor_ords[i + 1]
-        frac = (o - o0) / (o1 - o0)
-        return anchor_logs[i] + frac * (anchor_logs[i + 1] - anchor_logs[i])
-
-    # Segment 0 (1970-1984): smoothed daily TOTAL return = ratio of interpolated anchor levels.
-    seg0_total_return: dict[str, float] = {}
-    for prev, day in zip(seg0, seg0[1:]):
-        seg0_total_return[day] = math.exp(anchor_log_level(day) - anchor_log_level(prev)) - 1.0
-
-    # Segment 1 (1984-1991): ^SPGSCI spot daily shape, overlaid per anchor interval so each
-    # interval compounds to the anchor's total return. spgsci consecutive returns give the shape.
-    spgsci_index = {d: i for i, d in enumerate(spgsci_dates)}
-    seg1_shape_log: dict[str, float] = {}
-    for day in seg1:
-        j = spgsci_index[day]
-        seg1_shape_log[day] = math.log(spgsci[day] / spgsci[spgsci_dates[j - 1]])
-
-    # Group seg1 days by anchor interval index, then solve the per-interval overlay.
-    seg1_by_interval: dict[int, list[str]] = {}
-    for day in seg1:
-        o = date.fromisoformat(day).toordinal()
-        idx = bisect.bisect_right(anchor_ords, o) - 1
-        idx = max(0, min(idx, len(anchor_ords) - 2))
-        seg1_by_interval.setdefault(idx, []).append(day)
-
-    seg1_total_return: dict[str, float] = {}
-    for idx, days in seg1_by_interval.items():
-        target_log = anchor_logs[idx + 1] - anchor_logs[idx]
-        shape_sum = sum(seg1_shape_log[d] for d in days)
-        overlay = (target_log - shape_sum) / len(days)
-        for d in days:
-            seg1_total_return[d] = math.exp(seg1_shape_log[d] + overlay) - 1.0
-
-    # --- Compound levels across the full timeline -----------------------------
-    rows: list[dict[str, str]] = []
-    close_index = 100.0
-    adj_index = 100.0
-    prev_seg: str | None = None
-    prev_date: str | None = None
-
-    for day in all_dates:
-        if day in seg3_set:
-            seg = "DBC"
-        elif day in seg2_set:
-            seg = "BCOM"
-        elif day in seg1_set:
-            seg = "GSCI_SHAPE"
-        else:
-            seg = "GSCI_SMOOTH"
-
-        price_return: float | None = None
-        total_return: float | None = None
-
-        if prev_date is not None:
-            if seg == "GSCI_SMOOTH":
-                total_return = seg0_total_return[day]
-                # Strip daily T-bill collateral to recover the excess-return (spot+roll) level.
-                price_return = (1 + total_return) / daily_collateral(day) - 1
-
-            elif seg == "GSCI_SHAPE":
-                total_return = seg1_total_return[day]
-                price_return = (1 + total_return) / daily_collateral(day) - 1
-
-            elif seg == "BCOM" and prev_seg == "BCOM":
-                ratio = bcom[day] / bcom[prev_date]
-                price_return = ratio - 1
-                total_return = ratio * daily_collateral(day) - 1
-
-            elif seg == "BCOM" and prev_seg == "GSCI_SHAPE":
-                # Splice GSCI shape -> BCOM. BCOM has an overlap value on prev_date (= bcom_dates[0]).
-                prior_bcom = bcom.get(prev_date)
-                if prior_bcom is None:
-                    raise RuntimeError(f"BCOM missing overlap value on {prev_date} for splice to {day}")
-                ratio = bcom[day] / prior_bcom
-                price_return = ratio - 1
-                total_return = ratio * daily_collateral(day) - 1
-
-            elif seg == "DBC" and prev_seg == "DBC":
-                price_return = dbc_close[day] / dbc_close[prev_date] - 1
-                total_return = dbc_adj[day] / dbc_adj[prev_date] - 1
-
-            elif seg == "DBC" and prev_seg == "BCOM":
-                # Splice BCOM -> DBC. DBC has an overlap value on prev_date (= dbc_dates[0]).
-                prior_dbc_close = dbc_close.get(prev_date)
-                prior_dbc_adj = dbc_adj.get(prev_date)
-                if prior_dbc_close is None or prior_dbc_adj is None:
-                    raise RuntimeError(f"DBC missing overlap value on {prev_date} for splice to {day}")
-                price_return = dbc_close[day] / prior_dbc_close - 1
-                total_return = dbc_adj[day] / prior_dbc_adj - 1
-
-            else:
-                raise RuntimeError(f"Unexpected segment transition {prev_seg} -> {seg} on {day}")
-
-            close_index *= 1 + price_return
-            adj_index *= 1 + total_return
-
-        if seg == "GSCI_SMOOTH":
-            flag, notes = GSCI_SMOOTHED_FLAG, GSCI_SMOOTHED_NOTES
-            source_label = "S&P GSCI Total Return anchor (MacroMicro), log-linear daily smoothing"
-        elif seg == "GSCI_SHAPE":
-            flag, notes = GSCI_SHAPE_FLAG, GSCI_SHAPE_NOTES
-            source_label = "Yahoo ^SPGSCI spot daily shape overlaid to S&P GSCI Total Return anchor"
-        elif seg == "BCOM":
-            flag, notes = BCOM_FLAG, BCOM_NOTES
-            source_label = "Yahoo Finance chart API (^BCOM excess return, ^IRX T-bill collateral)"
-        else:
-            flag, notes = DBC_FLAG, DBC_NOTES
-            source_label = "Yahoo Finance chart API (DBC adjusted close)"
-
-        rows.append({
-            "Date": day,
-            "Open": "",
-            "High": "",
-            "Low": "",
-            "Close": round_float(close_index),
-            "Adj Close": round_float(adj_index),
-            "Volume": "",
+def make_row(day: str, close: Decimal, adjusted: Decimal, price_return: Decimal | None,
+             total_return: Decimal | None, flag: str, source: str, notes: str) -> dict[str, str]:
+    return {"Date": day, "Open": "", "High": "", "Low": "", "Close": round_float(close),
+            "Adj Close": round_float(adjusted), "Volume": "",
             "Price Return": "" if price_return is None else round_float(price_return),
             "Total Return": "" if total_return is None else round_float(total_return),
-            "Source": source_label,
-            "Quality Flag": flag,
-            "Source Notes": notes,
-        })
+            "Source": source, "Quality Flag": flag, "Source Notes": notes}
 
-        prev_seg = seg
-        prev_date = day
 
+def gsci_rows(source_rows: list[dict], calendar: list[str]) -> list[dict[str, str]]:
+    """Sample levels first, so skipped dates' returns are included in the next row."""
+    if (not calendar or calendar != sorted(set(calendar)) or calendar[0] != gsci_daily.FIRST_DATE
+            or calendar[-1] != GSCI_END):
+        raise ValueError("GSCI calendar must be ordered, unique and cover both endpoints")
+    dates = [row["Date"] for row in source_rows]
+    if dates != sorted(set(dates)):
+        raise ValueError("GSCI source dates must be ordered and unique")
+    source = {row["Date"]: row for row in source_rows}
+    missing = set(calendar) - source.keys()
+    if missing:
+        raise ValueError(f"GSCI source missing selected dates: {sorted(missing)[:5]}")
+    base_er, base_tr = (Decimal(str(source[calendar[0]][key])) for key in ("GSCI_ER", "GSCI_TR"))
+    if not base_er.is_finite() or not base_tr.is_finite() or min(base_er, base_tr) <= 0:
+        raise ValueError("GSCI base levels must be finite and positive")
+    rows = []
+    previous = None
+    for day in calendar:
+        er, tr = (Decimal(str(source[day][key])) for key in ("GSCI_ER", "GSCI_TR"))
+        if not er.is_finite() or not tr.is_finite() or min(er, tr) <= 0:
+            raise ValueError(f"GSCI ER/TR must be finite and positive on {day}")
+        er, tr = 100 * er / base_er, 100 * tr / base_tr
+        price = None if previous is None else er / previous[0] - 1
+        total = None if previous is None else tr / previous[1] - 1
+        rows.append(make_row(day, er, tr, price, total, GSCI_FLAG, GSCI_SOURCE, GSCI_NOTES))
+        previous = er, tr
     return rows
+
+
+def validate_rows(rows: list[dict[str, str]]) -> None:
+    if not rows or rows[0]["Date"] != gsci_daily.FIRST_DATE:
+        raise ValueError("CMDTY must begin on 1970-01-02")
+    dates = [row["Date"] for row in rows]
+    if dates != sorted(set(dates)):
+        raise ValueError("CMDTY dates must be ordered and unique")
+    previous = None
+    for row in rows:
+        date.fromisoformat(row["Date"])
+        levels = [Decimal(row[column]) for column in ("Close", "Adj Close")]
+        if any(not value.is_finite() or value <= 0 for value in levels):
+            raise ValueError(f"CMDTY levels must be finite and positive on {row['Date']}")
+        if previous is None:
+            if levels != [Decimal(100), Decimal(100)] or row["Price Return"] or row["Total Return"]:
+                raise ValueError("CMDTY must normalize both levels to 100, with blank first returns")
+        else:
+            for index, column in enumerate(("Price Return", "Total Return")):
+                value = Decimal(row[column])
+                if not value.is_finite() or abs(value - (levels[index] / previous[index] - 1)) > RETURN_TOLERANCE:
+                    raise ValueError(f"CMDTY {column} fails arithmetic on {row['Date']}")
+        previous = levels
+
+
+def build_normalized_rows(gsci_raw: list[dict], bcom_raw: list[dict], dbc_raw: list[dict],
+                          irx_raw: list[dict], calendar: list[str]) -> list[dict[str, str]]:
+    rows = gsci_rows(gsci_raw, calendar)
+    bcom = {row["Date"]: Decimal(str(row["Close"])) for row in bcom_raw}
+    dbc = {row["Date"]: row for row in dbc_raw}
+    irx = {row["Date"]: Decimal(str(row["Close"])) for row in irx_raw if row.get("Close") is not None}
+    irx_dates = sorted(irx)
+    if not irx_dates or irx_dates[0] > GSCI_END:
+        raise ValueError("IRX must cover the GSCI/BCOM overlap; no assumed collateral rate")
+    for mapping in (bcom, irx):
+        if any(not value.is_finite() or value <= 0 for value in mapping.values()):
+            raise ValueError("BCOM/IRX source values must be finite and positive")
+    bcom_dates = sorted(day for day in bcom if GSCI_END < day <= DBC_OVERLAP)
+    dbc_dates = sorted(day for day in dbc if day >= DBC_FIRST_RETURN)
+    if not bcom_dates or bcom_dates[0] != BCOM_FIRST_RETURN or bcom_dates[-1] != DBC_OVERLAP or GSCI_END not in bcom:
+        raise ValueError("BCOM must cover both splice overlaps and the 1991-01-03 first return")
+    if not dbc_dates or dbc_dates[0] != DBC_FIRST_RETURN or DBC_OVERLAP not in dbc:
+        raise ValueError("DBC must cover the 2006-02-06 overlap and 2006-02-07 first return")
+    close, adjusted = Decimal(rows[-1]["Close"]), Decimal(rows[-1]["Adj Close"])
+    prior_day = GSCI_END
+    for day in bcom_dates:
+        ratio = bcom[day] / bcom[prior_day]
+        rate = irx[irx_dates[bisect.bisect_right(irx_dates, day) - 1]]
+        # Preserve the existing per-observation collateral convention in this segment.
+        price, total = ratio - 1, ratio * (1 + rate / 100 / 365) - 1
+        close, adjusted = close * (1 + price), adjusted * (1 + total)
+        rows.append(make_row(day, close, adjusted, price, total, BCOM_FLAG,
+                             "Yahoo Finance chart API (^BCOM excess return, ^IRX T-bill collateral)", BCOM_NOTES))
+        prior_day = day
+    for day in dbc_dates:
+        current = [Decimal(str(dbc[day][key])) for key in ("Close", "Adj Close")]
+        prior = [Decimal(str(dbc[prior_day][key])) for key in ("Close", "Adj Close")]
+        if any(not value.is_finite() or value <= 0 for value in current + prior):
+            raise ValueError("DBC source values must be finite and positive")
+        price, total = current[0] / prior[0] - 1, current[1] / prior[1] - 1
+        close, adjusted = close * (1 + price), adjusted * (1 + total)
+        rows.append(make_row(day, close, adjusted, price, total, DBC_FLAG,
+                             "Yahoo Finance chart API (DBC adjusted close)", DBC_NOTES))
+        prior_day = day
+    validate_rows(rows)
+    return rows
+
+
+def replace_gsci_prefix(baseline: list[dict[str, str]], source: list[dict], calendar: list[str]) -> tuple[list[dict[str, str]], dict]:
+    validate_rows(baseline)
+    prefix = [row for row in baseline if row["Date"] <= GSCI_END]
+    tail = [row for row in baseline if row["Date"] > GSCI_END]
+    if [row["Date"] for row in prefix] != calendar:
+        raise ValueError("CMDTY historical dates differ from the preserved GSCI calendar")
+    if any(row["Quality Flag"] not in LEGACY_GSCI_FLAGS | {GSCI_FLAG} for row in prefix):
+        raise ValueError("Unexpected source in the existing GSCI prefix")
+    if not tail or tail[0]["Date"] != BCOM_FIRST_RETURN or tail[0]["Quality Flag"] != BCOM_FLAG:
+        raise ValueError("Existing CMDTY lacks the 1991-01-03 BCOM splice")
+    bcom_tail = [row for row in tail if row["Date"] < DBC_FIRST_RETURN]
+    dbc_tail = [row for row in tail if row["Date"] >= DBC_FIRST_RETURN]
+    if (not bcom_tail or bcom_tail[-1]["Date"] != DBC_OVERLAP or not dbc_tail
+            or dbc_tail[0]["Date"] != DBC_FIRST_RETURN
+            or any(row["Quality Flag"] != BCOM_FLAG for row in bcom_tail)
+            or any(row["Quality Flag"] != DBC_FLAG for row in dbc_tail)):
+        raise ValueError("Existing CMDTY lacks the expected BCOM/DBC source chain")
+    rows = gsci_rows(source, calendar)
+    scales = {column: Decimal(rows[-1][column]) / Decimal(prefix[-1][column]) for column in ("Close", "Adj Close")}
+    for old in tail:
+        row = old.copy()
+        for column, scale in scales.items():
+            row[column] = round_float(Decimal(old[column]) * scale)
+        if row["Quality Flag"] == BCOM_FLAG:
+            row["Source Notes"] = BCOM_NOTES
+        rows.append(row)
+    validate_rows(rows)
+    if [row["Date"] for row in rows] != [row["Date"] for row in baseline]:
+        raise ValueError("Migration changed the published calendar")
+    max_errors = {"Close": Decimal(0), "Adj Close": Decimal(0)}
+    for index in range(len(prefix), len(rows)):
+        for column in max_errors:
+            old_ratio = Decimal(baseline[index][column]) / Decimal(baseline[index - 1][column])
+            new_ratio = Decimal(rows[index][column]) / Decimal(rows[index - 1][column])
+            max_errors[column] = max(max_errors[column], abs(new_ratio - old_ratio))
+    if max(max_errors.values()) > RETURN_TOLERANCE:
+        raise ValueError("Migration altered later BCOM/DBC return ratios")
+    splice_checks = {}
+    for day in (BCOM_FIRST_RETURN, DBC_FIRST_RETURN):
+        index = next(index for index, row in enumerate(rows) if row["Date"] == day)
+        splice_checks[day] = {
+            "prior_date": rows[index - 1]["Date"], "source_flag": rows[index]["Quality Flag"],
+            **{column: {
+                "baseline_return": str(Decimal(baseline[index][column]) / Decimal(baseline[index - 1][column]) - 1),
+                "migrated_return": str(Decimal(rows[index][column]) / Decimal(rows[index - 1][column]) - 1),
+            } for column in max_errors},
+        }
+    return rows, {
+        "early_rows_replaced": len(prefix), "later_rows_preserved": len(tail), "calendar_unchanged": True,
+        "level_scale_factors": {key: str(value) for key, value in scales.items()},
+        "max_later_ratio_error": {key: str(value) for key, value in max_errors.items()},
+        "later_return_columns_unchanged": all(row[key] == old[key] for row, old in zip(rows[len(prefix):], tail)
+                                              for key in ("Price Return", "Total Return")),
+        "splice_checks": splice_checks,
+    }
+
+
+def read_csv(path: Path) -> list[dict[str, str]]:
+    return parse_csv(path.read_bytes())
+
+
+def parse_csv(payload: bytes) -> list[dict[str, str]]:
+    with io.StringIO(payload.decode("utf-8"), newline="") as handle:
+        reader = csv.DictReader(handle)
+        if reader.fieldnames != OUTPUT_COLUMNS:
+            raise ValueError("Unexpected CMDTY output schema")
+        return list(reader)
 
 
 def write_csv(path: Path, rows: list[dict[str, str]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=OUTPUT_COLUMNS)
+        writer = csv.DictWriter(handle, fieldnames=OUTPUT_COLUMNS, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
 
-def write_parquet_if_available(csv_path: Path, parquet_path: Path) -> bool:
-    try:
-        import pandas as pd
-    except ImportError:
-        return False
-    try:
-        frame = pd.read_csv(csv_path, parse_dates=["Date"])
-        frame.to_parquet(parquet_path, index=False)
-    except (ImportError, ModuleNotFoundError):
-        return False
-    return True
-
-
-def checksum(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
-def write_build_metadata(
-    path: Path, rows: list[dict[str, str]], csv_path: Path, parquet_written: bool,
-    raw_source_modes: dict[str, str], raw_dir: Path,
-) -> None:
-    quality_flags = {row["Quality Flag"] for row in rows}
-    seg_counts = {flag: sum(1 for r in rows if r["Quality Flag"] == flag) for flag in quality_flags}
-    metadata = {
-        "asset_id": ASSET_ID,
-        "asset_name": ASSET_NAME,
-        "source": SOURCE,
-        "build_timestamp_utc": datetime.now(timezone.utc).isoformat(),
-        "row_count": len(rows),
-        "first_date": rows[0]["Date"] if rows else None,
-        "last_date": rows[-1]["Date"] if rows else None,
-        "csv_path": csv_path.relative_to(path.parent.parent.parent).as_posix(),
-        "csv_sha256": checksum(csv_path),
-        "parquet_written": parquet_written,
-        "quality_flags": sorted(quality_flags),
-        "segment_row_counts": seg_counts,
-        "raw_sources": {
-            symbol: {
-                "mode": mode,
-                "path": (raw_dir / f"{ASSET_ID}_yahoo_{symbol.lstrip('^').lower()}_chart.json").relative_to(path.parent.parent.parent).as_posix(),
-                "sha256": checksum(raw_dir / f"{ASSET_ID}_yahoo_{symbol.lstrip('^').lower()}_chart.json"),
-            }
-            for symbol, mode in raw_source_modes.items()
-        },
+def build_metadata(root: Path, rows: list[dict[str, str]], gsci_metadata: dict, raw_sources: dict,
+                   migration: dict | None = None, previous_metadata: dict | None = None) -> dict:
+    metadata = (previous_metadata or {}).copy()
+    flags = Counter(row["Quality Flag"] for row in rows)
+    metadata.update({
+        "asset_id": ASSET_ID, "asset_name": ASSET_NAME, "source": SOURCE,
+        "build_timestamp_utc": datetime.now(timezone.utc).isoformat(), "methodology_version": "daily_gsci_er_tr_v1",
+        "row_count": len(rows), "first_date": rows[0]["Date"], "last_date": rows[-1]["Date"],
+        "csv_path": "data/processed/broad_commodities.csv", "parquet_written": True,
+        "quality_flags": sorted(flags), "segment_row_counts": dict(sorted(flags.items())),
+        "raw_sources": {"GSCI_ER_TR": gsci_metadata, **raw_sources},
+        "historical_calendar": json.loads((root / gsci_daily.CALENDAR_MANIFEST).read_text(encoding="utf-8")),
         "coverage_note": (
-            "Segments 0-1 (1970-01-02 to 1991-01-02) reconstruct broad commodity TOTAL return "
-            "from the S&P GSCI Total Return anchor (roll yield + T-bill collateral + GSCI "
-            "production weights). Segment 0 (1970-1983) is log-linearly smoothed to daily because "
-            "no free daily broad-commodity data exists before 1984; Segment 1 (1984-1991) overlays "
-            "the anchor onto the daily ^SPGSCI spot shape for genuine daily moves. Close is the "
-            "excess-return (spot+roll) level; Adj Close is the total-return level. S&P GSCI is "
-            "back-tested before its 1991 launch."
+            "Daily GSCI ER and TR sampled on preserved CMDTY dates through 1991-01-02. "
+            "Provider back-calculation before the 1991-05-01 launch; weekday holiday fills may occur. "
+            "Close uses ER, Adj Close uses TR; no sparse-anchor smoothing, spot overlay or additional IRX accrual "
+            "in this segment. Later BCOM plus collateral and DBC ETF definitions remain distinct."
         ),
+        "redistribution_status": gsci_daily.RIGHTS,
+    })
+    if migration is not None:
+        metadata["gsci_migration"] = migration
+    return metadata
+
+
+def write_outputs(root: Path, rows: list[dict[str, str]], metadata: dict, expected_old_sha256: str | None = None) -> None:
+    """Validate staged CSV and Parquet before replacing any published artifact."""
+    import pandas as pd
+
+    validate_rows(rows)
+    csv_path = root / "data/processed/broad_commodities.csv"
+    parquet_path = csv_path.with_suffix(".parquet")
+    metadata_path = root / "sources/manifests/broad_commodities_build.json"
+    pending_csv, pending_parquet, pending_meta = (path.with_suffix(path.suffix + ".tmp") for path in (csv_path, parquet_path, metadata_path))
+    targets = (csv_path, parquet_path, metadata_path)
+    backups = {path: path.with_suffix(path.suffix + ".rollback.tmp") for path in targets}
+    replaced = []
+    retain_backups = False
+    try:
+        write_csv(pending_csv, rows)
+        validate_rows(read_csv(pending_csv))
+        frame = pd.read_csv(pending_csv, parse_dates=["Date"])
+        frame.to_parquet(pending_parquet, index=False)
+        if not frame.equals(pd.read_parquet(pending_parquet)):
+            raise ValueError("CMDTY staged CSV and Parquet differ")
+        metadata["csv_sha256"] = checksum(pending_csv)
+        metadata["parquet_sha256"] = checksum(pending_parquet)
+        metadata_path.parent.mkdir(parents=True, exist_ok=True)
+        pending_meta.write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
+        if expected_old_sha256 is not None and checksum(csv_path) != expected_old_sha256:
+            raise RuntimeError("CMDTY changed during migration; staged outputs were not applied")
+        existed = {path: path.exists() for path in targets}
+        for path in targets:
+            if existed[path]:
+                backups[path].write_bytes(path.read_bytes())
+        # Finish the disposable interim copy before committing production outputs.
+        write_csv(root / "data/interim/broad_commodities.csv", rows)
+        if expected_old_sha256 is not None and checksum(csv_path) != expected_old_sha256:
+            raise RuntimeError("CMDTY changed during staging; no production outputs were applied")
+        try:
+            for pending, target in zip((pending_csv, pending_parquet, pending_meta), targets):
+                pending.replace(target)
+                replaced.append(target)
+        except BaseException as commit_error:
+            retain_backups = True
+            rollback_errors = []
+            for target in reversed(replaced):
+                try:
+                    if existed[target]:
+                        backups[target].replace(target)
+                    else:
+                        target.unlink()
+                except BaseException as rollback_error:
+                    rollback_errors.append(f"{target}: {rollback_error}")
+            if rollback_errors:
+                recovery = [str(path) for path in backups.values() if path.exists()]
+                raise RuntimeError(
+                    "CMDTY replacement failed and rollback is incomplete. Recovery copies retained at "
+                    + ", ".join(recovery) + "; rollback errors: " + "; ".join(rollback_errors)
+                ) from commit_error
+            retain_backups = False
+            raise
+    finally:
+        cleanup = (pending_csv, pending_parquet, pending_meta) + (() if retain_backups else tuple(backups.values()))
+        for path in cleanup:
+            path.unlink(missing_ok=True)
+
+
+def versioned_baseline(root: Path, csv_path: Path, expected_sha256: str) -> dict:
+    relative = csv_path.relative_to(root).as_posix()
+    commit = subprocess.check_output(["git", "log", "-1", "--format=%H", "--", relative], cwd=root, text=True).strip()
+    payload = subprocess.check_output(["git", "show", f"{commit}:{relative}"], cwd=root)
+    if hashlib.sha256(payload).hexdigest() != expected_sha256 or checksum(csv_path) != expected_sha256:
+        raise RuntimeError("CMDTY baseline changed since its input snapshot was read")
+    if payload != csv_path.read_bytes():
+        raise ValueError("CMDTY baseline has unversioned changes; preserve a committed baseline before migration")
+    blob = subprocess.check_output(["git", "rev-parse", f"{commit}:{relative}"], cwd=root, text=True).strip()
+    archive = root / "sources/raw/cmdty_baselines" / f"{expected_sha256}.csv"
+    archive.parent.mkdir(parents=True, exist_ok=True)
+    if archive.exists() and archive.read_bytes() != payload:
+        raise ValueError("CMDTY baseline archive is corrupt")
+    archive.write_bytes(payload)
+    return {"csv_path": relative, "csv_sha256": expected_sha256, "git_commit": commit,
+            "git_blob": blob, "local_archive": archive.relative_to(root).as_posix()}
+
+
+def migrate(root: Path, source: list[dict], gsci_metadata: dict, calendar: list[str]) -> bool:
+    csv_path = root / "data/processed/broad_commodities.csv"
+    input_payload = csv_path.read_bytes()
+    input_sha256 = hashlib.sha256(input_payload).hexdigest()
+    previous = json.loads((root / "sources/manifests/broad_commodities_build.json").read_text(encoding="utf-8"))
+    if previous["csv_sha256"] != input_sha256:
+        raise ValueError("CMDTY build metadata does not match the input CSV snapshot")
+    baseline = parse_csv(input_payload)
+    rows, checks = replace_gsci_prefix(baseline, source, calendar)
+    if rows == baseline:
+        if previous.get("raw_sources", {}).get("GSCI_ER_TR", {}).get("sha256") != gsci_daily.SHA256:
+            raise ValueError("CMDTY already uses direct levels but its source metadata is inconsistent")
+        print("CMDTY already uses the verified daily GSCI ER/TR source; no outputs changed")
+        return False
+    version = versioned_baseline(root, csv_path, input_sha256)
+    if version["csv_sha256"] != input_sha256:
+        raise RuntimeError("CMDTY versioned baseline does not match the migration input snapshot")
+    migration = {"timestamp_utc": datetime.now(timezone.utc).isoformat(), "baseline": version, **checks}
+    raw_sources = {
+        "BCOM_IRX_DBC": {"mode": "preserved_versioned_processed_return_ratios", **version,
+                         "qualification": "Historical Yahoo chart caches were unavailable. Later returns were preserved, not re-fetched or re-validated against vendor feeds."}
     }
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
+    metadata = build_metadata(root, rows, gsci_metadata, raw_sources, migration, previous)
+    write_outputs(root, rows, metadata, expected_old_sha256=input_sha256)
+    print(f"Migrated {checks['early_rows_replaced']} daily GSCI rows; preserved {checks['later_rows_preserved']} later return pairs")
+    print(json.dumps(checks, indent=2))
+    return True
 
 
 def main() -> None:
     args = parse_args()
-    root = Path(args.root)
+    root = Path(args.root).resolve()
+    source_path, source_mode = gsci_daily.acquire(root)
+    source = gsci_daily.load_snapshot(source_path)
+    calendar = gsci_daily.load_calendar(root)
+    gsci_metadata = gsci_daily.source_metadata(root, source_path, source_mode, source)
+    if args.migrate_gsci:
+        if args.refresh_historical_sources:
+            raise ValueError("--migrate-gsci preserves existing returns and cannot refresh historical sources")
+        migrate(root, source, gsci_metadata, calendar)
+        return
     end_date = date.fromisoformat(args.end_date)
-    raw_dir = root / "sources" / "raw"
-    raw_dir.mkdir(parents=True, exist_ok=True)
-
-    spgsci_payload, spgsci_mode = load_historical_chart(raw_dir, SPGSCI_SYMBOL, end_date, args.refresh_historical_sources)
-    bcom_payload, bcom_mode = load_historical_chart(raw_dir, BCOM_SYMBOL, end_date, args.refresh_historical_sources)
-    print(f"Fetching {DBC_SYMBOL} ...")
-    dbc_payload = fetch_chart(DBC_SYMBOL, end_date, start_date=SPGSCI_START_DATE)
-    irx_payload, irx_mode = load_historical_chart(raw_dir, IRX_SYMBOL, end_date, args.refresh_historical_sources)
-
-    (raw_dir / f"{ASSET_ID}_yahoo_dbc_chart.json").write_text(json.dumps(dbc_payload), encoding="utf-8")
-
-    gsci_anchor = load_gsci_anchor(raw_dir / GSCI_ANCHOR_FILE)
-
-    spgsci_rows = chart_rows(spgsci_payload)
-    bcom_rows = chart_rows(bcom_payload)
-    dbc_rows = chart_rows(dbc_payload)
-    irx_rows = chart_rows(irx_payload)
-
-    print(f"SPGSCI rows: {len(spgsci_rows)}, first: {spgsci_rows[0]['Date']}, last: {spgsci_rows[-1]['Date']}")
-    print(f"BCOM rows: {len(bcom_rows)}, first: {bcom_rows[0]['Date']}, last: {bcom_rows[-1]['Date']}")
-    print(f"DBC rows: {len(dbc_rows)}, first: {dbc_rows[0]['Date']}, last: {dbc_rows[-1]['Date']}")
-    print(f"IRX rows: {len(irx_rows)}, first: {irx_rows[0]['Date']}, last: {irx_rows[-1]['Date']}")
-    print(f"GSCI TR anchor points: {len(gsci_anchor)}, {gsci_anchor[0][0]} -> {gsci_anchor[-1][0]}")
-
-    rows = build_normalized_rows(spgsci_rows, bcom_rows, dbc_rows, irx_rows, gsci_anchor)
-    if not rows:
-        raise RuntimeError("No broad commodities rows generated")
-
-    interim_csv = root / "data" / "interim" / f"{ASSET_ID}.csv"
-    processed_csv = root / "data" / "processed" / f"{ASSET_ID}.csv"
-    processed_parquet = root / "data" / "processed" / f"{ASSET_ID}.parquet"
-
-    write_csv(interim_csv, rows)
-    write_csv(processed_csv, rows)
-    parquet_written = write_parquet_if_available(processed_csv, processed_parquet)
-    write_build_metadata(
-        root / "sources" / "manifests" / f"{ASSET_ID}_build.json",
-        rows, processed_csv, parquet_written,
-        {SPGSCI_SYMBOL: spgsci_mode, BCOM_SYMBOL: bcom_mode, DBC_SYMBOL: "fetched", IRX_SYMBOL: irx_mode},
-        raw_dir,
-    )
-
-    smooth_count = sum(1 for r in rows if r["Quality Flag"] == GSCI_SMOOTHED_FLAG)
-    shape_count = sum(1 for r in rows if r["Quality Flag"] == GSCI_SHAPE_FLAG)
-    bcom_count = sum(1 for r in rows if r["Quality Flag"] == BCOM_FLAG)
-    dbc_count = sum(1 for r in rows if r["Quality Flag"] == DBC_FLAG)
-
-    print(f"\nWrote {len(rows)} rows to {processed_csv}")
-    print(f"First date: {rows[0]['Date']}; last date: {rows[-1]['Date']}")
-    print(f"Segment counts: GSCI_SMOOTH={smooth_count}, GSCI_SHAPE={shape_count}, BCOM={bcom_count}, DBC={dbc_count}")
-    if parquet_written:
-        print(f"Wrote Parquet to {processed_parquet}")
-    else:
-        print("Parquet not written (pandas/pyarrow unavailable)")
+    if end_date < date.fromisoformat(DBC_FIRST_RETURN):
+        raise ValueError("A full CMDTY build must include the DBC splice on 2006-02-07")
+    raw_dir = root / "sources/raw"
+    bcom, bcom_mode = load_historical_chart(raw_dir, BCOM_SYMBOL, end_date, args.refresh_historical_sources)
+    irx, irx_mode = load_historical_chart(raw_dir, IRX_SYMBOL, end_date, args.refresh_historical_sources)
+    dbc = fetch_chart(DBC_SYMBOL, end_date, start_date=date.fromisoformat(DBC_OVERLAP))
+    dbc_path = raw_dir / f"{ASSET_ID}_yahoo_dbc_chart.json"
+    dbc_path.write_text(json.dumps(dbc), encoding="utf-8")
+    rows = build_normalized_rows(source, chart_rows(bcom), chart_rows(dbc), chart_rows(irx), calendar)
+    raw_sources = {}
+    for symbol, mode in ((BCOM_SYMBOL, bcom_mode), (IRX_SYMBOL, irx_mode), (DBC_SYMBOL, "fetched")):
+        path = raw_dir / f"{ASSET_ID}_yahoo_{symbol.lstrip('^').lower()}_chart.json"
+        raw_sources[symbol] = {"mode": mode, "path": path.relative_to(root).as_posix(), "sha256": checksum(path)}
+    write_outputs(root, rows, build_metadata(root, rows, gsci_metadata, raw_sources))
+    print(f"Wrote {len(rows)} CMDTY rows, {rows[0]['Date']} through {rows[-1]['Date']}")
 
 
 if __name__ == "__main__":

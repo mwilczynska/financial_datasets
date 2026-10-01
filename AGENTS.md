@@ -10,6 +10,9 @@
   Windows native argument handling can remove the quotes and turn string
   literals into Python identifiers (`NameError`). Use `apply_patch` to create
   scripts; disposable research scripts belong in ignored `data/interim/`.
+- Replace an existing file with a single `apply_patch` Update operation. This
+  tool rejects Delete and Add operations targeting the same path in one patch;
+  deletion has also failed here when an in-place Update succeeds.
 - The command runner has sometimes failed before starting PowerShell with
   `helper_unknown_error: setup refresh had errors`. This is a runner/sandbox
   startup problem, rather than a command syntax error. Do not repeatedly change
@@ -27,6 +30,15 @@
 - Keep output bounded: read the relevant file sections and batch independent
   reads. `rg --files` respects ignores; use `rg --files --no-ignore sources/raw`
   when intentionally inspecting downloaded local source caches.
+- Write project CSVs with `lineterminator="\n"`, matching the canonical
+  artifact format and incremental writer. Default CSV CRLF endings can be reported as trailing whitespace by
+  Git for these files. Bound diagnostic output (or capture and count it) when
+  checking generated datasets; do not print thousands of failing data rows.
+- Pass a directory and `-g` to `rg` for filename filtering (for example,
+  `rg pattern sources/raw -g '*realvol*.html'`). PowerShell does not expand
+  wildcard path arguments for native `rg`; `rg pattern sources/raw/realvol*` can fail
+  with Windows error 123. Locate unfamiliar paths with `rg --files` before
+  reading them instead of guessing filenames from memory.
 - Read UTF-8 Markdown explicitly with `Get-Content -Encoding UTF8` when using
   Windows PowerShell; its default decoding can display Unicode punctuation
   incorrectly. In Python regular expressions, use raw string literals for

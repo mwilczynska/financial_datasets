@@ -2,7 +2,18 @@
 
 Research date: 2026-09-30. Scope: 1970-01-02 through 1991-01-02.
 This is a research recommendation and reproducible feasibility study. The
-production CMDTY series has not been replaced.
+production CMDTY series had not been replaced when this study was written.
+
+**Follow-up:** the subsequent public-source search acquired full daily GSCI
+Spot/ER/TR history from 1970 and corroborated the complete 1970s daily path.
+See [the 1970s follow-up](cmdty_daily_1970s_followup.md) for the current source
+recommendation and validation. The original feasibility analysis below is
+retained; its missing-data conclusion and two-part recommendation are superseded.
+
+**Implementation follow-up:** the production dataset now uses the paired
+daily source through 1991-01-02. See [the current methodology](../methodology_cmdty.md)
+and [Astra's implementation review](cmdty_daily_implementation_astra_review.md).
+The comparisons and builder audit below describe the earlier version.
 
 ## Recommendation
 

@@ -11,9 +11,6 @@ PUBLIC_RAW_SKIP_REASON = (
 )
 
 REQUIRED_RAW_BY_TEST = {
-    "test_broad_commodities_contract.py::test_broad_commodities_scaffold_paths_exist": Path(
-        "sources/raw/broad_commodities_gsci_tr_macromicro.csv"
-    ),
     "test_global_bonds_contract.py::test_global_bonds_basket_weights_are_economically_sane": Path(
         "sources/raw/global_bonds_jst_macrohistory_r6.xlsx"
     ),

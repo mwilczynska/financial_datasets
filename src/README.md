@@ -53,3 +53,18 @@ Notes:
 - `--only` and `--skip` accept aliases, asset ids, output stems, or update script stems. Derived datasets require their base dependency to be selected unless `--allow-stale-dependencies` is used.
 - `GLBOND` and `GLSTBOND` reuse cached historical JST/BIS/OECD/MoF/BoE raw files by default. Their daily refresh only needs the live ETF tail. Use `--refresh-static-sources` when you intentionally want to refetch those heavy historical inputs.
 - `USLCAP`, `STT`, `ITT`, `LTT`, `CMDTY`, and `GLSTOCK` validate and reuse fixed historical inputs while fetching their current market tails. Use `--refresh-historical-sources` to try refetching those historical inputs. A valid cache is preserved if an optional refresh fails; a missing or invalid cache with an unavailable source fails the update.
+- CMDTY now uses a hash-pinned daily GSCI ER/TR workbook on its preserved historical dates. `python src/build_broad_commodities.py --migrate-gsci` replaces the early segment while preserving a committed processed tail, with no Yahoo requests. Ordinary updates still fetch recent DBC only; raw-source full rebuilds need permitted BCOM/IRX historical caches. See [the methodology](../docs/methodology_cmdty.md).
+
+## README chart assets
+
+Install `requirements-visuals.txt`, then regenerate both images from the current
+processed `Adj Close` columns:
+
+```text
+python src/create_readme_chart.py
+python src/create_social_preview.py
+```
+
+The README chart is 1920 × 1080 (1080p); the social preview is 1280 × 640.
+Both show six unlevered proxies, rebased to 100 over their common date range,
+including the implemented daily GSCI history in CMDTY.

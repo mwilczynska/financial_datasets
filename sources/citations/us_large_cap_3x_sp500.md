@@ -16,7 +16,8 @@ Accessed: 2026-06-17
 - Endpoint: https://query1.finance.yahoo.com/v8/finance/chart/%5EIRX
 - Use: financing-rate benchmark for the borrowed (2x) exposure.
 - Finding: Yahoo returns the 13-week T-bill annualized discount yield (percent) daily from
-  1970-01-02, the same source the broad-commodities dataset uses for T-bill collateral.
+  1970-01-02. CMDTY also uses this source for its 1991–2006 BCOM collateral model;
+  its earlier GSCI segment uses paired daily ER/TR directly.
 - Caveat: `^IRX` is a T-bill proxy for the fund's swap/borrowing rate. A borrowing spread is
   added on top and calibrated to the UPRO overlap; the true swap financing rate (closer to the
   overnight/federal-funds rate plus a counterparty spread) is not directly observed here.

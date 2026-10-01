@@ -173,7 +173,7 @@ def write_rows(path: Path, rows: list[dict[str, str]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
     with temporary.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=OUTPUT_COLUMNS)
+        writer = csv.DictWriter(handle, fieldnames=OUTPUT_COLUMNS, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
     temporary.replace(path)
@@ -474,6 +474,13 @@ def update_asset(stem: str, root: Path, end: date, overlap_days: int = 14,
         "last_incremental_update_utc": datetime.now(timezone.utc).isoformat(),
         "incremental_update": {"overlap_anchor": anchor_day, "requested_end_date": end.isoformat(),
                                "recent_sources": records}})
+    if stem == "broad_commodities":
+        # Keep the daily GSCI import provenance while refreshing output summaries.
+        metadata["segment_row_counts"] = {
+            flag: sum(row["Quality Flag"] == flag for row in rows)
+            for flag in metadata["quality_flags"]
+        }
+        metadata["parquet_sha256"] = checksum(csv_path.with_suffix(".parquet"))
     if monthly_date:
         metadata["latest_monthly_observation"] = monthly_date
     if asset.kind == "global_short_bond":

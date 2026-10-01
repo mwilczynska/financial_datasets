@@ -1,63 +1,94 @@
-# Broad Commodities Source Notes
+# Broad commodities source notes
 
-Accessed: 2026-06-17 (Yahoo segments), 2026-06-26 (S&P GSCI Total Return anchor), 2026-09-26 (Yahoo availability recheck)
+Accessed: 2026-09-30 for the direct daily GSCI snapshot and corroborating sources.
+The implemented dataset replaces the old early reconstruction; redistribution
+rights remain unverified.
 
-## S&P GSCI Total Return anchor - MacroMicro (Segments 0-1, 1970-1991)
+## Direct daily GSCI ER/TR, 1970-01-02–1991-01-02
 
-- URL: https://en.macromicro.me/series/2692/sp-gsci-index ("S&P GSCI - Total Return Index")
-- Local source-cache file: `sources/raw/broad_commodities_gsci_tr_macromicro.csv` (Date, GSCI_TR_Index); the raw cache is not part of the public release by default.
-- Use: anchor for the 1970-1991 reconstruction. Adj Close (total return) tracks this series; Close (excess return) strips the daily `^IRX` collateral.
-- Access method: free programmatic S&P GSCI Total Return is paywalled everywhere (Yahoo `^SPGSCITR` empty; `GSG` ETF 2006+; FRED/DBnomics none; Investing.com and Barchart blocked). MacroMicro's free series page renders the data in a Highcharts object; extracted in-browser (Claude-in-Chrome) from `window.Highcharts.charts[...].series[0]` and saved as a static CSV.
-- Finding: full 1970-01-02 -> 2026-06-25 range, base 100 at 1970-01-02, **downsampled to 358 points (~57-day/bi-monthly spacing)**. The series is a genuine roll-inclusive, collateralized total return (validation below). It is historical and does not change, so it is retained in the local source cache; the raw file is excluded from the public release by default and only the DBC tail refreshes on update.
-- Validation: over 1984-1991 the GSCI TR grew 3.08x vs Yahoo `^SPGSCI` spot 1.04x; collateral (~7.3%/yr) explains ~1.64x and the residual ~1.8x/7yr implies ~9%/yr roll yield (energy-heavy backwardation). Over 1991-2006 the GSCI TR grew 3.06x vs `^BCOM` excess return 1.83x (~1.67x = collateral + GSCI energy tilt). Confirms total-return (spot + roll + collateral) behavior.
-- Caveats: (1) downsampled republication, not a licensed daily S&P feed - Segment 0 daily volatility is smoothed and Segment 1's daily shape comes from `^SPGSCI` spot; (2) S&P GSCI is back-tested before its 1991 launch; (3) GSCI is more energy-heavy than DBC; (4) S&P-derived data via a third-party republication - review licensing before redistributing derived data.
+- Source: [Trading_Commo public university project](https://github.com/yessinemx/Trading_Commo).
+- [Pinned workbook](https://raw.githubusercontent.com/yessinemx/Trading_Commo/f5ecf1507fb9cc98ffcc1f69c217793f5f9272a3/data/GSCI_Data.xlsx), commit `f5ecf1507fb9cc98ffcc1f69c217793f5f9272a3`.
+- SHA-256: `918e4046300180e0274781bfa6f1f5dcf2dc7df61b9229f9d4a9ea124da2a9f8`; 442,834 bytes.
+- Local cache: `sources/raw/broad_commodities_gsci_daily.xlsx`, excluded from release by default.
+- Observed coverage: 14,609 ordered weekday rows, 1970-01-02–2025-12-31,
+  in sheet `Données GSCI`, with Spot, ER and TR columns.
+- Use: import `GSCI_ER` into Close and `GSCI_TR` into Adj Close,
+  normalize each separately, and sample on 5,255 preserved CMDTY dates
+  through 1991-01-02. Spot is a corroborating companion, not the return driver.
 
-## Yahoo Finance Chart API - ^SPGSCI (Segment 1 daily shape)
+The [companion configuration](https://github.com/yessinemx/Trading_Commo/blob/f5ecf1507fb9cc98ffcc1f69c217793f5f9272a3/config.py)
+and [notebook](https://github.com/yessinemx/Trading_Commo/blob/f5ecf1507fb9cc98ffcc1f69c217793f5f9272a3/notebook/main.ipynb)
+were inspected as text. They request Bloomberg index tickers and daily
+`PX_LAST`, with `NON_TRADING_WEEKDAYS` / `PREVIOUS_VALUE` fill.
+That is author-supported provenance, not authentication of a terminal export.
+Holiday values may be carried. The
+[S&P GSCI index page](https://www.spglobal.com/spdji/en/indices/commodities/sp-gsci/)
+and research references identify May 1, 1991 as the launch; the entire imported
+segment is provider back-calculated history.
 
-- URL: https://query1.finance.yahoo.com/v8/finance/chart/%5ESPGSCI
-- Use: Segment 1 (`1984-01-04` to `1991-01-02`) daily spot **shape** only. Daily `^SPGSCI` returns are rescaled per anchor interval so each interval compounds to the GSCI TR; this restores genuine daily volatility (~16%/yr) and event timing while the level carries the anchor's roll + collateral.
-- Finding: available daily from `1984-01-03`; adjusted close equals close (spot index, no distributions).
-- Caveat: spot only - it supplies the shape, not the level. Pre-1991 GSCI is retrospective back-history.
+Corroboration and hash-enforced acquisition are recorded in the
+[follow-up research](../../docs/research/cmdty_daily_1970s_followup.md),
+[retrieval manifest](../../docs/research/cmdty_full_history_retrieval_manifest.json),
+and [Astra Max review](../../docs/research/cmdty_full_history_astra_review.md):
 
-## Yahoo Finance Chart API - ^BCOM (Segment 2)
+- All 2,607 1970s TR dates agree with a separately delivered public portfolio
+  database within floating-point precision. Upstream independence is unknown.
+- All 120 monthly Spot, ER and TR values in the 1970s match the older
+  [Duke/Goldman workbook](https://people.duke.edu/~charvey/Teaching/BA453_2005/GSCI_0406.xls):
+  360 exact matches. Its weight worksheet is unsuitable for a constituent rebuild.
+- All 22 annual TR returns from
+  [Kaplan/Lummer Appendix A, PDF page 13](https://www.etf.com/docs/20040913_GSCI.pdf)
+  and all 22 dated levels in
+  [SEC Release 34-53658, PDF pages 29–30](https://www.sec.gov/files/rules/sro/nyse/2006/34-53658.pdf)
+  pass published rounding. These 44 gates run when the production workbook is loaded.
+- The user-supplied Investing TR export contains 3,035 common dates,
+  1979-12-27–1991-12-31, with maximum level difference 0.001.
+  Quantpedia corroborates its overlapping delivery. Neither reaches the early 1970s.
 
-- URL: https://query1.finance.yahoo.com/v8/finance/chart/%5EBCOM
-- Use: Segment 2 (`1991-01-03` to `2006-02-06`) excess return; Adj Close adds `^IRX` collateral.
-- Finding: available daily from `1991-01-02`; adjusted close equals close. 2021 annual return matched BCOM excess-return behavior, so Yahoo `^BCOM` is treated as excess return.
-- Caveat: different weights/roll from GSCI and DBC; index-type validation is indirect (no official Bloomberg metadata in the payload).
-- Availability recheck (2026-09-26): the live Yahoo chart endpoint returned HTTP 404 with "No data found, symbol may be delisted" for a request ending in 2006 and for the full history. The versioned raw JSON remains the active historical source for the fixed 1991-2006 segment; its required dates and minimum row count are checked before every build. Yahoo data redistribution rights still require review.
+Daily ER has less external daily corroboration than TR. These comparisons
+identify and corroborate the same underlying history; they do not reconstruct
+an independent daily benchmark. The original Bloomberg extraction and rights
+remain unverified. Public downloadability and any repository code license do
+not grant redistribution rights to vendor data or derived outputs.
 
-## Yahoo Finance Chart API - DBC (Segment 3)
+## Preserved BCOM/IRX/DBC history and active DBC updates
 
-- URL: https://query1.finance.yahoo.com/v8/finance/chart/DBC
-- Use: Segment 3 (`2006-02-07` to present) observed ETF total return (Yahoo adjusted close).
-- Finding: available daily from `2006-02-06`; adjusted close differs from close.
-- Caveat: ETF net return (~0.89%/yr expenses), optimum-yield roll, Yahoo-adjusted-close dependency; not a gross index total return.
+The migration preserves ratios from the versioned processed baseline:
+Git `20396a64b4203cb9d06b4d096e473f268a57684b`, CSV SHA-256
+`d31df07d79f778ce48069c383342e2784d837c4d3dfbd58da921b4685f8856d7`.
+The old complete Yahoo chart caches are absent from this checkout. No later
+vendor observations were newly verified during this migration. An identical
+local archive and exact per-column scaling/splice checks are recorded in build metadata.
 
-## Yahoo Finance Chart API - ^IRX (collateral, Segments 0-2)
+- [Yahoo BCOM chart](https://query1.finance.yahoo.com/v8/finance/chart/%5EBCOM):
+  excess-return proxy, 1991-01-03–2006-02-06, with January 2 overlap.
+  The index type was inferred from annual-return behavior, not authenticated
+  official metadata. Its live endpoint returned 404 in September 2026.
+- [Yahoo IRX chart](https://query1.finance.yahoo.com/v8/finance/chart/%5EIRX):
+  annualized 13-week T-bill percentage rate, forward-filled. BCOM TR uses
+  `1 + IRX / 100 / 365` per observation. The existing approximation does
+  not accrue extra collateral across skipped calendar days. IRX is not applied
+  to the direct GSCI segment.
+- [Yahoo DBC chart](https://query1.finance.yahoo.com/v8/finance/chart/DBC):
+  ETF price/adjusted-close returns from 2006-02-07, with February 6 overlap.
+  Ordinary updates request only recent DBC history. This is fund net return,
+  affected by expenses, distributions and Yahoo adjustments, not gross DBIQ return.
 
-- URL: https://query1.finance.yahoo.com/v8/finance/chart/%5EIRX
-- Use: 13-week T-bill annualized rate for the collateral model and the Segment 0 trading calendar.
-- Finding: daily from `1970-01-02`; close is the rate in percent; daily accrual `IRX/100/365`.
-- Caveat: missing dates forward-filled. FRED DTB3/TB3MS is an equivalent public source but FRED CSV access was unreliable in prior sessions.
-- Update behavior: `^SPGSCI`, `^BCOM`, and `^IRX` are reused from validated versioned raw files for their fixed pre-DBC segments. DBC is refetched through the requested end date. A forced historical refresh may replace a cache only after coverage validation; failed refreshes preserve valid files. Build metadata records the source mode and SHA-256 for each Yahoo chart.
+A raw-source full rebuild still needs valid permitted BCOM/IRX historical
+caches. Cache identity, required overlap coverage, finite values and dates are
+validated before use. Failed forced refreshes preserve valid caches.
 
-## Superseded / not used
+## Superseded sources and enduring qualifications
 
-- **World Bank Commodity Markets Pink Sheet (former Segment 0)**: the monthly `Total Index` spot model (`broad_commodities_world_bank_cmo_monthly.xlsx`) was used for 1970-1983 until 2026-06-26. Replaced by the GSCI Total Return anchor because it was spot-only (no roll yield) and its 67%-energy Laspeyres export-value weights differ materially from DBC/GSCI. Removed from the active build path.
-- **Previous LBMA Gold PM + Silver fill**: removed earlier - not broad commodities. Gold remains its own `GOLDPM` dataset.
-- **AQR "Commodities for the Long Run"** (monthly, roll-inclusive, 1877+): freely downloadable but equal-weighted, so not chosen as the energy-tilted DBC-like anchor.
-- **Yahoo `^SPGSCITR` / `^BCOMTR`, GSG, DJP**: no usable long history / start later than DBC.
+MacroMicro's sparse GSCI TR republication and Yahoo SPGSCI's spot-shape overlay
+are retired from the active build. Their smoothing, interval-overlay boundary
+bias and IRX-derived ER are documented in the historical research.
+The earlier World Bank monthly spot model, LBMA metals fill, and equal-weighted
+AQR alternative remain superseded or rejected candidates.
 
-## 1970-1983 daily broad-commodity source search (still relevant)
-
-No free **daily** broad-commodity history exists before 1984: Stooq CRB/CCI returned a JS verification page; CRBTrader required authentication; Nasdaq Data Link CHRIS was Incapsula-blocked; Yahoo broad index symbols (`^CRB`, `^TRJEFFCRB`, etc.) and continuous futures (`GC=F`, `CL=F`, grains, softs) start ~2000; EIA WTI starts 1986; BLS/NBER/AQR/IMF/World Bank are monthly. Roll yield requires futures-curve data, unavailable for free pre-1990. This is why Segment 0 (1970-1983) is the GSCI TR anchor log-linearly smoothed to daily rather than a genuine daily reconstruction.
-
-## Current data gaps to preserve in handover
-
-- **Segments 0-1 anchored to a downsampled GSCI TR republication**: level tracks the index to within a few percent; Segment 0 daily volatility is smoothed; Segment 1's daily shape is `^SPGSCI` spot.
-- **GSCI is energy-heavier than DBC** and back-tested before 1991.
-- **BCOM validation gap**: Segment 2 treats `^BCOM` as excess return by behavior, not licensed metadata.
-- **DBC ETF gap**: Segment 3 is ETF net adjusted close, not gross benchmark total return.
-- **Splice gaps**: 1991 and 2006 are methodology changes across source families (numerical continuity, not economic).
-- **OHLCV gap**: model/index segments have blank `Open`, `High`, `Low`, `Volume`.
+GSCI is production-weighted and has different constituent weights and roll
+rules from DBC. BCOM changes the benchmark family in 1991; DBC changes it
+again in 2006. Numerical continuity does not create identical economic exposure.
+Pre-launch back-calculation and weekday filling remain explicit row labels.
+See [the implemented methodology](../../docs/methodology_cmdty.md) and
+[DATA_LICENSE.md](../../DATA_LICENSE.md) before any redistribution.

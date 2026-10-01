@@ -1,2 +1,5 @@
 # Keep the frozen historical input byte-identical for its recorded SHA-256.
 sources/derived/gold_2x_historical_spot_returns.csv -text
+# Preserve the checksummed CMDTY calendar bytes and canonical output endings.
+sources/derived/broad_commodities_gsci_calendar.csv -text
+data/processed/broad_commodities.csv text eol=lf

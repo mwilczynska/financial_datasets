@@ -1,0 +1,82 @@
+[
+  {
+    "file": "sources/raw/cmdty_1970s_research/trading_commo_data.xlsx",
+    "source_url": "https://raw.githubusercontent.com/yessinemx/Trading_Commo/f5ecf1507fb9cc98ffcc1f69c217793f5f9272a3/data/GSCI_Data.xlsx",
+    "sha256": "918e4046300180e0274781bfa6f1f5dcf2dc7df61b9229f9d4a9ea124da2a9f8",
+    "bytes": 442834,
+    "retrieved_utc": "2026-09-30T19:27:22.095696+00:00",
+    "documented_access_date": "2026-09-30",
+    "qualification": "Daily Spot, ER and TR; author-claimed Bloomberg extract with weekday carry-forward.",
+    "redistribution": "Public availability does not establish rights to republish vendor prices."
+  },
+  {
+    "file": "sources/raw/cmdty_1970s_research/trading_commo_notebook.json",
+    "source_url": "https://raw.githubusercontent.com/yessinemx/Trading_Commo/f5ecf1507fb9cc98ffcc1f69c217793f5f9272a3/notebook/main.ipynb",
+    "sha256": "207727833bb7e364533df9401444123d7e5eac0bfb66abece79d81ebbcdd08cc",
+    "bytes": 1471633,
+    "retrieved_utc": "2026-09-30T19:33:39.836763+00:00",
+    "documented_access_date": "2026-09-30",
+    "qualification": "Provenance code inspected as text, never executed.",
+    "redistribution": "Public availability does not establish rights to republish vendor prices."
+  },
+  {
+    "file": "sources/raw/cmdty_1970s_research/trading_commo_config.py",
+    "source_url": "https://raw.githubusercontent.com/yessinemx/Trading_Commo/f5ecf1507fb9cc98ffcc1f69c217793f5f9272a3/config.py",
+    "sha256": "25f2e0954e898797bb10421db1f99aefd984ef5297b7ce30339adce97814e9a3",
+    "bytes": 2695,
+    "retrieved_utc": "2026-09-30T19:33:39.396683+00:00",
+    "documented_access_date": "2026-09-30",
+    "qualification": "Requested index tickers and date range; inspected as text only.",
+    "redistribution": "Public availability does not establish rights to republish vendor prices."
+  },
+  {
+    "file": "sources/raw/cmdty_1970s_research/duke_gsci_0406.xls",
+    "source_url": "https://people.duke.edu/~charvey/Teaching/BA453_2005/GSCI_0406.xls",
+    "sha256": "ae7c428e26ba56c1fb433d75db58d8c51105d1a95b63eb2745e5eb7841f0b37a",
+    "bytes": 1647616,
+    "retrieved_utc": "2026-09-30T18:52:59.583070+00:00",
+    "documented_access_date": "2026-09-30",
+    "qualification": "Older Goldman monthly index/constituent data and unvalidated weight worksheet.",
+    "redistribution": "Public availability does not establish rights to republish vendor prices."
+  },
+  {
+    "file": "sources/raw/cmdty_1970s_research/quantpedia_spgscitr.csv",
+    "source_url": "https://data.quantpedia.com/backtesting_data/index/SPGSCITR.csv",
+    "sha256": "d29812e8c8917797725f0e3e4e5f0caf9e8d81bdd8bd09087eb1e6f4dcabeb4b",
+    "bytes": 214933,
+    "retrieved_utc": "2026-09-30T18:26:15.147040+00:00",
+    "documented_access_date": "2026-09-30",
+    "qualification": "Daily TR delivery from 1980; upstream independence is not established.",
+    "redistribution": "Public availability does not establish rights to republish vendor prices."
+  },
+  {
+    "file": "sources/raw/cmdty_1970s_research/sec_gsci_reference.pdf",
+    "source_url": "https://www.sec.gov/files/rules/sro/nyse/2006/34-53658.pdf",
+    "sha256": "155e74ebbccb684b3146496372d7dfe4b7a1383403117bc536ffad51deea9710",
+    "bytes": 120580,
+    "retrieved_utc": "2026-09-30T19:33:39.838860+00:00",
+    "documented_access_date": "2026-09-30",
+    "qualification": "SEC notice, dated historical TR levels, PDF pages 29-30.",
+    "redistribution": "Public availability does not establish rights to republish vendor prices."
+  },
+  {
+    "file": "sources/raw/cmdty_1970s_research/kaplan_lummer_reference.pdf",
+    "source_url": "https://www.etf.com/docs/20040913_GSCI.pdf",
+    "sha256": "7ef9683a16799cc5b55a8987eeabf0538d7f18e71124a43465ce75ae1524acc3",
+    "bytes": 162793,
+    "retrieved_utc": "2026-09-30T19:33:40.269797+00:00",
+    "documented_access_date": "2026-09-30",
+    "qualification": "Kaplan/Lummer annual TR reference, PDF page 13; published rounding applies.",
+    "redistribution": "Public availability does not establish rights to republish vendor prices."
+  },
+  {
+    "file": "sources/raw/cmdty_1970s_research/portfolio_app_history.db",
+    "source_url": "https://github.com/federicogarzarelli/portfolio-allocation-app/blob/master/myPortfolio.db",
+    "sha256": "deecf9a9cca87f79f60543b1390ed731f6553782bd4f456038f152141d37faed",
+    "bytes": 465248256,
+    "retrieved_utc": "2026-09-30T19:31:13.685600+00:00",
+    "documented_access_date": "2026-09-30",
+    "qualification": "Read-only COM data corroboration; uncertain upstream source and later errors. Public LFS content hash verified.",
+    "redistribution": "Raw vendor observations remain ignored; no blanket redistribution permission established."
+  }
+]

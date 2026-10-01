@@ -1,311 +1,260 @@
+"""CMDTY's published schema, direct GSCI import, provenance, and splice contracts."""
 import csv
+import hashlib
+import io
 import json
-import math
-import statistics
-from datetime import date
+import subprocess
+from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal
 from pathlib import Path
 
+import pandas as pd
 import pytest
 
-from src import build_broad_commodities as commodity_builder
+from src import build_broad_commodities as builder
+from src import gsci_daily
+
+ROOT = Path(__file__).resolve().parents[2]
+DATASET = ROOT / "data/processed/broad_commodities.csv"
+PARQUET_DATASET = DATASET.with_suffix(".parquet")
+BUILD_MANIFEST = ROOT / "sources/manifests/broad_commodities_build.json"
+RETURN_TOLERANCE = Decimal("1e-10")
 
 
-DATASET = Path("data/processed/broad_commodities.csv")
-PARQUET_DATASET = Path("data/processed/broad_commodities.parquet")
-RAW_SPGSCI = Path("sources/raw/broad_commodities_yahoo_spgsci_chart.json")
-RAW_BCOM = Path("sources/raw/broad_commodities_yahoo_bcom_chart.json")
-RAW_DBC = Path("sources/raw/broad_commodities_yahoo_dbc_chart.json")
-RAW_IRX = Path("sources/raw/broad_commodities_yahoo_irx_chart.json")
-GSCI_ANCHOR = Path("sources/raw/broad_commodities_gsci_tr_macromicro.csv")
-MANIFEST = Path("sources/manifests/broad_commodities.yml")
-
-YAHOO_COLUMNS = ["Date", "Open", "High", "Low", "Close", "Adj Close", "Volume"]
-PROJECT_COLUMNS = ["Price Return", "Total Return", "Source", "Quality Flag", "Source Notes"]
-RETURN_TOLERANCE = Decimal("0.0000000001")
-
-GSCI_SMOOTHED_FLAG = "model_gsci_total_return_anchor_smoothed_daily"
-GSCI_SHAPE_FLAG = "model_gsci_total_return_anchor_with_spgsci_spot_daily_shape"
-BCOM_FLAG = "model_bcom_excess_return_plus_tbill_collateral"
-DBC_FLAG = "observed_yahoo_dbc_dblci_total_return_etf"
+@pytest.fixture(scope="module")
+def rows():
+    return builder.read_csv(DATASET)
 
 
-def read_csv(path: Path) -> list[dict[str, str]]:
+@pytest.fixture(scope="module")
+def metadata():
+    return json.loads(BUILD_MANIFEST.read_text(encoding="utf-8"))
+
+
+@pytest.fixture(scope="module")
+def daily():
+    path = ROOT / "sources/raw" / gsci_daily.RAW_FILE
     if not path.exists():
-        pytest.skip(f"{path} does not exist yet")
-    with path.open(newline="", encoding="utf-8") as handle:
-        return list(csv.DictReader(handle))
+        pytest.skip("Pinned raw workbook is a local cache; acquire it with the CMDTY builder")
+    return gsci_daily.load_snapshot(path)
 
 
-def decimal_value(value: str) -> Decimal:
-    return Decimal(value)
-
-
-def chart_close_returns(path: Path, use_adj: bool = False) -> dict[str, Decimal]:
-    """Compute daily returns from raw Yahoo chart JSON (close or adj close)."""
-    payload = json.loads(path.read_text(encoding="utf-8"))
-    result = payload["chart"]["result"][0]
-    timestamps = result["timestamp"]
-    quote = result["indicators"]["quote"][0]
-    adj_list = result.get("indicators", {}).get("adjclose", [{}])[0].get("adjclose", [])
-
-    from datetime import datetime, timezone
-
-    values = []
-    for index, timestamp in enumerate(timestamps):
-        close = quote["close"][index]
-        adj = adj_list[index] if index < len(adj_list) else close
-        if close is None:
-            continue
-        raw_val = adj if use_adj else close
-        if raw_val is None:
-            raw_val = close
-        values.append((datetime.fromtimestamp(timestamp, timezone.utc).date().isoformat(), Decimal(str(raw_val))))
-
-    returns = {}
-    previous = None
-    for day, value in values:
-        if previous is not None:
-            returns[day] = value / previous - Decimal("1")
-        previous = value
-    return returns
-
-
-def gsci_anchor_levels() -> dict[str, float]:
-    if not GSCI_ANCHOR.exists():
-        pytest.skip("S&P GSCI Total Return anchor not available")
-    out = {}
-    with GSCI_ANCHOR.open(newline="", encoding="utf-8") as handle:
-        for row in csv.DictReader(handle):
-            out[row["Date"]] = float(row["GSCI_TR_Index"])
-    return out
+@pytest.fixture(scope="module")
+def baseline(metadata):
+    if "gsci_migration" not in metadata:
+        assert {"^BCOM", "^IRX", "DBC"} <= metadata["raw_sources"].keys()
+        pytest.skip("Raw-source full rebuild: migration-baseline checks do not apply")
+    reference = metadata["gsci_migration"]["baseline"]
+    archive = ROOT / reference["local_archive"]
+    if archive.exists():
+        payload = archive.read_bytes()
+    else:
+        result = subprocess.run(["git", "show", f"{reference['git_commit']}:{reference['csv_path']}"],
+                                cwd=ROOT, capture_output=True)
+        if result.returncode:
+            pytest.skip("Migration baseline requires full Git history or its local archive")
+        payload = result.stdout
+    assert hashlib.sha256(payload).hexdigest() == reference["csv_sha256"]
+    return list(csv.DictReader(io.StringIO(payload.decode("utf-8"))))
 
 
 def test_broad_commodities_scaffold_paths_exist():
-    assert MANIFEST.exists()
-    assert Path("sources/citations/broad_commodities.md").exists()
-    assert GSCI_ANCHOR.exists(), "Static S&P GSCI Total Return anchor must be committed"
+    for relative in ("sources/manifests/broad_commodities.yml", "sources/citations/broad_commodities.md",
+                     gsci_daily.CALENDAR_FILE, gsci_daily.CALENDAR_MANIFEST):
+        assert (ROOT / relative).is_file()
 
 
-def test_broad_commodities_processed_outputs_exist():
-    assert DATASET.exists()
-    assert DATASET.stat().st_size > 0
-    assert PARQUET_DATASET.exists()
-    assert PARQUET_DATASET.stat().st_size > 0
+def test_broad_commodities_processed_outputs_and_metadata_agree(rows, metadata):
+    assert DATASET.is_file() and PARQUET_DATASET.is_file()
+    assert metadata["row_count"] == len(rows)
+    assert metadata["first_date"] == rows[0]["Date"] == "1970-01-02"
+    assert metadata["last_date"] == rows[-1]["Date"]
+    assert metadata["csv_sha256"] == builder.checksum(DATASET)
+    assert metadata["parquet_sha256"] == builder.checksum(PARQUET_DATASET)
+    assert pd.read_csv(DATASET, parse_dates=["Date"]).equals(pd.read_parquet(PARQUET_DATASET))
 
 
 def test_broad_commodities_yahoo_compatible_schema():
     with DATASET.open(newline="", encoding="utf-8") as handle:
-        header = next(csv.reader(handle))
-    assert header[: len(YAHOO_COLUMNS)] == YAHOO_COLUMNS
-    for column in PROJECT_COLUMNS:
-        assert column in header
+        assert next(csv.reader(handle)) == builder.OUTPUT_COLUMNS
 
 
-def test_broad_commodities_coverage_starts_at_1970():
-    rows = read_csv(DATASET)
-    dates = [date.fromisoformat(row["Date"]) for row in rows]
-    # Coverage starts 1970-01-02 via the S&P GSCI Total Return anchor on ^IRX trading dates.
-    assert min(dates) == date(1970, 1, 2)
-    assert len(dates) == len(set(dates)), "Duplicate dates found"
-    assert dates == sorted(dates), "Dates are not sorted"
-
-
-def test_broad_commodities_levels_positive_and_returns_recompute():
-    rows = read_csv(DATASET)
-    previous_close = None
-    previous_adjusted = None
+def test_broad_commodities_positive_levels_and_return_arithmetic(rows):
+    assert [row["Date"] for row in rows] == sorted({row["Date"] for row in rows})
+    previous = None
     for row in rows:
-        close = decimal_value(row["Close"])
-        adjusted = decimal_value(row["Adj Close"])
-        assert close > 0, f"Close not positive on {row['Date']}"
-        assert adjusted > 0, f"Adj Close not positive on {row['Date']}"
-        if previous_close is None:
-            assert row["Price Return"] == ""
-            assert row["Total Return"] == ""
+        levels = [Decimal(row[key]) for key in ("Close", "Adj Close")]
+        assert all(level.is_finite() and level > 0 for level in levels)
+        if previous is None:
+            assert levels == [Decimal(100), Decimal(100)]
+            assert row["Price Return"] == row["Total Return"] == ""
         else:
-            expected_price = close / previous_close - Decimal("1")
-            expected_total = adjusted / previous_adjusted - Decimal("1")
-            assert abs(decimal_value(row["Price Return"]) - expected_price) <= RETURN_TOLERANCE
-            assert abs(decimal_value(row["Total Return"]) - expected_total) <= RETURN_TOLERANCE
-        previous_close = close
-        previous_adjusted = adjusted
+            for index, key in enumerate(("Price Return", "Total Return")):
+                assert abs(Decimal(row[key]) - (levels[index] / previous[index] - 1)) <= RETURN_TOLERANCE
+        previous = levels
 
 
-def test_broad_commodities_total_return_is_collateralized_excess_return():
-    """Adj Close (total return) must always be >= Close (excess return); collateral is non-negative."""
-    rows = read_csv(DATASET)
+def test_broad_commodities_cumulative_tr_growth_exceeds_er_growth(rows):
+    # This is a cumulative level check, not a ban on rounded negative daily TR-ER spreads.
+    assert all(Decimal(row["Adj Close"]) >= Decimal(row["Close"]) - Decimal("0.000001") for row in rows)
+
+
+def test_every_gsci_level_matches_the_pinned_paired_daily_source(rows, daily):
+    source = {row["Date"]: row for row in daily}
+    calendar = gsci_daily.load_calendar(ROOT)
+    early = [row for row in rows if row["Date"] <= "1991-01-02"]
+    assert len(early) == 5255
+    assert [row["Date"] for row in early] == calendar
+    for row in early:
+        assert row["Quality Flag"] == builder.GSCI_FLAG
+        for output, raw in (("Close", "GSCI_ER"), ("Adj Close", "GSCI_TR")):
+            expected = 100 * source[row["Date"]][raw] / source["1970-01-02"][raw]
+            assert abs(Decimal(row[output]) - expected) <= Decimal("5e-11")
+        assert all(row[key] == "" for key in ("Open", "High", "Low", "Volume"))
+    assert early[-1]["Close"] == "458.48"
+    assert early[-1]["Adj Close"] == "2346.026"
+    # Check both return types on sampled level dates, including skipped source dates.
+    for prior, row in zip(early, early[1:]):
+        for key, raw in (("Price Return", "GSCI_ER"), ("Total Return", "GSCI_TR")):
+            expected = source[row["Date"]][raw] / source[prior["Date"]][raw] - 1
+            assert abs(Decimal(row[key]) - expected) <= RETURN_TOLERANCE
+
+
+def test_published_gsci_reference_gates(daily, metadata):
+    checks = gsci_daily.published_reference_checks(daily)
+    assert checks["annual_tr_checks_passed"] == 22
+    assert checks["sec_tr_level_checks_passed"] == 22
+    assert checks["max_annual_error_percentage_points"] < 0.005
+    assert checks["max_sec_level_error"] < 0.005
+    assert metadata["raw_sources"]["GSCI_ER_TR"]["reference_checks"] == checks
+
+
+def test_gsci_provenance_and_fill_qualification(rows, metadata):
+    source = metadata["raw_sources"]["GSCI_ER_TR"]
+    assert source["sha256"] == gsci_daily.SHA256
+    assert source["commit"] == gsci_daily.COMMIT
+    assert source["source_columns"] == {"Close": "GSCI_ER", "Adj Close": "GSCI_TR"}
+    assert source["observed_rows"] == 14609
+    assert source["index_launch_date"] == "1991-05-01"
+    assert "PREVIOUS_VALUE" in source["fill"]
+    assert "No verified grant" in source["redistribution_rights"]
     for row in rows:
-        assert decimal_value(row["Adj Close"]) >= decimal_value(row["Close"]) - Decimal("0.000001"), (
-            f"Adj Close (TR) below Close (ER) on {row['Date']}"
-        )
+        if row["Quality Flag"] == builder.GSCI_FLAG:
+            notes = row["Source Notes"].lower()
+            assert "back-calculated" in notes and "holidays" in notes and "1991-05-01" in notes
 
 
-def test_broad_commodities_dbc_segment_returns_match_raw_yahoo():
-    rows = read_csv(DATASET)
-    if not RAW_DBC.exists():
-        pytest.skip("Raw DBC chart payload not available")
+def test_gsci_calendar_is_unchanged_from_versioned_baseline(rows, baseline):
+    assert [row["Date"] for row in rows if row["Date"] <= "1991-01-02"] == [
+        row["Date"] for row in baseline if row["Date"] <= "1991-01-02"]
 
-    dbc_adj_returns = chart_close_returns(RAW_DBC, use_adj=True)
-    dbc_close_returns = chart_close_returns(RAW_DBC, use_adj=False)
 
+def test_migration_preserves_later_historical_returns_and_splices(rows, baseline, metadata):
+    new = {row["Date"]: row for row in rows}
+    # Ordinary updates can revise their recent DBC overlap. When no update has
+    # followed migration, check every original row. Later runs always check the
+    # frozen portion preceding the original 14-day update window.
+    after_migration = metadata.get("last_incremental_update_utc", "") > metadata["gsci_migration"]["timestamp_utc"]
+    limit = (date.fromisoformat(baseline[-1]["Date"]) - timedelta(days=15)).isoformat() if after_migration else baseline[-1]["Date"]
+    checked = 0
+    for index, old in enumerate(baseline):
+        if not "1991-01-02" < old["Date"] <= limit:
+            continue
+        current, previous = new[old["Date"]], new[baseline[index - 1]["Date"]]
+        for column in ("Price Return", "Total Return", "Quality Flag"):
+            assert current[column] == old[column]
+        for column in ("Close", "Adj Close"):
+            old_ratio = Decimal(old[column]) / Decimal(baseline[index - 1][column])
+            new_ratio = Decimal(current[column]) / Decimal(previous[column])
+            assert abs(new_ratio - old_ratio) < RETURN_TOLERANCE
+        checked += 1
+    assert checked > 8900
+    for day, prior, flag in (("1991-01-03", "1991-01-02", builder.BCOM_FLAG),
+                             ("2006-02-07", "2006-02-06", builder.DBC_FLAG)):
+        assert new[day]["Quality Flag"] == flag
+        recorded = metadata["gsci_migration"]["splice_checks"][day]
+        assert recorded["prior_date"] == prior
+        for column in ("Close", "Adj Close"):
+            actual = Decimal(new[day][column]) / Decimal(new[prior][column]) - 1
+            assert abs(actual - Decimal(recorded[column]["baseline_return"])) < RETURN_TOLERANCE
+
+
+def test_quality_flags_and_segment_counts(rows, metadata):
+    flags = {row["Quality Flag"] for row in rows}
+    assert flags == {builder.GSCI_FLAG, builder.BCOM_FLAG, builder.DBC_FLAG}
+    counts = {flag: sum(row["Quality Flag"] == flag for row in rows) for flag in flags}
+    assert counts[builder.GSCI_FLAG] == 5255
+    assert counts[builder.BCOM_FLAG] == 3781
+    assert counts[builder.DBC_FLAG] > 5000
+    assert metadata["segment_row_counts"] == counts
+
+
+@pytest.mark.parametrize("stem,flag,columns", [
+    ("bcom", builder.BCOM_FLAG, (("Close", "Price Return"),)),
+    ("dbc", builder.DBC_FLAG, (("Close", "Price Return"), ("Adj Close", "Total Return"))),
+])
+def test_later_returns_match_historical_yahoo_cache_if_available(rows, stem, flag, columns):
+    path = ROOT / f"sources/raw/broad_commodities_yahoo_{stem}_chart.json"
+    if not path.exists():
+        pytest.skip(f"Full historical {stem} raw chart is unavailable; baseline preservation is checked separately")
+    raw = builder.chart_rows(json.loads(path.read_text(encoding="utf-8")))
+    expected = {}
+    for prior, current in zip(raw, raw[1:]):
+        expected[current["Date"]] = {out: Decimal(str(current[key])) / Decimal(str(prior[key])) - 1
+                                     for key, out in columns}
     checked = 0
     for row in rows:
-        if row["Quality Flag"] != DBC_FLAG or row["Total Return"] == "":
-            continue
-        if row["Date"] in dbc_adj_returns:
-            assert abs(decimal_value(row["Total Return"]) - dbc_adj_returns[row["Date"]]) <= RETURN_TOLERANCE, (
-                f"DBC total return mismatch on {row['Date']}"
-            )
-        if row["Date"] in dbc_close_returns:
-            assert abs(decimal_value(row["Price Return"]) - dbc_close_returns[row["Date"]]) <= RETURN_TOLERANCE, (
-                f"DBC price return mismatch on {row['Date']}"
-            )
+        if row["Quality Flag"] == flag and row["Date"] in expected:
+            for _, output in columns:
+                assert abs(Decimal(row[output]) - expected[row["Date"]][output]) < RETURN_TOLERANCE
             checked += 1
-
-    assert checked > 4000, f"Too few DBC rows checked: {checked}"
-
-
-def test_broad_commodities_bcom_price_returns_match_raw_yahoo():
-    rows = read_csv(DATASET)
-    if not RAW_BCOM.exists():
-        pytest.skip("Raw BCOM chart payload not available")
-
-    # For ^BCOM, Close (price return) is the raw excess-return index return (no collateral).
-    bcom_returns = chart_close_returns(RAW_BCOM, use_adj=False)
-
-    checked = 0
-    for row in rows:
-        if row["Quality Flag"] != BCOM_FLAG or row["Price Return"] == "":
-            continue
-        if row["Date"] in bcom_returns:
-            assert abs(decimal_value(row["Price Return"]) - bcom_returns[row["Date"]]) <= RETURN_TOLERANCE, (
-                f"BCOM price return mismatch on {row['Date']}"
-            )
-            checked += 1
-
-    assert checked > 3000, f"Too few BCOM rows checked: {checked}"
+    assert checked > (3500 if stem == "bcom" else 4500)
 
 
-def test_broad_commodities_gsci_anchor_segment_present_and_growing():
-    """Segment 0 is the GSCI TR anchor, smoothed; Adj Close grows with roll + collateral."""
-    rows = read_csv(DATASET)
-    model_rows = [r for r in rows if r["Quality Flag"] == GSCI_SMOOTHED_FLAG]
-
-    assert len(model_rows) > 3000, f"Too few GSCI-smoothed rows: {len(model_rows)}"
-    assert model_rows[0]["Date"] == "1970-01-02"
-    assert model_rows[-1]["Date"] < "1984-01-05"
-    # First row has no return
-    assert model_rows[0]["Price Return"] == ""
-    assert model_rows[0]["Total Return"] == ""
-    for row in model_rows[:50]:
-        notes = row["Source Notes"].lower()
-        assert "gsci" in notes and "total return" in notes
-        assert "smoothed" in notes
-        assert "roll" in notes
-
-    # Adj Close (total return) at the end of Segment 0 should be well above the start
-    # (the 1970s commodity boom + high T-bill collateral lifts the GSCI TR well over 1.5x).
-    start_adj = decimal_value(model_rows[0]["Adj Close"])
-    end_adj = decimal_value(model_rows[-1]["Adj Close"])
-    assert end_adj / start_adj > Decimal("1.5"), f"GSCI TR segment growth too low: {start_adj} -> {end_adj}"
-    # Adj Close (TR) outgrows Close (ER) because of T-bill collateral.
-    end_close = decimal_value(model_rows[-1]["Close"])
-    assert end_adj > end_close * Decimal("1.3"), "Collateral should lift Adj Close well above Close"
+def valid_bcom_cache(tmp_path):
+    day, last = date(1991, 1, 2), date(2006, 2, 6)
+    days = []
+    while day <= last:
+        if day.weekday() < 5:
+            days.append(day)
+        day += timedelta(days=1)
+    payload = {"chart": {"result": [{
+        "meta": {"symbol": "^BCOM", "exchangeTimezoneName": "UTC"},
+        "timestamp": [int(datetime.combine(day, datetime.min.time(), timezone.utc).timestamp()) for day in days],
+        "indicators": {"quote": [{"close": [100.0] * len(days)}]},
+    }]}}
+    path = tmp_path / "broad_commodities_yahoo_bcom_chart.json"
+    path.write_text(json.dumps(payload), encoding="utf-8")
+    return path
 
 
-def test_broad_commodities_adj_close_tracks_gsci_anchor():
-    """Adj Close must track the S&P GSCI Total Return anchor through the reconstructed era."""
-    rows = read_csv(DATASET)
-    adj = {r["Date"]: float(r["Adj Close"]) for r in rows}
-    anchor = gsci_anchor_levels()
-    # Both series are base 100 at 1970-01-02, so the ratio should hover near 1.0.
-    ratios = [adj[d] / v for d, v in anchor.items() if d in adj and d < "1991-01-03"]
-    assert len(ratios) > 100, f"Too few anchor sample dates matched: {len(ratios)}"
-    assert max(abs(r - 1.0) for r in ratios) < 0.05, (
-        f"Adj Close drifts from GSCI TR anchor: ratio range {min(ratios):.4f}..{max(ratios):.4f}"
-    )
-
-
-def test_broad_commodities_spgsci_shape_segment_is_desmoothed():
-    """Segment 1 (1984-1991) carries genuine daily volatility from the ^SPGSCI spot shape.
-
-    The pre-2026 fix smoothed this era to ~zero within-period volatility. The overlay onto the
-    daily ^SPGSCI spot shape must restore realistic commodity volatility while the level still
-    tracks the GSCI TR anchor (verified separately). Also checks the collateral relationship.
-    """
-    rows = read_csv(DATASET)
-    shape_rows = [r for r in rows if r["Quality Flag"] == GSCI_SHAPE_FLAG]
-
-    assert len(shape_rows) > 1500, f"Too few GSCI-shape rows: {len(shape_rows)}"
-    assert shape_rows[0]["Date"] >= "1984-01-04"
-    assert shape_rows[-1]["Date"] < "1991-02-01"
-
-    total_returns = [float(r["Total Return"]) for r in shape_rows if r["Total Return"]]
-    annualized_vol = statistics.pstdev(total_returns) * math.sqrt(252)
-    assert annualized_vol > 0.08, f"Segment 1 still looks smoothed: annualized vol={annualized_vol:.4f}"
-
-    # Internal collateral growth: (Adj/Close) should rise over the ~7-year, high-rate segment.
-    start_ratio = float(shape_rows[0]["Adj Close"]) / float(shape_rows[0]["Close"])
-    end_ratio = float(shape_rows[-1]["Adj Close"]) / float(shape_rows[-1]["Close"])
-    assert end_ratio / start_ratio > 1.3, (
-        f"T-bill collateral growth in Segment 1 too low: {start_ratio:.3f} -> {end_ratio:.3f}"
-    )
-
-
-def test_broad_commodities_quality_flag_counts():
-    rows = read_csv(DATASET)
-    smooth_count = sum(1 for r in rows if r["Quality Flag"] == GSCI_SMOOTHED_FLAG)
-    shape_count = sum(1 for r in rows if r["Quality Flag"] == GSCI_SHAPE_FLAG)
-    bcom_count = sum(1 for r in rows if r["Quality Flag"] == BCOM_FLAG)
-    dbc_count = sum(1 for r in rows if r["Quality Flag"] == DBC_FLAG)
-    assert smooth_count > 3000
-    assert shape_count > 1500
-    assert bcom_count > 3500
-    assert dbc_count > 4500
-    assert smooth_count + shape_count + bcom_count + dbc_count == len(rows)
-
-
-def test_historical_bcom_cache_avoids_live_request(tmp_path, monkeypatch):
-    if not RAW_BCOM.exists():
-        pytest.skip("Historical BCOM raw chart is unavailable")
-    cached = tmp_path / RAW_BCOM.name
-    cached.write_bytes(RAW_BCOM.read_bytes())
-
-    def unexpected_fetch(*args, **kwargs):
-        raise AssertionError("Valid historical BCOM cache should avoid a live request")
-
-    monkeypatch.setattr(commodity_builder, "fetch_chart", unexpected_fetch)
-    payload, mode = commodity_builder.load_historical_chart(tmp_path, "^BCOM", date(2026, 9, 26))
+def test_valid_historical_cache_avoids_live_request(tmp_path, monkeypatch):
+    valid_bcom_cache(tmp_path)
+    def unexpected(*args, **kwargs):
+        raise AssertionError("A validated historical cache must avoid a live request")
+    monkeypatch.setattr(builder, "fetch_chart", unexpected)
+    _, mode = builder.load_historical_chart(tmp_path, "^BCOM", date(2026, 9, 30))
     assert mode == "cached"
-    assert len(commodity_builder.chart_rows(payload)) > 3500
 
 
-def test_historical_bcom_refresh_preserves_cache_on_404(tmp_path, monkeypatch):
-    if not RAW_BCOM.exists():
-        pytest.skip("Historical BCOM raw chart is unavailable")
-    cached = tmp_path / RAW_BCOM.name
-    cached.write_bytes(RAW_BCOM.read_bytes())
-    original = cached.read_bytes()
-
-    def unavailable_fetch(*args, **kwargs):
-        raise commodity_builder.requests.HTTPError("404 Not Found")
-
-    monkeypatch.setattr(commodity_builder, "fetch_chart", unavailable_fetch)
-    payload, mode = commodity_builder.load_historical_chart(tmp_path, "^BCOM", date(2026, 9, 26), refresh=True)
+def test_historical_refresh_failure_preserves_valid_cache(tmp_path, monkeypatch):
+    path = valid_bcom_cache(tmp_path)
+    original = path.read_bytes()
+    def unavailable(*args, **kwargs):
+        raise builder.requests.HTTPError("404 Not Found")
+    monkeypatch.setattr(builder, "fetch_chart", unavailable)
+    _, mode = builder.load_historical_chart(tmp_path, "^BCOM", date(2026, 9, 30), refresh=True)
     assert mode == "cached_after_fetch_error"
-    assert cached.read_bytes() == original
-    assert len(commodity_builder.chart_rows(payload)) > 3500
+    assert path.read_bytes() == original
 
 
 def test_historical_bcom_rejects_incomplete_cache(tmp_path, monkeypatch):
-    cached = tmp_path / RAW_BCOM.name
-    cached.write_text('{"chart":{"result":[{"meta":{"symbol":"^BCOM"},"timestamp":[],'
-                      '"indicators":{"quote":[{"close":[]}]}}]}}', encoding="utf-8")
-
-    def unavailable_fetch(*args, **kwargs):
-        raise commodity_builder.requests.HTTPError("404 Not Found")
-
-    monkeypatch.setattr(commodity_builder, "fetch_chart", unavailable_fetch)
+    path = valid_bcom_cache(tmp_path)
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload["chart"]["result"][0]["timestamp"] = []
+    path.write_text(json.dumps(payload), encoding="utf-8")
+    def unavailable(*args, **kwargs):
+        raise builder.requests.HTTPError("404 Not Found")
+    monkeypatch.setattr(builder, "fetch_chart", unavailable)
     with pytest.raises(RuntimeError, match="no valid cache"):
-        commodity_builder.load_historical_chart(tmp_path, "^BCOM", date(2026, 9, 26))
+        builder.load_historical_chart(tmp_path, "^BCOM", date(2026, 9, 30))

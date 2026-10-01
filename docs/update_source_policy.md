@@ -13,7 +13,7 @@ The public repository excludes downloaded files under `sources/raw/`. A fresh ch
 | ITT | Fed nominal curve and VFITX through fixed handoffs | Yahoo IEF |
 | LTT | Fed nominal curve, `^TYX`, and VUSTX through fixed handoffs | Yahoo TLT |
 | GOLDPM | Published pre-GLD model; explicit LBMA refresh optional | Yahoo GLD close and adjusted close only |
-| CMDTY | GSCI TR anchor and validated `^SPGSCI`, `^BCOM`, `^IRX` charts | Yahoo DBC |
+| CMDTY | Pinned daily GSCI ER/TR workbook, preserved calendar, validated `^BCOM`/`^IRX` charts | Yahoo DBC |
 | CPI | None; monthly BLS observations determine the latest deflator | BLS `CUSR0000SA0` |
 | GLSTOCK | Fixed MSCI annual anchors and Fama/French developed-market ZIP through VT inception | Yahoo VT and refreshed USLCAP dependency |
 | GLBOND | Existing JST/BIS/OECD/MoF/BoE historical caches | Yahoo BND/BWX and refreshed ITT dependency |
@@ -24,3 +24,10 @@ The public repository excludes downloaded files under `sources/raw/`. A fresh ch
 | GOLD2X | `^IRX` and preserved spot inputs through UGL inception | Yahoo UGL, refreshed GOLDPM dependency |
 
 `python src/update_all_datasets.py --refresh-historical-sources` invokes the historical builders for USLCAP, STT, ITT, LTT, CMDTY, and GLSTOCK. `--refresh-static-sources` invokes the historical GLBOND and GLSTBOND builders. Neither option permits an unavailable current source to be silently replaced with an old raw file. The unattended workflow never uses either option.
+
+CMDTY's explicit `python src/build_broad_commodities.py --migrate-gsci` path
+replaces its early history with daily GSCI ER/TR while retaining the versioned
+processed tail's return ratios. It does not need the missing Yahoo historical
+caches or extend the end date. Its implementation and independent review
+are documented in [the CMDTY methodology](methodology_cmdty.md); vendor and
+derived-publication rights remain unverified.

@@ -1,0 +1,16 @@
+{
+  "asset_id": "broad_commodities",
+  "calendar_file": "sources/derived/broad_commodities_gsci_calendar.csv",
+  "sha256": "22c8176d209ce07481e7adab51af1dce3472873228a2718a74ceacece3e3b630",
+  "row_count": 5255,
+  "first_date": "1970-01-02",
+  "last_date": "1991-01-02",
+  "preserved_utc_date": "2026-09-30",
+  "baseline_csv": "data/processed/broad_commodities.csv",
+  "baseline_csv_sha256": "d31df07d79f778ce48069c383342e2784d837c4d3dfbd58da921b4685f8856d7",
+  "baseline_git_commit": "20396a64b4203cb9d06b4d096e473f268a57684b",
+  "baseline_git_blob": "d0b200724beeb67ad6e0504df71da447f01399f0",
+  "origin": "Existing published CMDTY dates: IRX calendar through 1984-01-03, then SPGSCI calendar through 1991-01-02.",
+  "policy": "Sample source ER/TR levels on these dates before calculating returns. Preserve skipped-date growth; retain flat rows.",
+  "qualification": "This preserves the project observation calendar; it is not a universal commodity trading-session calendar."
+}
