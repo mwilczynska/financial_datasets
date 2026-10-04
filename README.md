@@ -65,7 +65,7 @@ dataset in different formats.
 | GOLDPM | Gold — GLD price and total return with modeled history | 1970-01-02 | 2026-10-02 | [CSV](data/processed/gold.csv) | [Parquet](data/processed/gold.parquet) | [GOLDPM](docs/methodology_goldpm.md) |
 | GOLD2X | 2x daily-reset gold, UGL-like | 1970-01-02 | 2026-10-02 | [CSV](data/processed/gold_2x.csv) | [Parquet](data/processed/gold_2x.parquet) | [GOLD2X](docs/methodology_gold2x.md) |
 | CMDTY | Broad commodities, DBC-like | 1970-01-02 | 2026-10-02 | [CSV](data/processed/broad_commodities.csv) | [Parquet](data/processed/broad_commodities.parquet) | [CMDTY](docs/methodology_cmdty.md) |
-| CPI | U.S. CPI-U daily model-derived deflator | 1970-01-01 | 2026-10-02 | [CSV](data/processed/cpi_inflation.csv) | [Parquet](data/processed/cpi_inflation.parquet) | [CPI](docs/methodology_cpi.md) |
+| CPI | U.S. CPI-U daily model-derived deflator | 1970-01-01 | 2026-10-03 | [CSV](data/processed/cpi_inflation.csv) | [Parquet](data/processed/cpi_inflation.parquet) | [CPI](docs/methodology_cpi.md) |
 | GLSTOCK | Global all-world stocks proxy | 1970-01-02 | 2026-10-02 | [CSV](data/processed/global_stocks.csv) | [Parquet](data/processed/global_stocks.parquet) | [GLSTOCK](docs/methodology_glstock.md) |
 | GLBOND | Unhedged global bonds proxy | 1970-01-02 | 2026-10-02 | [CSV](data/processed/global_bonds.csv) | [Parquet](data/processed/global_bonds.parquet) | [GLBOND](docs/methodology_glbond.md) |
 | GLSTBOND | Unhedged global short-term government bonds proxy | 1970-01-02 | 2026-10-02 | [CSV](data/processed/global_short_term_bonds.csv) | [Parquet](data/processed/global_short_term_bonds.parquet) | [GLSTBOND](docs/methodology_glstbond.md) |
