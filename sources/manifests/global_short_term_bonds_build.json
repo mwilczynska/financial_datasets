@@ -3,11 +3,11 @@
   "asset_name": "Unhedged Global Short-Term (1-3yr) Government Bonds Total-Return Proxy",
   "alias": "GLSTBOND",
   "build_timestamp_utc": "2026-07-23T02:34:03.407741+00:00",
-  "row_count": 14309,
+  "row_count": 14310,
   "first_date": "1970-01-02",
-  "last_date": "2026-10-02",
+  "last_date": "2026-10-05",
   "csv_path": "data/processed/global_short_term_bonds.csv",
-  "csv_sha256": "d53053d447fa578074f82bf94f9e32c2d9997b95e7ed9543f7e48e03ef229415",
+  "csv_sha256": "dc4853cd04b57a4408eb1d46a3bba245cc01be53b7436ee3a6ef2305225f2361",
   "parquet_written": true,
   "quality_flags": [
     "model_direct_daily_fx_2y_yield_global_short_govt_bond_unhedged_net_of_fee",
@@ -73,31 +73,31 @@
     "year": 2026,
     "weight": "0.4631379278994452669217428412472860334023"
   },
-  "last_incremental_update_utc": "2026-10-03T17:18:41.202287+00:00",
+  "last_incremental_update_utc": "2026-10-06T18:55:44.093762+00:00",
   "incremental_update": {
-    "overlap_anchor": "2026-10-01",
-    "requested_end_date": "2026-10-02",
+    "overlap_anchor": "2026-10-02",
+    "requested_end_date": "2026-10-05",
     "recent_sources": {
       "SHY": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/SHY",
         "path": "sources/raw/incremental/global_short_term_bonds_shy.json",
-        "sha256": "9aafa352b0a0350c6ad43fce7d1b004e8de05ec2000c922b6d3f5e59dfc0c3d6",
-        "first_date": "2026-09-02",
-        "last_date": "2026-10-02"
+        "sha256": "9d69d9252c687590f790c9249e36fcbec1b425043f7ed8fefae19da18b331b04",
+        "first_date": "2026-09-03",
+        "last_date": "2026-10-05"
       },
       "ISHG": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/ISHG",
         "path": "sources/raw/incremental/global_short_term_bonds_ishg.json",
-        "sha256": "c217b290596cf7da2c544b693ab10f038e7af4a2ecfb12b05de8609576767837",
-        "first_date": "2026-09-02",
-        "last_date": "2026-10-02"
+        "sha256": "7ff0eca6cafdf98504bdf175a7e1549df092d7d7de28d8a18e718d0083b36de3",
+        "first_date": "2026-09-03",
+        "last_date": "2026-10-05"
       },
       "BWZ": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/BWZ",
         "path": "sources/raw/incremental/global_short_term_bonds_bwz.json",
-        "sha256": "d323a545604bf43ca715e7b15b9e9ee9b23de95f469c5e1dd88daa22597cf6a0",
-        "first_date": "2026-09-02",
-        "last_date": "2026-10-02"
+        "sha256": "5b7d42f6414ad7a04e8fd99e58c26c87bb4d47d66dfb35d8f6c0ad7586ab5b8a",
+        "first_date": "2026-09-03",
+        "last_date": "2026-10-05"
       }
     }
   }
