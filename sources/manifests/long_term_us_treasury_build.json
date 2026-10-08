@@ -3,11 +3,11 @@
   "asset_name": "Long-Term U.S. Treasury / TLT-like Total Return",
   "source": "Federal Reserve nominal yield curve; Yahoo ^TYX 30y yield; Yahoo Finance chart API (VUSTX and TLT adjusted close)",
   "build_timestamp_utc": "2026-07-23T02:33:29.733297+00:00",
-  "row_count": 14252,
+  "row_count": 14253,
   "first_date": "1970-01-02",
-  "last_date": "2026-10-06",
+  "last_date": "2026-10-07",
   "csv_path": "data/processed/long_term_us_treasury.csv",
-  "csv_sha256": "f4a94c6e47be4cf99a1b8584f6d7781c8bded905df7e369059291317c4771625",
+  "csv_sha256": "45c99dc880aa2eb1f9626d0ef02807e1bfe46cca5f1613d94037e3b61cdf49a9",
   "parquet_written": true,
   "quality_flags": [
     "model_fed_yield_curve_25y_par_treasury_total_return",
@@ -15,17 +15,17 @@
     "observed_yahoo_vustx_long_treasury_total_return_proxy"
   ],
   "notes": "TLT-like long Treasury total-return proxy. Federal Reserve nominal yield curves are used for a synthetic 25-year par Treasury segment before VUSTX; VUSTX is used before TLT daily history is available.",
-  "last_incremental_update_utc": "2026-10-07T19:22:01.691939+00:00",
+  "last_incremental_update_utc": "2026-10-08T19:17:45.842210+00:00",
   "incremental_update": {
-    "overlap_anchor": "2026-10-05",
-    "requested_end_date": "2026-10-06",
+    "overlap_anchor": "2026-10-06",
+    "requested_end_date": "2026-10-07",
     "recent_sources": {
       "TLT": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/TLT",
         "path": "sources/raw/incremental/long_term_us_treasury_tlt.json",
-        "sha256": "489eec0c3037ce2c1071fa8119b8f978e9f83a2ac36922da84571cbc27e6d1d6",
-        "first_date": "2026-09-04",
-        "last_date": "2026-10-06"
+        "sha256": "5c9fe800a3d0d13feb1ff6a8ad521c3b56b5f039be7f413225af34e3ae45618f",
+        "first_date": "2026-09-08",
+        "last_date": "2026-10-07"
       }
     }
   }
