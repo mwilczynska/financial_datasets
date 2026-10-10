@@ -8,13 +8,13 @@
   "financing_benchmark": "^IRX",
   "observed_etf": "TMF",
   "build_timestamp_utc": "2026-07-23T02:34:09.378071+00:00",
-  "row_count": 14254,
+  "row_count": 14255,
   "first_date": "1970-01-02",
-  "last_date": "2026-10-08",
+  "last_date": "2026-10-09",
   "synthetic_rows": 9857,
   "observed_etf_rows": 4342,
   "csv_path": "data/processed/long_term_us_treasury_3x.csv",
-  "csv_sha256": "ad619aa237d769d424386704049d4f769e9054a68b0b58dd52750b00b91c246a",
+  "csv_sha256": "91b9a15f2e5008bad8243025ba6d5d2341c7575f6acf44d9eb0bac61eefa1b18",
   "parquet_written": true,
   "quality_flags": [
     "model_3x_daily_reset_synthetic_from_ltt_total_return_minus_financing_and_fee",
@@ -31,17 +31,17 @@
     "etf_inception": "2009-04-16"
   },
   "notes": "Synthetic 3x daily-reset long-Treasury total-return NAV: lev_ret = 3*LTT_total_return - 2*(^IRX/100)*days/360 - 0.0106*days/365. Close == Adj Close. Model-derived, not observed TMF history.",
-  "last_incremental_update_utc": "2026-10-09T18:50:41.169712+00:00",
+  "last_incremental_update_utc": "2026-10-10T17:52:55.716305+00:00",
   "incremental_update": {
-    "overlap_anchor": "2026-10-07",
-    "requested_end_date": "2026-10-08",
+    "overlap_anchor": "2026-10-08",
+    "requested_end_date": "2026-10-09",
     "recent_sources": {
       "TMF": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/TMF",
         "path": "sources/raw/incremental/long_term_us_treasury_3x_tmf.json",
-        "sha256": "c583b64568de3a35e235424deeb09972eb64767d7cd76e42639621fd12fb15fa",
-        "first_date": "2026-09-08",
-        "last_date": "2026-10-08"
+        "sha256": "8f0be0d7cae453facd389b661d3e12a66afcb7b2773c34bfa1d389e156b136cd",
+        "first_date": "2026-09-09",
+        "last_date": "2026-10-09"
       }
     }
   }

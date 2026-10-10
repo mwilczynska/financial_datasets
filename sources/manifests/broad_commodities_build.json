@@ -3,11 +3,11 @@
   "asset_name": "Broad Commodities / DBC-like Total Return",
   "source": "Pinned Trading_Commo public GSCI daily ER/TR workbook (author-claimed Bloomberg PX_LAST; provider back-calculated before 1991-05-01), on preserved CMDTY dates through 1991-01-02; Yahoo ^BCOM excess return plus ^IRX collateral through 2006-02-06; Yahoo DBC ETF thereafter",
   "build_timestamp_utc": "2026-10-01T02:13:40.386407+00:00",
-  "row_count": 14236,
+  "row_count": 14237,
   "first_date": "1970-01-02",
-  "last_date": "2026-10-08",
+  "last_date": "2026-10-09",
   "csv_path": "data/processed/broad_commodities.csv",
-  "csv_sha256": "371578095012ed69eb1729aa5d2c49d6a2c2917f509683ab2392315327bc1d2e",
+  "csv_sha256": "c35600945ac920255c56c59e78fe79c5c185a77a209293ebedac85dcb133cde9",
   "parquet_written": true,
   "quality_flags": [
     "backcalculated_gsci_daily_excess_and_total_return",
@@ -17,20 +17,20 @@
   "segment_row_counts": {
     "backcalculated_gsci_daily_excess_and_total_return": 5255,
     "model_bcom_excess_return_plus_tbill_collateral": 3781,
-    "observed_yahoo_dbc_dblci_total_return_etf": 5200
+    "observed_yahoo_dbc_dblci_total_return_etf": 5201
   },
   "coverage_note": "Daily GSCI ER and TR sampled on preserved CMDTY dates through 1991-01-02. Provider back-calculation before the 1991-05-01 launch; weekday holiday fills may occur. Close uses ER, Adj Close uses TR; no sparse-anchor smoothing, spot overlay or additional IRX accrual in this segment. Later BCOM plus collateral and DBC ETF definitions remain distinct.",
-  "last_incremental_update_utc": "2026-10-09T18:50:33.481266+00:00",
+  "last_incremental_update_utc": "2026-10-10T17:52:48.141310+00:00",
   "incremental_update": {
-    "overlap_anchor": "2026-10-07",
-    "requested_end_date": "2026-10-08",
+    "overlap_anchor": "2026-10-08",
+    "requested_end_date": "2026-10-09",
     "recent_sources": {
       "DBC": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/DBC",
         "path": "sources/raw/incremental/broad_commodities_dbc.json",
-        "sha256": "39c257a2beefa6747190d6d03fae00131588dfa3f766792433507e6e32bbe6b1",
-        "first_date": "2026-09-08",
-        "last_date": "2026-10-08"
+        "sha256": "7cce2a597fb738347581d7a130f0c49a32fa1081ca0273c898ccf5d817afbf98",
+        "first_date": "2026-09-09",
+        "last_date": "2026-10-09"
       }
     }
   },
@@ -143,5 +143,5 @@
       }
     }
   },
-  "parquet_sha256": "0a17ed24e8c8679a10d19d44f52fcc0e0a20115e74a6770e8ea482dc8a8d52a2"
+  "parquet_sha256": "c8edbbc5f7a62dedcd029561f4794ae2f33004407d292921ca2ebc2e8d6ae7c9"
 }
