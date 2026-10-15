@@ -30,30 +30,30 @@
   },
   "etf_source": "https://query1.finance.yahoo.com/v8/finance/chart/GLD",
   "build_timestamp_utc": "2026-09-30T19:56:28.120632+00:00",
-  "row_count": 14280,
+  "row_count": 14281,
   "first_date": "1970-01-02",
-  "last_date": "2026-10-13",
+  "last_date": "2026-10-14",
   "model_rows": 8771,
   "observed_gld_rows": 5499,
   "csv_path": "data/processed/gold.csv",
-  "csv_sha256": "089da74863f1455c4f969275faaa40ac792caf4406da108549db1415bfc85370",
+  "csv_sha256": "1bf861794f9e1ce26f4bd300a8908ffb663dc60818f990f6ee63b60a90c64384",
   "parquet_written": true,
   "quality_flags": [
     "model_gld_tracking_lbma_pm_spot_minus_gld_expense",
     "observed_gld_etf_price_and_adjusted_total_return"
   ],
   "notes": "Close = continuously scaled GLD market close; Adj Close = continuously scaled GLD adjusted close. GLD fees are already included. These are index levels, not USD/oz spot quotes. NYSE (GLD) calendar from 2004-11-18; first GLD observation anchors both indices to the prior modeled levels with zero splice return.",
-  "last_incremental_update_utc": "2026-10-14T18:02:10.275224+00:00",
+  "last_incremental_update_utc": "2026-10-15T17:47:40.857743+00:00",
   "incremental_update": {
-    "overlap_anchor": "2026-10-12",
-    "requested_end_date": "2026-10-13",
+    "overlap_anchor": "2026-10-13",
+    "requested_end_date": "2026-10-14",
     "recent_sources": {
       "GLD": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/GLD",
         "path": "sources/raw/incremental/gold_gld.json",
-        "sha256": "9f4916718401e161adf5fad751642a81307a3eb50c1630723d6952655bc48e1e",
-        "first_date": "2026-09-11",
-        "last_date": "2026-10-13"
+        "sha256": "30629340459cf6036e9d8738f93cd9628ae5608f8d8193d2639aa2a4bb51eabe",
+        "first_date": "2026-09-14",
+        "last_date": "2026-10-14"
       }
     }
   }
