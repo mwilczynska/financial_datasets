@@ -3,11 +3,11 @@
   "asset_name": "Unhedged Global Bonds Total-Return Proxy",
   "alias": "GLBOND",
   "build_timestamp_utc": "2026-07-23T02:33:58.448738+00:00",
-  "row_count": 14320,
+  "row_count": 14321,
   "first_date": "1970-01-02",
-  "last_date": "2026-10-19",
+  "last_date": "2026-10-20",
   "csv_path": "data/processed/global_bonds.csv",
-  "csv_sha256": "ff2888db977cf728ba8d154a83478b509cb0b8309ccf7c202987da136c3f11a3",
+  "csv_sha256": "468899aaaa3f53b378a251fa010072bc4a578fd01e876cd055417e19ec3f5ef5",
   "parquet_written": true,
   "quality_flags": [
     "model_jst_anchored_daily_fx_monthly_yield_global_govt_bond_unhedged",
@@ -65,24 +65,24 @@
   },
   "bnd_weight": "0.45",
   "bwx_weight": "0.55",
-  "last_incremental_update_utc": "2026-10-20T18:00:13.105033+00:00",
+  "last_incremental_update_utc": "2026-10-21T18:05:17.055082+00:00",
   "incremental_update": {
-    "overlap_anchor": "2026-10-16",
-    "requested_end_date": "2026-10-19",
+    "overlap_anchor": "2026-10-19",
+    "requested_end_date": "2026-10-20",
     "recent_sources": {
       "BND": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/BND",
         "path": "sources/raw/incremental/global_bonds_bnd.json",
-        "sha256": "622a5237592f603ba0efba054df8fed0eae22780151ce827d86e6b17bbcb9f39",
-        "first_date": "2026-09-17",
-        "last_date": "2026-10-19"
+        "sha256": "a38b3abebb9e95ceda971afd0335f73c282598e3370bdeeeada5af921f8f1f45",
+        "first_date": "2026-09-18",
+        "last_date": "2026-10-20"
       },
       "BWX": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/BWX",
         "path": "sources/raw/incremental/global_bonds_bwx.json",
-        "sha256": "6bbad818adf8aa0bb5407277b4c191e11926935f178332363c24e2dec3411565",
-        "first_date": "2026-09-17",
-        "last_date": "2026-10-19"
+        "sha256": "6a5aa79b37be863939f1ae7953dceefc7cef58bbc72fb07ffcd1796de5bcb938",
+        "first_date": "2026-09-18",
+        "last_date": "2026-10-20"
       }
     }
   }
