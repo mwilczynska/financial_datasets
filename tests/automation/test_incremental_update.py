@@ -107,3 +107,17 @@ def test_cpi_release_revises_only_recent_carry(tmp_path: Path) -> None:
     assert rows[-1]["Date"] == "2026-07-16"
     assert next(row for row in rows if row["Date"] == "2026-07-01")["Close"] == "322.2"
     assert next(row for row in rows if row["Date"] == "2026-06-15")["Quality Flag"] == cpi.INTERPOLATED_FLAG
+
+
+def test_cpi_session_outlasts_short_bls_outage() -> None:
+    from urllib3.util.retry import RequestHistory
+
+    session = update.session_with_retries(update.BLS_RETRY_TOTAL, update.BLS_BACKOFF_FACTOR)
+    retry = session.adapters["https://"].max_retries
+    assert 503 in retry.status_forcelist and "POST" in retry.allowed_methods
+    waits = []
+    for _ in range(retry.total):
+        history = retry.history + (RequestHistory("POST", "/", None, 503, None),)
+        retry = retry.new(total=retry.total - 1, history=history)
+        waits.append(retry.get_backoff_time())
+    assert sum(waits) >= 180
