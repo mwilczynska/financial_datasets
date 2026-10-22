@@ -42,6 +42,9 @@ YAHOO_COLUMNS = ["Date", "Open", "High", "Low", "Close", "Adj Close", "Volume"]
 OUTPUT_COLUMNS = YAHOO_COLUMNS + ["Price Return", "Total Return", "Source", "Quality Flag", "Source Notes"]
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 TRANSIENT_STATUS = (429, 500, 502, 503, 504)
+# BLS has had multi-minute 503 outages; wait roughly 4.5 minutes before failing the refresh.
+BLS_RETRY_TOTAL = 6
+BLS_BACKOFF_FACTOR = 5
 
 
 @dataclass(frozen=True)
@@ -91,9 +94,9 @@ def checksum(path: Path) -> str:
     return digest.hexdigest()
 
 
-def session_with_retries() -> requests.Session:
+def session_with_retries(total: int = 3, backoff_factor: float = 2) -> requests.Session:
     session = requests.Session()
-    retry = Retry(total=3, backoff_factor=2, status_forcelist=TRANSIENT_STATUS,
+    retry = Retry(total=total, backoff_factor=backoff_factor, status_forcelist=TRANSIENT_STATUS,
                   allowed_methods=frozenset({"GET", "POST"}), respect_retry_after_header=True)
     session.mount("https://", HTTPAdapter(max_retries=retry))
     session.headers.update({"User-Agent": "Mozilla/5.0"})
@@ -419,7 +422,9 @@ def update_asset(stem: str, root: Path, end: date, overlap_days: int = 14,
         raise RuntimeError(f"Requested end {end} precedes committed {stem} end {existing[-1]['Date']}")
     metadata_path = root / "sources" / "manifests" / f"{stem}_build.json"
     metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
-    session = session or session_with_retries()
+    if session is None:
+        session = (session_with_retries(BLS_RETRY_TOTAL, BLS_BACKOFF_FACTOR) if asset.kind == "cpi"
+                   else session_with_retries())
     if asset.kind == "cpi":
         rows, records, monthly_date, anchor_day = build_cpi_recent(root, existing, end, session)
     else:
