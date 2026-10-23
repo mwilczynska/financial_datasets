@@ -3,11 +3,11 @@
   "asset_name": "Intermediate-Term U.S. Treasury / IEF-like Total Return",
   "source": "Federal Reserve nominal yield curve; Yahoo Finance chart API (VFITX and IEF adjusted close)",
   "build_timestamp_utc": "2026-07-23T02:33:18.408502+00:00",
-  "row_count": 14247,
+  "row_count": 14248,
   "first_date": "1970-01-02",
-  "last_date": "2026-10-21",
+  "last_date": "2026-10-22",
   "csv_path": "data/processed/intermediate_term_us_treasury.csv",
-  "csv_sha256": "297c8474139341788bed9690d3dc30271ff4104111dc93541a2df5e84d380547",
+  "csv_sha256": "91f591b30230a7b69ea8a718f5db79e347cf80ae30490b2502829e7e2b98a4c9",
   "parquet_written": true,
   "quality_flags": [
     "model_fed_yield_curve_8pt5y_par_treasury_total_return",
@@ -15,17 +15,17 @@
     "observed_yahoo_vfitx_intermediate_treasury_total_return_proxy"
   ],
   "notes": "IEF-like intermediate Treasury total-return proxy. Federal Reserve nominal yield curves are used for a synthetic 8.5-year par Treasury segment before VFITX; VFITX is used before IEF daily history is available.",
-  "last_incremental_update_utc": "2026-10-22T20:53:29.984515+00:00",
+  "last_incremental_update_utc": "2026-10-23T17:53:31.245809+00:00",
   "incremental_update": {
-    "overlap_anchor": "2026-10-20",
-    "requested_end_date": "2026-10-21",
+    "overlap_anchor": "2026-10-21",
+    "requested_end_date": "2026-10-22",
     "recent_sources": {
       "IEF": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/IEF",
         "path": "sources/raw/incremental/intermediate_term_us_treasury_ief.json",
-        "sha256": "a29d4bf9198a7bf8ccbc14dda5d928d6609e7855da34229e11ef2fce80abd78f",
-        "first_date": "2026-09-21",
-        "last_date": "2026-10-21"
+        "sha256": "83fe47055b36ad90c0a7f20e68770475a1a1c3c701a2feecebf6f2b6ead1dd0a",
+        "first_date": "2026-09-22",
+        "last_date": "2026-10-22"
       }
     }
   }
