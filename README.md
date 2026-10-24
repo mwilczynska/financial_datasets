@@ -146,18 +146,23 @@ Refresh the complete dependency graph. The end date is inclusive:
 
     python src/update_all_datasets.py --end-date YYYY-MM-DD
 
-This extends all 14 datasets from their committed processed CSVs. It fetches a
-14-calendar-day overlap, checks for revisions, appends new days, and rewrites
-CSV/Parquet together. CPI can revise recently carried-forward daily values when
-BLS releases a new monthly observation. The normal path does not reconstruct
-history or require excluded `sources/raw/` files. Use `--full-rebuild` only for
-a deliberate historical reconstruction with its required raw sources.
+This extends all 14 datasets from their committed processed CSVs. Market
+datasets use a 14-calendar-day overlap to check revisions and append new days;
+CSV/Parquet are rewritten together when observations change. CPI fetches a recent
+monthly window and can revise recently carried-forward daily values when BLS
+releases a new monthly observation. The normal path does not reconstruct
+history or require pre-existing historical raw caches. It saves fresh recent
+responses under `sources/raw/incremental/` for the publication gate. Use
+`--full-rebuild` only for a deliberate historical reconstruction with its
+required raw sources.
 
 During a transient BLS API outage, CPI can use FRED's delivery of the same
-seasonally adjusted BLS series. The fallback must match the committed monthly
-overlap and pass the same daily expansion and publication checks. Its provider,
-retrieval time, and raw-response hash are recorded in build metadata. If both
-delivery routes fail validation, the refresh stops without publishing.
+seasonally adjusted BLS series, first through its standard CSV export and then
+its public data table after a transient CSV failure. The fallback must match the
+committed monthly overlap and pass the same daily expansion and publication
+checks. Its provider, retrieval time, and raw-response hash are recorded in build
+metadata, including repeat runs with unchanged CPI rows. If no approved live delivery route
+validates, the refresh stops without publishing.
 
 Useful targeted commands:
 
@@ -166,8 +171,9 @@ Useful targeted commands:
     python src/update_all_datasets.py --refresh-static-sources
 
 Use `--refresh-static-sources` only for a deliberate GLBOND/GLSTBOND full
-rebuild. A requested end date can be later than the last
-row when a market is closed, a source is delayed, or the source is monthly.
+rebuild. A market dataset may end before the requested date when the market is
+closed or its source is delayed. CPI is calendar-daily and must reach the target
+date; its latest monthly observation is carried forward until a new release.
 
 The [daily GitHub Actions workflow](.github/workflows/daily-refresh.yml) runs
 at 09:17 New York time, targeting the previous calendar day. It runs the update,
@@ -178,8 +184,13 @@ failure issue assigned to the repository owner. For email, watch this repository
 and set GitHub **Settings → Notifications → System → Actions** to **Email** and
 **Only notify for failed workflows**. This is a GitHub account setting for
 watched repositories; the issue is the durable alert.
+Both workflows use `actions/checkout@v7` and `actions/setup-python@v7` on the
+Node.js 24 action runtime, while the dataset pipeline runs on Python 3.11.
 Use the workflow's manual **Run workflow** action with an optional `end_date`
-to catch up. A delayed or missed scheduled run is caught up by the next run,
+on `main` to catch up using the current workflow definition. See the
+[daily refresh operations guide](docs/operations/daily-refresh.md) for fallback
+messages, provenance fields, failure diagnosis, and recovery checks.
+A delayed or missed scheduled run is caught up by the next run,
 but GitHub cannot send a failure email for a run that never started. Monitor
 the workflow externally if missed-run alerts are required.
 
@@ -214,6 +225,8 @@ social-preview asset from the current processed CSVs:
 - [sources/manifests](sources/manifests/): machine-readable source and build metadata.
 - [sources/citations](sources/citations/): human-readable source notes.
 - [tests/validation](tests/validation/): contract and regression tests.
+- [tests/automation](tests/automation/): incremental update, outage recovery, and publication regression checks.
+- [docs/operations/daily-refresh.md](docs/operations/daily-refresh.md): scheduled refresh and recovery procedure.
 
 ## Data rights
 

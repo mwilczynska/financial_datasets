@@ -36,8 +36,11 @@ This is a derived model, not observed UPRO history before 2009, and must be flag
 
 - First observation: `1970-01-02` (base level 100).
 - Last observation: most recent UPRO trading day from Yahoo.
-- Current build: 14,234 rows, 1970-01-02 to 2026-06-15. Synthetic rows 9,966; observed UPRO
+- Initial build snapshot (2026-06-15): 14,234 rows, 1970-01-02 to 2026-06-15. Synthetic rows 9,966; observed UPRO
   rows 4,268. UPRO inception 2009-06-25.
+
+Daily refreshes extend the observed tail. Use the [generated README table](../README.md)
+and build metadata for current dates and total row counts.
 
 ## Sources
 

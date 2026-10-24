@@ -52,12 +52,18 @@ Long-history datasets may combine sources. Every source boundary must document:
 Dataset update scripts must not blindly append rows. They must:
 
 1. Read the existing processed dataset.
-2. Refetch a recent overlap window from the live source (Yahoo chart API or equivalent).
-3. Replace overlapping dates with the newly fetched values.
-4. Sort and de-duplicate by `Date`.
-5. Recompute return columns across the stitched dataset.
-6. Rewrite CSV and Parquet outputs together.
-7. Update build metadata.
+2. Fetch a recent overlap from the approved live delivery routes and verify source identity and usable observations.
+3. Detect revisions or newly available observations, retaining unchanged history and the committed anchor before any permitted revision.
+4. Recompute only the revised or appended tail; reject deleted dates, invalid source data, and changes outside the permitted revision window.
+5. Require sorted, unique dates and preserve the documented level/return relationship across the stitch.
+6. Rewrite CSV and Parquet together when observations change, then update build metadata.
+7. Run validation and the publication gate before publishing. CPI refreshes its delivery evidence even when its daily rows do not change.
+
+CPI uses monthly observations to expand calendar-daily levels. Its BLS API to
+FRED CSV/data-table fallback changes delivery of the same series, while retaining
+the documented interpolation, carry-forward flags, and historical values.
+See the [source policy](update_source_policy.md) for acceptance rules and
+the [operations guide](operations/daily-refresh.md) for the publication sequence.
 
 ## Quality Flags
 

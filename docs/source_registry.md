@@ -228,7 +228,7 @@ To be added after U.S. large-cap equities:
 
 - Status: `candidate_model_input`
 - URL: https://fred.stlouisfed.org/series/DGS30
-- Role: alternative to Yahoo ^TYX for the 1977–1985 sub-period; not currently used because FRED CSV retrieval timed out in this environment.
+- Role: alternative to Yahoo ^TYX for the 1977–1985 sub-period; not used in the implemented model after the initial FRED CSV retrieval timed out. This endpoint was not reassessed during the later CPI delivery repair.
 - Current finding: FRED documents DGS30 as a daily 30-year Treasury constant maturity yield sourced from Federal Reserve H.15.
 - Caveats:
   - The 30-year series was discontinued from 2002-02-18 to 2006-02-09.
@@ -296,7 +296,7 @@ an ETF index, not USD/oz. See [methodology](methodology_goldpm.md).
 - Status: `candidate_validation_source`
 - URL: https://fred.stlouisfed.org/series/GOLDPMGBD228NLBM
 - Role: candidate validation source for London PM gold prices.
-- Current finding: FRED API metadata requires an API key, and the graph CSV endpoint timed out during initial implementation.
+- Initial retrieval finding: FRED API metadata required an API key, and the graph CSV endpoint timed out. The working CPI download route does not establish current availability or usage rights for this gold series.
 - Caveat: likely mirrors the same London PM benchmark, so it is not methodologically independent from LBMA.
 
 ### Nasdaq Data Link LBMA/GOLD
@@ -578,8 +578,10 @@ its current ETF returns are not the fee-free leveraged-model input.
 
 ## U.S. CPI-U Inflation Index / CPI
 
-Calendar-daily inflation deflator for real-return backtesting analysis. BLS publishes the active source
-monthly, so daily rows are explicitly model-derived.
+Calendar-daily inflation deflator for real-return backtesting analysis. BLS is the
+origin of the monthly observations; FRED is an approved alternative delivery
+route during transient BLS API failures. Daily expansion and quality flags are
+unchanged by the delivery route.
 
 ### BLS CPI-U / CUSR0000SA0
 
@@ -587,19 +589,36 @@ monthly, so daily rows are explicitly model-derived.
 - Endpoint: https://api.bls.gov/publicAPI/v2/timeseries/data/
 - Role: primary monthly CPI-U source.
 - Current finding: monthly seasonally adjusted CPI-U, all urban consumers, U.S. city average, all
-  items, index 1982-84=100. The current build has monthly observations from 1970-01-01 through
-  2026-05-01.
+  items, index 1982-84=100. Current daily coverage and the latest monthly observation
+  are recorded in the README and `sources/manifests/cpi_inflation_build.json`.
 - Caveats: BLS does not publish observed daily CPI. The processed daily dataset uses constant log
   interpolation between monthly observations and carries the latest monthly level forward after
-  the last release.
+  the last release. The incremental updater can recover from transient delivery
+  failures through the approved FRED routes below; a malformed BLS payload or a
+  non-transient HTTP error still fails. The explicit full historical builder
+  continues to use BLS directly.
 
 ### FRED CPIAUCSL
 
-- Status: `validation`
+- Status: `approved`
 - URL: https://fred.stlouisfed.org/series/CPIAUCSL
-- Role: validation/reference source for the same seasonally adjusted CPI-U concept.
-- Current finding: direct FRED CSV retrieval timed out in this environment, so BLS is the active
-  source for the local build.
+- Deliveries: standard CSV export at `https://fred.stlouisfed.org/graph/fredgraph.csv?id=CPIAUCSL`,
+  then `https://fred.stlouisfed.org/data/CPIAUCSL` after a transient CSV failure.
+- Role: validation/reference and transient-outage delivery fallback for BLS
+  `CUSR0000SA0`. This is the same upstream BLS index, not an independently calculated CPI.
+- Verified recovery: on 2026-10-24 both FRED formats matched all 20 committed
+  observed months from January 2025 through September 2026, with the same
+  unpublished October 2025 period. The standard export with an identifying
+  application User-Agent succeeded after earlier request formats timed out;
+  dates are filtered locally. The hosted daily publisher then used fresh FRED
+  data successfully during the real BLS HTTP 503 outage.
+- Acceptance: require the committed monthly anchor, at least three matching
+  monthly observations, identical observed-month coverage in the overlap, and
+  consecutive new monthly observations. Verify provider identity, finite positive
+  levels, retrieval time, raw-response hash, target and coverage; reject stale
+  or conflicting data. FRED republishing does not change interpolation or
+  historical values. See the [source policy](update_source_policy.md#cpi-delivery-fallback)
+  and [operations guide](operations/daily-refresh.md).
 
 ## Global All-World Stocks / GLSTOCK
 
@@ -727,12 +746,14 @@ The observed segment uses a daily BND/BWX unhedged blend.
 - Caveats: ~8.5y constant maturity (vs 10y for the par-model countries); immaterial and
   absorbed by the annual overlay.
 
-### FRED CSV / stooq daily FX
+### FRED CSV / stooq daily FX (initial retrieval findings)
 
-- Status: `blocked`
-- Finding: the FRED `fredgraph.csv` download endpoint and stooq CSV both fail in this
-  environment (connection reset / bot challenge). FRED daily H.10 FX and stooq daily FX were
-  therefore not used; BIS `WS_XRU` via DBnomics supplies daily FX instead.
+- Status: `not_used`
+- Initial finding: FRED and stooq daily-FX downloads failed in the build
+  environment (connection reset / bot challenge), so BIS `WS_XRU` via DBnomics
+  supplies the implemented daily FX leg. This remains a historical selection
+  rationale. The later verified FRED CPIAUCSL download does not establish current
+  availability, coverage, or suitability of these FX series.
 
 ### Yahoo Finance / BND
 

@@ -97,7 +97,8 @@ The observed UGL era uses the NYSE calendar; every observed row lands on a UGL t
 is an exact constant multiple of UGL (CAGR gap 0.0000%, guarded by
 `test_observed_dataset_tracks_ugl_cumulatively`). The holiday-flat path
 (`observed_ugl_us_holiday_flat`) is retained as a safety net but is effectively never needed now
-(0 rows in the current build).
+(0 rows in the published 2026-10-23 snapshot). Later daily updates can use this
+flag if UGL lacks an observation on the base calendar.
 
 > **Two bugs fixed (2026-06-20).** (1) *Holiday double-count:* the earlier build filled LBMA-open /
 > US-closed holidays with a synthetic 2x-gold day **and** let UGL's reopen return span the same

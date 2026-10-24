@@ -50,17 +50,20 @@ Coverage starts on `1970-01-01`. The README dataset table and build metadata rec
 5. Carry the latest published CPI level forward after the most recent observation and flag those rows `carried_forward_latest_monthly_cpi_u_level`.
 6. Set `Close == Adj Close`; compute daily return columns from the level.
 
+These steps describe the explicit full historical builder, which still needs
+BLS access. The FRED delivery fallback belongs to the incremental updater.
+
 ## Update Method
 
-The ordinary update starts from the committed processed CSV and fetches only recent BLS `CUSR0000SA0` monthly observations. A new release replaces the previously carried-forward days with documented log-interpolated levels from the preceding monthly anchor, then appends through the requested calendar day. Earlier history is preserved. The full historical builder remains available with `--full-rebuild`.
+The ordinary update starts from the committed processed CSV and requests recent BLS `CUSR0000SA0` monthly observations, using BLS directly or its approved FRED delivery fallback. A new release replaces the previously carried-forward days with documented log-interpolated levels from the preceding monthly anchor, then appends through the requested calendar day. Earlier history is preserved. The full historical builder remains available with `--full-rebuild`.
 
 After BLS connection/time-out errors, exhausted retries, or transient HTTP errors, the updater can fetch FRED `CPIAUCSL`. It requires the latest committed monthly anchor, at least three matching committed monthly observations, identical observed-month coverage in the overlap, consecutive new monthly observations, and a latest observation no more than 90 days before the target. Every overlapping monthly observation must agree with the committed BLS data within 1e-9. Existing unpublished months, such as October 2025, retain the established daily interpolation. Any overlap disagreement blocks the fallback instead of revising history through a secondary delivery route. A BLS data-contract error also blocks publication.
 
-The publication gate independently checks the saved response against its recorded SHA-256, provider, series ID, requested date, coverage, retrieval time, and committed overlap, then recomputes daily tail levels and flags. A repeat update that changes no daily rows still refreshes this delivery evidence. If neither live delivery route validates, CSV, Parquet, and build metadata remain unchanged and the workflow does not publish.
+The publication gate independently checks the saved response against its recorded SHA-256, provider, series ID, requested date, coverage, retrieval time, and committed overlap, then recomputes daily tail levels and flags. The response must have been retrieved within one day of the gate check. A repeat update that changes no daily rows still refreshes this delivery evidence. If no approved live delivery route validates, CSV, Parquet, and build metadata remain unchanged and the workflow does not publish. The [operations guide](operations/daily-refresh.md) describes the route-specific evidence files and recovery procedure.
 
 ## Tests
 
-Validation checks schema, calendar-daily coverage, unique sorted dates, positive levels, `Close == Adj Close`, return arithmetic, exact month-start matches to raw BLS values, and presence of interpolation/carry-forward quality flags.
+Validation checks schema, calendar-daily coverage, unique sorted dates, positive levels, `Close == Adj Close`, return arithmetic, observed month-start matches to BLS values, and interpolation/carry-forward quality flags. Historical raw-BLS checks run when their cache is available; the publication gate always verifies the accepted current BLS/FRED response. Automation fixtures cover provider failures, both FRED formats, existing unpublished months, overlap disagreement, stale or malformed data, unchanged repeat runs, and source-evidence tampering.
 
 ## Caveats
 

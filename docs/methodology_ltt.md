@@ -56,7 +56,7 @@ Within the Fed model segment, the **yield input** follows a stability hierarchy 
 ## Rejected or Limited Sources
 
 - **Svensson BETA extrapolation at 25 years**: rejected as the primary long-rate input for the pre-1985 period. The BETA0 parameter (the long-run asymptote of the yield curve) is numerically ill-conditioned in the early 1970s, causing the fitted 25-year yield to oscillate by hundreds of basis points on consecutive days. The Federal Reserve's own pre-computed `SVENY25` column is `NaN` before November 1985, which is the Fed's signal that these extrapolated values are unreliable. Using these raw parameters produced a spurious ~38% intra-year drawdown in 1970.
-- **FRED DGS30**: daily 30-year constant-maturity yield; a good candidate model input. FRED CSV retrieval timed out in this environment, so Yahoo `^TYX` is used instead for the 1977–1985 sub-period. The DGS30 was also discontinued from 2002-02-18 to 2006-02-09.
+- **FRED DGS30**: daily 30-year constant-maturity yield; a candidate model input. Its initial CSV retrieval timed out, so the implemented 1977–1985 sub-period uses Yahoo `^TYX`. The later FRED CPI retrieval repair does not reassess DGS30 or replace this historical input. The DGS30 was also discontinued from 2002-02-18 to 2006-02-09.
 - **CRSP/WRDS constituent-level data**: preferred future upgrade; requires a licensed subscription.
 
 ## Build Method

@@ -1,5 +1,9 @@
 # Daily refresh failure: 2026-09-30
 
+Historical incident record: the subsequent [GLD migration](2026-09-30-gld-migration.md)
+resolved this LBMA dependency. Use the [current operations guide](daily-refresh.md)
+for today's sources, CPI delivery fallback, runtime versions, and recovery procedure.
+
 The scheduled refresh failed because the LBMA Gold PM JSON endpoint denied the
 GOLDPM request with HTTP 403. The failure occurred before validation and
 publication. No dataset outputs were pushed by the failed run.
