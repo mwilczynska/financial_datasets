@@ -14,5 +14,9 @@ Retrieval date: 2026-06-19
 
 - URL: https://fred.stlouisfed.org/series/CPIAUCSL
 - Finding: same CPI-U concept published by FRED.
-- Use: validation/reference source.
-- Caveat: direct FRED CSV retrieval timed out during this build, so BLS is the active source.
+- Use: validation/reference source and an independently hosted delivery fallback when the BLS API has a transient outage.
+- Download: https://fred.stlouisfed.org/graph/fredgraph.csv?id=CPIAUCSL
+- Recovery change (2026-10-24): the incremental updater may use a freshly downloaded FRED response after BLS connection/time-out errors, exhausted retries, or HTTP 429/500/502/503/504. A malformed BLS response or non-transient HTTP error still fails immediately.
+- Validation: require the latest committed monthly anchor and at least three committed monthly observations in the downloaded window. Every overlapping monthly value must match within 1e-9; missing months, wrong series, nonpositive/nonfinite levels, and observations older than 90 days are rejected. The publication gate rechecks the raw response hash, provider, series, coverage, retrieval timestamp, and overlap independently.
+- Attribution: U.S. Bureau of Labor Statistics, Consumer Price Index for All Urban Consumers: All Items in U.S. City Average [CPIAUCSL], retrieved from FRED, Federal Reserve Bank of St. Louis.
+- The fallback changes delivery, while retaining the seasonally adjusted BLS series, units, daily expansion, quality flags, and historical output contract. Both sources being unavailable blocks publication.

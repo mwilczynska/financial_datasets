@@ -30,11 +30,13 @@ try:
     from . import build_gold as gold_build
     from . import build_gold_2x as gold2x_build
     from . import build_global_short_term_bonds as glstbond_build
+    from . import cpi_sources
 except ImportError:  # direct execution from src/
     import build_cpi_inflation as cpi_build
     import build_gold as gold_build
     import build_gold_2x as gold2x_build
     import build_global_short_term_bonds as glstbond_build
+    import cpi_sources
 
 
 getcontext().prec = 40
@@ -350,16 +352,7 @@ def build_cpi_recent(root: Path, existing: list[dict[str, str]], end: date,
     metadata_path = root / "sources" / "manifests" / "cpi_inflation_build.json"
     metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
     previous_monthly = date.fromisoformat(metadata["latest_monthly_observation"])
-    start_year = max(1970, previous_monthly.year - 1)
-    payload = {"seriesid": [cpi_build.BLS_SERIES], "startyear": str(start_year), "endyear": str(end.year)}
-    response = session.post(cpi_build.BLS_API_URL, json=payload, timeout=60)
-    response.raise_for_status()
-    body = response.json()
-    if body.get("status") != "REQUEST_SUCCEEDED":
-        raise RuntimeError(f"BLS recent CPI request failed: {body}")
-    monthly = cpi_build.parse_bls_monthly([body])
-    if not any(day == previous_monthly for day, _ in monthly):
-        raise RuntimeError(f"BLS response omitted committed CPI monthly anchor {previous_monthly}")
+    monthly, records = cpi_sources.fetch_recent_monthly(root, existing, previous_monthly, end, session)
     old_by_date = {row["Date"]: row for row in existing}
     changed = [day for day, value in monthly if day.isoformat() in old_by_date and
                old_by_date[day.isoformat()]["Quality Flag"] == cpi_build.MONTHLY_FLAG and
@@ -388,13 +381,7 @@ def build_cpi_recent(root: Path, existing: list[dict[str, str]], end: date,
                      "Source": cpi_build.SOURCE, "Quality Flag": flag, "Source Notes": notes})
         previous_level = level
         current += timedelta(days=1)
-    raw_path = root / "sources" / "raw" / "incremental" / "cpi_bls_recent.json"
-    raw_path.parent.mkdir(parents=True, exist_ok=True)
-    raw_path.write_text(json.dumps(body), encoding="utf-8")
-    record = {"BLS_CUSR0000SA0": {"url": cpi_build.BLS_API_URL,
-        "path": raw_path.relative_to(root).as_posix(), "sha256": checksum(raw_path),
-        "first_date": monthly[0][0].isoformat(), "last_date": monthly[-1][0].isoformat()}}
-    return rows, record, monthly[-1][0].isoformat(), anchor_day
+    return rows, records, monthly[-1][0].isoformat(), anchor_day
 
 
 def same_observation(old: dict[str, str], new: dict[str, str], kind: str) -> bool:
@@ -466,6 +453,12 @@ def update_asset(stem: str, root: Path, end: date, overlap_days: int = 14,
         rows.extend(build_recent_rows(asset, root, anchor, end, windows, metadata, session, records))
         monthly_date = ""
     if rows == existing:
+        if asset.kind == "cpi":
+            # An idempotent data update must still record the response checked by the publication gate.
+            metadata["incremental_update"] = {"overlap_anchor": anchor_day, "requested_end_date": end.isoformat(),
+                                              "recent_sources": records}
+            metadata["last_source_check_utc"] = datetime.now(timezone.utc).isoformat()
+            metadata_path.write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
         print(f"{stem}: no changed observations through {end}")
         return False
     if [row["Date"] for row in rows] != sorted({row["Date"] for row in rows}):
