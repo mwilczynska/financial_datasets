@@ -46,7 +46,7 @@ Useful options:
 ```text
 python src\update_all_datasets.py --list-datasets
 python src\update_all_datasets.py --dry-run --no-tests
-python src\update_all_datasets.py --end-date 2026-06-30
+python src\update_all_datasets.py --end-date YYYY-MM-DD
 python src\update_all_datasets.py --only USLCAP GOLDPM GOLD2X
 python src\update_all_datasets.py --skip GLBOND --continue-on-error
 python src\update_all_datasets.py --refresh-static-sources
@@ -55,6 +55,7 @@ python src\update_all_datasets.py --refresh-historical-sources
 
 Notes:
 
+- Replace `YYYY-MM-DD` with an inclusive date on or after every selected dataset's committed last date.
 - Market datasets can end before `--end-date` on weekends, holidays, or source delays. CPI is calendar-daily and must reach the target, using the latest accepted monthly level for documented carry-forward rows; its monthly observation must be no more than 90 days old.
 - The script delegates to the existing per-dataset update scripts rather than duplicating source logic.
 - `--only` and `--skip` accept aliases, asset ids, output stems, or update script stems. Derived datasets require their base dependency to be selected unless `--allow-stale-dependencies` is used.
