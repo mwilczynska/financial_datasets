@@ -153,6 +153,12 @@ BLS releases a new monthly observation. The normal path does not reconstruct
 history or require excluded `sources/raw/` files. Use `--full-rebuild` only for
 a deliberate historical reconstruction with its required raw sources.
 
+During a transient BLS API outage, CPI can use FRED's delivery of the same
+seasonally adjusted BLS series. The fallback must match the committed monthly
+overlap and pass the same daily expansion and publication checks. Its provider,
+retrieval time, and raw-response hash are recorded in build metadata. If both
+delivery routes fail validation, the refresh stops without publishing.
+
 Useful targeted commands:
 
     python src/update_all_datasets.py --only USLCAP GOLDPM GOLD2X

@@ -87,7 +87,7 @@ def test_cpi_release_revises_only_recent_carry(tmp_path: Path) -> None:
         previous = level
     update.write_rows(processed / "cpi_inflation.csv", existing)
     (manifests / "cpi_inflation_build.json").write_text(json.dumps({"latest_monthly_observation": "2026-06-01"}), encoding="utf-8")
-    payload = {"status": "REQUEST_SUCCEEDED", "Results": {"series": [{"data": [
+    payload = {"status": "REQUEST_SUCCEEDED", "Results": {"series": [{"seriesID": cpi.BLS_SERIES, "data": [
         {"year": "2026", "period": "M07", "value": "322.2"},
         {"year": "2026", "period": "M06", "value": "321.0"},
         {"year": "2026", "period": "M05", "value": "320.0"},

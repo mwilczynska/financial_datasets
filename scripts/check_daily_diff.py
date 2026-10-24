@@ -213,14 +213,8 @@ def check_one(root: Path, ref: str, stem: str, end: date) -> str:
         fail(stem, "build metadata does not match CSV")
     asset = ASSETS[stem]
     if asset.kind == "cpi":
-        raw = root / "sources" / "raw" / "incremental" / "cpi_bls_recent.json"
-        if not raw.is_file():
-            fail(stem, "missing current BLS response")
-        payload = json.loads(raw.read_text(encoding="utf-8"))
-        if payload.get("status") != "REQUEST_SUCCEEDED":
-            fail(stem, "BLS response failed")
-        from build_cpi_inflation import parse_bls_monthly
-        monthly = parse_bls_monthly([payload])
+        from cpi_sources import load_recent_monthly
+        monthly = load_recent_monthly(root, metadata.get("incremental_update", {}).get("recent_sources", {}), end, baseline)
         latest_monthly = monthly[-1][0]
         if (end - latest_monthly).days > 90 or metadata.get("latest_monthly_observation") != latest_monthly.isoformat():
             fail(stem, "CPI monthly observation is stale or metadata disagrees")

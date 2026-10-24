@@ -28,15 +28,18 @@ This is not observed daily inflation data. BLS publishes this CPI series monthly
 | Update script | `src/update_cpi_inflation.py` |
 | Test file | `tests/validation/test_cpi_inflation_contract.py` |
 
-Coverage starts on `1970-01-01`. The current build runs through `2026-06-19`; the latest BLS monthly CPI observation in the raw source is `2026-05-01`.
+Coverage starts on `1970-01-01`. The README dataset table and build metadata record the current coverage and latest monthly observation.
 
 ## Production Source
 
 - BLS public API, series `CUSR0000SA0`: monthly seasonally adjusted CPI-U, index 1982-84=100.
+- During a transient BLS API outage, FRED `CPIAUCSL` may deliver the same BLS monthly observations. Build metadata records the actual delivery route and response hash.
+- FRED delivery first tries its CSV download, then its public data table after a transient CSV failure. The table's source, series ID, frequency, seasonal adjustment, and units must match the dataset definition. FRED requests use a short retry budget with bounded connection/read timeouts.
+- FRED requests identify this application. The CSV request uses the standard complete-series export and filters the recent monthly window locally.
 
 ## Validation Source
 
-- FRED `CPIAUCSL` is the same CPI-U concept and remains the external validation reference. Direct FRED CSV retrieval timed out in this environment during implementation.
+- FRED `CPIAUCSL` republishes the same seasonally adjusted BLS CPI-U series and serves as the external validation reference and outage fallback.
 
 ## Build Method
 
@@ -50,6 +53,10 @@ Coverage starts on `1970-01-01`. The current build runs through `2026-06-19`; th
 ## Update Method
 
 The ordinary update starts from the committed processed CSV and fetches only recent BLS `CUSR0000SA0` monthly observations. A new release replaces the previously carried-forward days with documented log-interpolated levels from the preceding monthly anchor, then appends through the requested calendar day. Earlier history is preserved. The full historical builder remains available with `--full-rebuild`.
+
+After BLS connection/time-out errors, exhausted retries, or transient HTTP errors, the updater can fetch FRED `CPIAUCSL`. It requires the latest committed monthly anchor, at least three matching committed monthly observations, identical observed-month coverage in the overlap, consecutive new monthly observations, and a latest observation no more than 90 days before the target. Every overlapping monthly observation must agree with the committed BLS data within 1e-9. Existing unpublished months, such as October 2025, retain the established daily interpolation. Any overlap disagreement blocks the fallback instead of revising history through a secondary delivery route. A BLS data-contract error also blocks publication.
+
+The publication gate independently checks the saved response against its recorded SHA-256, provider, series ID, requested date, coverage, retrieval time, and committed overlap, then recomputes daily tail levels and flags. A repeat update that changes no daily rows still refreshes this delivery evidence. If neither live delivery route validates, CSV, Parquet, and build metadata remain unchanged and the workflow does not publish.
 
 ## Tests
 

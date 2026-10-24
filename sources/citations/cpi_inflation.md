@@ -14,5 +14,11 @@ Retrieval date: 2026-06-19
 
 - URL: https://fred.stlouisfed.org/series/CPIAUCSL
 - Finding: same CPI-U concept published by FRED.
-- Use: validation/reference source.
-- Caveat: direct FRED CSV retrieval timed out during this build, so BLS is the active source.
+- Use: validation/reference source and an independently hosted delivery fallback when the BLS API has a transient outage.
+- Download: https://fred.stlouisfed.org/graph/fredgraph.csv?id=CPIAUCSL
+- Retrieval uses the standard complete-series export with an identifying application User-Agent and filters the recent window locally. On 2026-10-24 this request returned HTTP 200; the downloaded CSV and public data table both matched all 20 committed observed months from January 2025 through September 2026 and the unpublished October 2025 period. An isolated live fetch appended October 23 with no revised observations and passed the publication gate. Earlier requests using the generic browser User-Agent and graph date parameters timed out; the probes do not independently establish which request detail caused that behavior.
+- Alternate delivery: https://fred.stlouisfed.org/data/CPIAUCSL when the CSV route has a transient transport/HTTP failure. The table must explicitly identify the BLS source, CPIAUCSL series, monthly frequency, seasonally adjusted definition, and index units before its observations are accepted. Both FRED routes use one retry with bounded connection/read timeouts.
+- Recovery change (2026-10-24): the incremental updater may use a freshly downloaded FRED response after BLS connection/time-out errors, exhausted retries, or HTTP 429/500/502/503/504. A malformed BLS response or non-transient HTTP error still fails immediately.
+- Validation: require the latest committed monthly anchor and at least three committed monthly observations in the downloaded window. Every overlapping monthly value must match within 1e-9, with exactly the same observed-month coverage. Existing unpublished months, including October 2025, remain interpolated; missing committed observations and gaps among new monthly observations are rejected. Wrong series, nonpositive/nonfinite levels, and observations older than 90 days are rejected. The publication gate rechecks the raw response hash, provider, series, coverage, retrieval timestamp, and overlap independently.
+- Attribution: U.S. Bureau of Labor Statistics, Consumer Price Index for All Urban Consumers: All Items in U.S. City Average [CPIAUCSL], retrieved from FRED, Federal Reserve Bank of St. Louis.
+- The fallback changes delivery, while retaining the seasonally adjusted BLS series, units, daily expansion, quality flags, and historical output contract. Both sources being unavailable blocks publication.

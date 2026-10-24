@@ -27,13 +27,13 @@ jobs:
       contents: write
     steps:
       - name: Check out main
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: main
           persist-credentials: true
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.11"
           cache: pip
@@ -62,6 +62,7 @@ jobs:
       - name: Incremental update and validation suite
         env:
           PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
+          PYTHONUNBUFFERED: "1"
         run: python src/update_all_datasets.py --end-date "${{ steps.target.outputs.date }}"
 
       - name: Check publication diff and current sources

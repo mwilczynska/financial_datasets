@@ -13,10 +13,12 @@ sources:
     url: https://api.bls.gov/publicAPI/v2/timeseries/data/
     notes: Monthly CPI-U index, 1982-84=100. Daily rows are derived from these monthly observations.
   - name: FRED CPIAUCSL
-    role: validation_reference
-    status: validation
+    role: validation_reference_and_transient_outage_fallback
+    status: active_fallback
     url: https://fred.stlouisfed.org/series/CPIAUCSL
-    notes: FRED republishes the same seasonally adjusted CPI-U concept. Initial direct FRED CSV retrieval timed out in this environment.
+    download_url: https://fred.stlouisfed.org/graph/fredgraph.csv
+    fallback_table_url: https://fred.stlouisfed.org/data/CPIAUCSL
+    notes: FRED republishes BLS seasonally adjusted CPI-U. Used only after BLS transport errors or transient HTTP failures. Requires the committed latest monthly anchor, at least three matching monthly observations, identical observed-month coverage in the committed overlap, consecutive new observations, and a latest observation within 90 days of the target. Preserve already documented unpublished months; reject any overlap disagreement.
 method:
   close: CPI-U level, 1982-84=100
   adj_close: equal to Close
@@ -37,3 +39,4 @@ automated_publication:
   historical_raw_required: false
   recent_source_validation: scripts/check_daily_diff.py
   revision_window: latest_monthly_observation_and_preceding_anchor
+  source_provenance: provider_and_series_id_with_response_hash_and_retrieval_timestamp
