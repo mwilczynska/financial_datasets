@@ -412,6 +412,11 @@ def update_asset(stem: str, root: Path, end: date, overlap_days: int = 14,
     if session is None:
         session = (session_with_retries(BLS_RETRY_TOTAL, BLS_BACKOFF_FACTOR) if asset.kind == "cpi"
                    else session_with_retries())
+        if asset.kind == "cpi":
+            # Independently hosted FRED routes get short retries, not the BLS outage budget.
+            session.mount("https://fred.stlouisfed.org/", HTTPAdapter(max_retries=Retry(
+                total=1, backoff_factor=1, status_forcelist=TRANSIENT_STATUS,
+                allowed_methods=frozenset({"GET"}), respect_retry_after_header=True)))
     if asset.kind == "cpi":
         rows, records, monthly_date, anchor_day = build_cpi_recent(root, existing, end, session)
     else:

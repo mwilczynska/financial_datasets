@@ -23,6 +23,14 @@ MONTHLY = [(date(2026, 1, 1), 300.0), (date(2026, 3, 1), 310.0),
 FRED_CSV = ("observation_date,CPIAUCSL\n2026-01-01,300\n2026-02-01,.\n2026-03-01,310\n"
             "2026-04-01,320\n2026-05-01,321\n2026-06-01,322\n2026-07-01,323\n")
 TARGET = date(2026, 7, 16)
+FRED_TABLE = ("<table><tr><th>Series ID</th><td>CPIAUCSL</td></tr>"
+              "<tr><th>Source</th><td>U.S. Bureau of Labor Statistics</td></tr>"
+              "<tr><th>Seasonal Adjustment</th><td>Seasonally Adjusted</td></tr>"
+              "<tr><th>Frequency</th><td>Monthly</td></tr>"
+              "<tr><th>Units</th><td>Index 1982-1984=100</td></tr></table>"
+              "<table><tr><th>DATE</th><th>VALUE</th></tr>"
+              + "".join(f"<tr><td>{line.split(',')[0]}</td><td>{line.split(',')[1]}</td></tr>"
+                        for line in FRED_CSV.splitlines()[1:]) + "</table>")
 
 
 def bls_payload() -> dict:
@@ -33,8 +41,10 @@ def bls_payload() -> dict:
 
 
 class Session:
-    def __init__(self, *, body=None, post_error=None, content=FRED_CSV, get_error=None):
+    def __init__(self, *, body=None, post_error=None, content=FRED_CSV, get_error=None,
+                 csv_error=None, table_content=FRED_TABLE):
         self.body, self.post_error, self.content, self.get_error = body, post_error, content, get_error
+        self.csv_error, self.table_content = csv_error, table_content
         self.get_calls = 0
 
     def post(self, *args, **kwargs):
@@ -49,9 +59,11 @@ class Session:
         self.get_calls += 1
         if self.get_error is not None:
             raise self.get_error
+        if args[0] == cpi_sources.FRED_URL and self.csv_error is not None:
+            raise self.csv_error
         response = requests.Response()
         response.status_code = 200
-        response._content = self.content.encode()
+        response._content = (self.table_content if args[0] == cpi_sources.FRED_TABLE_URL else self.content).encode()
         return response
 
 
@@ -134,6 +146,28 @@ def test_primary_and_idempotent_response_refresh_pass_publication(baseline, monk
     assert old_hash != records(root)["BLS_CUSR0000SA0"]["sha256"]
     assert session.get_calls == 0
     check_publication(root, original, monkeypatch)
+
+
+def test_csv_outage_recovers_through_verified_public_table(baseline, monkeypatch):
+    root, original = baseline
+    session = Session(post_error=requests.exceptions.RetryError("BLS 503"), csv_error=requests.Timeout("CSV timeout"))
+    assert update.update_asset("cpi_inflation", root, TARGET, session=session)
+    assert session.get_calls == 2
+    assert set(records(root)) == {"FRED_CPIAUCSL_TABLE"}
+    check_publication(root, original, monkeypatch)
+
+
+@pytest.mark.parametrize("wrong", [FRED_TABLE.replace("CPIAUCSL", "CPIAUCNS"),
+                                  FRED_TABLE.replace("Seasonally Adjusted", "Not Seasonally Adjusted"),
+                                  FRED_TABLE.replace("Index 1982-1984=100", "Percent Change")])
+def test_public_table_requires_correct_series_definition(baseline, wrong):
+    root, _ = baseline
+    before = fingerprints(root)
+    with pytest.raises(RuntimeError, match="incorrect CPI series"):
+        update.update_asset("cpi_inflation", root, TARGET, session=Session(
+            post_error=requests.exceptions.RetryError("503"), csv_error=requests.Timeout("CSV timeout"),
+            table_content=wrong))
+    assert fingerprints(root) == before
 
 
 @pytest.mark.parametrize("content", [

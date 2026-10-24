@@ -7,10 +7,12 @@ import hashlib
 import io
 import json
 import math
+import re
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 import requests
+from lxml import html
 
 try:
     from . import build_cpi_inflation as cpi
@@ -20,11 +22,37 @@ except ImportError:
 
 FRED_SERIES = "CPIAUCSL"
 FRED_URL = "https://fred.stlouisfed.org/graph/fredgraph.csv"
+FRED_TABLE_URL = "https://fred.stlouisfed.org/data/CPIAUCSL"
 TRANSIENT_STATUS = (429, 500, 502, 503, 504)
 SOURCE_FILES = {
     "BLS_CUSR0000SA0": "sources/raw/incremental/cpi_bls_recent.json",
     "FRED_CPIAUCSL": "sources/raw/incremental/cpi_fred_recent.csv",
+    "FRED_CPIAUCSL_TABLE": "sources/raw/incremental/cpi_fred_recent.html",
 }
+SOURCE_URLS = {"BLS_CUSR0000SA0": cpi.BLS_API_URL, "FRED_CPIAUCSL": FRED_URL,
+               "FRED_CPIAUCSL_TABLE": FRED_TABLE_URL}
+
+
+def transient_error(error: requests.RequestException) -> bool:
+    if isinstance(error, requests.HTTPError) and error.response is not None:
+        return error.response.status_code in TRANSIENT_STATUS
+    return isinstance(error, (requests.ConnectionError, requests.Timeout, requests.exceptions.RetryError))
+
+
+def parse_fred_table(content: str, start_year: int, end: date) -> list[tuple[date, float]]:
+    page = html.fromstring(content)
+    cells = [[" ".join(cell.text_content().split()) for cell in row.xpath("./th|./td")]
+             for row in page.xpath("//tr")]
+    pairs = [row for row in cells if len(row) == 2]
+    metadata = {key.rstrip(":"): value for key, value in pairs}
+    if (metadata.get("Series ID") != FRED_SERIES or metadata.get("Seasonal Adjustment") != "Seasonally Adjusted"
+            or metadata.get("Frequency") != "Monthly" or metadata.get("Units") != "Index 1982-1984=100"
+            or "Bureau of Labor Statistics" not in metadata.get("Source", "")):
+        definition = {key: metadata.get(key) for key in ("Series ID", "Source", "Seasonal Adjustment", "Frequency", "Units")}
+        raise RuntimeError(f"FRED data table has incorrect CPI series, source, units, or adjustment: {definition}")
+    rows = ["observation_date,CPIAUCSL"]
+    rows.extend(f"{day},{value}" for day, value in pairs if re.fullmatch(r"\d{4}-\d{2}-\d{2}", day))
+    return parse_fred_monthly("\n".join(rows), start_year, end)
 
 
 def parse_fred_monthly(content: str, start_year: int, end: date) -> list[tuple[date, float]]:
@@ -97,20 +125,26 @@ def fetch_recent_monthly(root: Path, existing: list[dict[str, str]], previous_mo
         response = session.post(cpi.BLS_API_URL, json=payload, timeout=60)
         response.raise_for_status()
     except requests.RequestException as error:
-        transient = isinstance(error, (requests.ConnectionError, requests.Timeout, requests.exceptions.RetryError))
-        if isinstance(error, requests.HTTPError) and error.response is not None:
-            transient = error.response.status_code in TRANSIENT_STATUS
-        if not transient:
+        if not transient_error(error):
             raise
         fallback_reason = str(error)
         print(f"BLS CPI temporarily unavailable; checking FRED {FRED_SERIES}: {error}", flush=True)
-        response = session.get(FRED_URL, params={"id": FRED_SERIES, "cosd": f"{start_year}-01-01",
-                                               "coed": end.isoformat()}, timeout=60)
-        response.raise_for_status()
+        key, parser = "FRED_CPIAUCSL", parse_fred_monthly
+        try:
+            response = session.get(FRED_URL, params={"id": FRED_SERIES, "cosd": f"{start_year}-01-01",
+                                                   "coed": end.isoformat()}, timeout=(10, 20))
+            response.raise_for_status()
+        except requests.RequestException as fred_error:
+            if not transient_error(fred_error):
+                raise
+            print(f"FRED CSV temporarily unavailable; checking its public data table: {fred_error}", flush=True)
+            response = session.get(FRED_TABLE_URL, timeout=(10, 30))
+            response.raise_for_status()
+            key, parser = "FRED_CPIAUCSL_TABLE", parse_fred_table
         content = response.content
-        monthly = parse_fred_monthly(content.decode("utf-8-sig"), start_year, end)
+        monthly = parser(content.decode("utf-8-sig"), start_year, end)
         validate_fred_overlap(monthly, existing, previous_monthly)
-        key, url, series_id = "FRED_CPIAUCSL", FRED_URL, FRED_SERIES
+        url, series_id = SOURCE_URLS[key], FRED_SERIES
     else:
         body = response.json()
         monthly = parse_bls_recent(body, end)
@@ -138,7 +172,7 @@ def load_recent_monthly(root: Path, records: dict, end: date,
     if len(records) != 1 or next(iter(records)) not in SOURCE_FILES:
         raise RuntimeError("Missing or unexpected current CPI source record")
     key, record = next(iter(records.items()))
-    expected_url = cpi.BLS_API_URL if key == "BLS_CUSR0000SA0" else FRED_URL
+    expected_url = SOURCE_URLS[key]
     expected_series = cpi.BLS_SERIES if key == "BLS_CUSR0000SA0" else FRED_SERIES
     if (record.get("path") != SOURCE_FILES[key] or record.get("url") != expected_url
             or record.get("series_id") != expected_series or record.get("requested_end_date") != end.isoformat()):
@@ -153,7 +187,8 @@ def load_recent_monthly(root: Path, records: dict, end: date,
         monthly = parse_bls_recent(json.loads(content), end)
     else:
         previous = max(date.fromisoformat(row["Date"]) for row in baseline if row["Quality Flag"] == cpi.MONTHLY_FLAG)
-        monthly = parse_fred_monthly(content.decode("utf-8-sig"), max(1970, previous.year - 1), end)
+        parser = parse_fred_monthly if key == "FRED_CPIAUCSL" else parse_fred_table
+        monthly = parser(content.decode("utf-8-sig"), max(1970, previous.year - 1), end)
         validate_fred_overlap(monthly, baseline, previous)
     if record.get("first_date") != monthly[0][0].isoformat() or record.get("last_date") != monthly[-1][0].isoformat():
         raise RuntimeError("CPI source coverage disagrees with build metadata")

@@ -17,6 +17,7 @@ sources:
     status: active_fallback
     url: https://fred.stlouisfed.org/series/CPIAUCSL
     download_url: https://fred.stlouisfed.org/graph/fredgraph.csv
+    fallback_table_url: https://fred.stlouisfed.org/data/CPIAUCSL
     notes: FRED republishes BLS seasonally adjusted CPI-U. Used only after BLS transport errors or transient HTTP failures. Requires the committed latest monthly anchor, at least three matching monthly observations, identical observed-month coverage in the committed overlap, consecutive new observations, and a latest observation within 90 days of the target. Preserve already documented unpublished months; reject any overlap disagreement.
 method:
   close: CPI-U level, 1982-84=100
