@@ -7,7 +7,7 @@ updates succeed.
 
 Examples:
     python src/update_all_datasets.py
-    python src/update_all_datasets.py --end-date 2026-06-30
+    python src/update_all_datasets.py --end-date YYYY-MM-DD
     python src/update_all_datasets.py --dry-run --no-tests
     python src/update_all_datasets.py --only USLCAP GOLDPM GOLD2X
     python src/update_all_datasets.py --refresh-static-sources

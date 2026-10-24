@@ -36,8 +36,11 @@ This is a derived model, not observed TMF history before 2009, and must be flagg
 
 - First observation: `1970-01-02` (base level 100).
 - Last observation: most recent TMF trading day from Yahoo.
-- Current build: 14,174 rows, 1970-01-02 to 2026-06-15. Synthetic rows 9,857; observed TMF
+- Initial build snapshot (2026-06-15): 14,174 rows, 1970-01-02 to 2026-06-15. Synthetic rows 9,857; observed TMF
   rows 4,317. TMF inception 2009-04-16.
+
+Daily refreshes extend the observed tail. Use the [generated README table](../README.md)
+and build metadata for current dates and total row counts.
 
 ## Sources
 

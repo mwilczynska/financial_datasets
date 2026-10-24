@@ -10,11 +10,36 @@ levels and return arithmetic, compares every CSV with its Parquet counterpart,
 verifies metadata hashes and row counts, rejects deleted dates and changes
 older than 21 calendar days (93 days for CPI monthly release revisions), and
 checks the latest output and source freshness. It also compares the recent
-output returns or CPI levels against the freshly fetched Yahoo/BLS source
+output returns or CPI levels against the freshly fetched Yahoo or BLS/FRED source
 responses. A weekend or holiday may add zero market rows, but the source and
 output may be no more than five calendar days behind the requested end date;
 CPI's daily output must reach the target date, with a monthly observation no
 older than 90 days. Any failure prevents the push.
+
+For CPI, `src/cpi_sources.py` verifies the recorded delivery route instead of
+assuming a BLS JSON file is always present. It accepts the BLS API, FRED's
+standard CPIAUCSL CSV export, or FRED's public CPIAUCSL data table. The build
+metadata must identify the expected provider, series, URL, raw path, target,
+coverage, retrieval timestamp, and SHA-256. The saved response must match its
+hash and have been retrieved within one day of the gate check, with at most
+five minutes of future clock tolerance. The table route also verifies BLS
+attribution, monthly frequency, seasonal adjustment, and index units.
+
+A FRED response must include the latest committed monthly anchor and at least
+three matching monthly observations, reproduce the complete observed-month
+coverage of the committed overlap, and agree with every overlapping value
+within `1e-9`. Previously unpublished months remain model-interpolated, while
+missing committed observations, extra historical observations, or gaps between
+new observations fail validation. The gate then recomputes the examined daily
+CPI levels and flags from the accepted monthly data. A repeat update refreshes
+the delivery evidence even when no daily values change. A stale cache or a
+failed live request cannot satisfy this requirement.
+
+The fallback is exercised by `tests/automation/test_cpi_source_fallback.py`,
+including both FRED formats, existing unpublished months, mismatched or stale
+data, source failures, tampered hashes/provenance, and publication checks.
+See the [operations guide](operations/daily-refresh.md) for interpreting source
+errors that are followed by successful recovery.
 
 Gold's current-source checks compare both returns with Yahoo GLD. LBMA is
 historical-only and is not requested by the unattended publication gate.
@@ -83,7 +108,7 @@ A processed dataset is backtest-ready only when:
 - For GOLD2X, verify the preserved synthetic model through UGL inception (2008-12-03), using pre-GLD GOLDPM spot returns, frozen original spot inputs through inception, and raw historical ^IRX financing. The calendar is LBMA before 2004-11-18 and GLD/NYSE afterward. Close equals Adj Close and Price Return equals Total Return. Subsequent observed UGL returns must match raw adjusted-close returns and maintain constant level proportionality; there must be no synthetic fills after inception. Missing UGL dates on the base calendar must be explicitly flat. Historical live-spot calibration is an optional raw-cache check, separate from the current Yahoo UGL publication gate. Modern GLD returns must not replace the fee-free historical model input. See [methodology](methodology_gold2x.md).
 - For broad commodities, the dataset starts on 1970-01-02 and imports paired daily GSCI ER and TR through 1991-01-02. The pinned workbook's hash, size, schema, complete weekday grid, positive levels and 44 published reference gates must pass. Every selected Close and Adj Close must equal its normalized ER or TR source level; returns must use consecutive selected level dates. Preserve the existing calendar and flat rows. Label provider back-calculation before May 1, 1991 and possible weekday holiday fills. Daily ER/TR rounding may produce tiny negative TR-minus-ER spreads. Both splices compound ER and TR separately. Migration must preserve all later BCOM/DBC ratios and return fields from the versioned baseline within 1e-10 rounding tolerance. Three source flags and their counts must match metadata; CSV and Parquet must agree and their hashes must match. These checks corroborate the index history and processed transformation; they do not authenticate the original vendor extraction, create DBC-equivalent historical weights or grant redistribution rights.
 - For CMDTY updates, ordinary DBC updates must preserve the early GSCI rows and provenance while refreshing counts and output hashes. A raw-source full rebuild requires valid BCOM/IRX caches covering both historical overlaps; failed forced refreshes preserve valid caches. The --migrate-gsci path uses the captured versioned processed baseline and no Yahoo requests. Migration-specific baseline comparisons apply to that path; raw-source builds use their corresponding source checks. Invalid inputs, concurrent baseline changes and staged-output failures must leave production untouched; final replacement failures roll back completed replacements, with recovery copies retained and reported if rollback fails.
-- For CPI inflation, month-start `Close` values must exactly match raw BLS `CUSR0000SA0` monthly observations. Calendar-daily rows must be unique, sorted, and gapless from 1970-01-01; interpolated rows must be flagged as model-derived and latest-month carry-forward rows must be separately flagged. Validation must not describe the interpolated rows as observed daily inflation data.
+- For CPI inflation, observed month-start `Close` values must match published BLS `CUSR0000SA0` observations, delivered directly or through the accepted FRED CPIAUCSL routes. Calendar-daily rows must be unique, sorted, and gapless from 1970-01-01; interpolated rows, including unpublished month starts, must remain model-derived, and latest-month carry-forward rows must be separately flagged. Historical raw-BLS comparisons and the mandatory current-source publication checks serve different roles. Validation must not describe the interpolated rows as observed daily inflation data.
 - For global stocks (`GLSTOCK`), the early 1970-1989 model segment must compound to the documented MSCI World gross annual total return in each calendar year while remaining flagged as model-derived. The Fama/French developed-market segment must match raw `Mkt-RF + RF` daily returns exactly within tolerance, and the VT segment must match raw Yahoo VT adjusted-close daily returns exactly within tolerance. Tests must preserve the caveat that this is a public-source proxy, not licensed observed daily ACWI/FTSE All-World history.
 - For unhedged global bonds (`GLBOND`), the JST-anchored early segment must compound to the recomputed GDP-weighted unhedged USD global government-bond basket return in each full calendar year (the per-year overlay invariant). The observed segment must match the raw adjusted-close blend of 45% BND and 55% BWX exactly within tolerance. Regression tests guard the build: the early segment must have many distinct daily returns per year (not the previous single constant value); its annualized volatility must fall in a realistic 3%-20% band; two unambiguous USD shocks must move the basket in the correct direction (Plaza Accord 1985-09-23 up; Carter dollar-rescue 1978-11-02 down), which also guards BIS FX orientation; the basket weights must be economically sane (US largest, four largest economies > 50%), guarding the comparable-real-GDP weighting against JST's inconsistent-unit nominal `gdp`; and the daily rate leg must cover the US (from 1970), Japan (from 1986) and UK (from 1979). Validation must preserve the caveat that the 1970-2007 segment is model-derived: the annual level is anchored to JST, the path uses daily FX throughout, and the rate leg is daily only for US/UK/Japan (≈62% of the basket from 1979) and monthly elsewhere.
 - For unhedged global short-term bonds (`GLSTBOND`), both level columns must recompute from their own return: `Close`/`Price Return` is gross-of-fee and `Adj Close`/`Total Return` is net-of-fee. The net-of-fee drag over the model era must match the modeled representative rate (~0.26%/yr) and `Adj Close <= Close` everywhere. The observed segment (from 2009-01-30) must reproduce the GDP-weighted, annually-rebalanced net blend `w_us*SHY + (1-w_us)*mean(ISHG, BWZ)` exactly within tolerance, where `w_us` is the US share of developed-market real GDP. Unlike GLBOND there is no JST annual overlay (the series is built directly), so regression tests instead require: the early segment is genuinely daily (>100 distinct returns/year); its annualized unhedged volatility falls in a 3%-12% band (below the 10yr GLBOND); the Plaza/Carter USD shocks move it in the correct direction; basket weights are economically sane (US largest, G4 > 50%); and the daily 2yr rate leg covers US (1970), Japan (1974-09) and UK (1979). Validation must preserve the caveat that the 1970-2009 segment is model-derived, the 2yr yield is interpolated from the 3-month and 10-year rates where no true 2yr exists, and the observed blend is a GDP-weighted SHY+ISHG/BWZ proxy, not an official global short government-bond index.

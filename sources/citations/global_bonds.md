@@ -78,9 +78,11 @@ monthly. Bank of Canada daily 10y starts only in 2001; RBA Australia blocks auto
 
 ## FRED CSV and stooq daily FX (not used)
 
-- The FRED `fredgraph.csv` download endpoint and stooq daily-FX CSV both fail in this
-  environment (connection reset / bot challenge). BIS `WS_XRU` via DBnomics was used for
-  daily FX instead. The FRED API host is reachable but requires an API key.
+- During the initial build, FRED and stooq daily-FX downloads failed in the
+  environment (connection reset / bot challenge). BIS `WS_XRU` via DBnomics was
+  therefore used for daily FX. These are historical retrieval findings; the
+  later working FRED CPIAUCSL download does not revalidate these FX series or
+  change the implemented bond model. The initial API-host probe required an API key.
 
 ## Vanguard Total Bond Market ETF (`BND`)
 

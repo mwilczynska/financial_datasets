@@ -1,5 +1,22 @@
 # Project Log
 
+## 2026-10-24 — CPI outage recovery and current refresh flow
+
+- [PR #6](https://github.com/mwilczynska/financial_datasets/pull/6) added the
+  BLS to FRED CPIAUCSL CSV/data-table delivery fallback, source-evidence checks,
+  preserved unpublished monthly gaps, and refreshed provenance for repeat CPI
+  runs. Both workflows now use checkout/setup-python v7 on Node.js 24 while
+  retaining Python 3.11 for the dataset pipeline.
+- The [recovery run](https://github.com/mwilczynska/financial_datasets/actions/runs/40121836703)
+  used fresh FRED data while BLS still returned HTTP 503. All 14 datasets advanced
+  from October 22 to October 23 with one new row each and zero historical revisions.
+  Validation passed with 174 tests and 36 expected historical-source skips;
+  the gate, README synchronization, and publication passed. Data commit: `8247847`.
+- The [operations guide](docs/operations/daily-refresh.md),
+  [source policy](docs/update_source_policy.md), and
+  [validation guide](docs/validation.md) describe the current flow. Dated entries
+  below record their original source choices and are not current source lists.
+
 ## 2026-09-26 — Synchronize published README dates
 
 - Added a deterministic README date updater that reads the first and last `Date`

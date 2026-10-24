@@ -44,8 +44,11 @@ This is a derived model, not observed TYD history before 2009, and must be flagg
 
 - First observation: `1970-01-02` (base level 100).
 - Last observation: most recent TYD trading day from Yahoo.
-- Current build: 14,158 rows, 1970-01-02 to 2026-06-15. Synthetic rows 9,841; observed TYD
+- Initial build snapshot (2026-06-15): 14,158 rows, 1970-01-02 to 2026-06-15. Synthetic rows 9,841; observed TYD
   rows 4,317. TYD inception 2009-04-16.
+
+Daily refreshes extend the observed tail. Use the [generated README table](../README.md)
+and build metadata for current dates and total row counts.
 
 ## Sources
 
