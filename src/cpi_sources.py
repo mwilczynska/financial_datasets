@@ -37,7 +37,10 @@ def parse_fred_monthly(content: str, start_year: int, end: date) -> list[tuple[d
         day = date.fromisoformat(row[date_column])
         if day.year < start_year or day > end:
             continue
-        value = float(row[FRED_SERIES])
+        raw_value = row[FRED_SERIES].strip()
+        if raw_value in ("", "."):
+            continue  # Published gaps must also be absent from the committed observed months below.
+        value = float(raw_value)
         if day.day != 1 or not math.isfinite(value) or value <= 0:
             raise RuntimeError(f"Invalid FRED CPI observation on {day}")
         monthly.append((day, value))
@@ -50,9 +53,6 @@ def validate_monthly(monthly: list[tuple[date, float]], end: date) -> list[tuple
         raise RuntimeError("CPI monthly source has empty, duplicate, or unsorted observations")
     if any(day.day != 1 or day > end or not math.isfinite(value) or value <= 0 for day, value in monthly):
         raise RuntimeError("CPI monthly source has invalid dates or levels")
-    for left, right in zip(days, days[1:]):
-        if right.year * 12 + right.month != left.year * 12 + left.month + 1:
-            raise RuntimeError("CPI monthly source has missing months")
     if (end - days[-1]).days > 90:
         raise RuntimeError(f"CPI monthly source is stale: {days[-1]}")
     return monthly
@@ -63,11 +63,20 @@ def validate_fred_overlap(monthly: list[tuple[date, float]], existing: list[dict
     observed = {date.fromisoformat(row["Date"]): float(row["Close"]) for row in existing
                 if row["Quality Flag"] == cpi.MONTHLY_FLAG}
     values = dict(monthly)
-    overlap = [day for day in observed if monthly[0][0] <= day <= previous_monthly]
+    start = date(max(1970, previous_monthly.year - 1), 1, 1)
+    overlap = {day for day in observed if start <= day <= previous_monthly}
+    delivered = {day for day in values if start <= day <= previous_monthly}
     if previous_monthly not in values or previous_monthly not in observed or len(overlap) < 3:
         raise RuntimeError("FRED CPI lacks the committed monthly anchor and three-month overlap")
-    if any(day not in values or abs(values[day] - observed[day]) > 1e-9 for day in overlap):
+    if delivered != overlap or any(abs(values[day] - observed[day]) > 1e-9 for day in overlap):
         raise RuntimeError("FRED CPI disagrees with committed BLS monthly observations")
+    # Preserve historical unpublished months (for example October 2025), while
+    # requiring consecutive new observations that cannot yet be checked against BLS.
+    previous = previous_monthly
+    for day in sorted(day for day in values if day > previous_monthly):
+        if day.year * 12 + day.month != previous.year * 12 + previous.month + 1:
+            raise RuntimeError("FRED CPI has missing new monthly observations")
+        previous = day
 
 
 def parse_bls_recent(body: dict, end: date) -> list[tuple[date, float]]:

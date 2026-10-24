@@ -17,8 +17,11 @@ from src import incremental_update as update
 from scripts import check_daily_diff as gate
 
 
-MONTHLY = [(date(2026, 4, 1), 320.0), (date(2026, 5, 1), 321.0), (date(2026, 6, 1), 322.0)]
-FRED_CSV = "observation_date,CPIAUCSL\n2026-04-01,320\n2026-05-01,321\n2026-06-01,322\n2026-07-01,323\n"
+# February is intentionally unpublished, like October 2025 in the real series.
+MONTHLY = [(date(2026, 1, 1), 300.0), (date(2026, 3, 1), 310.0),
+           (date(2026, 4, 1), 320.0), (date(2026, 5, 1), 321.0), (date(2026, 6, 1), 322.0)]
+FRED_CSV = ("observation_date,CPIAUCSL\n2026-01-01,300\n2026-02-01,.\n2026-03-01,310\n"
+            "2026-04-01,320\n2026-05-01,321\n2026-06-01,322\n2026-07-01,323\n")
 TARGET = date(2026, 7, 16)
 
 
@@ -59,7 +62,7 @@ def baseline(tmp_path: Path):
     processed.mkdir(parents=True)
     manifests.mkdir(parents=True)
     rows, previous = [], None
-    day = date(2026, 4, 1)
+    day = date(2026, 1, 1)
     while day <= date(2026, 7, 15):
         level, flag, notes = cpi.daily_cpi_level(day, MONTHLY)
         value = cpi.round_float(level)
@@ -111,6 +114,7 @@ def test_outage_catchup_passes_publication_without_rewriting_history(baseline, m
     assert result[-1]["Date"] == TARGET.isoformat()
     assert next(row for row in result if row["Date"] == "2026-07-01")["Close"] == "323"
     assert next(row for row in result if row["Date"] == "2026-06-15")["Quality Flag"] == cpi.INTERPOLATED_FLAG
+    assert next(row for row in result if row["Date"] == "2026-02-01")["Quality Flag"] == cpi.INTERPOLATED_FLAG
     assert session.get_calls == 1
     assert set(records(root)) == {"FRED_CPIAUCSL"}
     assert "2026-07-16" in check_publication(root, original, monkeypatch)
@@ -142,7 +146,8 @@ def test_primary_and_idempotent_response_refresh_pass_publication(baseline, monk
     FRED_CSV.replace("2026-07-01,323", "2026-07-01,nan"),
     FRED_CSV.replace("2026-07-01,323", "2026-07-01,inf"),
     FRED_CSV.replace("2026-07-01,323", "2026-07-01,0"),
-    FRED_CSV.replace("2026-07-01,323", "2026-07-01,."),
+    FRED_CSV.replace("2026-05-01,321", "2026-05-01,."),
+    FRED_CSV.replace("2026-02-01,.", "2026-02-01,305"),
     "<html>Service unavailable</html>",
 ])
 def test_untrusted_fallback_leaves_all_outputs_untouched(baseline, content):
@@ -170,6 +175,16 @@ def test_stale_fallback_is_rejected(baseline):
     with pytest.raises(RuntimeError, match="stale"):
         update.update_asset("cpi_inflation", root, date(2026, 11, 1),
                             session=Session(post_error=requests.exceptions.RetryError("503")))
+    assert fingerprints(root) == before
+
+
+def test_new_unconfirmed_gap_is_rejected(baseline):
+    root, _ = baseline
+    before = fingerprints(root)
+    with pytest.raises(RuntimeError, match="missing new monthly"):
+        update.update_asset("cpi_inflation", root, date(2026, 9, 16),
+                            session=Session(post_error=requests.exceptions.RetryError("503"),
+                                            content=FRED_CSV + "2026-09-01,325\n"))
     assert fingerprints(root) == before
 
 
