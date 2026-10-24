@@ -23,6 +23,7 @@ except ImportError:
 FRED_SERIES = "CPIAUCSL"
 FRED_URL = "https://fred.stlouisfed.org/graph/fredgraph.csv"
 FRED_TABLE_URL = "https://fred.stlouisfed.org/data/CPIAUCSL"
+FRED_USER_AGENT = "financial_datasets/1.0 (+https://github.com/mwilczynska/financial_datasets)"
 TRANSIENT_STATUS = (429, 500, 502, 503, 504)
 SOURCE_FILES = {
     "BLS_CUSR0000SA0": "sources/raw/incremental/cpi_bls_recent.json",
@@ -131,14 +132,16 @@ def fetch_recent_monthly(root: Path, existing: list[dict[str, str]], previous_mo
         print(f"BLS CPI temporarily unavailable; checking FRED {FRED_SERIES}: {error}", flush=True)
         key, parser = "FRED_CPIAUCSL", parse_fred_monthly
         try:
-            response = session.get(FRED_URL, params={"id": FRED_SERIES, "cosd": f"{start_year}-01-01",
-                                                   "coed": end.isoformat()}, timeout=(10, 20))
+            # Fetch the standard series export and slice locally, avoiding graph-render date parameters.
+            response = session.get(FRED_URL, params={"id": FRED_SERIES}, timeout=(10, 20),
+                                   headers={"User-Agent": FRED_USER_AGENT, "Accept": "text/csv"})
             response.raise_for_status()
         except requests.RequestException as fred_error:
             if not transient_error(fred_error):
                 raise
             print(f"FRED CSV temporarily unavailable; checking its public data table: {fred_error}", flush=True)
-            response = session.get(FRED_TABLE_URL, timeout=(10, 30))
+            response = session.get(FRED_TABLE_URL, timeout=(10, 30),
+                                   headers={"User-Agent": FRED_USER_AGENT, "Accept": "text/html"})
             response.raise_for_status()
             key, parser = "FRED_CPIAUCSL_TABLE", parse_fred_table
         content = response.content

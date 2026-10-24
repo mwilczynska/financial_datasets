@@ -35,6 +35,7 @@ Coverage starts on `1970-01-01`. The README dataset table and build metadata rec
 - BLS public API, series `CUSR0000SA0`: monthly seasonally adjusted CPI-U, index 1982-84=100.
 - During a transient BLS API outage, FRED `CPIAUCSL` may deliver the same BLS monthly observations. Build metadata records the actual delivery route and response hash.
 - FRED delivery first tries its CSV download, then its public data table after a transient CSV failure. The table's source, series ID, frequency, seasonal adjustment, and units must match the dataset definition. FRED requests use a short retry budget with bounded connection/read timeouts.
+- FRED requests identify this application. The CSV request uses the standard complete-series export and filters the recent monthly window locally.
 
 ## Validation Source
 

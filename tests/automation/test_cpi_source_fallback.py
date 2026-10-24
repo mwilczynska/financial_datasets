@@ -46,6 +46,7 @@ class Session:
         self.body, self.post_error, self.content, self.get_error = body, post_error, content, get_error
         self.csv_error, self.table_content = csv_error, table_content
         self.get_calls = 0
+        self.get_requests = []
 
     def post(self, *args, **kwargs):
         if self.post_error is not None:
@@ -57,6 +58,7 @@ class Session:
 
     def get(self, *args, **kwargs):
         self.get_calls += 1
+        self.get_requests.append((args[0], kwargs))
         if self.get_error is not None:
             raise self.get_error
         if args[0] == cpi_sources.FRED_URL and self.csv_error is not None:
@@ -128,6 +130,10 @@ def test_outage_catchup_passes_publication_without_rewriting_history(baseline, m
     assert next(row for row in result if row["Date"] == "2026-06-15")["Quality Flag"] == cpi.INTERPOLATED_FLAG
     assert next(row for row in result if row["Date"] == "2026-02-01")["Quality Flag"] == cpi.INTERPOLATED_FLAG
     assert session.get_calls == 1
+    _, request = session.get_requests[0]
+    assert request["params"] == {"id": "CPIAUCSL"}  # Standard export; filter dates locally.
+    assert request["headers"]["Accept"] == "text/csv"
+    assert "https://github.com/mwilczynska/financial_datasets" in request["headers"]["User-Agent"]
     assert set(records(root)) == {"FRED_CPIAUCSL"}
     assert "2026-07-16" in check_publication(root, original, monkeypatch)
 
