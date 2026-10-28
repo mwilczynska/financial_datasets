@@ -239,8 +239,11 @@ def main() -> None:
              "|---|---|---|---:|---:|"]
     for stem in ASSETS:
         lines.append(check_one(root, args.base_ref, stem, args.end_date))
+    from distribution_validation import check_distributions
+    cash = check_distributions(root, args.end_date, sources=True, baseline_ref=args.base_ref)
     summary = "\n".join(lines) + "\n"
     print(summary)
+    print(f"Cash companions verified: {cash}")
     if os.getenv("GITHUB_STEP_SUMMARY"):
         with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as handle:
             handle.write("## Daily dataset diff\n\n" + summary)
