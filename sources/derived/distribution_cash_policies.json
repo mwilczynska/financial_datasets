@@ -1,0 +1,27 @@
+{
+  "verified_date": "2026-10-28",
+  "scope": "Cash payout policy, distinct from taxable allocations or internal earnings. Exceptional events remain ingestible.",
+  "GLD": {
+    "baseline": "zero_routine_cash_distributions",
+    "prospectus_date": "2022-10-04",
+    "prospectus_url": "https://files.spdrgoldshares.com/spdr-cms/2025-10/GLD_Prospectus_10042022_as_filed.pdf",
+    "prospectus_section": "Distributions, printed page 31 (PDF page 35)",
+    "verified_download_sha256": "0922fc16e6e3b40e4e89bdcf90e16a36d7b0a7b777552430b75d971596875974",
+    "issuer_url": "https://www.spdrgoldshares.com/usa/gld/",
+    "exceptions": ["Trustee and sponsor determine cash exceeds expected expenses for 12 months and excess exceeds USD 0.01 per share.", "Liquidation after liabilities and required reserves."],
+    "qualification": "The policy supports a routine zero baseline; it does not establish that cash payouts are impossible."
+  },
+  "UGL": {
+    "baseline": "zero_routine_cash_distributions",
+    "prospectus_filed": "2026-03",
+    "prospectus_url": "https://www.sec.gov/Archives/edgar/data/1415311/000119312526126553/d86378d424b3.htm",
+    "prospectus_section": "ProShares Trust II, Distributions",
+    "prospectus_verification": "Read via public document retrieval; direct automated SEC download returned HTTP 403 and its error hash is not prospectus evidence.",
+    "policy": "Sponsor does not expect to make distributions.",
+    "issuer_url": "https://www.proshares.com/our-etfs/leveraged-and-inverse/ugl",
+    "verified_issuer_download_sha256": "e21cad89300aa95ceb2bb6f8d74cebfe70da1cd4c27373a95902e944b3c5d839",
+    "issuer_observation": "Issuer page states fund has made no distributions.",
+    "qualification": "Expectation may change; taxable partnership allocations do not imply shareholder cash payments."
+  },
+  "rights": "Primary financial facts and attributed paraphrases only. Raw documents remain ignored; source redistribution rights are not granted by the code license."
+}

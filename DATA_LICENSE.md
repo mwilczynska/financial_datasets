@@ -1,5 +1,12 @@
 # Data licensing and redistribution
 
+The USD cash-distribution companions also contain derived issuer/vendor facts
+and JST-based blend weights. Public availability of a fund page or event API
+does not establish a redistribution or commercial-use grant. Source URLs,
+hashes, coverage and restrictions are recorded in the distributions manifest;
+downloaded raw documents remain ignored. The source-code license does not
+license these financial observations or derived outputs.
+
 This release includes generated CSV and Parquet datasets under
 data/processed/ for research and backtesting use. There is no blanket license
 for those data files.

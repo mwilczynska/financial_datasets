@@ -3,3 +3,10 @@ sources/derived/gold_2x_historical_spot_returns.csv -text
 # Preserve the checksummed CMDTY calendar bytes and canonical output endings.
 sources/derived/broad_commodities_gsci_calendar.csv -text
 data/processed/broad_commodities.csv text eol=lf
+# Distribution manifests checksum these exact bytes on every platform.
+data/processed/distributions/*.csv text eol=lf
+data/processed/distributions/*.json text eol=lf
+data/processed/distributions/*.parquet binary
+sources/manifests/distributions_build.json text eol=lf
+sources/derived/distribution_issuer_observations.csv text eol=lf
+sources/derived/distribution_cash_policies.json text eol=lf

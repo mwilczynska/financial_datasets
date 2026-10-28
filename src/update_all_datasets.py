@@ -104,6 +104,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--allow-stale-dependencies", action="store_true", help="Allow a selected derived dataset to run without also running its base dependency.")
     parser.add_argument("--continue-on-error", action="store_true", help="Continue independent datasets after a failure. Dependents of a failed dataset are skipped.")
     parser.add_argument("--no-tests", action="store_true", help="Do not run the validation suite after successful updates.")
+    parser.add_argument("--skip-distributions", action="store_true", help="Explicitly omit the USD cash companions (the daily publication gate then requires them to be current).")
     parser.add_argument("--dry-run", action="store_true", help="Print the commands that would run without updating files.")
     parser.add_argument("--list-datasets", action="store_true", help="Print the update order and exit.")
     return parser.parse_args()
@@ -273,6 +274,20 @@ def run_updates(args: argparse.Namespace, root: Path, tasks: list[DatasetTask]) 
         rows, first_date, last_date = csv_summary(root, task)
         print(f"{task.alias} updated: {rows} rows, {first_date} through {last_date}")
         results.append(TaskResult(task, "updated", seconds, rows, first_date, last_date))
+
+    distribution_manifest = root / "sources/manifests/distributions_build.json"
+    if not getattr(args, "skip_distributions", False) and distribution_manifest.exists() and not failed:
+        distribution_command = [args.python, str(root / "src/update_distributions.py"),
+                                "--root", str(root), "--end-date", args.end_date]
+        if args.full_rebuild or args.refresh_static_sources or args.refresh_historical_sources:
+            distribution_command.append("--full-history")
+        print("\nRefreshing USD cash-distribution companions")
+        print(format_command(distribution_command))
+        if not args.dry_run:
+            code = run_command(distribution_command, root, env=env)
+            if code:
+                print("Distribution update failed; validation/publication is blocked.")
+                return code
 
     if args.dry_run:
         if not args.no_tests:

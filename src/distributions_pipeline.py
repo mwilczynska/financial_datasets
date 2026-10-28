@@ -20,14 +20,14 @@ try:
     from .distribution_assets import ASSET_EVENT_COLUMNS, DAILY_COLUMNS, build_assets
     from .distribution_data import collect_funds, csv_bytes, normalized_numeric_rows, parquet_bytes, read_csv
     from .distribution_funds import EVENT_COLUMNS, PRICE_COLUMNS
-    from .distribution_models import ASSETS, calibrate
+    from .distribution_models import ASSETS, SUMMARY_COLUMNS, calibrate, calibration_summary
     from .distribution_sources import FUNDS, ZERO_POLICY_FUNDS, SourceCache, decimal_text
     from .build_global_short_term_bonds import JST_URL, parse_jst_rows, us_weight_by_year
 except ImportError:
     from distribution_assets import ASSET_EVENT_COLUMNS, DAILY_COLUMNS, build_assets
     from distribution_data import collect_funds, csv_bytes, normalized_numeric_rows, parquet_bytes, read_csv
     from distribution_funds import EVENT_COLUMNS, PRICE_COLUMNS
-    from distribution_models import ASSETS, calibrate
+    from distribution_models import ASSETS, SUMMARY_COLUMNS, calibrate, calibration_summary
     from distribution_sources import FUNDS, ZERO_POLICY_FUNDS, SourceCache, decimal_text
     from build_global_short_term_bonds import JST_URL, parse_jst_rows, us_weight_by_year
 
@@ -48,7 +48,7 @@ def digest(path: Path) -> str:
 
 
 def publication_paths() -> list[str]:
-    names = [spec.stem for spec in ASSETS] + ["fund_events", "fund_prices", "asset_cash_events", "annual_calibration", "fund_coverage"]
+    names = [spec.stem for spec in ASSETS] + ["fund_events", "fund_prices", "asset_cash_events", "annual_calibration", "calibration_summary", "fund_coverage"]
     return [f"{OUTPUT_PATH}/{name}{suffix}" for name in names for suffix in (".csv", ".parquet")] + [
         f"{OUTPUT_PATH}/model_parameters.json", MANIFEST_PATH]
 
@@ -60,6 +60,12 @@ def load_weights(root: Path, through_year: int, *, offline: bool) -> tuple[dict[
     weights = us_weight_by_year(parse_jst_rows(content), through_year)
     if through_year not in weights:
         raise ValueError("JST source does not supply the production blend weights")
+    production_path = root / "sources/manifests/global_short_term_bonds_build.json"
+    if production_path.exists():
+        production = json.loads(production_path.read_text(encoding="utf-8"))["us_gdp_weight_last"]
+        year = int(production["year"])
+        if year in weights and abs(weights[year] - D(production["weight"])) > D("0.000000000000000000000001"):
+            raise ValueError("Distribution GDP weights disagree with the production GLSTBOND weights; reconcile the same source vintage before publishing")
     cache.accept(key, content, record, first_year=min(weights), last_year=max(weights),
                  rights="JST data and derived weights retain the source non-commercial restrictions.")
     return {year: weight for year, weight in weights.items() if year >= 1970}, cache.records[key]
@@ -92,6 +98,14 @@ def merge_funds(old_events: list[dict], old_prices: list[dict], fresh_events: li
             row = old
         events[key] = row
     removed = [key for key in previous_events if (full or key[1] >= cutoff) and key not in incoming]
+    # A rolling issuer table can omit an older issuer-only cash event. Keep the
+    # previously verified fact, explicitly audited, rather than deleting cash.
+    for key in list(removed):
+        old = previous_events[key]
+        if old["Source"] != "Yahoo chart cash events":
+            events[key] = dict(old)
+            retained_primary.append({"fund": key[0], "ex_date": key[1], "reason": "issuer_only_event_absent_from_current_delivery"})
+            removed.remove(key)
     if removed:
         raise ValueError(f"Distribution sources withdrew previously published cash events: {removed[:5]}; investigate before publication")
     prices = {} if full else {key: row for key, row in previous_prices.items() if key[1] < cutoff}
@@ -138,8 +152,7 @@ def coverage_rows(events: list[dict], prices: list[dict], deliveries: dict) -> l
     return result
 
 
-def validate_tables(histories: dict, events: list[dict], prices: list[dict], asset_outputs: dict,
-                    asset_events: list[dict], params: dict) -> None:
+def validate_fund_tables(events: list[dict], prices: list[dict]) -> None:
     if set(row["Fund"] for row in prices) != set(FUNDS):
         raise ValueError("Fund quote coverage does not contain the exact current source funds")
     if len({(row["Fund"], row["Ex Date"]) for row in events}) != len(events):
@@ -148,17 +161,36 @@ def validate_tables(histories: dict, events: list[dict], prices: list[dict], ass
         amount = D(row["Cash USD Per Share"])
         if row["Currency"] != "USD" or row["Share Basis"] != "as_paid" or amount < 0 or not amount.is_finite():
             raise ValueError("Invalid native cash amount, currency or share basis")
+        if row["Fund"] not in FUNDS:
+            raise ValueError("Cash event names a fund outside the current source set")
         if row["Pay Date"] and row["Pay Date"] < row["Ex Date"]:
             raise ValueError("Unresolved contradictory payment date reached publication")
         if row["Distribution Return"] and row["Previous Equivalent Price USD"]:
-            expected = amount / D(row["Previous Equivalent Price USD"])
-            bound = max(D("0.000000000002"), amount * D("0.000000005") /
-                        D(row["Previous Equivalent Price USD"]) ** 2)
+            price = D(row["Previous Equivalent Price USD"])
+            if price <= D("0.000000005"):
+                raise ValueError("Source price is too small for the published price precision")
+            expected = amount / price
+            # Independently rounded fields can move in opposite directions.
+            # Half a price quantum bounds |cash/P - cash/rounded(P)| exactly;
+            # add half a rate quantum rather than taking their maximum.
+            bound = D("0.0000000000005") + amount * D("0.000000005") / (
+                price * (price - D("0.000000005")))
             if abs(expected - D(row["Distribution Return"])) > bound:
-                raise ValueError("Per-fund cash does not reconcile to its source price basis")
+                raise ValueError(f"{row['Fund']} {row['Ex Date']}: per-fund cash does not reconcile to its source price basis")
+
+
+def validate_tables(histories: dict, events: list[dict], prices: list[dict], asset_outputs: dict,
+                    asset_events: list[dict], params: dict) -> None:
+    validate_fund_tables(events, prices)
+    if len({(row["Asset"], row["Ex Date"], row["Fund"]) for row in asset_events}) != len(asset_events):
+        raise ValueError("Duplicate asset/constituent cash entitlements")
     per_day = defaultdict(lambda: D(0))
+    rates = defaultdict(lambda: D(0))
     for event in asset_events:
         per_day[event["Asset"], event["Ex Date"]] += D(event["Cash USD Per Unit"])
+        rates[event["Asset"], event["Ex Date"]] += D(event["Distribution Return"])
+        if event["Pay Date"] and event["Modeled Pay Date"]:
+            raise ValueError("An entitlement has both a verified and modeled payment date")
         if event["Cash Basis"] == "modeled" and not event["Model Version"]:
             raise ValueError("Modeled entitlement has no model version")
     for spec in ASSETS:
@@ -170,10 +202,14 @@ def validate_tables(histories: dict, events: list[dict], prices: list[dict], ass
             if row["Total Return"] != source["Total Return"]:
                 raise ValueError(f"{spec.alias}: published total return changed in its companion")
             price = D(row["Unit Price USD"])
-            if price <= 0 or not price.is_finite():
+            if price <= 0 or not price.is_finite() or row["Currency"] != "USD" or row["Asset"] != spec.alias:
                 raise ValueError(f"{spec.alias}: nonpositive or nonfinite unit value")
+            if not index and (price != 100 or D(row["Cash Entitlement USD Per Unit"]) != 0):
+                raise ValueError(f"{spec.alias}: invalid initial synthetic USD unit")
             if abs(per_day[spec.alias, row["Date"]] - D(row["Cash Entitlement USD Per Unit"])) > D("0.000000002"):
                 raise ValueError(f"{spec.alias}: daily and event entitlements disagree")
+            if abs(rates[spec.alias, row["Date"]] - D(row["Distribution Return"])) > D("0.000000000002"):
+                raise ValueError(f"{spec.alias}: daily and event distribution rates disagree")
             if index:
                 prior = D(rows[index - 1]["Unit Price USD"])
                 total = D(row["Total Return"])
@@ -228,6 +264,7 @@ def run_build(root: Path, end: date, *, full: bool = False, offline: bool = Fals
     tables.update({"fund_events": (EVENT_COLUMNS, events), "fund_prices": (PRICE_COLUMNS, prices),
                    "asset_cash_events": (ASSET_EVENT_COLUMNS, asset_events),
                    "annual_calibration": (ANNUAL_COLUMNS, normalized_numeric_rows(annual)),
+                   "calibration_summary": (SUMMARY_COLUMNS, calibration_summary(annual, events, prices, params["calibration_cutoff"])),
                    "fund_coverage": (COVERAGE_COLUMNS, coverage_rows(events, prices, sources["funds"]))})
     payloads, artifacts = {}, {}
     for name, (columns, rows) in tables.items():
@@ -238,7 +275,9 @@ def run_build(root: Path, end: date, *, full: bool = False, offline: bool = Fals
     relative = f"{OUTPUT_PATH}/model_parameters.json"
     payloads[relative] = (json.dumps(params, indent=2, sort_keys=True) + "\n").encode()
     artifacts[relative] = {"sha256": hashlib.sha256(payloads[relative]).hexdigest()}
-    if old.get("artifacts") == artifacts and old.get("input_return_sha256") == input_hashes:
+    historical_check_advanced = full and old.get("last_full_source_check") != today.isoformat()
+    if (old.get("artifacts") == artifacts and old.get("input_return_sha256") == input_hashes
+            and old.get("requested_end_date") == end.isoformat() and not historical_check_advanced):
         print("Distributions unchanged; published files and manifest preserved.", flush=True)
         return False
     metadata = {"schema_version": 1, "requested_end_date": end.isoformat(),

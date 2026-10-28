@@ -518,6 +518,23 @@ def issuer_events(cache: SourceCache, funds: tuple[str, ...], end: date, *, refr
             accept(key, content, record, {fund: parsed})
         except (requests.RequestException, ValueError, FileNotFoundError) as exc:
             evidence[fund] = {"delivery": "unavailable", "error": str(exc)}
+    if "DBC" in funds:
+        # The public page currently delivers a dynamic shell or HTTP 406. Keep
+        # the actual attempt and its hash; neither establishes a zero payout.
+        # Attributed issuer notices below supplement the vendor event history.
+        key = "issuer_DBC.html"
+        url = "https://www.invesco.com/us/en/financial-products/etfs/invesco-db-commodity-index-tracking-fund.html"
+        try:
+            content, record = cache.get(key, url, refresh=refresh)
+            evidence["DBC"] = {"delivery": "unavailable_dynamic_history", "source_url": record["url"],
+                               "response_sha256": record["sha256"],
+                               "error": "No validated machine-readable DBC distribution history in this delivery; use labeled vendor/notice coverage."}
+        except (requests.RequestException, ValueError, FileNotFoundError) as exc:
+            evidence["DBC"] = {"delivery": "unavailable", "source_url": url, "error": str(exc)}
+    for fund in ZERO_POLICY_FUNDS.intersection(funds):
+        evidence[fund] = {"delivery": "documented_zero_routine_policy", "sources": [],
+                          "policy_evidence": "sources/derived/distribution_cash_policies.json",
+                          "exceptional_cash_ingestion": True}
     ssga_funds = tuple(fund for fund in funds if fund in ("BWX", "BWZ"))
     if ssga_funds:
         key = "issuer_ssga_distributions.xlsx"
@@ -529,12 +546,13 @@ def issuer_events(cache: SourceCache, funds: tuple[str, ...], end: date, *, refr
                 evidence[fund] = {"delivery": "unavailable", "error": str(exc)}
     if "UPRO" in funds:
         # Numeric years are the provider's supported requests; "all" returns an
-        # error page. Cache old years, refresh two recent tax/calendar years.
+        # error page. Normal refreshes fetch two recent calendar years; periodic
+        # full checks also refetch older years to detect retrospective revisions.
         for year in range(2009 if full else max(2009, end.year - 1), end.year + 1):
             key = f"issuer_UPRO_{year}.json"
             url = f"https://www.proshares.com/api/distributionsummary/?fund=UPRO&year={year}"
             try:
-                content, record = cache.get(key, url, refresh=refresh and year >= end.year - 1)
+                content, record = cache.get(key, url, refresh=refresh and (full or year >= end.year - 1))
                 parsed = parse_proshares(json.loads(content), "UPRO", record["url"])
                 accept(key, content, record, {"UPRO": parsed})
             except (requests.RequestException, ValueError, FileNotFoundError) as exc:
@@ -576,4 +594,10 @@ def issuer_events(cache: SourceCache, funds: tuple[str, ...], end: date, *, refr
             "path": observations.relative_to(cache.root).as_posix(), "sha256": digest,
             "accepted": True, "method": "Transcribed and attributed primary financial facts; partial coverage.",
             "rights": RIGHTS, "verified_date": "2026-10-28"}
+    policy_path = cache.root / "sources/derived/distribution_cash_policies.json"
+    if policy_path.exists():
+        cache.records["cash_policy_evidence"] = {
+            "path": policy_path.relative_to(cache.root).as_posix(),
+            "sha256": hashlib.sha256(policy_path.read_bytes()).hexdigest(),
+            "accepted": True, "rights": RIGHTS}
     return events, evidence

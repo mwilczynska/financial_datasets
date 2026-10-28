@@ -1,8 +1,9 @@
 # USD cash distributions: feasibility and proposed data contract
 
 Research date: 2026-10-28. Published data inspected through 2026-10-23.
-Status: investigation and implementation recommendation; no production dataset
-or updater has been changed.
+Status: original investigation and implementation recommendation. The subsequent
+implementation and published companion contract are documented in
+[USD cash distributions](../methodology_distributions.md).
 
 ## Scope and conclusion
 

@@ -23,6 +23,12 @@ except ImportError:
 
 D = Decimal
 METHOD_VERSION = "usd_cash_v1"
+SUMMARY_COLUMNS = ["Fund", "Calibration Cutoff", "Complete Years", "Zero Cash Years", "Cash Event Count",
+                   "Median Annual Contribution", "P10 Annual Contribution", "P90 Annual Contribution",
+                   "Max Annual Contribution", "Median Event Contribution", "P95 Event Contribution",
+                   "Max Event Contribution", "Max Event Date", "Median Annual Event Count",
+                   "Gain Or Special Component Events", "Verified Payment Events", "Conflicting Amount Events",
+                   "Unknown Cash Quote Days", "Definition"]
 INDEX_ROUNDING_TOLERANCE = D("0.000002")
 INDEX_MAX_DAILY_CONTRIBUTION = D("0.0015")
 INDEX_POINT_ROUNDING_ALLOWANCE = D("0.02")
@@ -282,6 +288,51 @@ def model_annual_contribution(fund: str, year: int, params: dict, features: dict
     if value < D(model["feature_min"]) or value > D(model["feature_max"]):
         status += "_extrapolated"
     return estimate, status
+
+
+def calibration_summary(annual: list[dict], events: list[dict], prices: list[dict], cutoff: str) -> list[dict]:
+    """Empirical spread, payout frequency and special-event tails for consumers.
+
+    Rates are per preceding share price, so split histories do not distort the
+    tails. These summaries are descriptive samples, not forecast parameters.
+    """
+    def quantile(values: list[D], fraction: str) -> str:
+        if not values:
+            return ""
+        values = sorted(values)
+        position = D(fraction) * (len(values) - 1)
+        low = int(position)
+        high = min(low + 1, len(values) - 1)
+        return decimal_text(values[low] + (values[high] - values[low]) * (position - low))
+
+    result = []
+    for fund in FUNDS:
+        years = [row for row in annual if row["Fund"] == fund]
+        year_set = {row["Year"] for row in years}
+        scoped = [row for row in events if row["Fund"] == fund and row["Ex Date"][:4] in year_set]
+        rates = [D(row["Distribution Return"]) for row in scoped if row["Distribution Return"]]
+        annual_rates = [D(row["Distribution Contribution Sum"]) for row in years]
+        largest = max((row for row in scoped if row["Distribution Return"]),
+                      key=lambda row: D(row["Distribution Return"]), default=None)
+        special_fields = ("Short Term Gains USD Per Share", "Long Term Gains USD Per Share", "Special USD Per Share")
+        result.append({"Fund": fund, "Calibration Cutoff": cutoff, "Complete Years": str(len(years)),
+                       "Zero Cash Years": str(sum(value == 0 for value in annual_rates)),
+                       "Cash Event Count": str(len(scoped)),
+                       "Median Annual Contribution": quantile(annual_rates, "0.5"),
+                       "P10 Annual Contribution": quantile(annual_rates, "0.1"),
+                       "P90 Annual Contribution": quantile(annual_rates, "0.9"),
+                       "Max Annual Contribution": quantile(annual_rates, "1"),
+                       "Median Event Contribution": quantile(rates, "0.5"),
+                       "P95 Event Contribution": quantile(rates, "0.95"),
+                       "Max Event Contribution": quantile(rates, "1"),
+                       "Max Event Date": largest["Ex Date"] if largest else "",
+                       "Median Annual Event Count": quantile([D(row["Cash Event Count"]) for row in years], "0.5"),
+                       "Gain Or Special Component Events": str(sum(any(D(row.get(key) or "0") > 0 for key in special_fields) for row in scoped)),
+                       "Verified Payment Events": str(sum(bool(row["Pay Date"]) for row in scoped)),
+                       "Conflicting Amount Events": str(sum(row["Reconciliation"] == "issuer_vendor_amount_conflict" for row in scoped)),
+                       "Unknown Cash Quote Days": str(sum(row["Fund"] == fund and row["Date"][:4] in year_set and not row["Distribution Return"] for row in prices)),
+                       "Definition": "Daily cash/preceding-price contributions; sums are not buy-and-hold yields. Components only where verified; unknown component is not zero."})
+    return result
 
 
 def modeled_fund_calendar(fund: str, rows: list[dict[str, str]], params: dict,

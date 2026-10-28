@@ -136,6 +136,10 @@ def build_one(spec: AssetSpec, history: list[dict[str, str]], fund_daily: dict, 
                 source = fund_daily.get((fund, on)) if is_observed else None
                 event = event_lookup.get((fund, on)) if is_observed else None
                 if source and source["Distribution Return"]:
+                    if len(weights) == 1 and source["Vendor Total Return"]:
+                        difference = total_return - D(source["Vendor Total Return"])
+                        if abs(difference) > D("0.00001"):
+                            original_return_mismatches.append({"date": on, "return_difference": decimal_text(difference)})
                     contribution = D(source["Distribution Return"])
                     basis = "verified_zero" if source["Cash Status"] == "verified_zero_policy" else "observed"
                     flag = source["Cash Status"]

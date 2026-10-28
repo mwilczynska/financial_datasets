@@ -89,7 +89,7 @@ def collect_funds(root: Path, end: date, *, start: date = date(1970, 1, 1),
                                               zero_policy=fund in ZERO_POLICY_FUNDS)
         event_rows.extend(events)
         price_rows.extend(prices)
-        diagnostics[fund] = {**facts, "issuer_delivery": deliveries.get(fund, {"delivery": "not_yet_implemented"})}
+        diagnostics[fund] = {**facts, "issuer_delivery": deliveries[fund]}
     source_manifest = {"sources": dict(sorted(cache.records.items())), "funds": diagnostics,
                        "requested_end_date": end.isoformat(), "requested_start_date": start.isoformat()}
     return (normalized_numeric_rows(sorted(event_rows, key=lambda row: (row["Fund"], row["Ex Date"]))),

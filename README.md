@@ -35,6 +35,16 @@ prices = pd.read_parquet(
 ).set_index("Date")
 daily_total_return = prices["Adj Close"].pct_change()
 ```
+
+USD cash distributions are published separately under
+[`data/processed/distributions/`](data/processed/distributions/) for all 13
+investable assets and the exact funds used by the daily updater. The layer
+includes native fund payouts, synthetic USD-unit entitlements and payment
+timing, with observed/inferred/modeled evidence kept explicit. CSV and Parquet
+use lossless decimal strings. Read the
+[distribution contract and methodology](docs/methodology_distributions.md)
+and run `python examples/usd_distributions.py --fund SHY --shares 100 --start
+2025-01-01 --end 2025-12-31` for a consumer example.
 ## What this project does
 
 The pipeline extends short live histories into long-horizon daily research
