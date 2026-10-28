@@ -59,7 +59,7 @@ def normalized_numeric_rows(rows: list[dict[str, str]]) -> list[dict[str, str]]:
         for key, value in new.items():
             if key == "Total Return":
                 continue  # Preserve the canonical asset input's lexical value.
-            if value and ("Return" in key or key in ("Adjustment Residual",)):
+            if value and (key.endswith("Return") or key in ("Adjustment Residual", "Return Ex Distribution Residual")):
                 new[key] = decimal_text(Decimal(value).quantize(Decimal("0.000000000001")))
             elif value and ("USD Per Unit" in key or key in ("Distribution Contribution Sum", "Income Feature Value")):
                 new[key] = decimal_text(Decimal(value).quantize(Decimal("0.000000000001")))

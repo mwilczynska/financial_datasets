@@ -4,6 +4,7 @@ from decimal import Decimal as D
 
 from src.distribution_funds import normalize_fund
 from src.distribution_sources import CashEvent, Chart, Split, validate_issuer_event
+from src.distribution_data import normalized_numeric_rows
 
 
 def sample_chart(fund="UPRO", *, factor="2", vendor="0.5", with_event=True):
@@ -70,3 +71,14 @@ def test_contradictory_issuer_payment_date_is_retained_as_unresolved_evidence():
     assert event.source_pay_date == "2008-02-11"
     assert "quarantined" in event.notes
     assert event.quality == "observed_issuer_payment_date_unresolved"
+
+
+def test_rate_rounding_does_not_round_precise_return_of_capital_money():
+    row = {"Cash USD Per Share": "0.123456789123456789",
+           "Return Of Capital USD Per Share": "0.123456789123456789",
+           "Distribution Return": "0.00123456789123456789", "Total Return": "0.00123456789123456789"}
+    normalized = normalized_numeric_rows([row])[0]
+    assert normalized["Cash USD Per Share"] == row["Cash USD Per Share"]
+    assert normalized["Return Of Capital USD Per Share"] == row["Return Of Capital USD Per Share"]
+    assert normalized["Distribution Return"] == "0.001234567891"
+    assert normalized["Total Return"] == row["Total Return"]

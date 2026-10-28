@@ -34,7 +34,7 @@ through December 31, 2025.
   source-cache tampering and full-history checks becoming due. The 31-day
   schedule advances after an unchanged full check and does not repeat daily.
 
-The final local full suite passed: **229 passed, 28 skipped** in 74.60 seconds.
+The final local full suite passed: **230 passed, 28 skipped** in 74.81 seconds.
 All skips were optional raw-source validation checks; no automation check was
 skipped. The complete required command is
 `python -m pytest -q tests/validation tests/automation`. In this Windows
