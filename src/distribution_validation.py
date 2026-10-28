@@ -16,18 +16,19 @@ try:
     from .distribution_models import ASSETS
     from .distribution_sources import FUNDS, parse_yahoo
     from .distributions_pipeline import (MANIFEST_PATH, OUTPUT_PATH, publication_paths,
-                                         validate_tables)
+                                         validate_tables, check_current_fund_configuration)
 except ImportError:
     from distribution_data import read_csv
     from distribution_models import ASSETS
     from distribution_sources import FUNDS, parse_yahoo
     from distributions_pipeline import (MANIFEST_PATH, OUTPUT_PATH, publication_paths,
-                                        validate_tables)
+                                        validate_tables, check_current_fund_configuration)
 
 
 def check_distributions(root: Path, end: date | None = None, *, sources: bool = False,
                         baseline_ref: str | None = None) -> dict:
     root = root.resolve()
+    check_current_fund_configuration()
     metadata = json.loads((root / MANIFEST_PATH).read_text(encoding="utf-8"))
     requested = date.fromisoformat(metadata["requested_end_date"])
     if end and requested != end:

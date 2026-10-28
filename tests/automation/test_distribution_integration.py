@@ -3,6 +3,9 @@
 from types import SimpleNamespace
 
 from src import update_all_datasets as updater
+from src.distributions_pipeline import check_current_fund_configuration
+from src import incremental_update
+import pytest
 
 
 def test_all_updater_runs_cash_after_returns_and_propagates_cash_failure(tmp_path, monkeypatch):
@@ -39,3 +42,12 @@ def test_explicit_opt_out_preserves_local_partial_update_behavior(tmp_path, monk
     task = next(task for task in updater.DATASET_TASKS if task.alias == "STT")
     assert updater.run_updates(args, tmp_path, [task]) == 0
     assert len(calls) == 1
+
+
+def test_source_configuration_drift_stops_cash_publication(monkeypatch):
+    check_current_fund_configuration()
+    altered = dict(incremental_update.ASSETS)
+    altered["gold"] = incremental_update.Asset("gold", "gold", ("OTHER",))
+    monkeypatch.setattr(incremental_update, "ASSETS", altered)
+    with pytest.raises(ValueError, match="drifted"):
+        check_current_fund_configuration()

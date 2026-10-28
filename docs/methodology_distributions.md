@@ -80,6 +80,13 @@ holidays are not predicted. Index entitlements use an explicitly assumed
 into the next asset observation, while the event ledger retains the date.
 Payments beyond the published calendar remain outstanding receivables.
 
+The daily ledger describes one continuously held unit from the first row.
+For a position opened later, use the event ledger and that position's ex-date
+entitlements, as the consumer example does. Multiplying a later daily
+receivable by newly purchased units would incorrectly include rights earned
+before the purchase. Daily `Basis` describes that day's distribution
+contribution; payment columns separately identify modeled timing.
+
 ## Evidence and reconciliation
 
 Observed cash comes from Yahoo chart events plus the same funds' issuer
@@ -144,6 +151,8 @@ those funds existed. They are retrospective backfills with future-calibrated
 parameters, **not point-in-time forecasts**. Parameters are frozen between
 explicit recalibrations. Calibration uses complete years after the first
 quote year, ending December 31 before the initial requested end year.
+Fund-inception transition years splice modeled calendars with observed
+ex-dates; their resulting annual cash need not equal a complete modeled year.
 
 - Treasury backfills retain the existing annual coupon/carry contribution
   and distribute it using the current fund's observed payout seasonality.
@@ -213,6 +222,8 @@ calendar days with a seven-day price buffer and perform full source-history
 checks at least every 31 days. Shared funds are acquired once. Historical
 issuer years are cached; source rights and delivery failures remain recorded.
 Use `--recalibrate` deliberately to revise modeled history and the version.
+The builder and validation gate also check that their source-fund map still
+matches the current daily updater; a later source change must update both.
 
 All candidate arithmetic is checked before replacement. The manifest publishes
 last; its hashes make an interrupted replacement fail the publication gate.
@@ -238,6 +249,10 @@ payment dates, missing versus zero, blend weights, anomaly/model boundaries,
 initial/incremental stability, issuer revisions, rejected candidates and the
 complete published contract. On a Windows sandbox whose default temporary
 directory is unavailable, add a fresh `--basetemp=data/interim/<test-run>`.
+
+The [validation record](research/distributions_validation.md) reports the
+clean/live/replay exercises, coverage counts and material reconciliation
+residuals for the published initial release.
 
 The runnable [consumer example](../examples/usd_distributions.py) loads either
 format, uses Decimal and calculates USD cash for actual entitled fund shares

@@ -14247,3 +14247,4 @@ Date,Asset,Currency,Unit Price USD,Total Return,Distribution Return,Return Ex Di
 2026-10-22,CMDTY,USD,1299.7406424,0.0020895431,0,0.0020895431,0,0,0,0,observed,observed_no_vendor_cash_event,
 2026-10-23,CMDTY,USD,1320.26077818,0.0157878696,0,0.0157878696,0,0,0,0,observed,observed_no_vendor_cash_event,
 2026-10-26,CMDTY,USD,1307.87124547,-0.0093841557,0,-0.0093841557,0,0,0,0,observed,observed_no_vendor_cash_event,
+2026-10-27,CMDTY,USD,1300.90211491,-0.005328606,0,-0.005328606,0,0,0,0,observed,observed_no_vendor_cash_event,

@@ -53,6 +53,20 @@ def publication_paths() -> list[str]:
         f"{OUTPUT_PATH}/model_parameters.json", MANIFEST_PATH]
 
 
+def check_current_fund_configuration() -> None:
+    try:
+        from .incremental_update import ASSETS as daily_sources
+    except ImportError:
+        from incremental_update import ASSETS as daily_sources
+    current = {fund for asset in daily_sources.values() for fund in asset.symbols if not fund.startswith("^")}
+    if current != set(FUNDS):
+        raise ValueError("Cash source funds have drifted from the current daily updater")
+    for spec in ASSETS:
+        expected = () if spec.alias == "USLCAP" else daily_sources[spec.stem].symbols
+        if spec.funds != expected:
+            raise ValueError(f"{spec.alias}: cash constituents differ from the current daily updater")
+
+
 def load_weights(root: Path, through_year: int, *, offline: bool) -> tuple[dict[int, D], dict]:
     cache = SourceCache(root, offline=offline)
     key = "jst_macrohistory_r6.xlsx"
@@ -228,6 +242,7 @@ def validate_tables(histories: dict, events: list[dict], prices: list[dict], ass
 
 def run_build(root: Path, end: date, *, full: bool = False, offline: bool = False,
               refresh: bool = True, recalibrate: bool = False) -> bool:
+    check_current_fund_configuration()
     root = root.resolve()
     manifest_path = root / MANIFEST_PATH
     old = json.loads(manifest_path.read_text(encoding="utf-8")) if manifest_path.exists() else {}
