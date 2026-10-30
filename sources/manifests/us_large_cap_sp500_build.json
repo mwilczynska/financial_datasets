@@ -4,11 +4,11 @@
   "total_return_symbol": "^SP500TR",
   "source": "Yahoo Finance chart API (^GSPC price; ^SP500TR total return)",
   "build_timestamp_utc": "2026-07-23T02:32:59.388962+00:00",
-  "row_count": 14328,
+  "row_count": 14329,
   "first_date": "1970-01-02",
-  "last_date": "2026-10-28",
+  "last_date": "2026-10-29",
   "csv_path": "data/processed/us_large_cap_sp500.csv",
-  "csv_sha256": "4b84f1265f7e068f45e04e9e83ebdf4d707bc9ff0bf678d7b320584808524d24",
+  "csv_sha256": "6f45f1e83351bf147293239243f6ef4be9632d2f1ba1e84d008037a4befdbe9a",
   "parquet_written": true,
   "first_adjusted_date": "1970-01-02",
   "quality_flags": [
@@ -16,24 +16,24 @@
     "observed_price_index_sp500_total_return"
   ],
   "notes": "Close is ^GSPC price index; Adj Close compounds daily total returns from Kenneth French/CRSP Hi 30 before ^SP500TR can supply daily returns, then ^SP500TR thereafter.",
-  "last_incremental_update_utc": "2026-10-29T18:58:29.752439+00:00",
+  "last_incremental_update_utc": "2026-10-30T18:38:37.649375+00:00",
   "incremental_update": {
-    "overlap_anchor": "2026-10-27",
-    "requested_end_date": "2026-10-28",
+    "overlap_anchor": "2026-10-28",
+    "requested_end_date": "2026-10-29",
     "recent_sources": {
       "^GSPC": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/%5EGSPC",
         "path": "sources/raw/incremental/us_large_cap_sp500_gspc.json",
-        "sha256": "8a389a518bec9f0a7e870e2ba59264c6ae6ba59d4bac913d05b1b7b08f12dccc",
-        "first_date": "2026-09-28",
-        "last_date": "2026-10-28"
+        "sha256": "4553a5cb02592a6d923d1da6a887383a3577622363efd4671a3c6c076e623914",
+        "first_date": "2026-09-29",
+        "last_date": "2026-10-29"
       },
       "^SP500TR": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/%5ESP500TR",
         "path": "sources/raw/incremental/us_large_cap_sp500_sp500tr.json",
-        "sha256": "fa1874d34cef783416481cf533219751b4b800dd7d0571c416fb6c12e8f801c6",
-        "first_date": "2026-09-28",
-        "last_date": "2026-10-28"
+        "sha256": "801a5d2dd3b5c85875633eee6f0c67719539ab547c7325195fab875e91f69206",
+        "first_date": "2026-09-29",
+        "last_date": "2026-10-29"
       }
     }
   }
