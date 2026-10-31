@@ -80,6 +80,12 @@ DATASET_TASKS: tuple[DatasetTask, ...] = (
     DatasetTask("long_term_treasury_3x", "LTT3X", "long_term_us_treasury_3x", "update_long_term_treasury_3x.py", ("long_term_us_treasury",)),
     DatasetTask("intermediate_treasury_3x", "ITT3X", "intermediate_term_us_treasury_3x", "update_intermediate_treasury_3x.py", ("intermediate_term_us_treasury",)),
     DatasetTask("gold_2x", "GOLD2X", "gold_2x", "update_gold_2x.py", ("gold",)),
+    DatasetTask("us_large_cap_2x_sp500", "USLCAP2X", "us_large_cap_2x_sp500", "update_us_large_cap_2x_sp500.py", ("us_large_cap_sp500",)),
+    DatasetTask("global_stocks_2x", "GLSTOCK2X", "global_stocks_2x", "update_global_stocks_2x.py", ("global_stocks",)),
+    DatasetTask("global_bonds_2x", "GLBOND2X", "global_bonds_2x", "update_global_bonds_2x.py", ("global_bonds",)),
+    DatasetTask("short_term_us_treasury_2x", "STT2X", "short_term_us_treasury_2x", "update_short_term_us_treasury_2x.py", ("short_term_us_treasury",)),
+    DatasetTask("intermediate_term_us_treasury_2x", "ITT2X", "intermediate_term_us_treasury_2x", "update_intermediate_term_us_treasury_2x.py", ("intermediate_term_us_treasury",)),
+    DatasetTask("long_term_us_treasury_2x", "LTT2X", "long_term_us_treasury_2x", "update_long_term_us_treasury_2x.py", ("long_term_us_treasury",)),
 )
 
 

@@ -26,7 +26,8 @@ The script updates all processed datasets in dependency order:
 
 1. Base datasets: `USLCAP`, `STT`, `ITT`, `LTT`, `GOLDPM`, `CMDTY`, `CPI`.
 2. Global blends that depend on base datasets: `GLSTOCK`, `GLBOND`, `GLSTBOND`.
-3. Leveraged derived datasets: `USLCAP3X`, `LTT3X`, `ITT3X`, `GOLD2X`.
+3. Leveraged derived datasets: `USLCAP3X`, `LTT3X`, `ITT3X`, `GOLD2X`, and the 2x datasets
+   `USLCAP2X`, `GLSTOCK2X`, `GLBOND2X`, `STT2X`, `ITT2X`, `LTT2X` (shared `leveraged_2x.py`).
 
 By default it:
 

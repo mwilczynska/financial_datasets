@@ -81,6 +81,8 @@ def check_baseline(root: Path, ref: str, metadata: dict, tables: dict) -> None:
     cutoff = (date.fromisoformat(metadata["requested_end_date"]) -
               timedelta(days=metadata["reconciliation_days"])).isoformat()
     for spec in ASSETS:
+        if spec.stem not in old["input_return_sha256"]:
+            continue  # A newly introduced asset has no published companion baseline.
         content = subprocess.check_output(["git", "show", f"{ref}:{OUTPUT_PATH}/{spec.stem}.csv"],
                                           cwd=root, text=True, encoding="utf-8")
         import csv

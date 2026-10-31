@@ -56,7 +56,19 @@ ASSETS = (
     AssetSpec("GOLDPM", "gold", ("GLD",), "gold"),
     AssetSpec("GOLD2X", "gold_2x", ("UGL",), "gold"),
     AssetSpec("CMDTY", "broad_commodities", ("DBC",), "commodity"),
+    AssetSpec("USLCAP2X", "us_large_cap_2x_sp500", ("SSO",), "leveraged"),
+    AssetSpec("GLSTOCK2X", "global_stocks_2x", ("WLDU",), "leveraged"),
+    AssetSpec("ITT2X", "intermediate_term_us_treasury_2x", ("UST",), "leveraged"),
+    AssetSpec("LTT2X", "long_term_us_treasury_2x", ("UBT",), "leveraged"),
+    # No 2x fund exists for these exposures. Their returns use UST parameters,
+    # so UST's payout model is the disclosed cash proxy on every date.
+    AssetSpec("STT2X", "short_term_us_treasury_2x", ("UST",), "modeled_leveraged"),
+    AssetSpec("GLBOND2X", "global_bonds_2x", ("UST",), "modeled_leveraged"),
 )
+# A fund with too little history borrows the payout model of a same-issuer-style
+# fund with the same leverage and exposure class until it has complete years.
+PAYOUT_MODEL_PROXIES = {"WLDU": "SSO"}
+MIN_COMPLETE_YEARS = 3
 
 
 def index_diagnostics(rows: list[dict[str, str]]) -> tuple[set[str], dict[str, D], list[dict]]:
@@ -243,15 +255,22 @@ def calibrate(histories: dict, fund_events: list[dict[str, str]], fund_prices: l
             counts[int(event["Ex Date"][:4])] += 1
         feature = "ITT" if fund in ("BND", "BWX") else "STT"
         pairs = [(features[feature][year], contributions[year]) for year in sorted(years) if year in features[feature]]
+        proxy = PAYOUT_MODEL_PROXIES.get(fund) if len(pairs) < MIN_COMPLETE_YEARS else None
         if fund in ("GLD", "UGL"):
             model = {"method": "zero_routine_cash_policy", "intercept": "0", "slope": "0",
                      "median": "0", "feature_min": "0", "feature_max": "0"}
+        elif proxy:
+            model = {key: models[proxy][key] for key in ("intercept", "slope", "method", "feature_min", "feature_max",
+                                                         "response_min", "response_max", "median",
+                                                         "mean_absolute_residual")}
         else:
             model = _linear_fit(pairs)
         models[fund] = {**model, "feature": feature, "calibration_years": sorted(years),
-                        "seasonality": _seasonality(events_by_fund[fund], years),
+                        "seasonality": models[proxy]["seasonality"] if proxy else _seasonality(events_by_fund[fund], years),
                         "hindsight_backfill": True,
                         "response_definition": "Sum of daily cash/preceding-price contributions; not buy-and-hold cash yield."}
+        if proxy:
+            models[fund]["payout_model_proxy"] = proxy
         if fund == "VT":
             ratios = [contributions[year] / index_annual[year] for year in sorted(years) if index_annual[year] > 0]
             models[fund]["index_income_ratio"] = decimal_text(median(ratios))
@@ -268,6 +287,16 @@ def calibrate(histories: dict, fund_events: list[dict[str, str]], fund_prices: l
     digest = hashlib.sha256(json.dumps(params, sort_keys=True).encode()).hexdigest()[:12]
     params["version"] = f"{METHOD_VERSION}:{digest}"
     return params, summaries
+
+
+def extend_models(params: dict, fresh: dict, funds: list[str]) -> dict:
+    """Add newly introduced funds without refitting the frozen existing models."""
+    extended = {key: value for key, value in params.items() if key != "version"}
+    extended["fund_models"] = {**params["fund_models"], **{fund: fresh["fund_models"][fund] for fund in funds}}
+    extended["extended_funds"] = sorted(set(params.get("extended_funds", [])) | set(funds))
+    digest = hashlib.sha256(json.dumps(extended, sort_keys=True).encode()).hexdigest()[:12]
+    extended["version"] = f"{METHOD_VERSION}:{digest}"
+    return extended
 
 
 def model_annual_contribution(fund: str, year: int, params: dict, features: dict,

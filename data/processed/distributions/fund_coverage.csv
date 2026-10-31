@@ -13,3 +13,7 @@ TMF,USD,2009-04-16,2026-10-27,50,4,46,0,cash_paying,unavailable
 GLD,USD,2004-11-18,2026-10-27,0,0,0,0,zero_baseline_exceptions_supported,documented_zero_routine_policy
 UGL,USD,2008-12-03,2026-10-27,0,0,0,0,zero_baseline_exceptions_supported,documented_zero_routine_policy
 DBC,USD,2006-02-06,2026-10-27,9,1,8,0,cash_paying,unavailable
+SSO,USD,2006-06-21,2026-10-27,71,46,25,0,cash_paying,available
+WLDU,USD,2026-03-10,2026-10-27,0,0,0,0,cash_paying,vendor_only_no_issuer_history
+UST,USD,2010-02-02,2026-10-27,51,48,3,0,cash_paying,available
+UBT,USD,2010-01-21,2026-10-27,49,42,7,0,cash_paying,available

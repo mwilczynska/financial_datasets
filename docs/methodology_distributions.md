@@ -1,8 +1,8 @@
 # USD cash distributions
 
 This companion layer supplies historical USD cash entitlements and payment
-timing for a consumer maintained outside this repository. It includes 13
-investable assets on their existing calendars, plus the exact 14 source funds
+timing for a consumer maintained outside this repository. It includes 19
+investable assets on their existing calendars, plus the exact 18 source funds
 used by the daily return updater. CPI has no distribution. Existing return
 schemas, observations and column meanings are preserved.
 
@@ -100,7 +100,8 @@ cash is counted once. Vendor field names do not establish tax character.
 | SHY, IEF, TLT, ISHG | iShares embedded full distribution tables, including income and gains. |
 | VT, BND | Vanguard public product API, approximately ten years; earlier events retain vendor labels and unknown dates. |
 | BWX, BWZ | State Street historical distribution workbook. |
-| UPRO | ProShares numeric-year API; historical years cached and recent two calendar years refreshed. |
+| UPRO, SSO, UST, UBT | ProShares numeric-year API; historical years cached and recent two calendar years refreshed. |
+| WLDU | No machine-readable issuer history; Yahoo cash events only (`vendor_only_no_issuer_history`). |
 | TYD, TMF | Direxion fund-specific table parser; direct requests returned 403 during validation. Partial attributed issuer observations supplement vendor history, including TYD's 2020 special gain payment. |
 | DBC | Direct Invesco delivery returned 406 or a dynamic page without validated history. Attributed 2025 issuer notice supplies precise cash/date for that event; remaining events retain vendor labels. |
 | GLD, UGL | Vendor action histories plus prospectus/issuer policy evidence below; future exceptional cash is still ingested. |
@@ -163,6 +164,11 @@ ex-dates; their resulting annual cash need not equal a complete modeled year.
   slope uses a disclosed constant median. Predicted negative cash is bounded
   at zero, and income states outside calibration range are flagged. Leveraged
   cash is never a fixed leverage multiple of underlying income.
+- WLDU has no complete calendar year. Until it has three, it borrows SSO's fitted payout model and
+  seasonality (`payout_model_proxy`). GLBOND2X and STT2X have no fund; their companions use UST's
+  payout model as a disclosed modeled proxy on every date. New funds are added to frozen parameters
+  without refitting existing models (`extended_funds`), and a new source fund triggers a full
+  source reconciliation.
 - Before DBC, collateral accrual is an income-state input to DBC's own fitted
   payout model; it is not treated as an actual shareholder payment.
 - Seasonality uses observed contribution shares by month, typical ex-days,

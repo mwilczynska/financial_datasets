@@ -24,7 +24,11 @@ from lxml import html
 
 
 FUNDS = ("SHY", "IEF", "TLT", "VT", "BND", "BWX", "ISHG", "BWZ",
-         "UPRO", "TYD", "TMF", "GLD", "UGL", "DBC")
+         "UPRO", "TYD", "TMF", "GLD", "UGL", "DBC", "SSO", "WLDU", "UST", "UBT")
+# ProShares serves one distribution summary per fund and calendar year.
+PROSHARES_FIRST_YEARS = {"UPRO": 2009, "SSO": 2006, "UST": 2010, "UBT": 2010}
+# No machine-readable issuer history is published; Yahoo cash events are the source.
+VENDOR_ONLY_FUNDS = frozenset(("WLDU",))
 ZERO_POLICY_FUNDS = frozenset(("GLD", "UGL"))
 COMPONENTS = ("Income USD Per Share", "Short Term Gains USD Per Share",
               "Long Term Gains USD Per Share", "Return Of Capital USD Per Share",
@@ -544,21 +548,25 @@ def issuer_events(cache: SourceCache, funds: tuple[str, ...], end: date, *, refr
         except (requests.RequestException, ValueError, FileNotFoundError) as exc:
             for fund in ssga_funds:
                 evidence[fund] = {"delivery": "unavailable", "error": str(exc)}
-    if "UPRO" in funds:
+    for fund, first_year in PROSHARES_FIRST_YEARS.items():
+        if fund not in funds:
+            continue
         # Numeric years are the provider's supported requests; "all" returns an
         # error page. Normal refreshes fetch two recent calendar years; periodic
         # full checks also refetch older years to detect retrospective revisions.
-        for year in range(2009 if full else max(2009, end.year - 1), end.year + 1):
-            key = f"issuer_UPRO_{year}.json"
-            url = f"https://www.proshares.com/api/distributionsummary/?fund=UPRO&year={year}"
+        for year in range(first_year if full else max(first_year, end.year - 1), end.year + 1):
+            key = f"issuer_{fund}_{year}.json"
+            url = f"https://www.proshares.com/api/distributionsummary/?fund={fund}&year={year}"
             try:
                 content, record = cache.get(key, url, refresh=refresh and (full or year >= end.year - 1))
-                parsed = parse_proshares(json.loads(content), "UPRO", record["url"])
-                accept(key, content, record, {"UPRO": parsed})
+                parsed = parse_proshares(json.loads(content), fund, record["url"])
+                accept(key, content, record, {fund: parsed})
             except (requests.RequestException, ValueError, FileNotFoundError) as exc:
-                evidence.setdefault("UPRO", {"delivery": "partial", "sources": []})
-                evidence["UPRO"]["delivery"] = "partial"
-                evidence["UPRO"].setdefault("errors", []).append({"year": year, "error": str(exc)})
+                evidence.setdefault(fund, {"delivery": "partial", "sources": []})
+                evidence[fund]["delivery"] = "partial"
+                evidence[fund].setdefault("errors", []).append({"year": year, "error": str(exc)})
+    for fund in VENDOR_ONLY_FUNDS.intersection(funds):
+        evidence[fund] = {"delivery": "vendor_only_no_issuer_history", "sources": []}
     for fund in funds:
         if fund not in DIREXION_URLS:
             continue

@@ -87,7 +87,7 @@ def test_initial_incremental_repeat_and_precision_revision_are_coherent(cash_wor
     root, end, events, calls = cash_workspace
     original_inputs = {spec.stem: hashlib.sha256((root / f"data/processed/{spec.stem}.csv").read_bytes()).hexdigest() for spec in ASSETS}
     assert pipeline.run_build(root, end, offline=True)
-    assert check_distributions(root, end)["assets"] == 13
+    assert check_distributions(root, end)["assets"] == 19
     initial = snapshot(root)
     assert not pipeline.run_build(root, end, offline=True)
     assert snapshot(root) == initial

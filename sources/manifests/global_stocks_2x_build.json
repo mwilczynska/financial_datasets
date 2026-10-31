@@ -1,0 +1,35 @@
+{
+  "asset_id": "global_stocks_2x",
+  "alias": "GLSTOCK2X",
+  "base_asset_id": "global_stocks",
+  "leverage": 2.0,
+  "expense_ratio": 0.0075,
+  "borrow_spread": 0.008,
+  "financing_benchmark": "^IRX",
+  "observed_etf": "WLDU",
+  "reference_fund": "Leverage Shares 2x Long World Stock Daily ETF",
+  "build_timestamp_utc": "2026-10-31T17:56:46.399744+00:00",
+  "row_count": 14486,
+  "first_date": "1970-01-02",
+  "last_date": "2026-10-27",
+  "synthetic_rows": 14326,
+  "observed_etf_rows": 160,
+  "csv_path": "data/processed/global_stocks_2x.csv",
+  "csv_sha256": "80325b3bd2b9e57c8e14acc4d064720d1b03ebd5b57c9747efb3e224844e6ab1",
+  "parquet_written": true,
+  "quality_flags": [
+    "model_2x_daily_reset_synthetic_from_glstock_total_return_minus_financing_and_wldu_fee",
+    "observed_wldu_etf_adjusted_total_return"
+  ],
+  "calibration_vs_etf_overlap": {
+    "overlap_days": 160,
+    "daily_return_correlation": 0.9938001496987807,
+    "annualized_tracking_error": 0.03349216089399176,
+    "mean_daily_return_diff": 0.0002475091138045492,
+    "cumulative_model_growth": 1.1754129164791378,
+    "cumulative_etf_growth": 1.1294196506790815,
+    "cumulative_ratio_model_over_etf": 1.040722919751221,
+    "etf_inception": "2026-03-10"
+  },
+  "notes": "Synthetic 2x daily-reset total-return NAV: lev_ret = 2*GLSTOCK_total_return - 1*(^IRX/100+0.0080)*days/360 - 0.0075*days/365. Close == Adj Close. Model-derived, not observed WLDU history."
+}

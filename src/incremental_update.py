@@ -31,12 +31,14 @@ try:
     from . import build_gold_2x as gold2x_build
     from . import build_global_short_term_bonds as glstbond_build
     from . import cpi_sources
+    from . import leveraged_2x
 except ImportError:  # direct execution from src/
     import build_cpi_inflation as cpi_build
     import build_gold as gold_build
     import build_gold_2x as gold2x_build
     import build_global_short_term_bonds as glstbond_build
     import cpi_sources
+    import leveraged_2x
 
 
 getcontext().prec = 40
@@ -75,6 +77,13 @@ ASSETS = {
     "intermediate_term_us_treasury_3x": Asset("intermediate_term_us_treasury_3x", "adj_only", ("TYD",), "intermediate_term_us_treasury", "observed_tyd_etf_adjusted_total_return", "build_intermediate_treasury_3x.py"),
     "gold_2x": Asset("gold_2x", "gold2x", ("UGL",), "gold", "observed_ugl_etf_adjusted_total_return"),
 }
+# 2x datasets: a live fund updates like the 3x datasets; a fundless exposure
+# extends its daily-reset model from the base dataset and current ^IRX.
+for _config in leveraged_2x.CONFIGS.values():
+    ASSETS[_config.asset_id] = (
+        Asset(_config.asset_id, "adj_only", (_config.fund,), _config.base_asset_id, _config.etf_flag)
+        if _config.fund else
+        Asset(_config.asset_id, "model2x", (leveraged_2x.IRX_SYMBOL,), _config.base_asset_id, _config.synth_flag))
 
 
 def round_number(value: Decimal | float | int) -> str:
@@ -201,7 +210,7 @@ def source_window(root: Path, asset: Asset, end: date, anchor: date,
     raw_dir.mkdir(parents=True, exist_ok=True)
     for symbol in asset.symbols:
         payload = fetch_yahoo(session, symbol, start, end)
-        rows = chart_rows(payload, require_adjusted=symbol not in ("^GSPC", "^SP500TR"))
+        rows = chart_rows(payload, require_adjusted=not symbol.startswith("^"))
         if not rows or max(rows) < anchor.isoformat():
             raise RuntimeError(f"{asset.stem}: {symbol} returned no overlap through {anchor}")
         path = raw_dir / f"{asset.stem}_{symbol.lstrip('^').lower()}.json"
@@ -244,6 +253,7 @@ def build_recent_rows(asset: Asset, root: Path, anchor: dict[str, str], end: dat
     if asset.base_stem:
         base = read_rows(root / "data" / "processed" / f"{asset.base_stem}.csv")
         dates = [row["Date"] for row in base if anchor_day < row["Date"] <= end.isoformat()]
+        base_returns = {row["Date"]: row["Total Return"] for row in base}
     elif asset.kind == "global_short_bond":
         dates = sorted({day for series in windows.values() for day in series if anchor_day < day <= end.isoformat()})
     else:
@@ -323,6 +333,14 @@ def build_recent_rows(asset: Asset, root: Path, anchor: dict[str, str], end: dat
             close_level *= Decimal("1") + price_ret
             adj_level *= Decimal("1") + total_ret
             row = new_row(day, close_level, adj_level, price_ret, total_ret, template)
+        elif asset.kind == "model2x":
+            config = leveraged_2x.CONFIGS[asset.stem]
+            irx = preceding_value(windows[leveraged_2x.IRX_SYMBOL], day, "close")
+            elapsed = Decimal((current_date - previous_date).days)
+            total_ret = leveraged_2x.synthetic_return(config, Decimal(base_returns[day]), irx, elapsed)
+            close_level *= Decimal("1") + total_ret
+            adj_level = close_level
+            row = new_row(day, close_level, adj_level, total_ret, total_ret, template)
         elif asset.kind == "gold2x":
             quote_row = windows["UGL"].get(day)
             if quote_row is None:

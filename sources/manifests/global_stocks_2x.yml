@@ -1,0 +1,48 @@
+asset_id: global_stocks_2x
+asset_name: 2x Daily-Reset Global Stocks, WLDU-like
+backtest_alias: GLSTOCK2X
+base_asset_id: global_stocks
+derived: true
+minimum_start_date: 1970-01-01
+target_frequency: daily
+output_contract: yahoo_compatible_ohlcv_plus_returns
+status: complete_model_derived
+current_dataset_status: synthetic_2x_daily_reset_model_from_1970_plus_observed_wldu_returns_from_2026
+target_definition: >
+  2x the daily total return of the GLSTOCK series, reset daily, net of financing on the
+  borrowed (1x) exposure and a Leverage Shares WLDU fee.
+reference_fund: Leverage Shares 2x Long World Stock Daily ETF
+model_parameters:
+  leverage: 2.0
+  expense_ratio: 0.0075
+  borrow_spread: 0.0080
+  financing_benchmark: "^IRX"
+  financing_day_count: 360
+  expense_day_count: 365
+  daily_reset_formula: "lev_ret = 2*u - 1*((IRX/100 + 0.0080)*days/360) - 0.0075*days/365"
+sources:
+  - name: GLSTOCK (global_stocks)
+    role: underlying_daily_total_return
+    status: active
+    url: data/processed/global_stocks.csv
+  - name: Yahoo Finance chart API ^IRX
+    role: financing_rate_benchmark_1970_present
+    status: active
+    url: https://query1.finance.yahoo.com/v8/finance/chart/%5EIRX
+  - name: Yahoo Finance chart API WLDU
+    role: observed_etf_return_source_and_calibration_target
+    status: active_from_2026
+    url: https://query1.finance.yahoo.com/v8/finance/chart/WLDU
+  - name: Leverage Shares 2x Long World Stock Daily ETF
+    role: parameter_reference
+    status: reference
+    url: https://leverageshares.com/us/etfs/leverage-shares-2x-long-world-stock-daily-etf/
+validation:
+  coverage_anchor_date: 1970-01-01
+  current_first_observation: 1970-01-02
+  live_overlap_target: WLDU
+automated_publication:
+  mode: incremental_from_committed_processed_csv
+  historical_raw_required: false
+  recent_source_validation: scripts/check_daily_diff.py
+  overlap_calendar_days: 14

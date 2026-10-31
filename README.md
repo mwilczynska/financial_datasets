@@ -37,7 +37,7 @@ daily_total_return = prices["Adj Close"].pct_change()
 ```
 
 USD cash distributions are published separately under
-[`data/processed/distributions/`](data/processed/distributions/) for all 13
+[`data/processed/distributions/`](data/processed/distributions/) for all 19
 investable assets and the exact funds used by the daily updater. The layer
 includes native fund payouts, synthetic USD-unit entitlements and payment
 timing, with observed/inferred/modeled evidence kept explicit. CSV and Parquet
@@ -79,6 +79,12 @@ dataset in different formats.
 | GLSTOCK | Global all-world stocks proxy | 1970-01-02 | 2026-10-27 | [CSV](data/processed/global_stocks.csv) | [Parquet](data/processed/global_stocks.parquet) | [GLSTOCK](docs/methodology_glstock.md) |
 | GLBOND | Unhedged global bonds proxy | 1970-01-02 | 2026-10-27 | [CSV](data/processed/global_bonds.csv) | [Parquet](data/processed/global_bonds.parquet) | [GLBOND](docs/methodology_glbond.md) |
 | GLSTBOND | Unhedged global short-term government bonds proxy | 1970-01-02 | 2026-10-27 | [CSV](data/processed/global_short_term_bonds.csv) | [Parquet](data/processed/global_short_term_bonds.parquet) | [GLSTBOND](docs/methodology_glstbond.md) |
+| USLCAP2X | 2x daily-reset U.S. large-cap series, SSO-like | 1970-01-02 | 2026-10-27 | [CSV](data/processed/us_large_cap_2x_sp500.csv) | [Parquet](data/processed/us_large_cap_2x_sp500.parquet) | [USLCAP2X](docs/methodology_uslcap2x.md) |
+| GLSTOCK2X | 2x daily-reset global all-world stocks, WLDU-like | 1970-01-02 | 2026-10-27 | [CSV](data/processed/global_stocks_2x.csv) | [Parquet](data/processed/global_stocks_2x.parquet) | [GLSTOCK2X](docs/methodology_glstock2x.md) |
+| GLBOND2X | 2x daily-reset unhedged global bonds, modeled with UST-style fees (no 2x fund exists) | 1970-01-02 | 2026-10-27 | [CSV](data/processed/global_bonds_2x.csv) | [Parquet](data/processed/global_bonds_2x.parquet) | [GLBOND2X](docs/methodology_glbond2x.md) |
+| STT2X | 2x daily-reset short-term Treasury, modeled with UST-style fees (no 2x fund exists) | 1970-01-02 | 2026-10-27 | [CSV](data/processed/short_term_us_treasury_2x.csv) | [Parquet](data/processed/short_term_us_treasury_2x.parquet) | [STT2X](docs/methodology_stt2x.md) |
+| ITT2X | 2x daily-reset intermediate-term Treasury, UST-like | 1970-01-02 | 2026-10-27 | [CSV](data/processed/intermediate_term_us_treasury_2x.csv) | [Parquet](data/processed/intermediate_term_us_treasury_2x.parquet) | [ITT2X](docs/methodology_itt2x.md) |
+| LTT2X | 2x daily-reset long-term Treasury, UBT-like | 1970-01-02 | 2026-10-27 | [CSV](data/processed/long_term_us_treasury_2x.csv) | [Parquet](data/processed/long_term_us_treasury_2x.parquet) | [LTT2X](docs/methodology_ltt2x.md) |
 
 The daily workflow regenerates these start and end dates from the processed
 CSVs after validation and commits the README alongside changed datasets.

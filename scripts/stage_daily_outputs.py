@@ -1,4 +1,4 @@
-"""Print the explicit publication allowlist for the 14 processed datasets."""
+"""Print the explicit publication allowlist for every processed dataset."""
 
 from __future__ import annotations
 

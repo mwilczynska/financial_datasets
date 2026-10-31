@@ -20,14 +20,14 @@ try:
     from .distribution_assets import ASSET_EVENT_COLUMNS, DAILY_COLUMNS, build_assets
     from .distribution_data import collect_funds, csv_bytes, normalized_numeric_rows, parquet_bytes, read_csv
     from .distribution_funds import EVENT_COLUMNS, PRICE_COLUMNS
-    from .distribution_models import ASSETS, SUMMARY_COLUMNS, calibrate, calibration_summary
+    from .distribution_models import ASSETS, SUMMARY_COLUMNS, calibrate, calibration_summary, extend_models
     from .distribution_sources import FUNDS, ZERO_POLICY_FUNDS, SourceCache, decimal_text
     from .build_global_short_term_bonds import JST_URL, parse_jst_rows, us_weight_by_year
 except ImportError:
     from distribution_assets import ASSET_EVENT_COLUMNS, DAILY_COLUMNS, build_assets
     from distribution_data import collect_funds, csv_bytes, normalized_numeric_rows, parquet_bytes, read_csv
     from distribution_funds import EVENT_COLUMNS, PRICE_COLUMNS
-    from distribution_models import ASSETS, SUMMARY_COLUMNS, calibrate, calibration_summary
+    from distribution_models import ASSETS, SUMMARY_COLUMNS, calibrate, calibration_summary, extend_models
     from distribution_sources import FUNDS, ZERO_POLICY_FUNDS, SourceCache, decimal_text
     from build_global_short_term_bonds import JST_URL, parse_jst_rows, us_weight_by_year
 
@@ -62,6 +62,12 @@ def check_current_fund_configuration() -> None:
     if current != set(FUNDS):
         raise ValueError("Cash source funds have drifted from the current daily updater")
     for spec in ASSETS:
+        if spec.family == "modeled_leveraged":
+            # Fundless 2x exposures update from ^IRX; their cash proxy must
+            # itself be a current source fund.
+            if not set(spec.funds) <= current:
+                raise ValueError(f"{spec.alias}: cash proxy is not a current source fund")
+            continue
         expected = () if spec.alias == "USLCAP" else daily_sources[spec.stem].symbols
         if spec.funds != expected:
             raise ValueError(f"{spec.alias}: cash constituents differ from the current daily updater")
@@ -248,7 +254,9 @@ def run_build(root: Path, end: date, *, full: bool = False, offline: bool = Fals
     old = json.loads(manifest_path.read_text(encoding="utf-8")) if manifest_path.exists() else {}
     today = datetime.now(timezone.utc).date()
     last_full = date.fromisoformat(old["last_full_source_check"]) if old else None
-    full = full or not old or (today - last_full).days >= FULL_RECONCILIATION_INTERVAL_DAYS
+    # A newly added source fund needs its complete quote and cash history.
+    new_funds = set(FUNDS) - set(old.get("latest_sources", {}).get("funds", {})) if old else set()
+    full = full or not old or bool(new_funds) or (today - last_full).days >= FULL_RECONCILIATION_INTERVAL_DAYS
     if old and end.isoformat() < old["requested_end_date"]:
         raise ValueError("An incremental distribution build cannot truncate published history")
     histories = {spec.alias: [row for row in read_csv(root / f"data/processed/{spec.stem}.csv")
@@ -268,7 +276,10 @@ def run_build(root: Path, end: date, *, full: bool = False, offline: bool = Fals
     weights, weight_source = load_weights(root, end.year, offline=offline)
     if old and not recalibrate:
         params = old["model_parameters"]
-        _, annual = calibrate(histories, events, prices, params["calibration_cutoff"])
+        fresh, annual = calibrate(histories, events, prices, params["calibration_cutoff"])
+        added = [fund for fund in FUNDS if fund not in params["fund_models"]]
+        if added:
+            params = extend_models(params, fresh, added)
     else:
         params, annual = calibrate(histories, events, prices, date(end.year - 1, 12, 31).isoformat())
     asset_outputs, asset_events, audit = build_assets(histories, events, prices, params, weights)

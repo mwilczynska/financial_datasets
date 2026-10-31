@@ -22,6 +22,12 @@ The public repository excludes downloaded files under `sources/raw/`. A fresh ch
 | LTT3X | `^IRX` for historical leverage model | Yahoo TMF, refreshed LTT dependency |
 | ITT3X | `^IRX` for historical leverage model | Yahoo TYD, refreshed ITT dependency |
 | GOLD2X | `^IRX` and preserved spot inputs through UGL inception | Yahoo UGL, refreshed GOLDPM dependency |
+| USLCAP2X | `^IRX` for historical leverage model | Yahoo SSO, refreshed USLCAP dependency |
+| GLSTOCK2X | `^IRX` for historical leverage model | Yahoo WLDU, refreshed GLSTOCK dependency |
+| GLBOND2X | None; every row is modeled | Yahoo `^IRX`, refreshed GLBOND dependency |
+| STT2X | None; every row is modeled | Yahoo `^IRX`, refreshed STT dependency |
+| ITT2X | `^IRX` for historical leverage model | Yahoo UST, refreshed ITT dependency |
+| LTT2X | `^IRX` for historical leverage model | Yahoo UBT, refreshed LTT dependency |
 
 ## CPI delivery fallback
 

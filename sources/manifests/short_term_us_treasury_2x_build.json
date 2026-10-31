@@ -1,0 +1,28 @@
+{
+  "asset_id": "short_term_us_treasury_2x",
+  "alias": "STT2X",
+  "base_asset_id": "short_term_us_treasury",
+  "leverage": 2.0,
+  "expense_ratio": 0.0095,
+  "borrow_spread": -0.0033,
+  "financing_benchmark": "^IRX",
+  "observed_etf": null,
+  "reference_fund": "none (modeled with ProShares UST parameters)",
+  "build_timestamp_utc": "2026-10-31T17:56:55.998148+00:00",
+  "row_count": 14251,
+  "first_date": "1970-01-02",
+  "last_date": "2026-10-27",
+  "synthetic_rows": 14251,
+  "observed_etf_rows": 0,
+  "csv_path": "data/processed/short_term_us_treasury_2x.csv",
+  "csv_sha256": "a115bf1bf82443c3f4cfa65ecb8aa716f1008cb77d14190b2738e53e59957220",
+  "parquet_written": true,
+  "quality_flags": [
+    "model_2x_daily_reset_synthetic_from_stt_total_return_minus_financing_and_proshares_treasury_style_fee"
+  ],
+  "calibration_vs_etf_overlap": {
+    "overlap_days": 0,
+    "etf_inception": null
+  },
+  "notes": "Synthetic 2x daily-reset total-return NAV: lev_ret = 2*STT_total_return - 1*(^IRX/100+-0.0033)*days/360 - 0.0095*days/365. Close == Adj Close. Model-derived, not observed fund history; no 2x fund exists."
+}

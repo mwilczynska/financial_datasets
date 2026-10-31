@@ -6,6 +6,7 @@ import hashlib
 import json
 import sys
 from datetime import date, timedelta
+from decimal import Decimal
 from pathlib import Path
 
 import pytest
@@ -121,3 +122,39 @@ def test_cpi_session_outlasts_short_bls_outage() -> None:
         retry = retry.new(total=retry.total - 1, history=history)
         waits.append(retry.get_backoff_time())
     assert sum(waits) >= 180
+
+
+def test_fundless_2x_extends_daily_reset_model_from_base_and_irx(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    import leveraged_2x
+    stem = "short_term_us_treasury_2x"
+    config = leveraged_2x.CONFIGS[stem]
+    processed = tmp_path / "data" / "processed"
+    manifests = tmp_path / "sources" / "manifests"
+    processed.mkdir(parents=True)
+    manifests.mkdir(parents=True)
+    first = date(2026, 8, 3)
+    days = [(first + timedelta(days=index)).isoformat() for index in range(40)]
+    base = [{**{key: "" for key in update.OUTPUT_COLUMNS}, "Date": day, "Close": "100", "Adj Close": "100",
+             "Total Return": "" if index == 0 else "0.0004"} for index, day in enumerate(days)]
+    update.write_rows(processed / f"{config.base_asset_id}.csv", base)
+    irx = {day: {"close": 4.0, "adj": 4.0} for day in days}
+    level = Decimal("100")
+    rows = []
+    for index, day in enumerate(days[:25]):
+        ret = "" if index == 0 else leveraged_2x.synthetic_return(config, Decimal("0.0004"), 4.0, Decimal(1))
+        if index:
+            level *= 1 + ret
+        rows.append(leveraged_2x._row(day, level, ret, config.synth_flag, config.synth_source, config.synth_notes))
+    path = processed / f"{stem}.csv"
+    update.write_rows(path, rows)
+    update.write_parquet(path, processed / f"{stem}.parquet")
+    (manifests / f"{stem}_build.json").write_text(json.dumps({"asset_id": stem}), encoding="utf-8")
+    original = update.read_rows(path)
+    monkeypatch.setattr(update, "source_window", lambda *args: ({"^IRX": irx}, {"^IRX": {"sha256": "fixture"}}))
+    assert update.update_asset(stem, tmp_path, date.fromisoformat(days[-1]), session=object())
+    updated = update.read_rows(path)
+    assert len(updated) == 40 and updated[:25] == original
+    expected = leveraged_2x.synthetic_return(config, Decimal("0.0004"), 4.0, Decimal(1))
+    assert all(abs(Decimal(row["Total Return"]) - expected) <= Decimal("1e-10") for row in updated[1:])
+    assert {row["Quality Flag"] for row in updated} == {config.synth_flag}
+    assert not update.update_asset(stem, tmp_path, date.fromisoformat(days[-1]), session=object())

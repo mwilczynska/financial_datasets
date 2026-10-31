@@ -15,6 +15,12 @@ This file is an index. Each dataset has its own methodology file in `docs/`.
 | `USLCAP3X` | 3x Daily-Reset U.S. Large Cap (UPRO-like) | [methodology_uslcap3x.md](methodology_uslcap3x.md) | complete model-derived; derived 3x daily-reset model from USLCAP (1970-2009), observed UPRO returns from 2009 |
 | `LTT3X` | 3x Daily-Reset Long-Term Treasury (TMF-like) | [methodology_ltt3x.md](methodology_ltt3x.md) | complete model-derived; derived 3x daily-reset model from LTT (1970-2009), observed TMF returns from 2009 |
 | `ITT3X` | 3x Daily-Reset Intermediate-Term Treasury (TYD-like) | [methodology_itt3x.md](methodology_itt3x.md) | complete model-derived; derived 3x daily-reset model from ITT (1970-2009), observed TYD returns from 2009 |
+| `USLCAP2X` | 2x Daily-Reset U.S. Large Cap (SSO-like) | [methodology_uslcap2x.md](methodology_uslcap2x.md) | complete model-derived; 2x daily-reset model from USLCAP (1970-2006), observed SSO returns from 2006 |
+| `GLSTOCK2X` | 2x Daily-Reset Global Stocks (WLDU-like) | [methodology_glstock2x.md](methodology_glstock2x.md) | complete model-derived; 2x daily-reset model from GLSTOCK (1970-2026), observed WLDU returns from 2026-03 |
+| `GLBOND2X` | 2x Daily-Reset Global Bonds (modeled) | [methodology_glbond2x.md](methodology_glbond2x.md) | model-derived on every row with UST fee and spread; no 2x fund exists |
+| `STT2X` | 2x Daily-Reset Short-Term Treasury (modeled) | [methodology_stt2x.md](methodology_stt2x.md) | model-derived on every row with UST fee and spread; no 2x fund exists |
+| `ITT2X` | 2x Daily-Reset Intermediate-Term Treasury (UST-like) | [methodology_itt2x.md](methodology_itt2x.md) | complete model-derived; 2x daily-reset model from ITT (1970-2010), observed UST returns from 2010 |
+| `LTT2X` | 2x Daily-Reset Long-Term Treasury (UBT-like) | [methodology_ltt2x.md](methodology_ltt2x.md) | complete model-derived; 2x daily-reset model from LTT (1970-2010), observed UBT returns from 2010 |
 | `GOLD2X` | 2x Daily-Reset Gold (UGL-like) | [methodology_gold2x.md](methodology_gold2x.md) | preserved spot model through 2008-12-03; observed UGL afterward; modern GLD returns are not the leveraged-model input |
 | `CPI` | U.S. CPI-U Inflation Index | [methodology_cpi.md](methodology_cpi.md) | complete model-derived daily deflator from monthly BLS CPI-U |
 | `GLSTOCK` | Global All-World Stocks | [methodology_glstock.md](methodology_glstock.md) | complete model-derived public-source proxy; USLCAP/MSCI annual model -> French developed daily -> VT |

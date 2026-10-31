@@ -1,5 +1,11 @@
 {
   "calibration_cutoff": "2025-12-31",
+  "extended_funds": [
+    "SSO",
+    "UBT",
+    "UST",
+    "WLDU"
+  ],
   "fund_models": {
     "BND": {
       "calibration_years": [
@@ -615,6 +621,65 @@
       },
       "slope": "1"
     },
+    "SSO": {
+      "calibration_years": [
+        2007,
+        2008,
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "feature": "STT",
+      "feature_max": "0.043377523906",
+      "feature_min": "0.002600005106",
+      "hindsight_backfill": true,
+      "intercept": "0.00073453776815342351016726986905976024038",
+      "mean_absolute_residual": "0.004904572941033892575196161821501175362893",
+      "median": "0.005743511776",
+      "method": "nonnegative_cash_linear_income_state",
+      "response_definition": "Sum of daily cash/preceding-price contributions; not buy-and-hold cash yield.",
+      "response_max": "0.051082330921",
+      "response_min": "0.00181140751",
+      "seasonality": {
+        "ex_days": {
+          "12": [
+            23
+          ],
+          "3": [
+            23
+          ],
+          "6": [
+            24
+          ],
+          "9": [
+            24
+          ]
+        },
+        "lag_basis": "median_observed_issuer_lag",
+        "month_weights": {
+          "12": "0.4647321936280700852960475638140622601511",
+          "3": "0.2176167521956636447559860367951064566629",
+          "6": "0.17318316949337621119631505137075874175",
+          "9": "0.144467884682890058751651348020072541436"
+        },
+        "payment_lag_days": 7
+      },
+      "slope": "0.4423814072637218313105038614930449270212"
+    },
     "TLT": {
       "calibration_years": [
         2003,
@@ -819,6 +884,61 @@
       },
       "slope": "0.2335163947507554789610056087433267171917"
     },
+    "UBT": {
+      "calibration_years": [
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "feature": "STT",
+      "feature_max": "0.039093361673",
+      "feature_min": "0.002600005106",
+      "hindsight_backfill": true,
+      "intercept": "-0.00071868992863512583748106506432995252206",
+      "mean_absolute_residual": "0.003889399600704761390438312868763420659617",
+      "median": "0.009219295246",
+      "method": "nonnegative_cash_linear_income_state",
+      "response_definition": "Sum of daily cash/preceding-price contributions; not buy-and-hold cash yield.",
+      "response_max": "0.040846332088",
+      "response_min": "0",
+      "seasonality": {
+        "ex_days": {
+          "12": [
+            23
+          ],
+          "3": [
+            22
+          ],
+          "6": [
+            24
+          ],
+          "9": [
+            24
+          ]
+        },
+        "lag_basis": "median_observed_issuer_lag",
+        "month_weights": {
+          "12": "0.2655594728355876262489131611902870107445",
+          "3": "0.1977134902178439269919557973754249255623",
+          "6": "0.2960331900409453744431876204410130529216",
+          "9": "0.2406938469056230723159434209932750107716"
+        },
+        "payment_lag_days": 7
+      },
+      "slope": "1.019097736392642684397780188642505986015"
+    },
     "UGL": {
       "calibration_years": [
         2009,
@@ -911,6 +1031,61 @@
       },
       "slope": "0.2602646430001256775972425463648743597195"
     },
+    "UST": {
+      "calibration_years": [
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "feature": "STT",
+      "feature_max": "0.039093361673",
+      "feature_min": "0.002600005106",
+      "hindsight_backfill": true,
+      "intercept": "0.00347920773054772662600705890579036587125",
+      "mean_absolute_residual": "0.007263044261550610109728737277597470758093",
+      "median": "0.007435715462",
+      "method": "nonnegative_cash_linear_income_state",
+      "response_definition": "Sum of daily cash/preceding-price contributions; not buy-and-hold cash yield.",
+      "response_max": "0.050610355114",
+      "response_min": "0",
+      "seasonality": {
+        "ex_days": {
+          "12": [
+            23
+          ],
+          "3": [
+            23
+          ],
+          "6": [
+            23
+          ],
+          "9": [
+            24
+          ]
+        },
+        "lag_basis": "median_observed_issuer_lag",
+        "month_weights": {
+          "12": "0.3112710041581177422669726495115675859235",
+          "3": "0.2259460107627530012099728943102081216297",
+          "6": "0.2021025726952671879435712387701424339961",
+          "9": "0.2606804123838620685794832174080818584507"
+        },
+        "payment_lag_days": 7
+      },
+      "slope": "0.830892330832808164667462223995520078742"
+    },
     "VT": {
       "calibration_years": [
         2009,
@@ -968,6 +1143,46 @@
         "payment_lag_days": 3
       },
       "slope": "0"
+    },
+    "WLDU": {
+      "calibration_years": [],
+      "feature": "STT",
+      "feature_max": "0.043377523906",
+      "feature_min": "0.002600005106",
+      "hindsight_backfill": true,
+      "intercept": "0.00073453776815342351016726986905976024038",
+      "mean_absolute_residual": "0.004904572941033892575196161821501175362893",
+      "median": "0.005743511776",
+      "method": "nonnegative_cash_linear_income_state",
+      "payout_model_proxy": "SSO",
+      "response_definition": "Sum of daily cash/preceding-price contributions; not buy-and-hold cash yield.",
+      "response_max": "0.051082330921",
+      "response_min": "0.00181140751",
+      "seasonality": {
+        "ex_days": {
+          "12": [
+            23
+          ],
+          "3": [
+            23
+          ],
+          "6": [
+            24
+          ],
+          "9": [
+            24
+          ]
+        },
+        "lag_basis": "median_observed_issuer_lag",
+        "month_weights": {
+          "12": "0.4647321936280700852960475638140622601511",
+          "3": "0.2176167521956636447559860367951064566629",
+          "6": "0.17318316949337621119631505137075874175",
+          "9": "0.144467884682890058751651348020072541436"
+        },
+        "payment_lag_days": 7
+      },
+      "slope": "0.4423814072637218313105038614930449270212"
     }
   },
   "index_reference": {
@@ -1019,5 +1234,5 @@
   },
   "method_version": "usd_cash_v1",
   "scope": "Retrospective hypothetical payout backfills; not point-in-time forecasts or observed pre-fund history.",
-  "version": "usd_cash_v1:fb732cef312d"
+  "version": "usd_cash_v1:c85300c888bc"
 }
