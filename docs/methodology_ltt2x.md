@@ -30,6 +30,12 @@ Reference fund: **ProShares Ultra 20+ Year Treasury**.
 | Update script | `src/update_long_term_us_treasury_2x.py` |
 | Tests | `tests/validation/test_leveraged_2x_contract.py` |
 
+## Coverage
+
+- First observation: `1970-01-02` (base level 100).
+- Last observation: the latest `LTT` date. The README table and build metadata give current dates and row counts.
+- Initial build snapshot (2026-10-31, data through 2026-10-27): 14,267 rows; 10,050 synthetic, 4,217 observed UBT.
+
 ## Sources
 
 - **Underlying** (`active`): `LTT` (`data/processed/long_term_us_treasury.csv`) `Total Return`. LTT TLT-like long Treasury total return (Fed 25-year par model, VUSTX, then TLT).

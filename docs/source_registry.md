@@ -524,7 +524,7 @@ ProShares **UST** is a **2x** fund despite the backlog's "3x UST" label.
 - Status: `rejected`
 - URL: https://www.proshares.com/our-etfs/leveraged-and-inverse/ust
 - Role: none for ITT3X. UST is ProShares Ultra 7-10 Year Treasury, a **2x** fund (not 3x); it is
-  the future validation target for a separate `ITT2X` (2x) dataset.
+  the reference fund for the separate `ITT2X` (2x) dataset below.
 
 ## 2x datasets / USLCAP2X, GLSTOCK2X, GLBOND2X, STT2X, ITT2X, LTT2X
 

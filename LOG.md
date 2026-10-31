@@ -1,5 +1,25 @@
 # Project Log
 
+## 2026-10-31 — 2x daily-reset datasets
+
+- Added six 2x datasets built by `src/leveraged_2x.py`, matched to current funds
+  checked on 2026-10-31: `USLCAP2X` (ProShares SSO, net 0.84%), `GLSTOCK2X`
+  (Leverage Shares WLDU, 2x VT, 0.75%), `ITT2X` (ProShares UST, net 0.95%) and
+  `LTT2X` (ProShares UBT, net 0.95%). Synthetic history uses
+  `2*u - (IRX/100 + spread)*days/360 - fee*days/365`; observed fund returns
+  follow inception. Calibrated spreads: SSO 0.80%, UST -0.33%, UBT -0.35%.
+  The Treasury spreads are negative mainly because the base datasets are net of
+  IEF/TLT fees that 2x leverage doubles. WLDU (from 2026-03-10) is too new to
+  calibrate and uses SSO's spread.
+- No 2x global bond or 2x 1-3 year Treasury fund exists. `GLBOND2X` and `STT2X`
+  are modeled on every row with UST's fee and spread and refresh daily from
+  their base dataset and `^IRX`; the publication gate recomputes those rows.
+- SSO, WLDU, UST and UBT joined the USD cash companions (19 assets, 18 source
+  funds). New fund models extend the frozen payout parameters without refitting
+  existing ones, so the 13 existing companions kept identical values (only
+  their model version label changed). WLDU borrows SSO's payout model until it
+  has complete years; the fundless series use UST's payout model as a proxy.
+
 ## 2026-10-24 — CPI outage recovery and current refresh flow
 
 - [PR #6](https://github.com/mwilczynska/financial_datasets/pull/6) added the

@@ -14250,3 +14250,6 @@ Date,Asset,Currency,Unit Price USD,Total Return,Distribution Return,Return Ex Di
 2026-10-23,STT2X,USD,803.12843983,-0.0006194555,0,-0.0006194555,0,0,0,0,modeled,modeled_no_scheduled_payout,usd_cash_v1:c85300c888bc
 2026-10-26,STT2X,USD,802.4243258,-0.0008767141,0,-0.0008767141,0,0,0,0,modeled,modeled_no_scheduled_payout,usd_cash_v1:c85300c888bc
 2026-10-27,STT2X,USD,801.72973335,-0.0008656174,0,-0.0008656174,0,0,0,0,modeled,modeled_no_scheduled_payout,usd_cash_v1:c85300c888bc
+2026-10-28,STT2X,USD,802.0210586,0.0003633709,0,0.0003633709,0,0,0,0,modeled,modeled_no_scheduled_payout,usd_cash_v1:c85300c888bc
+2026-10-29,STT2X,USD,804.08424101,0.0025724791,0,0.0025724791,0,0,0,0,modeled,modeled_no_scheduled_payout,usd_cash_v1:c85300c888bc
+2026-10-30,STT2X,USD,806.34738114,0.002814556,0,0.002814556,0,0,0,0,modeled,modeled_no_scheduled_payout,usd_cash_v1:c85300c888bc

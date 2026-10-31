@@ -11,7 +11,7 @@
 The project backlog originally labelled "UST" as the 3x intermediate-Treasury ETF. UST
 (ProShares Ultra 7-10 Year Treasury) is in fact a **2x** fund. The genuine **3x** 7-10 year
 Treasury ETF is **TYD** (Direxion Daily 7-10 Year Treasury Bull 3X Shares), which is the
-calibration/validation target here. UST is the future target for a separate `ITT2X` (2x) dataset.
+calibration/validation target here. UST is the reference fund for the separate [`ITT2X`](methodology_itt2x.md) (2x) dataset.
 
 ## Asset definition
 
@@ -136,5 +136,5 @@ The ordinary update starts from the committed processed CSV, fetches a 14-calend
   `LTT3X` synthetic (~650) over the same period — because intermediate Treasuries were much less
   volatile than long bonds through the 1970s-80s rate spikes, so 3x daily compounding decayed far
   less. This illustrates how leverage decay depends on underlying volatility.
-- A future upgrade could replace the `^IRX`+spread financing model with a fed-funds/OIS series and
-  add the `ITT2X` (UST, 2x) companion.
+- A future upgrade could replace the `^IRX`+spread financing model with a fed-funds/OIS series.
+  The 2x companion is [`ITT2X`](methodology_itt2x.md) (UST).

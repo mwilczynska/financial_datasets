@@ -30,6 +30,12 @@ Reference fund: **Leverage Shares 2x Long World Stock Daily ETF**.
 | Update script | `src/update_global_stocks_2x.py` |
 | Tests | `tests/validation/test_leveraged_2x_contract.py` |
 
+## Coverage
+
+- First observation: `1970-01-02` (base level 100).
+- Last observation: the latest `GLSTOCK` date. The README table and build metadata give current dates and row counts.
+- Initial build snapshot (2026-10-31, data through 2026-10-27): 14,486 rows; 14,326 synthetic, 160 observed WLDU.
+
 ## Sources
 
 - **Underlying** (`active`): `GLSTOCK` (`data/processed/global_stocks.csv`) `Total Return`. GLSTOCK global all-world equity total return; VT adjusted-close returns from 2008-06-27.

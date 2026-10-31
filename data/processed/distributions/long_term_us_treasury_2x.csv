@@ -14266,3 +14266,6 @@ Date,Asset,Currency,Unit Price USD,Total Return,Distribution Return,Return Ex Di
 2026-10-23,LTT2X,USD,134.63745925,-0.0075137027,0,-0.0075137027,0,0,0,0,observed,observed_no_vendor_cash_event,
 2026-10-26,LTT2X,USD,135.93472634,0.0096352612,0,0.0096352612,0,0,0,0,observed,observed_no_vendor_cash_event,
 2026-10-27,LTT2X,USD,135.56407986,-0.0027266504,0,-0.0027266504,0,0,0,0,observed,observed_no_vendor_cash_event,
+2026-10-28,LTT2X,USD,133.34020099,-0.0164046322,0,-0.0164046322,0,0,0,0,observed,observed_no_vendor_cash_event,
+2026-10-29,LTT2X,USD,134.54480426,0.0090340592,0,0.0090340592,0,0,0,0,observed,observed_no_vendor_cash_event,
+2026-10-30,LTT2X,USD,135.93472634,0.0103305519,0,0.0103305519,0,0,0,0,observed,observed_no_vendor_cash_event,

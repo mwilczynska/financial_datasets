@@ -30,6 +30,12 @@ Reference fund: **none (modeled with ProShares UST parameters)**.
 | Update script | `src/update_global_bonds_2x.py` |
 | Tests | `tests/validation/test_leveraged_2x_contract.py` |
 
+## Coverage
+
+- First observation: `1970-01-02` (base level 100).
+- Last observation: the latest `GLBOND` date. The README table and build metadata give current dates and row counts.
+- Initial build snapshot (2026-10-31, data through 2026-10-27): 14,326 rows; 14,326 synthetic, 0 observed.
+
 ## Sources
 
 - **Underlying** (`active`): `GLBOND` (`data/processed/global_bonds.csv`) `Total Return`. GLBOND unhedged global bond total return; 45% BND + 55% BWX from 2007-10-12.

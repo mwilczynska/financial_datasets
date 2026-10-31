@@ -1,6 +1,6 @@
 # Daily dataset refresh operations
 
-The [daily workflow](../../.github/workflows/daily-refresh.yml) extends all 14
+The [daily workflow](../../.github/workflows/daily-refresh.yml) extends all 20
 datasets from their committed processed CSVs. Ordinary refreshes do not need
 historical raw caches; full rebuilds and source-backed historical tests use
 those inputs. Source definitions and acceptance rules are
@@ -24,13 +24,13 @@ The publisher performs these steps in order:
 1. Check out `main`, install pinned dependencies, and select the inclusive target date.
 2. Run `python src/update_all_datasets.py --end-date YYYY-MM-DD` in dependency order.
    All updates must succeed before `tests/validation` and `tests/automation` run.
-3. Run `python scripts/check_daily_diff.py --end-date YYYY-MM-DD` across all 14
+3. Run `python scripts/check_daily_diff.py --end-date YYYY-MM-DD` across all 20
    datasets, including unchanged files. It checks preserved history, CSV/Parquet
    agreement, metadata, source values, freshness, and return arithmetic.
 4. Synchronize and check the README dataset dates.
 5. Reject unexpected tracked changes, stage only the explicit
    [publication allowlist](../../scripts/stage_daily_outputs.py), and commit/push
-   validated outputs. The allowlist covers CSV/Parquet pairs, 14 build manifests,
+   validated outputs. The allowlist covers CSV/Parquet pairs, 20 build manifests,
    and `README.md`; downloaded raw sources remain excluded.
 
 An update or validation failure skips publication. Any temporary updates from

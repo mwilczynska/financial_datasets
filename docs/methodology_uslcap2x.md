@@ -30,6 +30,12 @@ Reference fund: **ProShares Ultra S&P500**.
 | Update script | `src/update_us_large_cap_2x_sp500.py` |
 | Tests | `tests/validation/test_leveraged_2x_contract.py` |
 
+## Coverage
+
+- First observation: `1970-01-02` (base level 100).
+- Last observation: the latest `USLCAP` date. The README table and build metadata give current dates and row counts.
+- Initial build snapshot (2026-10-31, data through 2026-10-27): 14,327 rows; 9,208 synthetic, 5,119 observed SSO.
+
 ## Sources
 
 - **Underlying** (`active`): `USLCAP` (`data/processed/us_large_cap_sp500.csv`) `Total Return`. S&P 500 daily total return (French/CRSP large cap before ^SP500TR, then ^SP500TR).
