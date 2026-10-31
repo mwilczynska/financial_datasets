@@ -7,8 +7,8 @@ Accessed: 2026-06-17
 The project backlog originally listed "UST" as the 3x intermediate-Treasury ETF. This is
 incorrect: **UST** (ProShares Ultra 7-10 Year Treasury) is a **2x** fund. The genuine **3x**
 7-10 year Treasury ETF is **TYD** (Direxion Daily 7-10 Year Treasury Bull 3X Shares), which is
-therefore the calibration and validation target for this 3x dataset. UST is the future target
-for a separate `ITT2X` (2x) dataset.
+therefore the calibration and validation target for this 3x dataset. UST is the reference fund
+for the separate `ITT2X` (2x) dataset (`intermediate_term_us_treasury_2x`).
 
 ## ITT base dataset (intermediate_term_us_treasury)
 
@@ -61,5 +61,5 @@ for a separate `ITT2X` (2x) dataset.
 
 - URL: https://www.proshares.com/our-etfs/leveraged-and-inverse/ust
 - Finding: UST is ProShares Ultra 7-10 Year Treasury, a **2x** fund (inception 2010-01), not 3x.
-- Decision: not used for this 3x dataset; documented as the future validation target for a
-  separate `ITT2X` (2x) dataset.
+- Decision: not used for this 3x dataset; it is the reference fund for the
+  separate `ITT2X` (2x) dataset (`intermediate_term_us_treasury_2x`).

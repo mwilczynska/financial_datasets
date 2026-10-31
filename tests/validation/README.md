@@ -13,7 +13,7 @@ Initial focus:
 
 ## Public checkout
 
-The public release includes generated datasets but not downloaded source caches by default. Historical source-backed tests may skip when their required raw input is absent, with an explicit reason. Running the same suite after retrieving the raw inputs executes those checks. The daily publisher also runs `tests/automation`, where any skipped check blocks publication, and the mandatory current-source gate across all 14 datasets.
+The public release includes generated datasets but not downloaded source caches by default. Historical source-backed tests may skip when their required raw input is absent, with an explicit reason. Running the same suite after retrieving the raw inputs executes those checks. The daily publisher also runs `tests/automation`, where any skipped check blocks publication, and the mandatory current-source gate across all 20 datasets.
 
 Daily updates do not refresh historical raw caches. A local cache can therefore
 lag newly published processed rows, particularly for full-history GLD/UGL

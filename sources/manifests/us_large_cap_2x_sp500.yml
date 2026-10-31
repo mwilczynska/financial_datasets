@@ -1,0 +1,48 @@
+asset_id: us_large_cap_2x_sp500
+asset_name: 2x Daily-Reset U.S. Large Cap, SSO-like
+backtest_alias: USLCAP2X
+base_asset_id: us_large_cap_sp500
+derived: true
+minimum_start_date: 1970-01-01
+target_frequency: daily
+output_contract: yahoo_compatible_ohlcv_plus_returns
+status: complete_model_derived
+current_dataset_status: synthetic_2x_daily_reset_model_from_1970_plus_observed_sso_returns_from_2006
+target_definition: >
+  2x the daily total return of the USLCAP series, reset daily, net of financing on the
+  borrowed (1x) exposure and a ProShares SSO fee.
+reference_fund: ProShares Ultra S&P500
+model_parameters:
+  leverage: 2.0
+  expense_ratio: 0.0084
+  borrow_spread: 0.0080
+  financing_benchmark: "^IRX"
+  financing_day_count: 360
+  expense_day_count: 365
+  daily_reset_formula: "lev_ret = 2*u - 1*((IRX/100 + 0.0080)*days/360) - 0.0084*days/365"
+sources:
+  - name: USLCAP (us_large_cap_sp500)
+    role: underlying_daily_total_return
+    status: active
+    url: data/processed/us_large_cap_sp500.csv
+  - name: Yahoo Finance chart API ^IRX
+    role: financing_rate_benchmark_1970_present
+    status: active
+    url: https://query1.finance.yahoo.com/v8/finance/chart/%5EIRX
+  - name: Yahoo Finance chart API SSO
+    role: observed_etf_return_source_and_calibration_target
+    status: active_from_2006
+    url: https://query1.finance.yahoo.com/v8/finance/chart/SSO
+  - name: ProShares Ultra S&P500
+    role: parameter_reference
+    status: reference
+    url: https://www.proshares.com/our-etfs/leveraged-and-inverse/sso
+validation:
+  coverage_anchor_date: 1970-01-01
+  current_first_observation: 1970-01-02
+  live_overlap_target: SSO
+automated_publication:
+  mode: incremental_from_committed_processed_csv
+  historical_raw_required: false
+  recent_source_validation: scripts/check_daily_diff.py
+  overlap_calendar_days: 14

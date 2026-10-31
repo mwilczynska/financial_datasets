@@ -35,6 +35,16 @@ prices = pd.read_parquet(
 ).set_index("Date")
 daily_total_return = prices["Adj Close"].pct_change()
 ```
+
+USD cash distributions are published separately under
+[`data/processed/distributions/`](data/processed/distributions/) for all 19
+investable assets and the exact funds used by the daily updater. The layer
+includes native fund payouts, synthetic USD-unit entitlements and payment
+timing, with observed/inferred/modeled evidence kept explicit. CSV and Parquet
+use lossless decimal strings. Read the
+[distribution contract and methodology](docs/methodology_distributions.md)
+and run `python examples/usd_distributions.py --fund SHY --shares 100 --start
+2025-01-01 --end 2025-12-31` for a consumer example.
 ## What this project does
 
 The pipeline extends short live histories into long-horizon daily research
@@ -69,6 +79,12 @@ dataset in different formats.
 | GLSTOCK | Global all-world stocks proxy | 1970-01-02 | 2026-10-30 | [CSV](data/processed/global_stocks.csv) | [Parquet](data/processed/global_stocks.parquet) | [GLSTOCK](docs/methodology_glstock.md) |
 | GLBOND | Unhedged global bonds proxy | 1970-01-02 | 2026-10-30 | [CSV](data/processed/global_bonds.csv) | [Parquet](data/processed/global_bonds.parquet) | [GLBOND](docs/methodology_glbond.md) |
 | GLSTBOND | Unhedged global short-term government bonds proxy | 1970-01-02 | 2026-10-30 | [CSV](data/processed/global_short_term_bonds.csv) | [Parquet](data/processed/global_short_term_bonds.parquet) | [GLSTBOND](docs/methodology_glstbond.md) |
+| USLCAP2X | 2x daily-reset U.S. large-cap series, SSO-like | 1970-01-02 | 2026-10-30 | [CSV](data/processed/us_large_cap_2x_sp500.csv) | [Parquet](data/processed/us_large_cap_2x_sp500.parquet) | [USLCAP2X](docs/methodology_uslcap2x.md) |
+| GLSTOCK2X | 2x daily-reset global all-world stocks, WLDU-like | 1970-01-02 | 2026-10-30 | [CSV](data/processed/global_stocks_2x.csv) | [Parquet](data/processed/global_stocks_2x.parquet) | [GLSTOCK2X](docs/methodology_glstock2x.md) |
+| GLBOND2X | 2x daily-reset unhedged global bonds, modeled with UST-style fees (no 2x fund exists) | 1970-01-02 | 2026-10-30 | [CSV](data/processed/global_bonds_2x.csv) | [Parquet](data/processed/global_bonds_2x.parquet) | [GLBOND2X](docs/methodology_glbond2x.md) |
+| STT2X | 2x daily-reset short-term Treasury, modeled with UST-style fees (no 2x fund exists) | 1970-01-02 | 2026-10-30 | [CSV](data/processed/short_term_us_treasury_2x.csv) | [Parquet](data/processed/short_term_us_treasury_2x.parquet) | [STT2X](docs/methodology_stt2x.md) |
+| ITT2X | 2x daily-reset intermediate-term Treasury, UST-like | 1970-01-02 | 2026-10-30 | [CSV](data/processed/intermediate_term_us_treasury_2x.csv) | [Parquet](data/processed/intermediate_term_us_treasury_2x.parquet) | [ITT2X](docs/methodology_itt2x.md) |
+| LTT2X | 2x daily-reset long-term Treasury, UBT-like | 1970-01-02 | 2026-10-30 | [CSV](data/processed/long_term_us_treasury_2x.csv) | [Parquet](data/processed/long_term_us_treasury_2x.parquet) | [LTT2X](docs/methodology_ltt2x.md) |
 
 The daily workflow regenerates these start and end dates from the processed
 CSVs after validation and commits the README alongside changed datasets.
@@ -93,6 +109,16 @@ back-calculated history preceding the index's May 1991 launch, and source
 holidays may carry prior levels. The [CMDTY methodology](docs/methodology_cmdty.md)
 records source checks, benchmark changes, rights caveats, and the independent
 Astra Max research and implementation reviews.
+
+Leveraged 2x datasets follow current 2x funds: `USLCAP2X` (ProShares SSO),
+`GLSTOCK2X` (Leverage Shares WLDU, 2x VT), `ITT2X` (ProShares UST) and `LTT2X`
+(ProShares UBT). Each is a daily-reset model of its base dataset before the
+fund existed, with financing at `^IRX` plus a calibrated spread and the fund's
+current net expense ratio, then the fund's observed returns. No 2x global bond
+or 2x short-term Treasury fund exists, so `GLBOND2X` and `STT2X` are modeled on
+every row with UST's fee and spread. WLDU began trading in March 2026, so its
+model uses SSO's spread. See the individual methodologies, for example
+[ITT2X](docs/methodology_itt2x.md).
 
 ## Dataset methodology
 
@@ -146,7 +172,7 @@ Refresh the complete dependency graph. The end date is inclusive:
 
     python src/update_all_datasets.py --end-date YYYY-MM-DD
 
-This extends all 14 datasets from their committed processed CSVs. Market
+This extends all 20 datasets from their committed processed CSVs. Market
 datasets use a 14-calendar-day overlap to check revisions and append new days;
 CSV/Parquet are rewritten together when observations change. CPI fetches a recent
 monthly window and can revise recently carried-forward daily values when BLS

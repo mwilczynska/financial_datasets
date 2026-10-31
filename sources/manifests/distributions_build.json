@@ -1,0 +1,4837 @@
+{
+  "artifacts": {
+    "data/processed/distributions/annual_calibration.csv": {
+      "row_count": 308,
+      "sha256": "647fb53839ad1f8aa35f1e1854cfea19874a15c19b52a472813c0f7924b19595"
+    },
+    "data/processed/distributions/annual_calibration.parquet": {
+      "row_count": 308,
+      "sha256": "a0fc93bd3d66ff3b27f3048ccd9e014ddf8b7ccd9c9d027f30f4e8e990a925fe"
+    },
+    "data/processed/distributions/asset_cash_events.csv": {
+      "row_count": 21013,
+      "sha256": "8d4a44b6a475079bcba4fd8fbf709a112abe6d9b8745daaad33c31de24793568"
+    },
+    "data/processed/distributions/asset_cash_events.parquet": {
+      "row_count": 21013,
+      "sha256": "fd2bad69e71a5870df4dcefccbf0447dcff5b3cb95c2ec26b2d59613b17a107d"
+    },
+    "data/processed/distributions/broad_commodities.csv": {
+      "row_count": 14252,
+      "sha256": "f1dcca49fc3bc60791d168198a79948c323f855ba059ed3855f8416dd4e80dbc"
+    },
+    "data/processed/distributions/broad_commodities.parquet": {
+      "row_count": 14252,
+      "sha256": "6816d819680cfd1c330f645bea20c9abbf1681f5ed105939b07d7eeb20764aef"
+    },
+    "data/processed/distributions/calibration_summary.csv": {
+      "row_count": 18,
+      "sha256": "df8602a7345e4012f3538190dbe76b08aff04b79ecdf3f3bdd6aa902298b1a55"
+    },
+    "data/processed/distributions/calibration_summary.parquet": {
+      "row_count": 18,
+      "sha256": "502ed2e73fe2f1fb7ed8f079f252c300d0d97a065ab87d7577ee2070937a0fb2"
+    },
+    "data/processed/distributions/fund_coverage.csv": {
+      "row_count": 18,
+      "sha256": "82f690eec0ec85063b713ef00ba52950239729e0aa7f861094342a78538b3c65"
+    },
+    "data/processed/distributions/fund_coverage.parquet": {
+      "row_count": 18,
+      "sha256": "c65f9c74bc3932bbd82f9c8726699c32e8b489f7cf980f0d7b22c64bbe113a5f"
+    },
+    "data/processed/distributions/fund_events.csv": {
+      "row_count": 1849,
+      "sha256": "a5ea2de0956dc2922d25c769993bc6c8a65e6ddbd8ba0a78763445df5d1f4ea3"
+    },
+    "data/processed/distributions/fund_events.parquet": {
+      "row_count": 1849,
+      "sha256": "dea678ab3b8b30d31a704bcd85f23fc5c2852c2efea1faa32ca7805e8764c8e0"
+    },
+    "data/processed/distributions/fund_prices.csv": {
+      "row_count": 83737,
+      "sha256": "534e2f9f1002c9e35a03fbda5aa7ed1cb7dd51b06708f78ca01af70abd5d51d7"
+    },
+    "data/processed/distributions/fund_prices.parquet": {
+      "row_count": 83737,
+      "sha256": "53ebc043631efaf01d5208873f2391b8bd38efd81b7965013602d34667bb64a1"
+    },
+    "data/processed/distributions/global_bonds.csv": {
+      "row_count": 14329,
+      "sha256": "944f0c7f29b4984fb6b5133f731c7faa17b139cf40249f6c7e06047de0a83223"
+    },
+    "data/processed/distributions/global_bonds.parquet": {
+      "row_count": 14329,
+      "sha256": "c4efa3a9a3323a92d557cce9438f2e442049067cc7f4315d3e11b2cae4cf0311"
+    },
+    "data/processed/distributions/global_bonds_2x.csv": {
+      "row_count": 14329,
+      "sha256": "657a4629f2c4d52d560e633c5a2de87686550695fa9828a2f0275d1878aef0c6"
+    },
+    "data/processed/distributions/global_bonds_2x.parquet": {
+      "row_count": 14329,
+      "sha256": "d3c9230c53415a0f30bca0e57cc704a64db44e3048bbd85287e85bc7a414a1d3"
+    },
+    "data/processed/distributions/global_short_term_bonds.csv": {
+      "row_count": 14329,
+      "sha256": "d57c15da2453280478424ff914f4faa161ded670bb16244e806c7675f6b6b325"
+    },
+    "data/processed/distributions/global_short_term_bonds.parquet": {
+      "row_count": 14329,
+      "sha256": "9b478021f4127903f6d50ee187148ace6c51a50a96cbe0335c252c8a48d87aa1"
+    },
+    "data/processed/distributions/global_stocks.csv": {
+      "row_count": 14489,
+      "sha256": "03e1f5d552efa6ff640697aac25108a528a0c403a9c969488cab137ace751656"
+    },
+    "data/processed/distributions/global_stocks.parquet": {
+      "row_count": 14489,
+      "sha256": "efd52ab3a532967a4589b19690c5e831f85f8c7f4289fdf9d9d1a6d508c28d68"
+    },
+    "data/processed/distributions/global_stocks_2x.csv": {
+      "row_count": 14489,
+      "sha256": "ed6e4f3c2431202ec62dae1d18335ce0d113c1bd26b9b0404eac34db351f3cc2"
+    },
+    "data/processed/distributions/global_stocks_2x.parquet": {
+      "row_count": 14489,
+      "sha256": "2d398b6f7ae6183e56edbdae4b1949d3557ae72da98f20a003defd3acec2ec91"
+    },
+    "data/processed/distributions/gold.csv": {
+      "row_count": 14293,
+      "sha256": "ea4b47e598d8ab83be43fd1e55308cd8f9ed65d9f0c99d179f5c5e798f93bdef"
+    },
+    "data/processed/distributions/gold.parquet": {
+      "row_count": 14293,
+      "sha256": "826c223dd72410593bb707dbff1fc9d4799ac7bf178e0fa06646996a8a14037f"
+    },
+    "data/processed/distributions/gold_2x.csv": {
+      "row_count": 14293,
+      "sha256": "3f205153da94e10df7b0c742eae47f9545d15b07668e42669f0885e5f9286ca8"
+    },
+    "data/processed/distributions/gold_2x.parquet": {
+      "row_count": 14293,
+      "sha256": "93c7062ce52ffdd67ed1acd6c55f97437d7f745ffcb034d288ede516dd3bbec9"
+    },
+    "data/processed/distributions/intermediate_term_us_treasury.csv": {
+      "row_count": 14254,
+      "sha256": "82bdc14d2aab99a706223444f3aee24c251f2ab7d749aec9745ee57735353291"
+    },
+    "data/processed/distributions/intermediate_term_us_treasury.parquet": {
+      "row_count": 14254,
+      "sha256": "171e1d062e07c4ebb02ef9c7eef57f2c64b845cd720e4394a64816db403138a0"
+    },
+    "data/processed/distributions/intermediate_term_us_treasury_2x.csv": {
+      "row_count": 14254,
+      "sha256": "fc4b291483c848595054649137cfd3837e603343a4f34226474ec4316cfaa681"
+    },
+    "data/processed/distributions/intermediate_term_us_treasury_2x.parquet": {
+      "row_count": 14254,
+      "sha256": "13430ee617bbab2c048693cba0422f1e52c43b560ca6feff45220f7cffde8e10"
+    },
+    "data/processed/distributions/intermediate_term_us_treasury_3x.csv": {
+      "row_count": 14254,
+      "sha256": "c5b6a3a287ae5442a78c430676dd702a7e3bcd0fe5a631bbab9251c346d41f05"
+    },
+    "data/processed/distributions/intermediate_term_us_treasury_3x.parquet": {
+      "row_count": 14254,
+      "sha256": "a2acd5da5308decc83b4a9a220be0e0e315ae04bd94798e6b3564d8a0bc7b620"
+    },
+    "data/processed/distributions/long_term_us_treasury.csv": {
+      "row_count": 14270,
+      "sha256": "8df8591d52deaa8127062c1591b5db6807fae44d5c50d35d5ba438761753be75"
+    },
+    "data/processed/distributions/long_term_us_treasury.parquet": {
+      "row_count": 14270,
+      "sha256": "b65d9565758f29a7fb8144dd248e85c3465f0b3e92aee609bf9c3aa2e08d7269"
+    },
+    "data/processed/distributions/long_term_us_treasury_2x.csv": {
+      "row_count": 14270,
+      "sha256": "4eb495a9757acaf0a47f21ba73ff6bd1b4ef7a4a070f2aee02203515cfb2f9c6"
+    },
+    "data/processed/distributions/long_term_us_treasury_2x.parquet": {
+      "row_count": 14270,
+      "sha256": "412577e0dab3e8ce31f7501d67c700ba82a15875f33a55c14f3a57c028fc6148"
+    },
+    "data/processed/distributions/long_term_us_treasury_3x.csv": {
+      "row_count": 14270,
+      "sha256": "ee0214f4521ddc5d635618097757fa6b4f0b3ed21f341f3ad76a49e1acace433"
+    },
+    "data/processed/distributions/long_term_us_treasury_3x.parquet": {
+      "row_count": 14270,
+      "sha256": "a6f576eaa506c5ddc6cde952a5cf81833d27d956ed5f01f9454c0802ea1b6fc6"
+    },
+    "data/processed/distributions/model_parameters.json": {
+      "sha256": "5d6a25ec78822863d0bf5f3c8439f50698aeedaa5f8c03c778dcc5a857558d37"
+    },
+    "data/processed/distributions/short_term_us_treasury.csv": {
+      "row_count": 14254,
+      "sha256": "b0d0b5c490d5ff61d86756f72eef26d822bc44e2ebd7cf1670c9f7eaebd93db5"
+    },
+    "data/processed/distributions/short_term_us_treasury.parquet": {
+      "row_count": 14254,
+      "sha256": "d06a729fe9b614247fafcea400631cf67387527f65e92abc9f39533021f8c3e1"
+    },
+    "data/processed/distributions/short_term_us_treasury_2x.csv": {
+      "row_count": 14254,
+      "sha256": "c9a0ba6065ba3ed8c3c01b069bb8285a0c026e5bd29ac2fcfe82d83bdfb2c166"
+    },
+    "data/processed/distributions/short_term_us_treasury_2x.parquet": {
+      "row_count": 14254,
+      "sha256": "51eb183564b9d2a69e96f5b27abfb491ec6b6a0683515d5a645dc8944a086944"
+    },
+    "data/processed/distributions/us_large_cap_2x_sp500.csv": {
+      "row_count": 14330,
+      "sha256": "09610f586fabef6b20105bb1b6c71f365c36fbc664959317e7bedb0e540f5686"
+    },
+    "data/processed/distributions/us_large_cap_2x_sp500.parquet": {
+      "row_count": 14330,
+      "sha256": "f9bd14c56b722c7f59dadf0668cc8c5e40b3dfa617e27fde75b5e0e7d225c13f"
+    },
+    "data/processed/distributions/us_large_cap_3x_sp500.csv": {
+      "row_count": 14330,
+      "sha256": "2236f2315b5f0f5f537a08c5d059ebe9df7fc3c25881f551ec44cce16d2f043f"
+    },
+    "data/processed/distributions/us_large_cap_3x_sp500.parquet": {
+      "row_count": 14330,
+      "sha256": "346f44c8663f15b97e2b90ac740f871bda2b9f528b91835738e28c69b6388e43"
+    },
+    "data/processed/distributions/us_large_cap_sp500.csv": {
+      "row_count": 14330,
+      "sha256": "a78987fcfef7fa3a8de3bc72329f6c1ac0720e5e494ad19596ecf56b06c72b9b"
+    },
+    "data/processed/distributions/us_large_cap_sp500.parquet": {
+      "row_count": 14330,
+      "sha256": "7e9fbe1b3b8b0ccab114b511de196ebb1a9530c50691df33614ac5cb5a0e6823"
+    }
+  },
+  "audit": {
+    "assets": {
+      "CMDTY": {
+        "basis_counts": {
+          "modeled": 9036,
+          "observed": 5216
+        },
+        "existing_return_source_differences": [],
+        "first_date": "1970-01-02",
+        "last_date": "2026-10-30",
+        "quality_counts": {
+          "modeled_current_fund_income_state": 16,
+          "modeled_current_fund_income_state_extrapolated": 20,
+          "modeled_no_scheduled_payout": 9000,
+          "observed_no_vendor_cash_event": 5207,
+          "observed_primary_transcribed": 1,
+          "observed_vendor_rounded": 8
+        },
+        "row_count": 14252,
+        "source_gap_dates": [],
+        "unit_definition": "One synthetic unit initially USD 100; cash is not reinvested inside the unit."
+      },
+      "GLBOND": {
+        "basis_counts": {
+          "modeled": 9536,
+          "observed": 4793
+        },
+        "existing_return_source_differences": [],
+        "first_date": "1970-01-02",
+        "last_date": "2026-10-30",
+        "quality_counts": {
+          "modeled_current_fund_income_state": 20,
+          "modeled_current_fund_income_state;modeled_no_scheduled_payout": 8,
+          "modeled_current_fund_income_state_extrapolated": 380,
+          "modeled_current_fund_income_state_extrapolated;modeled_no_scheduled_payout": 98,
+          "modeled_no_scheduled_payout": 9030,
+          "observed_issuer": 99,
+          "observed_issuer;observed_issuer_vendor_conflict": 3,
+          "observed_issuer;observed_no_vendor_cash_event": 32,
+          "observed_issuer;observed_vendor_rounded": 51,
+          "observed_issuer_payment_date_unresolved;observed_vendor_rounded": 1,
+          "observed_issuer_vendor_conflict;observed_no_vendor_cash_event": 3,
+          "observed_issuer_vendor_conflict;observed_vendor_rounded": 1,
+          "observed_no_vendor_cash_event": 4550,
+          "observed_no_vendor_cash_event;observed_vendor_rounded": 53
+        },
+        "row_count": 14329,
+        "source_gap_dates": [],
+        "unit_definition": "One synthetic unit initially USD 100; cash is not reinvested inside the unit."
+      },
+      "GLBOND2X": {
+        "basis_counts": {
+          "modeled": 14329
+        },
+        "existing_return_source_differences": [],
+        "first_date": "1970-01-02",
+        "last_date": "2026-10-30",
+        "quality_counts": {
+          "modeled_current_fund_income_state": 99,
+          "modeled_current_fund_income_state_extrapolated": 128,
+          "modeled_no_scheduled_payout": 14102
+        },
+        "row_count": 14329,
+        "source_gap_dates": [],
+        "unit_definition": "One synthetic unit initially USD 100; cash is not reinvested inside the unit."
+      },
+      "GLSTBOND": {
+        "basis_counts": {
+          "modeled": 9864,
+          "observed": 4465
+        },
+        "existing_return_source_differences": [],
+        "first_date": "1970-01-02",
+        "last_date": "2026-10-30",
+        "quality_counts": {
+          "modeled_current_fund_income_state;modeled_no_scheduled_payout": 10,
+          "modeled_current_fund_income_state;modeled_no_scheduled_payout;modeled_treasury_income_calendar": 17,
+          "modeled_current_fund_income_state;modeled_treasury_income_calendar": 67,
+          "modeled_current_fund_income_state_extrapolated;modeled_no_scheduled_payout": 45,
+          "modeled_current_fund_income_state_extrapolated;modeled_no_scheduled_payout;modeled_treasury_income_calendar": 77,
+          "modeled_current_fund_income_state_extrapolated;modeled_treasury_income_calendar": 307,
+          "modeled_no_scheduled_payout": 9341,
+          "observed_issuer": 13,
+          "observed_issuer;observed_issuer_vendor_conflict": 1,
+          "observed_issuer;observed_no_vendor_cash_event": 212,
+          "observed_issuer;observed_no_vendor_cash_event;observed_vendor_rounded": 1,
+          "observed_no_vendor_cash_event": 4238
+        },
+        "row_count": 14329,
+        "source_gap_dates": [],
+        "unit_definition": "One synthetic unit initially USD 100; cash is not reinvested inside the unit."
+      },
+      "GLSTOCK": {
+        "basis_counts": {
+          "modeled": 9874,
+          "observed": 4615
+        },
+        "existing_return_source_differences": [],
+        "first_date": "1970-01-02",
+        "last_date": "2026-10-30",
+        "quality_counts": {
+          "modeled_no_scheduled_payout": 9720,
+          "modeled_vt_scaled_index_income": 154,
+          "observed_issuer": 40,
+          "observed_no_vendor_cash_event": 4554,
+          "observed_vendor_rounded": 21
+        },
+        "row_count": 14489,
+        "source_gap_dates": [],
+        "unit_definition": "One synthetic unit initially USD 100; cash is not reinvested inside the unit."
+      },
+      "GLSTOCK2X": {
+        "basis_counts": {
+          "modeled": 14326,
+          "observed": 163
+        },
+        "existing_return_source_differences": [],
+        "first_date": "1970-01-02",
+        "last_date": "2026-10-30",
+        "quality_counts": {
+          "modeled_current_fund_income_state": 104,
+          "modeled_current_fund_income_state_extrapolated": 120,
+          "modeled_no_scheduled_payout": 14102,
+          "observed_no_vendor_cash_event": 163
+        },
+        "row_count": 14489,
+        "source_gap_dates": [],
+        "unit_definition": "One synthetic unit initially USD 100; cash is not reinvested inside the unit."
+      },
+      "GOLD2X": {
+        "basis_counts": {
+          "modeled": 9788,
+          "verified_zero": 4505
+        },
+        "existing_return_source_differences": [],
+        "first_date": "1970-01-02",
+        "last_date": "2026-10-30",
+        "quality_counts": {
+          "modeled_zero_routine_cash_policy": 9788,
+          "verified_zero_policy": 4505
+        },
+        "row_count": 14293,
+        "source_gap_dates": [],
+        "unit_definition": "One synthetic unit initially USD 100; cash is not reinvested inside the unit."
+      },
+      "GOLDPM": {
+        "basis_counts": {
+          "modeled": 8771,
+          "verified_zero": 5522
+        },
+        "existing_return_source_differences": [],
+        "first_date": "1970-01-02",
+        "last_date": "2026-10-30",
+        "quality_counts": {
+          "modeled_zero_routine_cash_policy": 8771,
+          "verified_zero_policy": 5522
+        },
+        "row_count": 14293,
+        "source_gap_dates": [],
+        "unit_definition": "One synthetic unit initially USD 100; cash is not reinvested inside the unit."
+      },
+      "ITT": {
+        "basis_counts": {
+          "modeled": 8151,
+          "observed": 6103
+        },
+        "existing_return_source_differences": [],
+        "first_date": "1970-01-02",
+        "last_date": "2026-10-30",
+        "quality_counts": {
+          "modeled_no_scheduled_payout": 7761,
+          "modeled_treasury_income_calendar": 390,
+          "observed_issuer": 285,
+          "observed_issuer_vendor_conflict": 5,
+          "observed_no_vendor_cash_event": 5812,
+          "observed_vendor_rounded": 1
+        },
+        "row_count": 14254,
+        "source_gap_dates": [],
+        "unit_definition": "One synthetic unit initially USD 100; cash is not reinvested inside the unit."
+      },
+      "ITT2X": {
+        "basis_counts": {
+          "modeled": 10042,
+          "observed": 4212
+        },
+        "existing_return_source_differences": [],
+        "first_date": "1970-01-02",
+        "last_date": "2026-10-30",
+        "quality_counts": {
+          "modeled_current_fund_income_state": 32,
+          "modeled_current_fund_income_state_extrapolated": 128,
+          "modeled_no_scheduled_payout": 9882,
+          "observed_issuer": 48,
+          "observed_no_vendor_cash_event": 4161,
+          "observed_vendor_rounded": 3
+        },
+        "row_count": 14254,
+        "source_gap_dates": [],
+        "unit_definition": "One synthetic unit initially USD 100; cash is not reinvested inside the unit."
+      },
+      "ITT3X": {
+        "basis_counts": {
+          "modeled": 9841,
+          "observed": 4413
+        },
+        "existing_return_source_differences": [],
+        "first_date": "1970-01-02",
+        "last_date": "2026-10-30",
+        "quality_counts": {
+          "modeled_current_fund_income_state": 29,
+          "modeled_current_fund_income_state_extrapolated": 128,
+          "modeled_no_scheduled_payout": 9684,
+          "observed_no_vendor_cash_event": 4373,
+          "observed_primary_transcribed": 5,
+          "observed_vendor_rounded": 35
+        },
+        "row_count": 14254,
+        "source_gap_dates": [],
+        "unit_definition": "One synthetic unit initially USD 100; cash is not reinvested inside the unit."
+      },
+      "LTT": {
+        "basis_counts": {
+          "modeled": 8167,
+          "observed": 6103
+        },
+        "existing_return_source_differences": [],
+        "first_date": "1970-01-02",
+        "last_date": "2026-10-30",
+        "quality_counts": {
+          "modeled_no_scheduled_payout": 7777,
+          "modeled_treasury_income_calendar": 390,
+          "observed_issuer": 290,
+          "observed_no_vendor_cash_event": 5813
+        },
+        "row_count": 14270,
+        "source_gap_dates": [],
+        "unit_definition": "One synthetic unit initially USD 100; cash is not reinvested inside the unit."
+      },
+      "LTT2X": {
+        "basis_counts": {
+          "modeled": 10050,
+          "observed": 4220
+        },
+        "existing_return_source_differences": [],
+        "first_date": "1970-01-02",
+        "last_date": "2026-10-30",
+        "quality_counts": {
+          "modeled_current_fund_income_state": 32,
+          "modeled_current_fund_income_state_extrapolated": 128,
+          "modeled_no_scheduled_payout": 9890,
+          "observed_issuer": 42,
+          "observed_no_vendor_cash_event": 4171,
+          "observed_vendor_rounded": 7
+        },
+        "row_count": 14270,
+        "source_gap_dates": [],
+        "unit_definition": "One synthetic unit initially USD 100; cash is not reinvested inside the unit."
+      },
+      "LTT3X": {
+        "basis_counts": {
+          "modeled": 9857,
+          "observed": 4413
+        },
+        "existing_return_source_differences": [],
+        "first_date": "1970-01-02",
+        "last_date": "2026-10-30",
+        "quality_counts": {
+          "modeled_current_fund_income_state": 29,
+          "modeled_current_fund_income_state_extrapolated": 128,
+          "modeled_no_scheduled_payout": 9700,
+          "observed_no_vendor_cash_event": 4363,
+          "observed_primary_transcribed": 4,
+          "observed_vendor_rounded": 46
+        },
+        "row_count": 14270,
+        "source_gap_dates": [],
+        "unit_definition": "One synthetic unit initially USD 100; cash is not reinvested inside the unit."
+      },
+      "STT": {
+        "basis_counts": {
+          "modeled": 8151,
+          "observed": 6103
+        },
+        "existing_return_source_differences": [],
+        "first_date": "1970-01-02",
+        "last_date": "2026-10-30",
+        "quality_counts": {
+          "modeled_no_scheduled_payout": 7761,
+          "modeled_treasury_income_calendar": 390,
+          "observed_issuer": 289,
+          "observed_issuer_vendor_conflict": 1,
+          "observed_no_vendor_cash_event": 5812,
+          "observed_vendor_rounded": 1
+        },
+        "row_count": 14254,
+        "source_gap_dates": [],
+        "unit_definition": "One synthetic unit initially USD 100; cash is not reinvested inside the unit."
+      },
+      "STT2X": {
+        "basis_counts": {
+          "modeled": 14254
+        },
+        "existing_return_source_differences": [],
+        "first_date": "1970-01-02",
+        "last_date": "2026-10-30",
+        "quality_counts": {
+          "modeled_current_fund_income_state": 99,
+          "modeled_current_fund_income_state_extrapolated": 128,
+          "modeled_no_scheduled_payout": 14027
+        },
+        "row_count": 14254,
+        "source_gap_dates": [],
+        "unit_definition": "One synthetic unit initially USD 100; cash is not reinvested inside the unit."
+      },
+      "USLCAP": {
+        "basis_counts": {
+          "inferred": 9035,
+          "modeled": 5295
+        },
+        "existing_return_source_differences": [],
+        "first_date": "1970-01-02",
+        "last_date": "2026-10-30",
+        "quality_counts": {
+          "inferred_index_rounding_reconciled": 5763,
+          "inferred_index_rounding_zero": 616,
+          "inferred_matching_index_dividend": 2656,
+          "modeled_index_anomaly_month": 726,
+          "modeled_index_benchmark_mismatch": 4569
+        },
+        "row_count": 14330,
+        "source_gap_dates": [],
+        "unit_definition": "One synthetic unit initially USD 100; cash is not reinvested inside the unit."
+      },
+      "USLCAP2X": {
+        "basis_counts": {
+          "modeled": 9208,
+          "observed": 5122
+        },
+        "existing_return_source_differences": [],
+        "first_date": "1970-01-02",
+        "last_date": "2026-10-30",
+        "quality_counts": {
+          "modeled_current_fund_income_state": 25,
+          "modeled_current_fund_income_state_extrapolated": 120,
+          "modeled_no_scheduled_payout": 9063,
+          "observed_issuer": 46,
+          "observed_no_vendor_cash_event": 5051,
+          "observed_vendor_rounded": 25
+        },
+        "row_count": 14330,
+        "source_gap_dates": [],
+        "unit_definition": "One synthetic unit initially USD 100; cash is not reinvested inside the unit."
+      },
+      "USLCAP3X": {
+        "basis_counts": {
+          "modeled": 9966,
+          "observed": 4364
+        },
+        "existing_return_source_differences": [],
+        "first_date": "1970-01-02",
+        "last_date": "2026-10-30",
+        "quality_counts": {
+          "modeled_current_fund_income_state": 30,
+          "modeled_current_fund_income_state_extrapolated": 128,
+          "modeled_no_scheduled_payout": 9808,
+          "observed_issuer": 39,
+          "observed_no_vendor_cash_event": 4317,
+          "observed_vendor_rounded": 8
+        },
+        "row_count": 14330,
+        "source_gap_dates": [],
+        "unit_definition": "One synthetic unit initially USD 100; cash is not reinvested inside the unit."
+      }
+    },
+    "index": {
+      "contaminated_months": [
+        "1988-02",
+        "1988-03",
+        "1989-06",
+        "1989-12",
+        "1990-01",
+        "1992-10",
+        "1993-04",
+        "1994-09",
+        "1994-10",
+        "1996-12",
+        "1998-03",
+        "2001-01",
+        "2001-06",
+        "2001-07",
+        "2002-07",
+        "2002-08",
+        "2005-04",
+        "2005-06",
+        "2006-03",
+        "2006-04",
+        "2006-05",
+        "2006-06",
+        "2006-08",
+        "2006-09",
+        "2006-10",
+        "2006-11",
+        "2007-04",
+        "2007-12",
+        "2009-05",
+        "2009-12",
+        "2014-12",
+        "2019-03",
+        "2019-07",
+        "2021-08"
+      ],
+      "method": "Small rounding negatives redistributed within a month preserving its signed contribution; whole-month modeled fallback for material anomalies.",
+      "raw_anomalies": [
+        {
+          "date": "1988-03-01",
+          "raw_contribution": "0.0020918677"
+        },
+        {
+          "date": "1988-03-02",
+          "raw_contribution": "-0.0016936096"
+        },
+        {
+          "date": "1988-03-17",
+          "raw_contribution": "-0.0007060613"
+        },
+        {
+          "date": "1989-06-22",
+          "raw_contribution": "0.0031314761"
+        },
+        {
+          "date": "1989-06-23",
+          "raw_contribution": "-0.0031693312"
+        },
+        {
+          "date": "1989-12-15",
+          "raw_contribution": "-0.0001937139"
+        },
+        {
+          "date": "1990-01-24",
+          "raw_contribution": "-0.0181536956"
+        },
+        {
+          "date": "1990-01-25",
+          "raw_contribution": "0.0186261899"
+        },
+        {
+          "date": "1992-10-26",
+          "raw_contribution": "-0.0005400284"
+        },
+        {
+          "date": "1993-04-23",
+          "raw_contribution": "-0.0004530789"
+        },
+        {
+          "date": "1994-09-07",
+          "raw_contribution": "-0.0000504555"
+        },
+        {
+          "date": "1994-10-13",
+          "raw_contribution": "-0.0006888428"
+        },
+        {
+          "date": "1996-12-10",
+          "raw_contribution": "-0.0000655079"
+        },
+        {
+          "date": "1998-03-30",
+          "raw_contribution": "-0.0000329039"
+        },
+        {
+          "date": "2001-01-12",
+          "raw_contribution": "-0.0001708036"
+        },
+        {
+          "date": "2001-07-02",
+          "raw_contribution": "-0.0000395278"
+        },
+        {
+          "date": "2002-07-17",
+          "raw_contribution": "-0.0000391911"
+        },
+        {
+          "date": "2002-08-20",
+          "raw_contribution": "-0.0000265023"
+        },
+        {
+          "date": "2005-04-26",
+          "raw_contribution": "-0.0000812751"
+        },
+        {
+          "date": "2005-06-02",
+          "raw_contribution": "-0.0000322309"
+        },
+        {
+          "date": "2006-03-31",
+          "raw_contribution": "-0.0000230769"
+        },
+        {
+          "date": "2006-04-19",
+          "raw_contribution": "-0.0001862931"
+        },
+        {
+          "date": "2006-05-03",
+          "raw_contribution": "-0.0000184232"
+        },
+        {
+          "date": "2006-06-12",
+          "raw_contribution": "-0.0008038135"
+        },
+        {
+          "date": "2006-08-03",
+          "raw_contribution": "-0.0005860367"
+        },
+        {
+          "date": "2006-08-30",
+          "raw_contribution": "-0.0004000787"
+        },
+        {
+          "date": "2006-09-18",
+          "raw_contribution": "-0.0001435784"
+        },
+        {
+          "date": "2006-09-20",
+          "raw_contribution": "-0.0004873972"
+        },
+        {
+          "date": "2006-09-29",
+          "raw_contribution": "-0.0001907441"
+        },
+        {
+          "date": "2006-10-19",
+          "raw_contribution": "-0.0000813338"
+        },
+        {
+          "date": "2006-11-27",
+          "raw_contribution": "-0.0000368369"
+        },
+        {
+          "date": "2007-04-17",
+          "raw_contribution": "-0.0000973131"
+        },
+        {
+          "date": "2007-12-28",
+          "raw_contribution": "-0.0000416976"
+        },
+        {
+          "date": "2009-05-14",
+          "raw_contribution": "-0.0003080351"
+        },
+        {
+          "date": "2009-12-18",
+          "raw_contribution": "-0.0000735115"
+        },
+        {
+          "date": "2014-12-09",
+          "raw_contribution": "-0.0021057373"
+        },
+        {
+          "date": "2014-12-10",
+          "raw_contribution": "0.002155185"
+        },
+        {
+          "date": "2019-03-12",
+          "raw_contribution": "-0.0029533182"
+        },
+        {
+          "date": "2019-03-13",
+          "raw_contribution": "0.0030904284"
+        },
+        {
+          "date": "2019-07-03",
+          "raw_contribution": "-0.0057280981"
+        },
+        {
+          "date": "2019-07-05",
+          "raw_contribution": "0.006053032"
+        },
+        {
+          "date": "2021-08-12",
+          "raw_contribution": "-0.0009308286"
+        }
+      ],
+      "rounding_rule": "max(2e-6, 0.02/price-index level), an explicit conservative measurement allowance."
+    }
+  },
+  "full_reconciliation": false,
+  "full_reconciliation_interval_days": 31,
+  "full_sources": {
+    "funds": {
+      "BND": {
+        "amount_conflicts": [
+          {
+            "ex_date": "2017-07-03",
+            "issuer_usd": "0.169673",
+            "vendor_usd": "0.339"
+          },
+          {
+            "ex_date": "2017-08-01",
+            "issuer_usd": "0.17107",
+            "vendor_usd": "0.342"
+          },
+          {
+            "ex_date": "2018-06-01",
+            "issuer_usd": "0.18462",
+            "vendor_usd": "0.369"
+          }
+        ],
+        "cash_event_count": 232,
+        "first_quote": "2007-04-10",
+        "fund": "BND",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_BND.json"
+          ]
+        },
+        "issuer_event_count": 120,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-27",
+        "missing_payment_dates": 112,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "BWX": {
+        "amount_conflicts": [
+          {
+            "ex_date": "2012-12-27",
+            "issuer_usd": "0.00343",
+            "vendor_usd": "0.143"
+          },
+          {
+            "ex_date": "2013-03-01",
+            "issuer_usd": "0.1675",
+            "vendor_usd": "0.166"
+          },
+          {
+            "ex_date": "2018-11-01",
+            "issuer_usd": "0.028025",
+            "vendor_usd": "0.056"
+          },
+          {
+            "ex_date": "2021-11-01",
+            "issuer_usd": "0.022208",
+            "vendor_usd": "0.044"
+          }
+        ],
+        "cash_event_count": 172,
+        "first_quote": "2007-10-11",
+        "fund": "BWX",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_ssga_distributions.xlsx"
+          ]
+        },
+        "issuer_event_count": 172,
+        "issuer_only_events": [
+          "2012-11-01"
+        ],
+        "last_quote": "2026-10-27",
+        "missing_payment_dates": 1,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "BWZ": {
+        "amount_conflicts": [],
+        "cash_event_count": 120,
+        "first_quote": "2009-01-30",
+        "fund": "BWZ",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_ssga_distributions.xlsx"
+          ]
+        },
+        "issuer_event_count": 119,
+        "issuer_only_events": [
+          "2020-09-01",
+          "2020-10-01",
+          "2020-11-02"
+        ],
+        "last_quote": "2026-10-27",
+        "missing_payment_dates": 1,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "DBC": {
+        "amount_conflicts": [],
+        "cash_event_count": 9,
+        "first_quote": "2006-02-06",
+        "fund": "DBC",
+        "issuer_delivery": {
+          "delivery": "unavailable",
+          "error": "406 Client Error: Not Acceptable for url: https://www.invesco.com/us/en/financial-products/etfs/invesco-db-commodity-index-tracking-fund.html",
+          "source_url": "https://www.invesco.com/us/en/financial-products/etfs/invesco-db-commodity-index-tracking-fund.html"
+        },
+        "issuer_event_count": 1,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-27",
+        "missing_payment_dates": 8,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "GLD": {
+        "amount_conflicts": [],
+        "cash_event_count": 0,
+        "first_quote": "2004-11-18",
+        "fund": "GLD",
+        "issuer_delivery": {
+          "delivery": "documented_zero_routine_policy",
+          "exceptional_cash_ingestion": true,
+          "policy_evidence": "sources/derived/distribution_cash_policies.json",
+          "sources": []
+        },
+        "issuer_event_count": 0,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-27",
+        "missing_payment_dates": 0,
+        "unknown_adjustment_dates": [],
+        "zero_policy": true
+      },
+      "IEF": {
+        "amount_conflicts": [
+          {
+            "ex_date": "2003-07-01",
+            "issuer_usd": "0.2403",
+            "vendor_usd": "0.663"
+          },
+          {
+            "ex_date": "2003-08-01",
+            "issuer_usd": "0.252948",
+            "vendor_usd": "0.717"
+          },
+          {
+            "ex_date": "2003-09-02",
+            "issuer_usd": "0.275762",
+            "vendor_usd": "0.764"
+          },
+          {
+            "ex_date": "2003-10-01",
+            "issuer_usd": "0.274101",
+            "vendor_usd": "0.731"
+          },
+          {
+            "ex_date": "2003-12-01",
+            "issuer_usd": "0.26621",
+            "vendor_usd": "0.226"
+          }
+        ],
+        "cash_event_count": 291,
+        "first_quote": "2002-07-30",
+        "fund": "IEF",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_IEF.html"
+          ]
+        },
+        "issuer_event_count": 290,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-27",
+        "missing_payment_dates": 1,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "ISHG": {
+        "amount_conflicts": [],
+        "cash_event_count": 75,
+        "first_quote": "2009-01-28",
+        "fund": "ISHG",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_ISHG.html"
+          ]
+        },
+        "issuer_event_count": 75,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-27",
+        "missing_payment_dates": 0,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "SHY": {
+        "amount_conflicts": [
+          {
+            "ex_date": "2009-12-01",
+            "issuer_usd": "0.580181",
+            "vendor_usd": "0.581"
+          }
+        ],
+        "cash_event_count": 291,
+        "first_quote": "2002-07-30",
+        "fund": "SHY",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_SHY.html"
+          ]
+        },
+        "issuer_event_count": 290,
+        "issuer_only_events": [
+          "2012-11-01"
+        ],
+        "last_quote": "2026-10-27",
+        "missing_payment_dates": 1,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "SSO": {
+        "amount_conflicts": [],
+        "cash_event_count": 71,
+        "first_quote": "2006-06-21",
+        "fund": "SSO",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_SSO_2006.json",
+            "issuer_SSO_2007.json",
+            "issuer_SSO_2008.json",
+            "issuer_SSO_2009.json",
+            "issuer_SSO_2010.json",
+            "issuer_SSO_2011.json",
+            "issuer_SSO_2012.json",
+            "issuer_SSO_2013.json",
+            "issuer_SSO_2014.json",
+            "issuer_SSO_2015.json",
+            "issuer_SSO_2016.json",
+            "issuer_SSO_2017.json",
+            "issuer_SSO_2018.json",
+            "issuer_SSO_2019.json",
+            "issuer_SSO_2020.json",
+            "issuer_SSO_2021.json",
+            "issuer_SSO_2022.json",
+            "issuer_SSO_2023.json",
+            "issuer_SSO_2024.json",
+            "issuer_SSO_2025.json",
+            "issuer_SSO_2026.json"
+          ]
+        },
+        "issuer_event_count": 46,
+        "issuer_only_events": [
+          "2016-03-23"
+        ],
+        "last_quote": "2026-10-27",
+        "missing_payment_dates": 25,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "TLT": {
+        "amount_conflicts": [],
+        "cash_event_count": 290,
+        "first_quote": "2002-07-30",
+        "fund": "TLT",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_TLT.html"
+          ]
+        },
+        "issuer_event_count": 290,
+        "issuer_only_events": [
+          "2012-11-01"
+        ],
+        "last_quote": "2026-10-27",
+        "missing_payment_dates": 0,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "TMF": {
+        "amount_conflicts": [],
+        "cash_event_count": 50,
+        "first_quote": "2009-04-16",
+        "fund": "TMF",
+        "issuer_delivery": {
+          "delivery": "unavailable",
+          "error": "403 Client Error: Forbidden for url: https://www.direxion.com/product/daily-20-year-treasury-bull-bear-3x-etfs"
+        },
+        "issuer_event_count": 4,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-27",
+        "missing_payment_dates": 46,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "TYD": {
+        "amount_conflicts": [],
+        "cash_event_count": 40,
+        "first_quote": "2009-04-16",
+        "fund": "TYD",
+        "issuer_delivery": {
+          "delivery": "unavailable",
+          "error": "403 Client Error: Forbidden for url: https://www.direxion.com/product/daily-7-10-year-treasury-bull-bear-3x-etfs"
+        },
+        "issuer_event_count": 5,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-27",
+        "missing_payment_dates": 35,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "UBT": {
+        "amount_conflicts": [],
+        "cash_event_count": 49,
+        "first_quote": "2010-01-21",
+        "fund": "UBT",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_UBT_2010.json",
+            "issuer_UBT_2011.json",
+            "issuer_UBT_2012.json",
+            "issuer_UBT_2013.json",
+            "issuer_UBT_2014.json",
+            "issuer_UBT_2015.json",
+            "issuer_UBT_2016.json",
+            "issuer_UBT_2017.json",
+            "issuer_UBT_2018.json",
+            "issuer_UBT_2019.json",
+            "issuer_UBT_2020.json",
+            "issuer_UBT_2021.json",
+            "issuer_UBT_2022.json",
+            "issuer_UBT_2023.json",
+            "issuer_UBT_2024.json",
+            "issuer_UBT_2025.json",
+            "issuer_UBT_2026.json"
+          ]
+        },
+        "issuer_event_count": 42,
+        "issuer_only_events": [
+          "2016-03-23"
+        ],
+        "last_quote": "2026-10-27",
+        "missing_payment_dates": 7,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "UGL": {
+        "amount_conflicts": [],
+        "cash_event_count": 0,
+        "first_quote": "2008-12-03",
+        "fund": "UGL",
+        "issuer_delivery": {
+          "delivery": "documented_zero_routine_policy",
+          "exceptional_cash_ingestion": true,
+          "policy_evidence": "sources/derived/distribution_cash_policies.json",
+          "sources": []
+        },
+        "issuer_event_count": 0,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-27",
+        "missing_payment_dates": 0,
+        "unknown_adjustment_dates": [],
+        "zero_policy": true
+      },
+      "UPRO": {
+        "amount_conflicts": [],
+        "cash_event_count": 47,
+        "first_quote": "2009-06-25",
+        "fund": "UPRO",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_UPRO_2009.json",
+            "issuer_UPRO_2010.json",
+            "issuer_UPRO_2011.json",
+            "issuer_UPRO_2012.json",
+            "issuer_UPRO_2013.json",
+            "issuer_UPRO_2014.json",
+            "issuer_UPRO_2015.json",
+            "issuer_UPRO_2016.json",
+            "issuer_UPRO_2017.json",
+            "issuer_UPRO_2018.json",
+            "issuer_UPRO_2019.json",
+            "issuer_UPRO_2020.json",
+            "issuer_UPRO_2021.json",
+            "issuer_UPRO_2022.json",
+            "issuer_UPRO_2023.json",
+            "issuer_UPRO_2024.json",
+            "issuer_UPRO_2025.json",
+            "issuer_UPRO_2026.json"
+          ]
+        },
+        "issuer_event_count": 39,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-27",
+        "missing_payment_dates": 8,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "UST": {
+        "amount_conflicts": [],
+        "cash_event_count": 51,
+        "first_quote": "2010-02-02",
+        "fund": "UST",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_UST_2010.json",
+            "issuer_UST_2011.json",
+            "issuer_UST_2012.json",
+            "issuer_UST_2013.json",
+            "issuer_UST_2014.json",
+            "issuer_UST_2015.json",
+            "issuer_UST_2016.json",
+            "issuer_UST_2017.json",
+            "issuer_UST_2018.json",
+            "issuer_UST_2019.json",
+            "issuer_UST_2020.json",
+            "issuer_UST_2021.json",
+            "issuer_UST_2022.json",
+            "issuer_UST_2023.json",
+            "issuer_UST_2024.json",
+            "issuer_UST_2025.json",
+            "issuer_UST_2026.json"
+          ]
+        },
+        "issuer_event_count": 48,
+        "issuer_only_events": [
+          "2016-03-23"
+        ],
+        "last_quote": "2026-10-27",
+        "missing_payment_dates": 3,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "VT": {
+        "amount_conflicts": [],
+        "cash_event_count": 61,
+        "first_quote": "2008-06-26",
+        "fund": "VT",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_VT.json"
+          ]
+        },
+        "issuer_event_count": 40,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-27",
+        "missing_payment_dates": 21,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "WLDU": {
+        "amount_conflicts": [],
+        "cash_event_count": 0,
+        "first_quote": "2026-03-10",
+        "fund": "WLDU",
+        "issuer_delivery": {
+          "delivery": "vendor_only_no_issuer_history",
+          "sources": []
+        },
+        "issuer_event_count": 0,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-27",
+        "missing_payment_dates": 0,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      }
+    },
+    "requested_end_date": "2026-10-27",
+    "requested_start_date": "1970-01-01",
+    "sources": {
+      "cash_policy_evidence": {
+        "accepted": true,
+        "path": "sources/derived/distribution_cash_policies.json",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "97b16065d30aa303c01e798f07c3269078e5711680da29568ba24e7fead9d6de"
+      },
+      "issuer_BND.json": {
+        "accepted": true,
+        "cache_key": "issuer_BND.json",
+        "fund_event_counts": {
+          "BND": 120
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/7bd1e613136a8ff38bfb021a3f4eb22b1410d9b103247a3ad24e729312c4e05a",
+        "retrieved_at_utc": "2026-10-31T17:59:30.732673+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "7bd1e613136a8ff38bfb021a3f4eb22b1410d9b103247a3ad24e729312c4e05a",
+        "url": "https://advisors.vanguard.com/investments/products/api/funds/0928/pricing/distributions?hasDistributionYield=true"
+      },
+      "issuer_DBC.html": {
+        "accepted": false,
+        "http_status": 406,
+        "path": "sources/raw/distributions/objects/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retrieved_at_utc": "2026-10-31T17:59:32.585624+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "url": "https://www.invesco.com/us/en/financial-products/etfs/invesco-db-commodity-index-tracking-fund.html"
+      },
+      "issuer_IEF.html": {
+        "accepted": true,
+        "cache_key": "issuer_IEF.html",
+        "fund_event_counts": {
+          "IEF": 291
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/5f365de0d3857a2fc3926ebb963e38885770067453ef3e7ec5d7d15680fbb0fe",
+        "retrieved_at_utc": "2026-10-31T17:59:28.786026+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "5f365de0d3857a2fc3926ebb963e38885770067453ef3e7ec5d7d15680fbb0fe",
+        "url": "https://www.ishares.com/us/products/239456/ishares-710-year-treasury-bond-etf"
+      },
+      "issuer_ISHG.html": {
+        "accepted": true,
+        "cache_key": "issuer_ISHG.html",
+        "fund_event_counts": {
+          "ISHG": 75
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/b07ec3d7a6c2e3e478b5668ab390a8283b3773c5fa153032560710e5343b1be4",
+        "retrieved_at_utc": "2026-10-31T17:59:31.082043+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "b07ec3d7a6c2e3e478b5668ab390a8283b3773c5fa153032560710e5343b1be4",
+        "url": "https://www.ishares.com/us/products/239829/ishares-13-year-international-treasury-bond-etf"
+      },
+      "issuer_SHY.html": {
+        "accepted": true,
+        "cache_key": "issuer_SHY.html",
+        "fund_event_counts": {
+          "SHY": 291
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/02fb5dabc4e5911a1763372791253753e7afc8fb1ed3cc38945aac84a53c2b21",
+        "retrieved_at_utc": "2026-10-31T17:59:28.309852+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "02fb5dabc4e5911a1763372791253753e7afc8fb1ed3cc38945aac84a53c2b21",
+        "url": "https://www.ishares.com/us/products/239452/ishares-13-year-treasury-bond-etf"
+      },
+      "issuer_SSO_2006.json": {
+        "accepted": true,
+        "cache_key": "issuer_SSO_2006.json",
+        "fund_event_counts": {
+          "SSO": 0
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retrieved_at_utc": "2026-10-31T17:59:41.321881+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=SSO&year=2006"
+      },
+      "issuer_SSO_2007.json": {
+        "accepted": true,
+        "cache_key": "issuer_SSO_2007.json",
+        "fund_event_counts": {
+          "SSO": 0
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retrieved_at_utc": "2026-10-31T17:59:41.527300+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=SSO&year=2007"
+      },
+      "issuer_SSO_2008.json": {
+        "accepted": true,
+        "cache_key": "issuer_SSO_2008.json",
+        "fund_event_counts": {
+          "SSO": 0
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retrieved_at_utc": "2026-10-31T17:59:41.728017+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=SSO&year=2008"
+      },
+      "issuer_SSO_2009.json": {
+        "accepted": true,
+        "cache_key": "issuer_SSO_2009.json",
+        "fund_event_counts": {
+          "SSO": 0
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retrieved_at_utc": "2026-10-31T17:59:41.938275+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=SSO&year=2009"
+      },
+      "issuer_SSO_2010.json": {
+        "accepted": true,
+        "cache_key": "issuer_SSO_2010.json",
+        "fund_event_counts": {
+          "SSO": 0
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retrieved_at_utc": "2026-10-31T17:59:42.142350+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=SSO&year=2010"
+      },
+      "issuer_SSO_2011.json": {
+        "accepted": true,
+        "cache_key": "issuer_SSO_2011.json",
+        "fund_event_counts": {
+          "SSO": 0
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retrieved_at_utc": "2026-10-31T17:59:42.360733+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=SSO&year=2011"
+      },
+      "issuer_SSO_2012.json": {
+        "accepted": true,
+        "cache_key": "issuer_SSO_2012.json",
+        "fund_event_counts": {
+          "SSO": 0
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retrieved_at_utc": "2026-10-31T17:59:42.566200+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=SSO&year=2012"
+      },
+      "issuer_SSO_2013.json": {
+        "accepted": true,
+        "cache_key": "issuer_SSO_2013.json",
+        "fund_event_counts": {
+          "SSO": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/b1a82f57b13e6b40833993c98eb4312d00ac47f6cd1c5b990c3a6671ac2ac481",
+        "retrieved_at_utc": "2026-10-31T17:59:42.773286+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "b1a82f57b13e6b40833993c98eb4312d00ac47f6cd1c5b990c3a6671ac2ac481",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=SSO&year=2013"
+      },
+      "issuer_SSO_2014.json": {
+        "accepted": true,
+        "cache_key": "issuer_SSO_2014.json",
+        "fund_event_counts": {
+          "SSO": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/ddc0d294cd265e63ab1a343e92cb989e4b7754194b9f3edaa4bc539329093626",
+        "retrieved_at_utc": "2026-10-31T17:59:42.978425+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "ddc0d294cd265e63ab1a343e92cb989e4b7754194b9f3edaa4bc539329093626",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=SSO&year=2014"
+      },
+      "issuer_SSO_2015.json": {
+        "accepted": true,
+        "cache_key": "issuer_SSO_2015.json",
+        "fund_event_counts": {
+          "SSO": 3
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/b9d7c650e23a5169916386bf97adb0182b6cf13aadbb629db2f462b0063ff7c8",
+        "retrieved_at_utc": "2026-10-31T17:59:43.187033+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "b9d7c650e23a5169916386bf97adb0182b6cf13aadbb629db2f462b0063ff7c8",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=SSO&year=2015"
+      },
+      "issuer_SSO_2016.json": {
+        "accepted": true,
+        "cache_key": "issuer_SSO_2016.json",
+        "fund_event_counts": {
+          "SSO": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/c4341b81f7071d5107d9cd228ab3fe72160c7863707f73480151c94f23cb0631",
+        "retrieved_at_utc": "2026-10-31T17:59:43.391934+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "c4341b81f7071d5107d9cd228ab3fe72160c7863707f73480151c94f23cb0631",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=SSO&year=2016"
+      },
+      "issuer_SSO_2017.json": {
+        "accepted": true,
+        "cache_key": "issuer_SSO_2017.json",
+        "fund_event_counts": {
+          "SSO": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/784f46ca58ab51d14fb8d1c3f7d940c723db91e8cdb6441178d357c1bd851f76",
+        "retrieved_at_utc": "2026-10-31T17:59:43.599797+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "784f46ca58ab51d14fb8d1c3f7d940c723db91e8cdb6441178d357c1bd851f76",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=SSO&year=2017"
+      },
+      "issuer_SSO_2018.json": {
+        "accepted": true,
+        "cache_key": "issuer_SSO_2018.json",
+        "fund_event_counts": {
+          "SSO": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/22441a886968e0ba5d5328a1b0151d6772bb059e1aabda17cca4caf20420d901",
+        "retrieved_at_utc": "2026-10-31T17:59:43.828731+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "22441a886968e0ba5d5328a1b0151d6772bb059e1aabda17cca4caf20420d901",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=SSO&year=2018"
+      },
+      "issuer_SSO_2019.json": {
+        "accepted": true,
+        "cache_key": "issuer_SSO_2019.json",
+        "fund_event_counts": {
+          "SSO": 3
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/b714c68a7cf3c789ca087270311d8541fd2529efc6c21d358a4a67eff5963edc",
+        "retrieved_at_utc": "2026-10-31T17:59:44.045196+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "b714c68a7cf3c789ca087270311d8541fd2529efc6c21d358a4a67eff5963edc",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=SSO&year=2019"
+      },
+      "issuer_SSO_2020.json": {
+        "accepted": true,
+        "cache_key": "issuer_SSO_2020.json",
+        "fund_event_counts": {
+          "SSO": 2
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/8ae583c6bfe1486687b52b41f17b4c8090eb984f38d80244728a0b060f5763b7",
+        "retrieved_at_utc": "2026-10-31T17:59:44.260717+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "8ae583c6bfe1486687b52b41f17b4c8090eb984f38d80244728a0b060f5763b7",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=SSO&year=2020"
+      },
+      "issuer_SSO_2021.json": {
+        "accepted": true,
+        "cache_key": "issuer_SSO_2021.json",
+        "fund_event_counts": {
+          "SSO": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/369b3418bb533deb421af3d5d78063d8b5ed19558788fbd3021bcc2c0b0889f5",
+        "retrieved_at_utc": "2026-10-31T17:59:44.476817+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "369b3418bb533deb421af3d5d78063d8b5ed19558788fbd3021bcc2c0b0889f5",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=SSO&year=2021"
+      },
+      "issuer_SSO_2022.json": {
+        "accepted": true,
+        "cache_key": "issuer_SSO_2022.json",
+        "fund_event_counts": {
+          "SSO": 2
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/1079f570b5a6d43fcaf2f1cf280226a68502338106c0d297446085253fca8ca1",
+        "retrieved_at_utc": "2026-10-31T17:59:44.685309+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "1079f570b5a6d43fcaf2f1cf280226a68502338106c0d297446085253fca8ca1",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=SSO&year=2022"
+      },
+      "issuer_SSO_2023.json": {
+        "accepted": true,
+        "cache_key": "issuer_SSO_2023.json",
+        "fund_event_counts": {
+          "SSO": 1
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/faaa708b144f5d39dede4f33908d86315cf385647ac521d7d37b283bd5c5d243",
+        "retrieved_at_utc": "2026-10-31T17:59:44.945440+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "faaa708b144f5d39dede4f33908d86315cf385647ac521d7d37b283bd5c5d243",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=SSO&year=2023"
+      },
+      "issuer_SSO_2024.json": {
+        "accepted": true,
+        "cache_key": "issuer_SSO_2024.json",
+        "fund_event_counts": {
+          "SSO": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/30fa4aa2adcda928d7d8d7260a6b1f1ada04f22d1f5a7e7af34e167c0bcfde4b",
+        "retrieved_at_utc": "2026-10-31T17:59:45.157979+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "30fa4aa2adcda928d7d8d7260a6b1f1ada04f22d1f5a7e7af34e167c0bcfde4b",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=SSO&year=2024"
+      },
+      "issuer_SSO_2025.json": {
+        "accepted": true,
+        "cache_key": "issuer_SSO_2025.json",
+        "fund_event_counts": {
+          "SSO": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/d2f5e112165df3b1771d1d2b772e3c28bd8355eb025b59d1d52b25b58540009c",
+        "retrieved_at_utc": "2026-10-31T17:59:45.380634+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "d2f5e112165df3b1771d1d2b772e3c28bd8355eb025b59d1d52b25b58540009c",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=SSO&year=2025"
+      },
+      "issuer_SSO_2026.json": {
+        "accepted": true,
+        "cache_key": "issuer_SSO_2026.json",
+        "fund_event_counts": {
+          "SSO": 3
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/3391205c9d9ada068947be4c8e5ebcf28ee13bd51da9420b6479e46e16ad400d",
+        "retrieved_at_utc": "2026-10-31T17:59:45.576262+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "3391205c9d9ada068947be4c8e5ebcf28ee13bd51da9420b6479e46e16ad400d",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=SSO&year=2026"
+      },
+      "issuer_TLT.html": {
+        "accepted": true,
+        "cache_key": "issuer_TLT.html",
+        "fund_event_counts": {
+          "TLT": 291
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/3b304562eacad67c0ee5ee00b75ede795ec36b440ef302de211de58ed540b1f8",
+        "retrieved_at_utc": "2026-10-31T17:59:29.265437+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "3b304562eacad67c0ee5ee00b75ede795ec36b440ef302de211de58ed540b1f8",
+        "url": "https://www.ishares.com/us/products/239454/ishares-20-year-treasury-bond-etf"
+      },
+      "issuer_TMF.html": {
+        "accepted": false,
+        "http_status": 403,
+        "path": "sources/raw/distributions/objects/d1f179063ab25c998610deb858ce280166a546769b8c7a5c545fc2343a67a06d",
+        "retrieved_at_utc": "2026-10-31T17:59:54.339674+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "d1f179063ab25c998610deb858ce280166a546769b8c7a5c545fc2343a67a06d",
+        "url": "https://www.direxion.com/product/daily-20-year-treasury-bull-bear-3x-etfs"
+      },
+      "issuer_TYD.html": {
+        "accepted": false,
+        "http_status": 403,
+        "path": "sources/raw/distributions/objects/6a891f2c62995a19b6e3231cc686460b00584f2ea7b914e555684a2cbdd13713",
+        "retrieved_at_utc": "2026-10-31T17:59:53.700700+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "6a891f2c62995a19b6e3231cc686460b00584f2ea7b914e555684a2cbdd13713",
+        "url": "https://www.direxion.com/product/daily-7-10-year-treasury-bull-bear-3x-etfs"
+      },
+      "issuer_UBT_2010.json": {
+        "accepted": true,
+        "cache_key": "issuer_UBT_2010.json",
+        "fund_event_counts": {
+          "UBT": 0
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retrieved_at_utc": "2026-10-31T17:59:49.407057+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UBT&year=2010"
+      },
+      "issuer_UBT_2011.json": {
+        "accepted": true,
+        "cache_key": "issuer_UBT_2011.json",
+        "fund_event_counts": {
+          "UBT": 0
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retrieved_at_utc": "2026-10-31T17:59:49.607581+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UBT&year=2011"
+      },
+      "issuer_UBT_2012.json": {
+        "accepted": true,
+        "cache_key": "issuer_UBT_2012.json",
+        "fund_event_counts": {
+          "UBT": 0
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retrieved_at_utc": "2026-10-31T17:59:49.842029+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UBT&year=2012"
+      },
+      "issuer_UBT_2013.json": {
+        "accepted": true,
+        "cache_key": "issuer_UBT_2013.json",
+        "fund_event_counts": {
+          "UBT": 2
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/98f3295c494381af2afb258b82818f9bff5910059f23c7d21190c6a5d5ff0f65",
+        "retrieved_at_utc": "2026-10-31T17:59:50.061369+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "98f3295c494381af2afb258b82818f9bff5910059f23c7d21190c6a5d5ff0f65",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UBT&year=2013"
+      },
+      "issuer_UBT_2014.json": {
+        "accepted": true,
+        "cache_key": "issuer_UBT_2014.json",
+        "fund_event_counts": {
+          "UBT": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/e481ad96236a78fdae8d2499d2407065290b9e51d755dd85271ac56f50118d62",
+        "retrieved_at_utc": "2026-10-31T17:59:50.267359+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "e481ad96236a78fdae8d2499d2407065290b9e51d755dd85271ac56f50118d62",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UBT&year=2014"
+      },
+      "issuer_UBT_2015.json": {
+        "accepted": true,
+        "cache_key": "issuer_UBT_2015.json",
+        "fund_event_counts": {
+          "UBT": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/953b88a4ed2161dac7fb011062441541985f27e4cff94bf6a5d9e555d20b3afd",
+        "retrieved_at_utc": "2026-10-31T17:59:50.480256+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "953b88a4ed2161dac7fb011062441541985f27e4cff94bf6a5d9e555d20b3afd",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UBT&year=2015"
+      },
+      "issuer_UBT_2016.json": {
+        "accepted": true,
+        "cache_key": "issuer_UBT_2016.json",
+        "fund_event_counts": {
+          "UBT": 3
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/601fa3bb73c7c477fd4d5821850277bc97b163eb92b7818d4c698e9751e10292",
+        "retrieved_at_utc": "2026-10-31T17:59:50.702311+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "601fa3bb73c7c477fd4d5821850277bc97b163eb92b7818d4c698e9751e10292",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UBT&year=2016"
+      },
+      "issuer_UBT_2017.json": {
+        "accepted": true,
+        "cache_key": "issuer_UBT_2017.json",
+        "fund_event_counts": {
+          "UBT": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/92ca41357181f9b6a7b2f11e2f1b0e80d2ab39fb920aee7c14e8a99c3be4f70f",
+        "retrieved_at_utc": "2026-10-31T17:59:50.911208+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "92ca41357181f9b6a7b2f11e2f1b0e80d2ab39fb920aee7c14e8a99c3be4f70f",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UBT&year=2017"
+      },
+      "issuer_UBT_2018.json": {
+        "accepted": true,
+        "cache_key": "issuer_UBT_2018.json",
+        "fund_event_counts": {
+          "UBT": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/8c491c874ca6471f5df84b82fec4c3077985ddc74a70c4ab392dfd4534b62c6a",
+        "retrieved_at_utc": "2026-10-31T17:59:51.164737+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "8c491c874ca6471f5df84b82fec4c3077985ddc74a70c4ab392dfd4534b62c6a",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UBT&year=2018"
+      },
+      "issuer_UBT_2019.json": {
+        "accepted": true,
+        "cache_key": "issuer_UBT_2019.json",
+        "fund_event_counts": {
+          "UBT": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/29a42dce5b73e59e21ceaffd35e5b6bd376fcc311bc5d4366d48322fe181b1d1",
+        "retrieved_at_utc": "2026-10-31T17:59:51.377077+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "29a42dce5b73e59e21ceaffd35e5b6bd376fcc311bc5d4366d48322fe181b1d1",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UBT&year=2019"
+      },
+      "issuer_UBT_2020.json": {
+        "accepted": true,
+        "cache_key": "issuer_UBT_2020.json",
+        "fund_event_counts": {
+          "UBT": 1
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/9225280eeec179ed92e1e32c1d4dcb217ca62fb2b299e4a57219ebe23d7db612",
+        "retrieved_at_utc": "2026-10-31T17:59:51.578621+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "9225280eeec179ed92e1e32c1d4dcb217ca62fb2b299e4a57219ebe23d7db612",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UBT&year=2020"
+      },
+      "issuer_UBT_2021.json": {
+        "accepted": true,
+        "cache_key": "issuer_UBT_2021.json",
+        "fund_event_counts": {
+          "UBT": 0
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retrieved_at_utc": "2026-10-31T17:59:51.825690+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UBT&year=2021"
+      },
+      "issuer_UBT_2022.json": {
+        "accepted": true,
+        "cache_key": "issuer_UBT_2022.json",
+        "fund_event_counts": {
+          "UBT": 1
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/303e120a9f57631f44525e901db6eb0737ce35c4c8cff9f26d87fcf9f38700ea",
+        "retrieved_at_utc": "2026-10-31T17:59:52.024381+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "303e120a9f57631f44525e901db6eb0737ce35c4c8cff9f26d87fcf9f38700ea",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UBT&year=2022"
+      },
+      "issuer_UBT_2023.json": {
+        "accepted": true,
+        "cache_key": "issuer_UBT_2023.json",
+        "fund_event_counts": {
+          "UBT": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/7ca2cdf40e76d593a8a4ff1978e3cde35c95c8cb7a1155b2b1292eebcf02911b",
+        "retrieved_at_utc": "2026-10-31T17:59:52.223263+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "7ca2cdf40e76d593a8a4ff1978e3cde35c95c8cb7a1155b2b1292eebcf02911b",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UBT&year=2023"
+      },
+      "issuer_UBT_2024.json": {
+        "accepted": true,
+        "cache_key": "issuer_UBT_2024.json",
+        "fund_event_counts": {
+          "UBT": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/f234dc8712c772950aab0a8234c86ece8b75d1101bbc184e746ea1a3be04e067",
+        "retrieved_at_utc": "2026-10-31T17:59:52.444082+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "f234dc8712c772950aab0a8234c86ece8b75d1101bbc184e746ea1a3be04e067",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UBT&year=2024"
+      },
+      "issuer_UBT_2025.json": {
+        "accepted": true,
+        "cache_key": "issuer_UBT_2025.json",
+        "fund_event_counts": {
+          "UBT": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/94c9012c155c89885da520d4c12bdd01b452d347237abb482a02d7d2e5112f7f",
+        "retrieved_at_utc": "2026-10-31T17:59:52.657205+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "94c9012c155c89885da520d4c12bdd01b452d347237abb482a02d7d2e5112f7f",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UBT&year=2025"
+      },
+      "issuer_UBT_2026.json": {
+        "accepted": true,
+        "cache_key": "issuer_UBT_2026.json",
+        "fund_event_counts": {
+          "UBT": 3
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/53d3f0395d86110e18b0e0aef00bc34c5eaeab17e62d9e99ee53e066e19921b2",
+        "retrieved_at_utc": "2026-10-31T17:59:52.872688+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "53d3f0395d86110e18b0e0aef00bc34c5eaeab17e62d9e99ee53e066e19921b2",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UBT&year=2026"
+      },
+      "issuer_UPRO_2009.json": {
+        "accepted": true,
+        "cache_key": "issuer_UPRO_2009.json",
+        "fund_event_counts": {
+          "UPRO": 0
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retrieved_at_utc": "2026-10-31T17:59:36.915943+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UPRO&year=2009"
+      },
+      "issuer_UPRO_2010.json": {
+        "accepted": true,
+        "cache_key": "issuer_UPRO_2010.json",
+        "fund_event_counts": {
+          "UPRO": 0
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retrieved_at_utc": "2026-10-31T17:59:37.398888+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UPRO&year=2010"
+      },
+      "issuer_UPRO_2011.json": {
+        "accepted": true,
+        "cache_key": "issuer_UPRO_2011.json",
+        "fund_event_counts": {
+          "UPRO": 0
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retrieved_at_utc": "2026-10-31T17:59:37.647650+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UPRO&year=2011"
+      },
+      "issuer_UPRO_2012.json": {
+        "accepted": true,
+        "cache_key": "issuer_UPRO_2012.json",
+        "fund_event_counts": {
+          "UPRO": 0
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retrieved_at_utc": "2026-10-31T17:59:37.852964+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UPRO&year=2012"
+      },
+      "issuer_UPRO_2013.json": {
+        "accepted": true,
+        "cache_key": "issuer_UPRO_2013.json",
+        "fund_event_counts": {
+          "UPRO": 3
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/307d6e95b33dc0bdf167c63a5b67e5ca18e7251b7601d82976f89577ed38bf80",
+        "retrieved_at_utc": "2026-10-31T17:59:38.066878+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "307d6e95b33dc0bdf167c63a5b67e5ca18e7251b7601d82976f89577ed38bf80",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UPRO&year=2013"
+      },
+      "issuer_UPRO_2014.json": {
+        "accepted": true,
+        "cache_key": "issuer_UPRO_2014.json",
+        "fund_event_counts": {
+          "UPRO": 3
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/48b4f0d37ca7477e9ba67222f90cb5f5765f947d051c7a0a960f88426ce0b047",
+        "retrieved_at_utc": "2026-10-31T17:59:38.278416+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "48b4f0d37ca7477e9ba67222f90cb5f5765f947d051c7a0a960f88426ce0b047",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UPRO&year=2014"
+      },
+      "issuer_UPRO_2015.json": {
+        "accepted": true,
+        "cache_key": "issuer_UPRO_2015.json",
+        "fund_event_counts": {
+          "UPRO": 3
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/82d8442f5e61ccb6d3a3fb3d54c8b0e68a73e41d0b91d93bef2c48e06d72a2ad",
+        "retrieved_at_utc": "2026-10-31T17:59:38.642135+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "82d8442f5e61ccb6d3a3fb3d54c8b0e68a73e41d0b91d93bef2c48e06d72a2ad",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UPRO&year=2015"
+      },
+      "issuer_UPRO_2016.json": {
+        "accepted": true,
+        "cache_key": "issuer_UPRO_2016.json",
+        "fund_event_counts": {
+          "UPRO": 2
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/ff2ee1c6d5bfc24ee3e354422797e7bc970ddfa4723f9d214e139c1606364ed4",
+        "retrieved_at_utc": "2026-10-31T17:59:38.930195+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "ff2ee1c6d5bfc24ee3e354422797e7bc970ddfa4723f9d214e139c1606364ed4",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UPRO&year=2016"
+      },
+      "issuer_UPRO_2017.json": {
+        "accepted": true,
+        "cache_key": "issuer_UPRO_2017.json",
+        "fund_event_counts": {
+          "UPRO": 0
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retrieved_at_utc": "2026-10-31T17:59:39.144878+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UPRO&year=2017"
+      },
+      "issuer_UPRO_2018.json": {
+        "accepted": true,
+        "cache_key": "issuer_UPRO_2018.json",
+        "fund_event_counts": {
+          "UPRO": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/6483dc83929625c9ed96388bbf9c11f5ad700a7c99e296c5ed2d97f3677b7c9b",
+        "retrieved_at_utc": "2026-10-31T17:59:39.355577+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "6483dc83929625c9ed96388bbf9c11f5ad700a7c99e296c5ed2d97f3677b7c9b",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UPRO&year=2018"
+      },
+      "issuer_UPRO_2019.json": {
+        "accepted": true,
+        "cache_key": "issuer_UPRO_2019.json",
+        "fund_event_counts": {
+          "UPRO": 3
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/3ce0a890e0b340f59114db81cc14d9f1467c2c5c3ae0d41262d9c1147c813926",
+        "retrieved_at_utc": "2026-10-31T17:59:39.569637+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "3ce0a890e0b340f59114db81cc14d9f1467c2c5c3ae0d41262d9c1147c813926",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UPRO&year=2019"
+      },
+      "issuer_UPRO_2020.json": {
+        "accepted": true,
+        "cache_key": "issuer_UPRO_2020.json",
+        "fund_event_counts": {
+          "UPRO": 2
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/55ba29d552aeee18fd6460705ad4b1f84dafef8d0b4523e2166c05dc42efae0e",
+        "retrieved_at_utc": "2026-10-31T17:59:39.782866+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "55ba29d552aeee18fd6460705ad4b1f84dafef8d0b4523e2166c05dc42efae0e",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UPRO&year=2020"
+      },
+      "issuer_UPRO_2021.json": {
+        "accepted": true,
+        "cache_key": "issuer_UPRO_2021.json",
+        "fund_event_counts": {
+          "UPRO": 2
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/16275281f43ab4b2c7a8473640efc92167747a95f85503e9d3b083c2f45b2a2a",
+        "retrieved_at_utc": "2026-10-31T17:59:39.995160+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "16275281f43ab4b2c7a8473640efc92167747a95f85503e9d3b083c2f45b2a2a",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UPRO&year=2021"
+      },
+      "issuer_UPRO_2022.json": {
+        "accepted": true,
+        "cache_key": "issuer_UPRO_2022.json",
+        "fund_event_counts": {
+          "UPRO": 2
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/87029c9dc06dad5355c687db25ebfcf6c3f4be3d41cf6ec6e3720d052b50fdb4",
+        "retrieved_at_utc": "2026-10-31T17:59:40.207762+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "87029c9dc06dad5355c687db25ebfcf6c3f4be3d41cf6ec6e3720d052b50fdb4",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UPRO&year=2022"
+      },
+      "issuer_UPRO_2023.json": {
+        "accepted": true,
+        "cache_key": "issuer_UPRO_2023.json",
+        "fund_event_counts": {
+          "UPRO": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4ac1a02afef7a4dbc0a2cf28d0327e0e3c6d1b44a20f23e509b23ebe1f473e99",
+        "retrieved_at_utc": "2026-10-31T17:59:40.415972+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4ac1a02afef7a4dbc0a2cf28d0327e0e3c6d1b44a20f23e509b23ebe1f473e99",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UPRO&year=2023"
+      },
+      "issuer_UPRO_2024.json": {
+        "accepted": true,
+        "cache_key": "issuer_UPRO_2024.json",
+        "fund_event_counts": {
+          "UPRO": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4582b95c1931703471e3b5b7c247acccdaac09187501b37c552666ecf7dd3b07",
+        "retrieved_at_utc": "2026-10-31T17:59:40.685393+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4582b95c1931703471e3b5b7c247acccdaac09187501b37c552666ecf7dd3b07",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UPRO&year=2024"
+      },
+      "issuer_UPRO_2025.json": {
+        "accepted": true,
+        "cache_key": "issuer_UPRO_2025.json",
+        "fund_event_counts": {
+          "UPRO": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/d959d8289519ee44d63b0e53739a444976a8fe9aa84346ddffd8423f45e82cc9",
+        "retrieved_at_utc": "2026-10-31T17:59:40.899803+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "d959d8289519ee44d63b0e53739a444976a8fe9aa84346ddffd8423f45e82cc9",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UPRO&year=2025"
+      },
+      "issuer_UPRO_2026.json": {
+        "accepted": true,
+        "cache_key": "issuer_UPRO_2026.json",
+        "fund_event_counts": {
+          "UPRO": 3
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/028c7a0d9c4c816a076af2ef7a00b377b46b908dbb88d1eef3d82e257c323d36",
+        "retrieved_at_utc": "2026-10-31T17:59:41.112782+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "028c7a0d9c4c816a076af2ef7a00b377b46b908dbb88d1eef3d82e257c323d36",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UPRO&year=2026"
+      },
+      "issuer_UST_2010.json": {
+        "accepted": true,
+        "cache_key": "issuer_UST_2010.json",
+        "fund_event_counts": {
+          "UST": 0
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retrieved_at_utc": "2026-10-31T17:59:45.793374+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UST&year=2010"
+      },
+      "issuer_UST_2011.json": {
+        "accepted": true,
+        "cache_key": "issuer_UST_2011.json",
+        "fund_event_counts": {
+          "UST": 0
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retrieved_at_utc": "2026-10-31T17:59:46.005507+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UST&year=2011"
+      },
+      "issuer_UST_2012.json": {
+        "accepted": true,
+        "cache_key": "issuer_UST_2012.json",
+        "fund_event_counts": {
+          "UST": 0
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retrieved_at_utc": "2026-10-31T17:59:46.213221+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UST&year=2012"
+      },
+      "issuer_UST_2013.json": {
+        "accepted": true,
+        "cache_key": "issuer_UST_2013.json",
+        "fund_event_counts": {
+          "UST": 0
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retrieved_at_utc": "2026-10-31T17:59:46.441835+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UST&year=2013"
+      },
+      "issuer_UST_2014.json": {
+        "accepted": true,
+        "cache_key": "issuer_UST_2014.json",
+        "fund_event_counts": {
+          "UST": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/183ce6a17865e411badf774fae6e09b5bed867d27bf604ba6b2cf7a74802218a",
+        "retrieved_at_utc": "2026-10-31T17:59:46.640099+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "183ce6a17865e411badf774fae6e09b5bed867d27bf604ba6b2cf7a74802218a",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UST&year=2014"
+      },
+      "issuer_UST_2015.json": {
+        "accepted": true,
+        "cache_key": "issuer_UST_2015.json",
+        "fund_event_counts": {
+          "UST": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/7baf7c1df9881f0121036267992e62c8092c40cfe755781adc1a5fe16af10298",
+        "retrieved_at_utc": "2026-10-31T17:59:46.840422+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "7baf7c1df9881f0121036267992e62c8092c40cfe755781adc1a5fe16af10298",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UST&year=2015"
+      },
+      "issuer_UST_2016.json": {
+        "accepted": true,
+        "cache_key": "issuer_UST_2016.json",
+        "fund_event_counts": {
+          "UST": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/7b53ffe1432aaa2fe0c580d8bac61edd596918a1ec5aa175c0cb20508e56d85c",
+        "retrieved_at_utc": "2026-10-31T17:59:47.064453+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "7b53ffe1432aaa2fe0c580d8bac61edd596918a1ec5aa175c0cb20508e56d85c",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UST&year=2016"
+      },
+      "issuer_UST_2017.json": {
+        "accepted": true,
+        "cache_key": "issuer_UST_2017.json",
+        "fund_event_counts": {
+          "UST": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/e31f36c49f544eee943256404f299f562542b40827fc4cd33d8db6fbb7943764",
+        "retrieved_at_utc": "2026-10-31T17:59:47.274783+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "e31f36c49f544eee943256404f299f562542b40827fc4cd33d8db6fbb7943764",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UST&year=2017"
+      },
+      "issuer_UST_2018.json": {
+        "accepted": true,
+        "cache_key": "issuer_UST_2018.json",
+        "fund_event_counts": {
+          "UST": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/3fa1135e91c834a0153e5ddf8e2d8de839107bd7e12923e129df181e4db259cb",
+        "retrieved_at_utc": "2026-10-31T17:59:47.489489+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "3fa1135e91c834a0153e5ddf8e2d8de839107bd7e12923e129df181e4db259cb",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UST&year=2018"
+      },
+      "issuer_UST_2019.json": {
+        "accepted": true,
+        "cache_key": "issuer_UST_2019.json",
+        "fund_event_counts": {
+          "UST": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/929d1d08e0346628c95b52d06208318a169cf20c708f8cbf910d07707a68996a",
+        "retrieved_at_utc": "2026-10-31T17:59:47.707158+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "929d1d08e0346628c95b52d06208318a169cf20c708f8cbf910d07707a68996a",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UST&year=2019"
+      },
+      "issuer_UST_2020.json": {
+        "accepted": true,
+        "cache_key": "issuer_UST_2020.json",
+        "fund_event_counts": {
+          "UST": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4ae10a034aea8f60005e4629512114257d295346fc4c791f5197c6956b46fc4a",
+        "retrieved_at_utc": "2026-10-31T17:59:47.917884+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4ae10a034aea8f60005e4629512114257d295346fc4c791f5197c6956b46fc4a",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UST&year=2020"
+      },
+      "issuer_UST_2021.json": {
+        "accepted": true,
+        "cache_key": "issuer_UST_2021.json",
+        "fund_event_counts": {
+          "UST": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/0bb96a955584e1eaafa8639be8452f0e052814e22c6ffa8538aea40cc7138fda",
+        "retrieved_at_utc": "2026-10-31T17:59:48.128456+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "0bb96a955584e1eaafa8639be8452f0e052814e22c6ffa8538aea40cc7138fda",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UST&year=2021"
+      },
+      "issuer_UST_2022.json": {
+        "accepted": true,
+        "cache_key": "issuer_UST_2022.json",
+        "fund_event_counts": {
+          "UST": 1
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/442768496ee93fe3f67741f9394030ff3fe8c77b416a07c944eb0ae9f8126c9c",
+        "retrieved_at_utc": "2026-10-31T17:59:48.347780+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "442768496ee93fe3f67741f9394030ff3fe8c77b416a07c944eb0ae9f8126c9c",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UST&year=2022"
+      },
+      "issuer_UST_2023.json": {
+        "accepted": true,
+        "cache_key": "issuer_UST_2023.json",
+        "fund_event_counts": {
+          "UST": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/d4eaf64f137b96f425b13513cb9ebf8b0b3a56e84ebe2d15732fe9aa1bf6ad66",
+        "retrieved_at_utc": "2026-10-31T17:59:48.554105+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "d4eaf64f137b96f425b13513cb9ebf8b0b3a56e84ebe2d15732fe9aa1bf6ad66",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UST&year=2023"
+      },
+      "issuer_UST_2024.json": {
+        "accepted": true,
+        "cache_key": "issuer_UST_2024.json",
+        "fund_event_counts": {
+          "UST": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/182f97aea9215ce4a44070db72a1e294da896979fe2e2ed2f0cbfb441018c81e",
+        "retrieved_at_utc": "2026-10-31T17:59:48.759210+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "182f97aea9215ce4a44070db72a1e294da896979fe2e2ed2f0cbfb441018c81e",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UST&year=2024"
+      },
+      "issuer_UST_2025.json": {
+        "accepted": true,
+        "cache_key": "issuer_UST_2025.json",
+        "fund_event_counts": {
+          "UST": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/2e5fa49d12ccfa87cfbe294860bfb97ab61cf5018fae26e73e9e26a9c69af4fa",
+        "retrieved_at_utc": "2026-10-31T17:59:48.973083+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "2e5fa49d12ccfa87cfbe294860bfb97ab61cf5018fae26e73e9e26a9c69af4fa",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UST&year=2025"
+      },
+      "issuer_UST_2026.json": {
+        "accepted": true,
+        "cache_key": "issuer_UST_2026.json",
+        "fund_event_counts": {
+          "UST": 3
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/f05e223c5cbcb08e74ab611231c7e566a6de98472e7ee202cea3312feb32abbe",
+        "retrieved_at_utc": "2026-10-31T17:59:49.181291+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "f05e223c5cbcb08e74ab611231c7e566a6de98472e7ee202cea3312feb32abbe",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UST&year=2026"
+      },
+      "issuer_VT.json": {
+        "accepted": true,
+        "cache_key": "issuer_VT.json",
+        "fund_event_counts": {
+          "VT": 40
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/176aa53804827219fe50167ca50ad22ef51dd2c3b380aaa0485687bf1808ed96",
+        "retrieved_at_utc": "2026-10-31T17:59:30.426179+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "176aa53804827219fe50167ca50ad22ef51dd2c3b380aaa0485687bf1808ed96",
+        "url": "https://advisors.vanguard.com/investments/products/api/funds/3141/pricing/distributions?hasDistributionYield=true"
+      },
+      "issuer_ssga_distributions.xlsx": {
+        "accepted": true,
+        "cache_key": "issuer_ssga_distributions.xlsx",
+        "fund_event_counts": {
+          "BWX": 172,
+          "BWZ": 119
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/f78e5b6a2aa94cd1b684ea875b0936fce892f895016bc0c3374353f78d21a771",
+        "retrieved_at_utc": "2026-10-31T17:59:33.586494+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "f78e5b6a2aa94cd1b684ea875b0936fce892f895016bc0c3374353f78d21a771",
+        "url": "https://www.ssga.com/library-content/products/fund-data/etfs/us/spdr-etf-historical-distributions.xlsx"
+      },
+      "primary_observations": {
+        "accepted": true,
+        "method": "Transcribed and attributed primary financial facts; partial coverage.",
+        "path": "sources/derived/distribution_issuer_observations.csv",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "e2ca2253b395677b83533f4ec01c3e6a44bedc69eff2c0208f332bdf17b677ee",
+        "verified_date": "2026-10-28"
+      },
+      "yahoo_BND_1970-01-01.json": {
+        "accepted": true,
+        "cache_key": "yahoo_BND_1970-01-01.json",
+        "cash_events": 232,
+        "currency": "USD",
+        "first_quote": "2007-04-10",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/4bc4de2c72df7a5b86d6b4550a509066b298a730540976382aab695b2eb95c6e",
+        "quote_count": 4923,
+        "retrieved_at_utc": "2026-10-31T17:59:25.439046+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4bc4de2c72df7a5b86d6b4550a509066b298a730540976382aab695b2eb95c6e",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/BND?period1=0&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_BWX_1970-01-01.json": {
+        "accepted": true,
+        "cache_key": "yahoo_BWX_1970-01-01.json",
+        "cash_events": 171,
+        "currency": "USD",
+        "first_quote": "2007-10-11",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/3de453c161c22bb5dc480a8a0f42a5b6c93eb6369d60c49d1865cae65f577af9",
+        "quote_count": 4794,
+        "retrieved_at_utc": "2026-10-31T17:59:25.605622+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "3de453c161c22bb5dc480a8a0f42a5b6c93eb6369d60c49d1865cae65f577af9",
+        "split_events": 1,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/BWX?period1=0&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_BWZ_1970-01-01.json": {
+        "accepted": true,
+        "cache_key": "yahoo_BWZ_1970-01-01.json",
+        "cash_events": 117,
+        "currency": "USD",
+        "first_quote": "2009-01-30",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/58531fb03af61d5ebf3ab1aabce0ffc30bdf1992d7e0064f5d7eb79a7c2d30e2",
+        "quote_count": 4466,
+        "retrieved_at_utc": "2026-10-31T17:59:25.748092+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "58531fb03af61d5ebf3ab1aabce0ffc30bdf1992d7e0064f5d7eb79a7c2d30e2",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/BWZ?period1=0&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_DBC_1970-01-01.json": {
+        "accepted": true,
+        "cache_key": "yahoo_DBC_1970-01-01.json",
+        "cash_events": 9,
+        "currency": "USD",
+        "first_quote": "2006-02-06",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/5445c91a629d06587f46cd63e34719aeaff8a5f2fee82afcbaec34d4e29eed78",
+        "quote_count": 5217,
+        "retrieved_at_utc": "2026-10-31T17:59:26.539714+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "5445c91a629d06587f46cd63e34719aeaff8a5f2fee82afcbaec34d4e29eed78",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/DBC?period1=0&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_GLD_1970-01-01.json": {
+        "accepted": true,
+        "cache_key": "yahoo_GLD_1970-01-01.json",
+        "cash_events": 0,
+        "currency": "USD",
+        "first_quote": "2004-11-18",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/2fb0ad919421137dc857cf0f156270585058fb12b94096fdf9531805213e2f5c",
+        "quote_count": 5522,
+        "retrieved_at_utc": "2026-10-31T17:59:26.088029+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "2fb0ad919421137dc857cf0f156270585058fb12b94096fdf9531805213e2f5c",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/GLD?period1=0&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_IEF_1970-01-01.json": {
+        "accepted": true,
+        "cache_key": "yahoo_IEF_1970-01-01.json",
+        "cash_events": 291,
+        "currency": "USD",
+        "first_quote": "2002-07-30",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/f485b03b309c346768553b21ba9009aedb175b4638874ff31142b136d0481fb7",
+        "quote_count": 6104,
+        "retrieved_at_utc": "2026-10-31T17:59:24.749385+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "f485b03b309c346768553b21ba9009aedb175b4638874ff31142b136d0481fb7",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/IEF?period1=0&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_ISHG_1970-01-01.json": {
+        "accepted": true,
+        "cache_key": "yahoo_ISHG_1970-01-01.json",
+        "cash_events": 75,
+        "currency": "USD",
+        "first_quote": "2009-01-28",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/4ede1f3a8589b45a2ad4742237343780177f43cd18b979463ef1fc3d6faefef8",
+        "quote_count": 4468,
+        "retrieved_at_utc": "2026-10-31T17:59:25.605781+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4ede1f3a8589b45a2ad4742237343780177f43cd18b979463ef1fc3d6faefef8",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/ISHG?period1=0&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_SHY_1970-01-01.json": {
+        "accepted": true,
+        "cache_key": "yahoo_SHY_1970-01-01.json",
+        "cash_events": 290,
+        "currency": "USD",
+        "first_quote": "2002-07-30",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/99b81f9539743efaec338e46a980c006912fbba533d5f2d124d10f201dddf232",
+        "quote_count": 6104,
+        "retrieved_at_utc": "2026-10-31T17:59:25.126876+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "99b81f9539743efaec338e46a980c006912fbba533d5f2d124d10f201dddf232",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/SHY?period1=0&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_SSO_1970-01-01.json": {
+        "accepted": true,
+        "cache_key": "yahoo_SSO_1970-01-01.json",
+        "cash_events": 70,
+        "currency": "USD",
+        "first_quote": "2006-06-21",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/74efd52735fabc8bed8d4dadb6fbc1f4d7c15b75bb36f11a7d0c274ef595cdc3",
+        "quote_count": 5123,
+        "retrieved_at_utc": "2026-10-31T17:59:26.609082+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "74efd52735fabc8bed8d4dadb6fbc1f4d7c15b75bb36f11a7d0c274ef595cdc3",
+        "split_events": 4,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/SSO?period1=0&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_TLT_1970-01-01.json": {
+        "accepted": true,
+        "cache_key": "yahoo_TLT_1970-01-01.json",
+        "cash_events": 289,
+        "currency": "USD",
+        "first_quote": "2002-07-30",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/4f7c1e51408614b7cd6e2cfedb97b83ba4699ad53175f9389d1c2cf88e715210",
+        "quote_count": 6104,
+        "retrieved_at_utc": "2026-10-31T17:59:24.806263+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4f7c1e51408614b7cd6e2cfedb97b83ba4699ad53175f9389d1c2cf88e715210",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/TLT?period1=0&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_TMF_1970-01-01.json": {
+        "accepted": true,
+        "cache_key": "yahoo_TMF_1970-01-01.json",
+        "cash_events": 50,
+        "currency": "USD",
+        "first_quote": "2009-04-16",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/6f7ba5dcf56307585d3a85074524ef37a43f25587bc498310593d3bef1af7cf1",
+        "quote_count": 4414,
+        "retrieved_at_utc": "2026-10-31T17:59:26.186043+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "6f7ba5dcf56307585d3a85074524ef37a43f25587bc498310593d3bef1af7cf1",
+        "split_events": 2,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/TMF?period1=0&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_TYD_1970-01-01.json": {
+        "accepted": true,
+        "cache_key": "yahoo_TYD_1970-01-01.json",
+        "cash_events": 40,
+        "currency": "USD",
+        "first_quote": "2009-04-16",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/ffa39f645c5eeebead399ee77142768cfefda875353f6c58dff0b961ddd3711b",
+        "quote_count": 4414,
+        "retrieved_at_utc": "2026-10-31T17:59:26.435902+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "ffa39f645c5eeebead399ee77142768cfefda875353f6c58dff0b961ddd3711b",
+        "split_events": 1,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/TYD?period1=0&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_UBT_1970-01-01.json": {
+        "accepted": true,
+        "cache_key": "yahoo_UBT_1970-01-01.json",
+        "cash_events": 48,
+        "currency": "USD",
+        "first_quote": "2010-01-21",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/7ba2bf52220519fa629120766bf228f1ce18bc8cae40c490cb0dcb57eee98675",
+        "quote_count": 4221,
+        "retrieved_at_utc": "2026-10-31T17:59:26.962554+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "7ba2bf52220519fa629120766bf228f1ce18bc8cae40c490cb0dcb57eee98675",
+        "split_events": 2,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/UBT?period1=0&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_UGL_1970-01-01.json": {
+        "accepted": true,
+        "cache_key": "yahoo_UGL_1970-01-01.json",
+        "cash_events": 0,
+        "currency": "USD",
+        "first_quote": "2008-12-03",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/c038a2897fcaa6654266763b5f855bbeba24050c32e7dfad7e1debfcc2428c60",
+        "quote_count": 4505,
+        "retrieved_at_utc": "2026-10-31T17:59:26.284840+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "c038a2897fcaa6654266763b5f855bbeba24050c32e7dfad7e1debfcc2428c60",
+        "split_events": 1,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/UGL?period1=0&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_UPRO_1970-01-01.json": {
+        "accepted": true,
+        "cache_key": "yahoo_UPRO_1970-01-01.json",
+        "cash_events": 47,
+        "currency": "USD",
+        "first_quote": "2009-06-25",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/70901685d694d9a407ea0ce6a6f715d466e39b79e132afab4019012ff848bed7",
+        "quote_count": 4365,
+        "retrieved_at_utc": "2026-10-31T17:59:25.873945+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "70901685d694d9a407ea0ce6a6f715d466e39b79e132afab4019012ff848bed7",
+        "split_events": 5,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/UPRO?period1=0&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_UST_1970-01-01.json": {
+        "accepted": true,
+        "cache_key": "yahoo_UST_1970-01-01.json",
+        "cash_events": 50,
+        "currency": "USD",
+        "first_quote": "2010-02-02",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/6203a13cbb9e2359c192495df76c6f96c6bda0266dbc540a258ca87faf77d89b",
+        "quote_count": 4213,
+        "retrieved_at_utc": "2026-10-31T17:59:26.900794+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "6203a13cbb9e2359c192495df76c6f96c6bda0266dbc540a258ca87faf77d89b",
+        "split_events": 1,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/UST?period1=0&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_VT_1970-01-01.json": {
+        "accepted": true,
+        "cache_key": "yahoo_VT_1970-01-01.json",
+        "cash_events": 61,
+        "currency": "USD",
+        "first_quote": "2008-06-26",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/1073c796f8c353d1bfa5a38c65b531cc7e4942f70e8002c9553bf9788553fbcb",
+        "quote_count": 4616,
+        "retrieved_at_utc": "2026-10-31T17:59:24.702906+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "1073c796f8c353d1bfa5a38c65b531cc7e4942f70e8002c9553bf9788553fbcb",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/VT?period1=0&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_WLDU_1970-01-01.json": {
+        "accepted": true,
+        "cache_key": "yahoo_WLDU_1970-01-01.json",
+        "cash_events": 0,
+        "currency": "USD",
+        "first_quote": "2026-03-10",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/debbf4ab07f09864fe4f35ec329cca9cc66af5d9ad4d8f461b5a672ddfb0daad",
+        "quote_count": 164,
+        "retrieved_at_utc": "2026-10-31T17:59:26.680546+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "debbf4ab07f09864fe4f35ec329cca9cc66af5d9ad4d8f461b5a672ddfb0daad",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/WLDU?period1=0&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      }
+    }
+  },
+  "input_return_sha256": {
+    "broad_commodities": "9d86be23237ab1fd6ecd44d0642def546d7b44b7452996a02bcb6c40a929604e",
+    "global_bonds": "c07528f125b9a8cf76b456131690d0e25f5dc0f43f8e109511a0f95e00d949a1",
+    "global_bonds_2x": "fbba13ff035cee199706a2fcfd8722b8970ff7ac14981e10b60efe2dfbdc1152",
+    "global_short_term_bonds": "ec0bfcf801dc3e2979df4b60514fd429140cd15c7a1e2587fe50b45e4b9e8739",
+    "global_stocks": "893779afb0a1bf613aea6dabb8e29519700667509a86ff957b86430c1c9f1d32",
+    "global_stocks_2x": "45de19bd63aa6647990dbc390f1a100326b28fa36f74ca2bf95e6c95b6ba8e4a",
+    "gold": "39e61d6c9fee857c45c9e721bb0c45a4ed6f1b5ce4f20aae7f2c2c6515cb9f9e",
+    "gold_2x": "b4eaa7a6bec964d8d78bbae22225c808c5acc38b6d33a3b02ff5d5876e6b72f4",
+    "intermediate_term_us_treasury": "dfc5215ba185c593f09a0d0c7a745b2f04f2f9614020c8d3099a566f716b2c24",
+    "intermediate_term_us_treasury_2x": "f51fb7ab40e3ff927290b56bde0f9d73fbdb529aa06bd2d507ea3291aab16f40",
+    "intermediate_term_us_treasury_3x": "cf168d9893b379a90661118b06c56464e6892ed54fabd3b7a2142c1ddece37b2",
+    "long_term_us_treasury": "4b77b264b51cf028a86475796053ab1de7885ea1f36b20fd147ac9eb62165127",
+    "long_term_us_treasury_2x": "18a68547b6cd73df7d6200da8d663466c6025e76f84933a88bd9ac6409353c09",
+    "long_term_us_treasury_3x": "6e54ce035b4a68f8688c0044e6659740bd09a37a13d68e36c9a22865ac17899c",
+    "short_term_us_treasury": "db2bbc8153dee634817de06f9f4878e1cc19aef6099a9cf685c572a8dec6fb9b",
+    "short_term_us_treasury_2x": "3a33574f63438f99ab43728060e38576522be70940c910bb0583ac879a8b0f2d",
+    "us_large_cap_2x_sp500": "67c3c9304758c9bf0b446b326af6353175a69e9af5b4d59da91b338b3024f571",
+    "us_large_cap_3x_sp500": "023d32fabc6f843a4d63c1857c4d248d9c937212606e997d8824d0790a0836f1",
+    "us_large_cap_sp500": "841a1890cfe740e3085c98811050621ea0a4b112eae114afd1554414b05ff77d"
+  },
+  "last_full_source_check": "2026-10-31",
+  "latest_sources": {
+    "funds": {
+      "BND": {
+        "amount_conflicts": [],
+        "cash_event_count": 13,
+        "first_quote": "2025-09-18",
+        "fund": "BND",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_BND.json"
+          ]
+        },
+        "issuer_event_count": 13,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-30",
+        "missing_payment_dates": 0,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "BWX": {
+        "amount_conflicts": [],
+        "cash_event_count": 13,
+        "first_quote": "2025-09-18",
+        "fund": "BWX",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_ssga_distributions.xlsx"
+          ]
+        },
+        "issuer_event_count": 13,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-30",
+        "missing_payment_dates": 0,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "BWZ": {
+        "amount_conflicts": [],
+        "cash_event_count": 13,
+        "first_quote": "2025-09-18",
+        "fund": "BWZ",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_ssga_distributions.xlsx"
+          ]
+        },
+        "issuer_event_count": 13,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-30",
+        "missing_payment_dates": 0,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "DBC": {
+        "amount_conflicts": [],
+        "cash_event_count": 1,
+        "first_quote": "2025-09-18",
+        "fund": "DBC",
+        "issuer_delivery": {
+          "delivery": "unavailable",
+          "error": "406 Client Error: Not Acceptable for url: https://www.invesco.com/us/en/financial-products/etfs/invesco-db-commodity-index-tracking-fund.html",
+          "source_url": "https://www.invesco.com/us/en/financial-products/etfs/invesco-db-commodity-index-tracking-fund.html"
+        },
+        "issuer_event_count": 1,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-30",
+        "missing_payment_dates": 0,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "GLD": {
+        "amount_conflicts": [],
+        "cash_event_count": 0,
+        "first_quote": "2025-09-18",
+        "fund": "GLD",
+        "issuer_delivery": {
+          "delivery": "documented_zero_routine_policy",
+          "exceptional_cash_ingestion": true,
+          "policy_evidence": "sources/derived/distribution_cash_policies.json",
+          "sources": []
+        },
+        "issuer_event_count": 0,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-30",
+        "missing_payment_dates": 0,
+        "unknown_adjustment_dates": [],
+        "zero_policy": true
+      },
+      "IEF": {
+        "amount_conflicts": [],
+        "cash_event_count": 13,
+        "first_quote": "2025-09-18",
+        "fund": "IEF",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_IEF.html"
+          ]
+        },
+        "issuer_event_count": 13,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-30",
+        "missing_payment_dates": 0,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "ISHG": {
+        "amount_conflicts": [],
+        "cash_event_count": 1,
+        "first_quote": "2025-09-18",
+        "fund": "ISHG",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_ISHG.html"
+          ]
+        },
+        "issuer_event_count": 1,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-30",
+        "missing_payment_dates": 0,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "SHY": {
+        "amount_conflicts": [],
+        "cash_event_count": 13,
+        "first_quote": "2025-09-18",
+        "fund": "SHY",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_SHY.html"
+          ]
+        },
+        "issuer_event_count": 13,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-30",
+        "missing_payment_dates": 0,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "SSO": {
+        "amount_conflicts": [],
+        "cash_event_count": 5,
+        "first_quote": "2025-09-18",
+        "fund": "SSO",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_SSO_2025.json",
+            "issuer_SSO_2026.json"
+          ]
+        },
+        "issuer_event_count": 5,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-30",
+        "missing_payment_dates": 0,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "TLT": {
+        "amount_conflicts": [],
+        "cash_event_count": 13,
+        "first_quote": "2025-09-18",
+        "fund": "TLT",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_TLT.html"
+          ]
+        },
+        "issuer_event_count": 13,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-30",
+        "missing_payment_dates": 0,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "TMF": {
+        "amount_conflicts": [],
+        "cash_event_count": 5,
+        "first_quote": "2025-09-18",
+        "fund": "TMF",
+        "issuer_delivery": {
+          "delivery": "unavailable",
+          "error": "403 Client Error: Forbidden for url: https://www.direxion.com/product/daily-20-year-treasury-bull-bear-3x-etfs"
+        },
+        "issuer_event_count": 4,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-30",
+        "missing_payment_dates": 1,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "TYD": {
+        "amount_conflicts": [],
+        "cash_event_count": 5,
+        "first_quote": "2025-09-18",
+        "fund": "TYD",
+        "issuer_delivery": {
+          "delivery": "unavailable",
+          "error": "403 Client Error: Forbidden for url: https://www.direxion.com/product/daily-7-10-year-treasury-bull-bear-3x-etfs"
+        },
+        "issuer_event_count": 4,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-30",
+        "missing_payment_dates": 1,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "UBT": {
+        "amount_conflicts": [],
+        "cash_event_count": 5,
+        "first_quote": "2025-09-18",
+        "fund": "UBT",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_UBT_2025.json",
+            "issuer_UBT_2026.json"
+          ]
+        },
+        "issuer_event_count": 5,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-30",
+        "missing_payment_dates": 0,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "UGL": {
+        "amount_conflicts": [],
+        "cash_event_count": 0,
+        "first_quote": "2025-09-18",
+        "fund": "UGL",
+        "issuer_delivery": {
+          "delivery": "documented_zero_routine_policy",
+          "exceptional_cash_ingestion": true,
+          "policy_evidence": "sources/derived/distribution_cash_policies.json",
+          "sources": []
+        },
+        "issuer_event_count": 0,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-30",
+        "missing_payment_dates": 0,
+        "unknown_adjustment_dates": [],
+        "zero_policy": true
+      },
+      "UPRO": {
+        "amount_conflicts": [],
+        "cash_event_count": 5,
+        "first_quote": "2025-09-18",
+        "fund": "UPRO",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_UPRO_2025.json",
+            "issuer_UPRO_2026.json"
+          ]
+        },
+        "issuer_event_count": 5,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-30",
+        "missing_payment_dates": 0,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "UST": {
+        "amount_conflicts": [],
+        "cash_event_count": 5,
+        "first_quote": "2025-09-18",
+        "fund": "UST",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_UST_2025.json",
+            "issuer_UST_2026.json"
+          ]
+        },
+        "issuer_event_count": 5,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-30",
+        "missing_payment_dates": 0,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "VT": {
+        "amount_conflicts": [],
+        "cash_event_count": 5,
+        "first_quote": "2025-09-18",
+        "fund": "VT",
+        "issuer_delivery": {
+          "delivery": "available",
+          "sources": [
+            "issuer_VT.json"
+          ]
+        },
+        "issuer_event_count": 5,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-30",
+        "missing_payment_dates": 0,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      },
+      "WLDU": {
+        "amount_conflicts": [],
+        "cash_event_count": 0,
+        "first_quote": "2026-03-10",
+        "fund": "WLDU",
+        "issuer_delivery": {
+          "delivery": "vendor_only_no_issuer_history",
+          "sources": []
+        },
+        "issuer_event_count": 0,
+        "issuer_only_events": [],
+        "last_quote": "2026-10-30",
+        "missing_payment_dates": 0,
+        "unknown_adjustment_dates": [],
+        "zero_policy": false
+      }
+    },
+    "requested_end_date": "2026-10-30",
+    "requested_start_date": "2025-09-18",
+    "sources": {
+      "cash_policy_evidence": {
+        "accepted": true,
+        "path": "sources/derived/distribution_cash_policies.json",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "97b16065d30aa303c01e798f07c3269078e5711680da29568ba24e7fead9d6de"
+      },
+      "issuer_BND.json": {
+        "accepted": true,
+        "cache_key": "issuer_BND.json",
+        "fund_event_counts": {
+          "BND": 120
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/7bd1e613136a8ff38bfb021a3f4eb22b1410d9b103247a3ad24e729312c4e05a",
+        "retrieved_at_utc": "2026-10-31T18:21:49.202543+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "7bd1e613136a8ff38bfb021a3f4eb22b1410d9b103247a3ad24e729312c4e05a",
+        "url": "https://advisors.vanguard.com/investments/products/api/funds/0928/pricing/distributions?hasDistributionYield=true"
+      },
+      "issuer_DBC.html": {
+        "accepted": false,
+        "http_status": 406,
+        "path": "sources/raw/distributions/objects/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retrieved_at_utc": "2026-10-31T18:21:50.729357+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "url": "https://www.invesco.com/us/en/financial-products/etfs/invesco-db-commodity-index-tracking-fund.html"
+      },
+      "issuer_IEF.html": {
+        "accepted": true,
+        "cache_key": "issuer_IEF.html",
+        "fund_event_counts": {
+          "IEF": 291
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/05e285c4ad742c7f217526fc67663dc32409abb932b0a333e9c068498d997e13",
+        "retrieved_at_utc": "2026-10-31T18:21:47.357057+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "05e285c4ad742c7f217526fc67663dc32409abb932b0a333e9c068498d997e13",
+        "url": "https://www.ishares.com/us/products/239456/ishares-710-year-treasury-bond-etf"
+      },
+      "issuer_ISHG.html": {
+        "accepted": true,
+        "cache_key": "issuer_ISHG.html",
+        "fund_event_counts": {
+          "ISHG": 75
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/4743f9b5ba59f776ee95ebbf511da509efcb0c45d91348fe18f17e350f8667ae",
+        "retrieved_at_utc": "2026-10-31T18:21:49.657788+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "4743f9b5ba59f776ee95ebbf511da509efcb0c45d91348fe18f17e350f8667ae",
+        "url": "https://www.ishares.com/us/products/239829/ishares-13-year-international-treasury-bond-etf"
+      },
+      "issuer_SHY.html": {
+        "accepted": true,
+        "cache_key": "issuer_SHY.html",
+        "fund_event_counts": {
+          "SHY": 291
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/e1779b8664fc13941b9c3ce4540739e272c89900d7bf256c985ac3ea7d718262",
+        "retrieved_at_utc": "2026-10-31T18:21:46.847075+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "e1779b8664fc13941b9c3ce4540739e272c89900d7bf256c985ac3ea7d718262",
+        "url": "https://www.ishares.com/us/products/239452/ishares-13-year-treasury-bond-etf"
+      },
+      "issuer_SSO_2025.json": {
+        "accepted": true,
+        "cache_key": "issuer_SSO_2025.json",
+        "fund_event_counts": {
+          "SSO": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/d2f5e112165df3b1771d1d2b772e3c28bd8355eb025b59d1d52b25b58540009c",
+        "retrieved_at_utc": "2026-10-31T18:21:55.562548+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "d2f5e112165df3b1771d1d2b772e3c28bd8355eb025b59d1d52b25b58540009c",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=SSO&year=2025"
+      },
+      "issuer_SSO_2026.json": {
+        "accepted": true,
+        "cache_key": "issuer_SSO_2026.json",
+        "fund_event_counts": {
+          "SSO": 3
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/3391205c9d9ada068947be4c8e5ebcf28ee13bd51da9420b6479e46e16ad400d",
+        "retrieved_at_utc": "2026-10-31T18:21:55.770566+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "3391205c9d9ada068947be4c8e5ebcf28ee13bd51da9420b6479e46e16ad400d",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=SSO&year=2026"
+      },
+      "issuer_TLT.html": {
+        "accepted": true,
+        "cache_key": "issuer_TLT.html",
+        "fund_event_counts": {
+          "TLT": 291
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/0491bf5b72d6459057a48fd490a90b7d2cc98fe349b72f67a23fb1c7f2211b99",
+        "retrieved_at_utc": "2026-10-31T18:21:47.853301+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "0491bf5b72d6459057a48fd490a90b7d2cc98fe349b72f67a23fb1c7f2211b99",
+        "url": "https://www.ishares.com/us/products/239454/ishares-20-year-treasury-bond-etf"
+      },
+      "issuer_TMF.html": {
+        "accepted": false,
+        "http_status": 403,
+        "path": "sources/raw/distributions/objects/791d2d167893b57d30c8675dae9621ff4f34895030e4ec51097c82f138adaf03",
+        "retrieved_at_utc": "2026-10-31T18:21:58.323022+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "791d2d167893b57d30c8675dae9621ff4f34895030e4ec51097c82f138adaf03",
+        "url": "https://www.direxion.com/product/daily-20-year-treasury-bull-bear-3x-etfs"
+      },
+      "issuer_TYD.html": {
+        "accepted": false,
+        "http_status": 403,
+        "path": "sources/raw/distributions/objects/85c31e7b5fedb02c0789f95bba519b02f7cbc369a443663fbafd381739e26fb9",
+        "retrieved_at_utc": "2026-10-31T18:21:57.417755+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "85c31e7b5fedb02c0789f95bba519b02f7cbc369a443663fbafd381739e26fb9",
+        "url": "https://www.direxion.com/product/daily-7-10-year-treasury-bull-bear-3x-etfs"
+      },
+      "issuer_UBT_2025.json": {
+        "accepted": true,
+        "cache_key": "issuer_UBT_2025.json",
+        "fund_event_counts": {
+          "UBT": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/94c9012c155c89885da520d4c12bdd01b452d347237abb482a02d7d2e5112f7f",
+        "retrieved_at_utc": "2026-10-31T18:21:56.467734+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "94c9012c155c89885da520d4c12bdd01b452d347237abb482a02d7d2e5112f7f",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UBT&year=2025"
+      },
+      "issuer_UBT_2026.json": {
+        "accepted": true,
+        "cache_key": "issuer_UBT_2026.json",
+        "fund_event_counts": {
+          "UBT": 3
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/53d3f0395d86110e18b0e0aef00bc34c5eaeab17e62d9e99ee53e066e19921b2",
+        "retrieved_at_utc": "2026-10-31T18:21:56.707015+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "53d3f0395d86110e18b0e0aef00bc34c5eaeab17e62d9e99ee53e066e19921b2",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UBT&year=2026"
+      },
+      "issuer_UPRO_2025.json": {
+        "accepted": true,
+        "cache_key": "issuer_UPRO_2025.json",
+        "fund_event_counts": {
+          "UPRO": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/d959d8289519ee44d63b0e53739a444976a8fe9aa84346ddffd8423f45e82cc9",
+        "retrieved_at_utc": "2026-10-31T18:21:55.120791+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "d959d8289519ee44d63b0e53739a444976a8fe9aa84346ddffd8423f45e82cc9",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UPRO&year=2025"
+      },
+      "issuer_UPRO_2026.json": {
+        "accepted": true,
+        "cache_key": "issuer_UPRO_2026.json",
+        "fund_event_counts": {
+          "UPRO": 3
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/028c7a0d9c4c816a076af2ef7a00b377b46b908dbb88d1eef3d82e257c323d36",
+        "retrieved_at_utc": "2026-10-31T18:21:55.348491+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "028c7a0d9c4c816a076af2ef7a00b377b46b908dbb88d1eef3d82e257c323d36",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UPRO&year=2026"
+      },
+      "issuer_UST_2025.json": {
+        "accepted": true,
+        "cache_key": "issuer_UST_2025.json",
+        "fund_event_counts": {
+          "UST": 4
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/2e5fa49d12ccfa87cfbe294860bfb97ab61cf5018fae26e73e9e26a9c69af4fa",
+        "retrieved_at_utc": "2026-10-31T18:21:55.993570+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "2e5fa49d12ccfa87cfbe294860bfb97ab61cf5018fae26e73e9e26a9c69af4fa",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UST&year=2025"
+      },
+      "issuer_UST_2026.json": {
+        "accepted": true,
+        "cache_key": "issuer_UST_2026.json",
+        "fund_event_counts": {
+          "UST": 3
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/f05e223c5cbcb08e74ab611231c7e566a6de98472e7ee202cea3312feb32abbe",
+        "retrieved_at_utc": "2026-10-31T18:21:56.196888+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "f05e223c5cbcb08e74ab611231c7e566a6de98472e7ee202cea3312feb32abbe",
+        "url": "https://www.proshares.com/api/distributionsummary?fund=UST&year=2026"
+      },
+      "issuer_VT.json": {
+        "accepted": true,
+        "cache_key": "issuer_VT.json",
+        "fund_event_counts": {
+          "VT": 40
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/176aa53804827219fe50167ca50ad22ef51dd2c3b380aaa0485687bf1808ed96",
+        "retrieved_at_utc": "2026-10-31T18:21:48.957691+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "176aa53804827219fe50167ca50ad22ef51dd2c3b380aaa0485687bf1808ed96",
+        "url": "https://advisors.vanguard.com/investments/products/api/funds/3141/pricing/distributions?hasDistributionYield=true"
+      },
+      "issuer_ssga_distributions.xlsx": {
+        "accepted": true,
+        "cache_key": "issuer_ssga_distributions.xlsx",
+        "fund_event_counts": {
+          "BWX": 172,
+          "BWZ": 119
+        },
+        "http_status": 200,
+        "path": "sources/raw/distributions/objects/f78e5b6a2aa94cd1b684ea875b0936fce892f895016bc0c3374353f78d21a771",
+        "retrieved_at_utc": "2026-10-31T18:21:51.890106+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "f78e5b6a2aa94cd1b684ea875b0936fce892f895016bc0c3374353f78d21a771",
+        "url": "https://www.ssga.com/library-content/products/fund-data/etfs/us/spdr-etf-historical-distributions.xlsx"
+      },
+      "primary_observations": {
+        "accepted": true,
+        "method": "Transcribed and attributed primary financial facts; partial coverage.",
+        "path": "sources/derived/distribution_issuer_observations.csv",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "e2ca2253b395677b83533f4ec01c3e6a44bedc69eff2c0208f332bdf17b677ee",
+        "verified_date": "2026-10-28"
+      },
+      "yahoo_BND_2025-09-18.json": {
+        "accepted": true,
+        "cache_key": "yahoo_BND_2025-09-18.json",
+        "cash_events": 13,
+        "currency": "USD",
+        "first_quote": "2025-09-18",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/08f7d5760b73840ef2ac8ba1d1d1a601cdcb41a1859f82ecd9445d1605b3c0d6",
+        "quote_count": 282,
+        "retrieved_at_utc": "2026-10-31T18:21:45.114073+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "08f7d5760b73840ef2ac8ba1d1d1a601cdcb41a1859f82ecd9445d1605b3c0d6",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/BND?period1=1758153600&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_BWX_2025-09-18.json": {
+        "accepted": true,
+        "cache_key": "yahoo_BWX_2025-09-18.json",
+        "cash_events": 13,
+        "currency": "USD",
+        "first_quote": "2025-09-18",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/c5c7dfde10ca1966a03a78ee68608064c98684612ffdd968b23b89e5c522fc04",
+        "quote_count": 282,
+        "retrieved_at_utc": "2026-10-31T18:21:45.124840+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "c5c7dfde10ca1966a03a78ee68608064c98684612ffdd968b23b89e5c522fc04",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/BWX?period1=1758153600&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_BWZ_2025-09-18.json": {
+        "accepted": true,
+        "cache_key": "yahoo_BWZ_2025-09-18.json",
+        "cash_events": 13,
+        "currency": "USD",
+        "first_quote": "2025-09-18",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/884e1f11281a7504db03c1c6b4ce8d7c304bcbd089ec54102e30bd1111a71b75",
+        "quote_count": 282,
+        "retrieved_at_utc": "2026-10-31T18:21:45.142356+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "884e1f11281a7504db03c1c6b4ce8d7c304bcbd089ec54102e30bd1111a71b75",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/BWZ?period1=1758153600&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_DBC_2025-09-18.json": {
+        "accepted": true,
+        "cache_key": "yahoo_DBC_2025-09-18.json",
+        "cash_events": 1,
+        "currency": "USD",
+        "first_quote": "2025-09-18",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/6b6fdc480a2ed728393efd6912beab8ede80980ae01c3f5a5d02c7271cebf851",
+        "quote_count": 282,
+        "retrieved_at_utc": "2026-10-31T18:21:45.495927+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "6b6fdc480a2ed728393efd6912beab8ede80980ae01c3f5a5d02c7271cebf851",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/DBC?period1=1758153600&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_GLD_2025-09-18.json": {
+        "accepted": true,
+        "cache_key": "yahoo_GLD_2025-09-18.json",
+        "cash_events": 0,
+        "currency": "USD",
+        "first_quote": "2025-09-18",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/6220073a40ca073de506540fd295d9a68fa75bbfc755db606216cc6de4b057de",
+        "quote_count": 282,
+        "retrieved_at_utc": "2026-10-31T18:21:45.278851+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "6220073a40ca073de506540fd295d9a68fa75bbfc755db606216cc6de4b057de",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/GLD?period1=1758153600&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_IEF_2025-09-18.json": {
+        "accepted": true,
+        "cache_key": "yahoo_IEF_2025-09-18.json",
+        "cash_events": 13,
+        "currency": "USD",
+        "first_quote": "2025-09-18",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/c4beceb6d26398ce2fcf5198dc31ed15475c2ca65f076d20b87bc365620eba34",
+        "quote_count": 282,
+        "retrieved_at_utc": "2026-10-31T18:21:44.924220+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "c4beceb6d26398ce2fcf5198dc31ed15475c2ca65f076d20b87bc365620eba34",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/IEF?period1=1758153600&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_ISHG_2025-09-18.json": {
+        "accepted": true,
+        "cache_key": "yahoo_ISHG_2025-09-18.json",
+        "cash_events": 1,
+        "currency": "USD",
+        "first_quote": "2025-09-18",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/d4179a4fa417ee2436278b172740d8beae0829e9299573c9ec5b3c36f8c84d8f",
+        "quote_count": 282,
+        "retrieved_at_utc": "2026-10-31T18:21:45.135111+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "d4179a4fa417ee2436278b172740d8beae0829e9299573c9ec5b3c36f8c84d8f",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/ISHG?period1=1758153600&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_SHY_2025-09-18.json": {
+        "accepted": true,
+        "cache_key": "yahoo_SHY_2025-09-18.json",
+        "cash_events": 13,
+        "currency": "USD",
+        "first_quote": "2025-09-18",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/726e369b41933ba8db4035deded13641efa553e5b4cfe292bfb811bed4a1c0a1",
+        "quote_count": 282,
+        "retrieved_at_utc": "2026-10-31T18:21:44.930029+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "726e369b41933ba8db4035deded13641efa553e5b4cfe292bfb811bed4a1c0a1",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/SHY?period1=1758153600&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_SSO_2025-09-18.json": {
+        "accepted": true,
+        "cache_key": "yahoo_SSO_2025-09-18.json",
+        "cash_events": 5,
+        "currency": "USD",
+        "first_quote": "2025-09-18",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/dcb570f7a79ad939ec9e84b4830e799ea26fcf5c6f555a4f9ca60cea31f48849",
+        "quote_count": 282,
+        "retrieved_at_utc": "2026-10-31T18:21:45.509470+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "dcb570f7a79ad939ec9e84b4830e799ea26fcf5c6f555a4f9ca60cea31f48849",
+        "split_events": 1,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/SSO?period1=1758153600&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_TLT_2025-09-18.json": {
+        "accepted": true,
+        "cache_key": "yahoo_TLT_2025-09-18.json",
+        "cash_events": 13,
+        "currency": "USD",
+        "first_quote": "2025-09-18",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/fedfe605b06c261288f235e88c8184062e19f0f52d4df5b1fa677a9a704cf27e",
+        "quote_count": 282,
+        "retrieved_at_utc": "2026-10-31T18:21:44.914738+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "fedfe605b06c261288f235e88c8184062e19f0f52d4df5b1fa677a9a704cf27e",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/TLT?period1=1758153600&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_TMF_2025-09-18.json": {
+        "accepted": true,
+        "cache_key": "yahoo_TMF_2025-09-18.json",
+        "cash_events": 5,
+        "currency": "USD",
+        "first_quote": "2025-09-18",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/1c43b9ad2b8801cf8fca1648ff0dd7eb05a8f6b0a1f9f593b9a328a4fed37150",
+        "quote_count": 282,
+        "retrieved_at_utc": "2026-10-31T18:21:45.325954+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "1c43b9ad2b8801cf8fca1648ff0dd7eb05a8f6b0a1f9f593b9a328a4fed37150",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/TMF?period1=1758153600&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_TYD_2025-09-18.json": {
+        "accepted": true,
+        "cache_key": "yahoo_TYD_2025-09-18.json",
+        "cash_events": 5,
+        "currency": "USD",
+        "first_quote": "2025-09-18",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/0dd747ae49f5c7d712fd531c33f4c99e3275d17af6e2f52c0474dc1d3853890a",
+        "quote_count": 282,
+        "retrieved_at_utc": "2026-10-31T18:21:45.331300+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "0dd747ae49f5c7d712fd531c33f4c99e3275d17af6e2f52c0474dc1d3853890a",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/TYD?period1=1758153600&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_UBT_2025-09-18.json": {
+        "accepted": true,
+        "cache_key": "yahoo_UBT_2025-09-18.json",
+        "cash_events": 5,
+        "currency": "USD",
+        "first_quote": "2025-09-18",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/b5b4d84aff6a3620e66c86e7698b0aee06f4850b10b5fda7729d47d330530c5a",
+        "quote_count": 282,
+        "retrieved_at_utc": "2026-10-31T18:21:45.668331+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "b5b4d84aff6a3620e66c86e7698b0aee06f4850b10b5fda7729d47d330530c5a",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/UBT?period1=1758153600&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_UGL_2025-09-18.json": {
+        "accepted": true,
+        "cache_key": "yahoo_UGL_2025-09-18.json",
+        "cash_events": 0,
+        "currency": "USD",
+        "first_quote": "2025-09-18",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/67aa2ee29d30205850cbd9d1e4c117fe4e14f6973e1a77d7a977f1cc04ec190b",
+        "quote_count": 282,
+        "retrieved_at_utc": "2026-10-31T18:21:45.490710+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "67aa2ee29d30205850cbd9d1e4c117fe4e14f6973e1a77d7a977f1cc04ec190b",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/UGL?period1=1758153600&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_UPRO_2025-09-18.json": {
+        "accepted": true,
+        "cache_key": "yahoo_UPRO_2025-09-18.json",
+        "cash_events": 5,
+        "currency": "USD",
+        "first_quote": "2025-09-18",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/dcbb2dde416475ffccc32932a7cd2dd1d1209942b206d328d7d8d8dcb6970b25",
+        "quote_count": 282,
+        "retrieved_at_utc": "2026-10-31T18:21:45.335944+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "dcbb2dde416475ffccc32932a7cd2dd1d1209942b206d328d7d8d8dcb6970b25",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/UPRO?period1=1758153600&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_UST_2025-09-18.json": {
+        "accepted": true,
+        "cache_key": "yahoo_UST_2025-09-18.json",
+        "cash_events": 5,
+        "currency": "USD",
+        "first_quote": "2025-09-18",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/12267f64321221d730d1819d3ec4901c40429ecf2e9d7311fa9383eeff660efa",
+        "quote_count": 282,
+        "retrieved_at_utc": "2026-10-31T18:21:45.645201+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "12267f64321221d730d1819d3ec4901c40429ecf2e9d7311fa9383eeff660efa",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/UST?period1=1758153600&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_VT_2025-09-18.json": {
+        "accepted": true,
+        "cache_key": "yahoo_VT_2025-09-18.json",
+        "cash_events": 5,
+        "currency": "USD",
+        "first_quote": "2025-09-18",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/6a41182e5fb6a628e60c45ca4dd0b42640c5bd5f73ea7c3c732d7b531c88f076",
+        "quote_count": 282,
+        "retrieved_at_utc": "2026-10-31T18:21:44.919542+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "6a41182e5fb6a628e60c45ca4dd0b42640c5bd5f73ea7c3c732d7b531c88f076",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/VT?period1=1758153600&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      },
+      "yahoo_WLDU_2025-09-18.json": {
+        "accepted": true,
+        "cache_key": "yahoo_WLDU_2025-09-18.json",
+        "cash_events": 0,
+        "currency": "USD",
+        "first_quote": "2026-03-10",
+        "http_status": 200,
+        "last_quote": "2026-10-30",
+        "path": "sources/raw/distributions/objects/a3885769665db4bc3cf849004dfed3dc90eec63963d013412797e41096d2ad83",
+        "quote_count": 164,
+        "retrieved_at_utc": "2026-10-31T18:21:45.495985+00:00",
+        "rights": "Third-party source terms apply; no blanket redistribution license is asserted.",
+        "sha256": "a3885769665db4bc3cf849004dfed3dc90eec63963d013412797e41096d2ad83",
+        "split_events": 0,
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/WLDU?period1=1758153600&period2=1793491200&interval=1d&events=div%2Csplits%2CcapitalGains&includeAdjustedClose=true"
+      }
+    }
+  },
+  "model_parameters": {
+    "calibration_cutoff": "2025-12-31",
+    "extended_funds": [
+      "SSO",
+      "UBT",
+      "UST",
+      "WLDU"
+    ],
+    "fund_models": {
+      "BND": {
+        "calibration_years": [
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "feature": "ITT",
+        "feature_max": "0.040406378703",
+        "feature_min": "0.00829262545",
+        "hindsight_backfill": true,
+        "intercept": "0.01313429801034609145673815800450588582254",
+        "mean_absolute_residual": "0.001865244300668661316794953821975314278417",
+        "median": "0.0277657228045",
+        "method": "nonnegative_cash_linear_income_state",
+        "response_definition": "Sum of daily cash/preceding-price contributions; not buy-and-hold cash yield.",
+        "response_max": "0.045957748248",
+        "response_min": "0.020989922956",
+        "seasonality": {
+          "ex_days": {
+            "10": [
+              1
+            ],
+            "11": [
+              1
+            ],
+            "12": [
+              1,
+              23
+            ],
+            "2": [
+              1
+            ],
+            "3": [
+              1
+            ],
+            "4": [
+              1
+            ],
+            "5": [
+              1
+            ],
+            "6": [
+              1
+            ],
+            "7": [
+              1
+            ],
+            "8": [
+              1
+            ],
+            "9": [
+              1
+            ]
+          },
+          "lag_basis": "median_observed_issuer_lag",
+          "month_weights": {
+            "10": "0.07829072416239825467283391150132800169654",
+            "11": "0.07798558586285609597237569064970759862285",
+            "12": "0.1889547520580846442653028172126033970637",
+            "2": "0.08184760740225583707925468721204854608246",
+            "3": "0.07789057178111656908390785520036536728029",
+            "4": "0.09126567485327877325961640785759086146283",
+            "5": "0.08064421737593142438349895275178846140489",
+            "6": "0.08132615914686295355448213208307935292998",
+            "7": "0.080341904442425336583330585510337583751",
+            "8": "0.08104805514509040188582077464588118602555",
+            "9": "0.08040474776969970925957618537526964367994"
+          },
+          "payment_lag_days": 4
+        },
+        "slope": "0.7186902766566208542041119021357402447728"
+      },
+      "BWX": {
+        "calibration_years": [
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "feature": "ITT",
+        "feature_max": "0.040406378703",
+        "feature_min": "0.00829262545",
+        "hindsight_backfill": true,
+        "intercept": "0.0029158204074063223835999094617807904688",
+        "mean_absolute_residual": "0.005774879431151367708089089155966535264411",
+        "median": "0.01176426029",
+        "method": "nonnegative_cash_linear_income_state",
+        "response_definition": "Sum of daily cash/preceding-price contributions; not buy-and-hold cash yield.",
+        "response_max": "0.032395463772",
+        "response_min": "0",
+        "seasonality": {
+          "ex_days": {
+            "10": [
+              1
+            ],
+            "11": [
+              1
+            ],
+            "12": [
+              1,
+              20
+            ],
+            "2": [
+              1
+            ],
+            "3": [
+              1
+            ],
+            "4": [
+              1
+            ],
+            "5": [
+              1
+            ],
+            "6": [
+              1
+            ],
+            "7": [
+              1
+            ],
+            "8": [
+              1
+            ],
+            "9": [
+              2
+            ]
+          },
+          "lag_basis": "median_observed_issuer_lag",
+          "month_weights": {
+            "10": "0.08605332253595841516648286944635626462032",
+            "11": "0.0884226033553757071629282626357260850327",
+            "12": "0.2501377546878711535989981464813172650978",
+            "2": "0.08178310078464393037798908390180998574446",
+            "3": "0.07507538531233806475004350524709729728983",
+            "4": "0.06431233534721684211890070635578172413926",
+            "5": "0.05838112503138662386051846732719441937107",
+            "6": "0.07259137589270513365526474166166622598841",
+            "7": "0.07177012880906222220855335016279106258768",
+            "8": "0.06741385933257260006340439994208548404342",
+            "9": "0.08405900891086930703691646683817418608505"
+          },
+          "payment_lag_days": 6
+        },
+        "slope": "0.4576156039737583003684163408110325393542"
+      },
+      "BWZ": {
+        "calibration_years": [
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "feature": "STT",
+        "feature_max": "0.039093361673",
+        "feature_min": "0.002600005106",
+        "hindsight_backfill": true,
+        "intercept": "0.001218257633898471907034637893325817914719",
+        "mean_absolute_residual": "0.004545455691447837150272051576432453204982",
+        "median": "0.00423139773",
+        "method": "nonnegative_cash_linear_income_state",
+        "response_definition": "Sum of daily cash/preceding-price contributions; not buy-and-hold cash yield.",
+        "response_max": "0.033609500542",
+        "response_min": "0",
+        "seasonality": {
+          "ex_days": {
+            "10": [
+              1
+            ],
+            "11": [
+              1
+            ],
+            "12": [
+              1,
+              24
+            ],
+            "2": [
+              1
+            ],
+            "3": [
+              1
+            ],
+            "4": [
+              1
+            ],
+            "5": [
+              1
+            ],
+            "6": [
+              1
+            ],
+            "7": [
+              1
+            ],
+            "8": [
+              1
+            ],
+            "9": [
+              1
+            ]
+          },
+          "lag_basis": "median_observed_issuer_lag",
+          "month_weights": {
+            "10": "0.06465947283632446044331821723270225778413",
+            "11": "0.06511074872206493447194735214872928801754",
+            "12": "0.4736258654826805122884984758205342595476",
+            "2": "0.04288671882438662705059705775206061943261",
+            "3": "0.04037177563236498000567109850022689676909",
+            "4": "0.04328667055441331281552465291859947987125",
+            "5": "0.04003546181289559479802587214048115053455",
+            "6": "0.04404863408991239374283175793039610293042",
+            "7": "0.05076838759592874320789934719578504209732",
+            "8": "0.06803163982380632128497928573672798949608",
+            "9": "0.0671746246252221198907068826237569135194"
+          },
+          "payment_lag_days": 6
+        },
+        "slope": "0.5043504791356769802607846582533170220148"
+      },
+      "DBC": {
+        "calibration_years": [
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "feature": "STT",
+        "feature_max": "0.043377523906",
+        "feature_min": "0.002600005106",
+        "hindsight_backfill": true,
+        "intercept": "-0.00600340690629718220433981155065674757155",
+        "mean_absolute_residual": "0.005375974674135873106538071783921952855974",
+        "median": "0",
+        "method": "nonnegative_cash_linear_income_state",
+        "response_definition": "Sum of daily cash/preceding-price contributions; not buy-and-hold cash yield.",
+        "response_max": "0.050681197856",
+        "response_min": "0",
+        "seasonality": {
+          "ex_days": {
+            "12": [
+              20
+            ]
+          },
+          "lag_basis": "median_observed_issuer_lag",
+          "month_weights": {
+            "12": "1"
+          },
+          "payment_lag_days": 4
+        },
+        "slope": "0.9865723078317490958379741860906517547815"
+      },
+      "GLD": {
+        "calibration_years": [
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "feature": "STT",
+        "feature_max": "0",
+        "feature_min": "0",
+        "hindsight_backfill": true,
+        "intercept": "0",
+        "median": "0",
+        "method": "zero_routine_cash_policy",
+        "response_definition": "Sum of daily cash/preceding-price contributions; not buy-and-hold cash yield.",
+        "seasonality": {
+          "ex_days": {},
+          "lag_basis": "assumed_no_observed_payments",
+          "month_weights": {},
+          "payment_lag_days": 7
+        },
+        "slope": "0"
+      },
+      "IEF": {
+        "calibration_years": [
+          2003,
+          2004,
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "feature": "STT",
+        "feature_max": "0.043377523906",
+        "feature_min": "0.002600005106",
+        "hindsight_backfill": true,
+        "intercept": "0.01532767072196844808336801299216374111422",
+        "mean_absolute_residual": "0.005203612761287083299793155491517790937648",
+        "median": "0.027398815277",
+        "method": "nonnegative_cash_linear_income_state",
+        "response_definition": "Sum of daily cash/preceding-price contributions; not buy-and-hold cash yield.",
+        "response_max": "0.04745206429",
+        "response_min": "0.00829262545",
+        "seasonality": {
+          "ex_days": {
+            "10": [
+              1
+            ],
+            "11": [
+              1
+            ],
+            "12": [
+              1,
+              24
+            ],
+            "2": [
+              1
+            ],
+            "3": [
+              1
+            ],
+            "4": [
+              1
+            ],
+            "5": [
+              1
+            ],
+            "6": [
+              1
+            ],
+            "7": [
+              1
+            ],
+            "8": [
+              1
+            ],
+            "9": [
+              1
+            ]
+          },
+          "lag_basis": "median_observed_issuer_lag",
+          "month_weights": {
+            "10": "0.08074051803917594258076168034207970373951",
+            "11": "0.09136012313298334190936384322090053146674",
+            "12": "0.1763074391188198639014182096059105667517",
+            "2": "0.08075616502300591141492241890835863757231",
+            "3": "0.07500090880931829119189367085181257938216",
+            "4": "0.08138236940453461287928903478442022637887",
+            "5": "0.08412577901353698653635075221202112473869",
+            "6": "0.08302357967123428634646672006807398000262",
+            "7": "0.08143288892595456670928372724230419817125",
+            "8": "0.08353654044171256515977115477541359027552",
+            "9": "0.08233368841972363137047878798870486152059"
+          },
+          "payment_lag_days": 6
+        },
+        "slope": "0.6684530245907587279411226510013170713228"
+      },
+      "ISHG": {
+        "calibration_years": [
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "feature": "STT",
+        "feature_max": "0.039093361673",
+        "feature_min": "0.002600005106",
+        "hindsight_backfill": true,
+        "intercept": "0.006904634213808156244374019948023063510809",
+        "mean_absolute_residual": "0.00840846698633430034218410724230555306215",
+        "median": "0.004260230887",
+        "method": "nonnegative_cash_linear_income_state",
+        "response_definition": "Sum of daily cash/preceding-price contributions; not buy-and-hold cash yield.",
+        "response_max": "0.042130783676",
+        "response_min": "0",
+        "seasonality": {
+          "ex_days": {
+            "10": [
+              1
+            ],
+            "11": [
+              1
+            ],
+            "12": [
+              18
+            ],
+            "2": [
+              1
+            ],
+            "3": [
+              1
+            ],
+            "4": [
+              1
+            ],
+            "5": [
+              1
+            ],
+            "6": [
+              1
+            ],
+            "7": [
+              1
+            ],
+            "8": [
+              1
+            ],
+            "9": [
+              2
+            ]
+          },
+          "lag_basis": "median_observed_issuer_lag",
+          "month_weights": {
+            "10": "0.05102756919341347707866898020286932287534",
+            "11": "0.04551804959049619205989231685259400071152",
+            "12": "0.668964823643713126030225971626647922577",
+            "2": "0.03183431456205018530286907291809748894677",
+            "3": "0.02810795126950742382886869471677133049645",
+            "4": "0.02510011418142685690593818916316884394884",
+            "5": "0.02064072537943087942017574020163280922621",
+            "6": "0.0238045500055964442572869206452684391238",
+            "7": "0.02172451245062035398056388287470628332988",
+            "8": "0.0383951792540811797969100380255512758677",
+            "9": "0.04488221046966388133860019277269228289647"
+          },
+          "payment_lag_days": 6
+        },
+        "slope": "0.1802513366216923875302939617451951064542"
+      },
+      "SHY": {
+        "calibration_years": [
+          2003,
+          2004,
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "feature": "STT",
+        "feature_max": "0.043377523906",
+        "feature_min": "0.002600005106",
+        "hindsight_backfill": true,
+        "intercept": "0",
+        "mean_absolute_residual": "0",
+        "median": "0.017273456396",
+        "method": "nonnegative_cash_linear_income_state",
+        "response_definition": "Sum of daily cash/preceding-price contributions; not buy-and-hold cash yield.",
+        "response_max": "0.043377523906",
+        "response_min": "0.002600005106",
+        "seasonality": {
+          "ex_days": {
+            "10": [
+              1
+            ],
+            "11": [
+              1
+            ],
+            "12": [
+              1,
+              24
+            ],
+            "2": [
+              1
+            ],
+            "3": [
+              1
+            ],
+            "4": [
+              1
+            ],
+            "5": [
+              1
+            ],
+            "6": [
+              1
+            ],
+            "7": [
+              1
+            ],
+            "8": [
+              1
+            ],
+            "9": [
+              1
+            ]
+          },
+          "lag_basis": "median_observed_issuer_lag",
+          "month_weights": {
+            "10": "0.08243908645195843720410952254623122231492",
+            "11": "0.08955103303768128649712611785802249943021",
+            "12": "0.1950957381815268625519681115592258850341",
+            "2": "0.07730917230282862165104614989145100922332",
+            "3": "0.0736595080105088313256926868348237482081",
+            "4": "0.07853493302998491582237826142933016141977",
+            "5": "0.0774849292955521351886944746248059796768",
+            "6": "0.08004505898099865907729609356340829881636",
+            "7": "0.08081044659937767668195969139939168966845",
+            "8": "0.08264346496950243304845425328921786659697",
+            "9": "0.08242662914008014095127463700409163961104"
+          },
+          "payment_lag_days": 6
+        },
+        "slope": "1"
+      },
+      "SSO": {
+        "calibration_years": [
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "feature": "STT",
+        "feature_max": "0.043377523906",
+        "feature_min": "0.002600005106",
+        "hindsight_backfill": true,
+        "intercept": "0.00073453776815342351016726986905976024038",
+        "mean_absolute_residual": "0.004904572941033892575196161821501175362893",
+        "median": "0.005743511776",
+        "method": "nonnegative_cash_linear_income_state",
+        "response_definition": "Sum of daily cash/preceding-price contributions; not buy-and-hold cash yield.",
+        "response_max": "0.051082330921",
+        "response_min": "0.00181140751",
+        "seasonality": {
+          "ex_days": {
+            "12": [
+              23
+            ],
+            "3": [
+              23
+            ],
+            "6": [
+              24
+            ],
+            "9": [
+              24
+            ]
+          },
+          "lag_basis": "median_observed_issuer_lag",
+          "month_weights": {
+            "12": "0.4647321936280700852960475638140622601511",
+            "3": "0.2176167521956636447559860367951064566629",
+            "6": "0.17318316949337621119631505137075874175",
+            "9": "0.144467884682890058751651348020072541436"
+          },
+          "payment_lag_days": 7
+        },
+        "slope": "0.4423814072637218313105038614930449270212"
+      },
+      "TLT": {
+        "calibration_years": [
+          2003,
+          2004,
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "feature": "STT",
+        "feature_max": "0.043377523906",
+        "feature_min": "0.002600005106",
+        "hindsight_backfill": true,
+        "intercept": "0.02377649185497970791015844831609108602011",
+        "mean_absolute_residual": "0.006069560762633289256021476050625663507761",
+        "median": "0.034101631089",
+        "method": "nonnegative_cash_linear_income_state",
+        "response_definition": "Sum of daily cash/preceding-price contributions; not buy-and-hold cash yield.",
+        "response_max": "0.051630796079",
+        "response_min": "0.014738830677",
+        "seasonality": {
+          "ex_days": {
+            "10": [
+              1
+            ],
+            "11": [
+              1
+            ],
+            "12": [
+              1,
+              24
+            ],
+            "2": [
+              1
+            ],
+            "3": [
+              1
+            ],
+            "4": [
+              1
+            ],
+            "5": [
+              1
+            ],
+            "6": [
+              1
+            ],
+            "7": [
+              1
+            ],
+            "8": [
+              1
+            ],
+            "9": [
+              1
+            ]
+          },
+          "lag_basis": "median_observed_issuer_lag",
+          "month_weights": {
+            "10": "0.08227344584711265017784543573981656705978",
+            "11": "0.08559726366898234450120188443595064701404",
+            "12": "0.1709086922356291815943159599681764213531",
+            "2": "0.08132454167804952763798002338991744020665",
+            "3": "0.07773242136437752709220030249741948654762",
+            "4": "0.08475623221345690568346163053470530040926",
+            "5": "0.08508211122636009028236580472051146133506",
+            "6": "0.08416746896344311320315777347056071046394",
+            "7": "0.08164834174107278434358249842887662781822",
+            "8": "0.08380071131817619308876536439776267553446",
+            "9": "0.08270876974333968239512332241630266225792"
+          },
+          "payment_lag_days": 6
+        },
+        "slope": "0.5335808530787828650959066929081900605572"
+      },
+      "TMF": {
+        "calibration_years": [
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "feature": "STT",
+        "feature_max": "0.039093361673",
+        "feature_min": "0.002600005106",
+        "hindsight_backfill": true,
+        "intercept": "0.00395188283806397116096727547466815563515",
+        "mean_absolute_residual": "0.008687154182227902256922692017464717465831",
+        "median": "0.0087864738635",
+        "method": "nonnegative_cash_linear_income_state",
+        "response_definition": "Sum of daily cash/preceding-price contributions; not buy-and-hold cash yield.",
+        "response_max": "0.04937345132",
+        "response_min": "0",
+        "seasonality": {
+          "ex_days": {
+            "12": [
+              21
+            ],
+            "3": [
+              21
+            ],
+            "6": [
+              22
+            ],
+            "9": [
+              22
+            ]
+          },
+          "lag_basis": "median_observed_issuer_lag",
+          "month_weights": {
+            "12": "0.5347870381467685713709781518295098005478",
+            "3": "0.1306514919255049717499325170093775761256",
+            "6": "0.1753399465247536947910465213454555903237",
+            "9": "0.1592215234029727620880428098156570330029"
+          },
+          "payment_lag_days": 8
+        },
+        "slope": "0.8288655020243492501086155051475596656264"
+      },
+      "TYD": {
+        "calibration_years": [
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "feature": "STT",
+        "feature_max": "0.039093361673",
+        "feature_min": "0.002600005106",
+        "hindsight_backfill": true,
+        "intercept": "0.02095243679728658062974293234774537349317",
+        "mean_absolute_residual": "0.02101739980202076162481464846503190306788",
+        "median": "0.013845638005",
+        "method": "nonnegative_cash_linear_income_state",
+        "response_definition": "Sum of daily cash/preceding-price contributions; not buy-and-hold cash yield.",
+        "response_max": "0.090153464354",
+        "response_min": "0",
+        "seasonality": {
+          "ex_days": {
+            "12": [
+              20
+            ],
+            "3": [
+              22
+            ],
+            "6": [
+              22
+            ],
+            "9": [
+              24
+            ]
+          },
+          "lag_basis": "median_observed_issuer_lag",
+          "month_weights": {
+            "12": "0.7203592593001788222237469191688621706221",
+            "3": "0.09831785542452285006674191323755912007317",
+            "6": "0.1073244207490358832549808229152694504051",
+            "9": "0.07399846452626244445453034467830925889966"
+          },
+          "payment_lag_days": 8
+        },
+        "slope": "0.2335163947507554789610056087433267171917"
+      },
+      "UBT": {
+        "calibration_years": [
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "feature": "STT",
+        "feature_max": "0.039093361673",
+        "feature_min": "0.002600005106",
+        "hindsight_backfill": true,
+        "intercept": "-0.00071868992863512583748106506432995252206",
+        "mean_absolute_residual": "0.003889399600704761390438312868763420659617",
+        "median": "0.009219295246",
+        "method": "nonnegative_cash_linear_income_state",
+        "response_definition": "Sum of daily cash/preceding-price contributions; not buy-and-hold cash yield.",
+        "response_max": "0.040846332088",
+        "response_min": "0",
+        "seasonality": {
+          "ex_days": {
+            "12": [
+              23
+            ],
+            "3": [
+              22
+            ],
+            "6": [
+              24
+            ],
+            "9": [
+              24
+            ]
+          },
+          "lag_basis": "median_observed_issuer_lag",
+          "month_weights": {
+            "12": "0.2655594728355876262489131611902870107445",
+            "3": "0.1977134902178439269919557973754249255623",
+            "6": "0.2960331900409453744431876204410130529216",
+            "9": "0.2406938469056230723159434209932750107716"
+          },
+          "payment_lag_days": 7
+        },
+        "slope": "1.019097736392642684397780188642505986015"
+      },
+      "UGL": {
+        "calibration_years": [
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "feature": "STT",
+        "feature_max": "0",
+        "feature_min": "0",
+        "hindsight_backfill": true,
+        "intercept": "0",
+        "median": "0",
+        "method": "zero_routine_cash_policy",
+        "response_definition": "Sum of daily cash/preceding-price contributions; not buy-and-hold cash yield.",
+        "seasonality": {
+          "ex_days": {},
+          "lag_basis": "assumed_no_observed_payments",
+          "month_weights": {},
+          "payment_lag_days": 7
+        },
+        "slope": "0"
+      },
+      "UPRO": {
+        "calibration_years": [
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "feature": "STT",
+        "feature_max": "0.039093361673",
+        "feature_min": "0.002600005106",
+        "hindsight_backfill": true,
+        "intercept": "0.000100994232441964822630907530874970832407",
+        "mean_absolute_residual": "0.0008484776952748165892303496214070011010325",
+        "median": "0.002587744064",
+        "method": "nonnegative_cash_linear_income_state",
+        "response_definition": "Sum of daily cash/preceding-price contributions; not buy-and-hold cash yield.",
+        "response_max": "0.010046131382",
+        "response_min": "0",
+        "seasonality": {
+          "ex_days": {
+            "12": [
+              23
+            ],
+            "3": [
+              23
+            ],
+            "6": [
+              24
+            ],
+            "9": [
+              24
+            ]
+          },
+          "lag_basis": "median_observed_issuer_lag",
+          "month_weights": {
+            "12": "0.3545175672037096303678948280577464241087",
+            "3": "0.2311768732678187620446776226477081736713",
+            "6": "0.2595941264808720261876607349693486573169",
+            "9": "0.1547114330475995813997668143251967449031"
+          },
+          "payment_lag_days": 7
+        },
+        "slope": "0.2602646430001256775972425463648743597195"
+      },
+      "UST": {
+        "calibration_years": [
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "feature": "STT",
+        "feature_max": "0.039093361673",
+        "feature_min": "0.002600005106",
+        "hindsight_backfill": true,
+        "intercept": "0.00347920773054772662600705890579036587125",
+        "mean_absolute_residual": "0.007263044261550610109728737277597470758093",
+        "median": "0.007435715462",
+        "method": "nonnegative_cash_linear_income_state",
+        "response_definition": "Sum of daily cash/preceding-price contributions; not buy-and-hold cash yield.",
+        "response_max": "0.050610355114",
+        "response_min": "0",
+        "seasonality": {
+          "ex_days": {
+            "12": [
+              23
+            ],
+            "3": [
+              23
+            ],
+            "6": [
+              23
+            ],
+            "9": [
+              24
+            ]
+          },
+          "lag_basis": "median_observed_issuer_lag",
+          "month_weights": {
+            "12": "0.3112710041581177422669726495115675859235",
+            "3": "0.2259460107627530012099728943102081216297",
+            "6": "0.2021025726952671879435712387701424339961",
+            "9": "0.2606804123838620685794832174080818584507"
+          },
+          "payment_lag_days": 7
+        },
+        "slope": "0.830892330832808164667462223995520078742"
+      },
+      "VT": {
+        "calibration_years": [
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "feature": "STT",
+        "feature_max": "0.039093361673",
+        "feature_min": "0.002600005106",
+        "hindsight_backfill": true,
+        "index_income_ratio": "1.122551580801062230629363223472585879479",
+        "intercept": "0.022335618905",
+        "mean_absolute_residual": "0.001939544857470588235294117647058823529412",
+        "median": "0.022335618905",
+        "method": "median_after_negative_slope",
+        "response_definition": "Sum of daily cash/preceding-price contributions; not buy-and-hold cash yield.",
+        "response_max": "0.024576573703",
+        "response_min": "0.015141811105",
+        "seasonality": {
+          "ex_days": {
+            "12": [
+              20
+            ],
+            "3": [
+              22
+            ],
+            "6": [
+              21
+            ],
+            "9": [
+              22
+            ]
+          },
+          "lag_basis": "median_observed_issuer_lag",
+          "month_weights": {
+            "12": "0.4386695314015068819996834859139298502941",
+            "3": "0.1321662624265800723152104103838914062684",
+            "6": "0.2350353822881513594012852289850130297076",
+            "9": "0.1941288238837616862838208747171657137299"
+          },
+          "payment_lag_days": 3
+        },
+        "slope": "0"
+      },
+      "WLDU": {
+        "calibration_years": [],
+        "feature": "STT",
+        "feature_max": "0.043377523906",
+        "feature_min": "0.002600005106",
+        "hindsight_backfill": true,
+        "intercept": "0.00073453776815342351016726986905976024038",
+        "mean_absolute_residual": "0.004904572941033892575196161821501175362893",
+        "median": "0.005743511776",
+        "method": "nonnegative_cash_linear_income_state",
+        "payout_model_proxy": "SSO",
+        "response_definition": "Sum of daily cash/preceding-price contributions; not buy-and-hold cash yield.",
+        "response_max": "0.051082330921",
+        "response_min": "0.00181140751",
+        "seasonality": {
+          "ex_days": {
+            "12": [
+              23
+            ],
+            "3": [
+              23
+            ],
+            "6": [
+              24
+            ],
+            "9": [
+              24
+            ]
+          },
+          "lag_basis": "median_observed_issuer_lag",
+          "month_weights": {
+            "12": "0.4647321936280700852960475638140622601511",
+            "3": "0.2176167521956636447559860367951064566629",
+            "6": "0.17318316949337621119631505137075874175",
+            "9": "0.144467884682890058751651348020072541436"
+          },
+          "payment_lag_days": 7
+        },
+        "slope": "0.4423814072637218313105038614930449270212"
+      }
+    },
+    "index_reference": {
+      "anomaly_count_at_calibration": 42,
+      "hindsight_backfill": true,
+      "index_point_rounding_allowance": "0.02",
+      "max_daily_contribution": "0.0015",
+      "method": "First 36 uncontaminated matching-index months; median monthly contribution.",
+      "monthly_contribution": "0.00251172135",
+      "reference_months": [
+        "1988-04",
+        "1988-05",
+        "1988-06",
+        "1988-07",
+        "1988-08",
+        "1988-09",
+        "1988-10",
+        "1988-11",
+        "1988-12",
+        "1989-01",
+        "1989-02",
+        "1989-03",
+        "1989-04",
+        "1989-05",
+        "1989-07",
+        "1989-08",
+        "1989-09",
+        "1989-10",
+        "1989-11",
+        "1990-02",
+        "1990-03",
+        "1990-04",
+        "1990-05",
+        "1990-06",
+        "1990-07",
+        "1990-08",
+        "1990-09",
+        "1990-10",
+        "1990-11",
+        "1990-12",
+        "1991-01",
+        "1991-02",
+        "1991-03",
+        "1991-04",
+        "1991-05",
+        "1991-06"
+      ],
+      "rounding_tolerance": "0.000002"
+    },
+    "method_version": "usd_cash_v1",
+    "scope": "Retrospective hypothetical payout backfills; not point-in-time forecasts or observed pre-fund history.",
+    "version": "usd_cash_v1:c85300c888bc"
+  },
+  "reconciliation_days": 400,
+  "requested_end_date": "2026-10-30",
+  "revision_audit": {
+    "cached_primary_events_retained": [],
+    "revised_events": []
+  },
+  "rights": "Third-party source restrictions remain; code license does not license upstream data.",
+  "schema_version": 1,
+  "us_gdp_weights": {
+    "1970": "0.4015377171549723687382842102174772036411",
+    "1971": "0.4000678832032581916278584014491987135985",
+    "1972": "0.3999755542855625346690774140108004166272",
+    "1973": "0.3982786629552269137475788884382347054865",
+    "1974": "0.3935643776666475835140653081850563039770",
+    "1975": "0.3915428840812995730427581544820520717429",
+    "1976": "0.3937618187738307432746553753122230016148",
+    "1977": "0.3972667294597979710810878901530879486940",
+    "1978": "0.4023530468822192388356956061429905219063",
+    "1979": "0.4006307659423528332594020610713460802592",
+    "1980": "0.3963460871823802378776513234165320188696",
+    "1981": "0.3993545398695448002104768322493748735376",
+    "1982": "0.3921563594855786249945293571301521181323",
+    "1983": "0.3973451457978829604694048237740634220918",
+    "1984": "0.4065779575534248474693791978607093715264",
+    "1985": "0.4079283145518234029547900255116683615824",
+    "1986": "0.4092890503725515815589866781811503411439",
+    "1987": "0.4093800862968019159823545939239694198889",
+    "1988": "0.4081261540487141249872733004413231815496",
+    "1989": "0.4072289761593648482130861926891588965320",
+    "1990": "0.4058827103473637349815946094151413635313",
+    "1991": "0.3937102672833774803601046853714219134833",
+    "1992": "0.3989515833852355225249480560890930256236",
+    "1993": "0.4053071470558179376228589111360875653478",
+    "1994": "0.4089188248249630944787413686919819272236",
+    "1995": "0.4090700378031682750402711402486827755404",
+    "1996": "0.4130088804343541877153092280169980789864",
+    "1997": "0.4167558715525671509969023650110026665382",
+    "1998": "0.4229402535033740269518148417228668619636",
+    "1999": "0.4289012721101434565891538350980341474110",
+    "2000": "0.4301415917908697390370019860737614987867",
+    "2001": "0.4288036352008005443051736011731219460086",
+    "2002": "0.4304968062982129675365956598513143366812",
+    "2003": "0.4330784195087966983017982123474097862480",
+    "2004": "0.4357781261114173118790252560086285152987",
+    "2005": "0.4388244430168764297708805954081715029031",
+    "2006": "0.4390576935375466140974185204121279165141",
+    "2007": "0.4376841159273662620812777178101079388741",
+    "2008": "0.4370306060379766701596295829639320048440",
+    "2009": "0.4387431508561777960909241149470408122673",
+    "2010": "0.4382271466673535350447268256524389920734",
+    "2011": "0.4383115944305250298814082610704324335516",
+    "2012": "0.4427922082047725560491216531563911952374",
+    "2013": "0.4449603592400714702324098240124693524033",
+    "2014": "0.4469166878984825951733119497570363905497",
+    "2015": "0.4492883345797584113486938255444208329553",
+    "2016": "0.4495287981528038095672667360989972802117",
+    "2017": "0.4495901928464513646037987276818304205948",
+    "2018": "0.4531580206882219544181948042550852570529",
+    "2019": "0.4559389554198787726854020540750992082339",
+    "2020": "0.4631379278994452669217428412472860334023",
+    "2021": "0.4631379278994452669217428412472860334023",
+    "2022": "0.4631379278994452669217428412472860334023",
+    "2023": "0.4631379278994452669217428412472860334023",
+    "2024": "0.4631379278994452669217428412472860334023",
+    "2025": "0.4631379278994452669217428412472860334023",
+    "2026": "0.4631379278994452669217428412472860334023"
+  },
+  "weight_source": {
+    "accepted": true,
+    "cache_key": "jst_macrohistory_r6.xlsx",
+    "first_year": 1870,
+    "http_status": 200,
+    "last_year": 2026,
+    "path": "sources/raw/distributions/objects/c1bb91fe56ea50d4f27af5c0fc897d481e89ae38ce41eaecab62134c9354981d",
+    "retrieved_at_utc": "2026-10-28T16:30:53.534916+00:00",
+    "rights": "JST data and derived weights retain the source non-commercial restrictions.",
+    "sha256": "c1bb91fe56ea50d4f27af5c0fc897d481e89ae38ce41eaecab62134c9354981d",
+    "url": "https://sfff5b3ac9317c4be.jimcontent.com/download/version/1720600177/module/9834512569/name/JSTdatasetR6.xlsx"
+  }
+}

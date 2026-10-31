@@ -75,6 +75,10 @@ def quote_return(series: dict[str, dict[str, float]], day: str, field: str) -> f
 def check_source_tail(stem: str, rows: list[dict[str, str]], windows: dict, root: Path,
                       metadata: dict, examined_days: set[str], monthly: list | None = None) -> None:
     asset = ASSETS[stem]
+    base_returns = {}
+    if asset.kind == "model2x":
+        base_returns = {row["Date"]: row["Total Return"] for row in read_csv(
+            (root / "data" / "processed" / f"{asset.base_stem}.csv").read_text(encoding="utf-8"), asset.base_stem)}
     examined_days.update(row["Date"] for row in rows[-10:])
     tail = [row for row in rows if row["Date"] in examined_days]
     for row in tail:
@@ -123,6 +127,18 @@ def check_source_tail(stem: str, rows: list[dict[str, str]], windows: dict, root
             elapsed = (date.fromisoformat(day) - date.fromisoformat(previous)).days
             fee = float(Decimal("0.0026")) * elapsed / 365
             price = (1 + total) / (1 - fee) - 1
+        elif kind == "model2x":
+            from leveraged_2x import CONFIGS, IRX_SYMBOL, synthetic_return
+            if day not in base_returns:
+                fail(stem, f"missing base observation on {day}")
+            irx = windows[IRX_SYMBOL]
+            prior = [key for key in irx if key <= day]
+            if not prior:
+                fail(stem, f"no ^IRX observation on or before {day}")
+            previous = rows[rows.index(row) - 1]["Date"]
+            elapsed = Decimal((date.fromisoformat(day) - date.fromisoformat(previous)).days)
+            total = float(synthetic_return(CONFIGS[stem], Decimal(base_returns[day]), irx[max(prior)]["close"], elapsed))
+            price = total
         elif kind == "gold2x":
             total = quote_return(windows["UGL"], day, "adj") if day in windows["UGL"] else 0.0
             price = total
@@ -239,8 +255,11 @@ def main() -> None:
              "|---|---|---|---:|---:|"]
     for stem in ASSETS:
         lines.append(check_one(root, args.base_ref, stem, args.end_date))
+    from distribution_validation import check_distributions
+    cash = check_distributions(root, args.end_date, sources=True, baseline_ref=args.base_ref)
     summary = "\n".join(lines) + "\n"
     print(summary)
+    print(f"Cash companions verified: {cash}")
     if os.getenv("GITHUB_STEP_SUMMARY"):
         with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as handle:
             handle.write("## Daily dataset diff\n\n" + summary)

@@ -524,7 +524,26 @@ ProShares **UST** is a **2x** fund despite the backlog's "3x UST" label.
 - Status: `rejected`
 - URL: https://www.proshares.com/our-etfs/leveraged-and-inverse/ust
 - Role: none for ITT3X. UST is ProShares Ultra 7-10 Year Treasury, a **2x** fund (not 3x); it is
-  the future validation target for a separate `ITT2X` (2x) dataset.
+  the reference fund for the separate `ITT2X` (2x) dataset below.
+
+## 2x datasets / USLCAP2X, GLSTOCK2X, GLBOND2X, STT2X, ITT2X, LTT2X
+
+Derived leveraged datasets built by `src/leveraged_2x.py`. Each uses its base dataset's `Total
+Return` and Yahoo `^IRX` (as for the 3x datasets). Live-fund sources, checked 2026-10-31:
+
+- Status: `active_from_2006`. Yahoo `SSO`, ProShares Ultra S&P500, 2x S&P 500, net expense ratio
+  0.84% (gross 0.88%). https://www.proshares.com/our-etfs/leveraged-and-inverse/sso
+- Status: `active_from_2026`. Yahoo `WLDU`, Leverage Shares 2x Long World Stock Daily ETF, 2x VT
+  through total return swaps, total expense ratio 0.75%, inception 2026-03-10.
+  https://leverageshares.com/us/etfs/leverage-shares-2x-long-world-stock-daily-etf/
+- Status: `active_from_2010`. Yahoo `UST`, ProShares Ultra 7-10 Year Treasury, 2x ICE U.S. Treasury
+  7-10 Year, net 0.95% (gross 1.24%). https://www.proshares.com/our-etfs/leveraged-and-inverse/ust
+- Status: `active_from_2010`. Yahoo `UBT`, ProShares Ultra 20+ Year Treasury, 2x ICE U.S. Treasury
+  20+ Year, net 0.95% (gross 0.98%). https://www.proshares.com/our-etfs/leveraged-and-inverse/ubt
+- Status: `rejected`. Scalable MSCI AC World (2x) Leveraged Daily Swap Xtrackers UCITS ETF (SC2X,
+  LU3386643970, 0.45%): newer than WLDU, not US-listed, and not referenced to VT.
+- No 2x global bond or 2x 1-3 year Treasury fund was found (ProShares fund list, US issuers, UCITS
+  listings). GLBOND2X and STT2X are modeled with UST parameters on every row.
 
 ## 2x Gold (UGL-like) / GOLD2X
 
