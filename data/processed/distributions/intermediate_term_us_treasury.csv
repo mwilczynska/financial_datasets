@@ -14253,3 +14253,4 @@ Date,Asset,Currency,Unit Price USD,Total Return,Distribution Return,Return Ex Di
 2026-10-28,ITT,USD,243.69999389,-0.0027442371,0,-0.0027442371,0,0,0,0,observed,observed_no_vendor_cash_event,
 2026-10-29,ITT,USD,244.7729754,0.0044028787,0,0.0044028787,0,0,0,0,observed,observed_no_vendor_cash_event,
 2026-10-30,ITT,USD,246.14102735,0.0055890645,0,0.0055890645,0,0,0,0,observed,observed_no_vendor_cash_event,
+2026-11-02,ITT,USD,244.60809631,-0.0028335019,0.00339435476,-0.00622785666,0.835489967807,0,0,0.835489967807,observed,observed_issuer,

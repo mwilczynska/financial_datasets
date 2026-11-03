@@ -9,13 +9,13 @@
   "observed_etf": "UBT",
   "reference_fund": "ProShares Ultra 20+ Year Treasury",
   "build_timestamp_utc": "2026-10-31T17:57:07.122573+00:00",
-  "row_count": 14270,
+  "row_count": 14271,
   "first_date": "1970-01-02",
-  "last_date": "2026-10-30",
+  "last_date": "2026-11-02",
   "synthetic_rows": 10050,
   "observed_etf_rows": 4217,
   "csv_path": "data/processed/long_term_us_treasury_2x.csv",
-  "csv_sha256": "18a68547b6cd73df7d6200da8d663466c6025e76f84933a88bd9ac6409353c09",
+  "csv_sha256": "75480462688369cf3339cf44c16d0ae0abbc146289035d66eb91629c499e906f",
   "parquet_written": true,
   "quality_flags": [
     "model_2x_daily_reset_synthetic_from_ltt_total_return_minus_financing_and_ubt_fee",
@@ -32,17 +32,17 @@
     "etf_inception": "2010-01-21"
   },
   "notes": "Synthetic 2x daily-reset total-return NAV: lev_ret = 2*LTT_total_return - 1*(^IRX/100+-0.0035)*days/360 - 0.0095*days/365. Close == Adj Close. Model-derived, not observed UBT history.",
-  "last_incremental_update_utc": "2026-10-31T18:21:28.055897+00:00",
+  "last_incremental_update_utc": "2026-11-03T20:31:49.507306+00:00",
   "incremental_update": {
-    "overlap_anchor": "2026-10-27",
-    "requested_end_date": "2026-10-30",
+    "overlap_anchor": "2026-10-30",
+    "requested_end_date": "2026-11-02",
     "recent_sources": {
       "UBT": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/UBT",
         "path": "sources/raw/incremental/long_term_us_treasury_2x_ubt.json",
-        "sha256": "10a9ddf5a9aee18aa967e1e0d1c592c9c8d8fd126ecd45ec28a79c9a80de3e73",
-        "first_date": "2026-09-28",
-        "last_date": "2026-10-30"
+        "sha256": "f3001ebf4f53e164c70c22e1efd75a4d2336230b675247e136114aaecd3da995",
+        "first_date": "2026-10-01",
+        "last_date": "2026-11-02"
       }
     }
   }
