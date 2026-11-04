@@ -14330,3 +14330,4 @@ Date,Asset,Currency,Unit Price USD,Total Return,Distribution Return,Return Ex Di
 2026-10-29,USLCAP3X,USD,29063.99111546,-0.0118432797,0,-0.0118432797,0,0,0,0,observed,observed_no_vendor_cash_event,
 2026-10-30,USLCAP3X,USD,27479.92107538,-0.0545028394,0,-0.0545028394,0,0,0,0,observed,observed_no_vendor_cash_event,
 2026-11-02,USLCAP3X,USD,27077.09099698,-0.0146590697,0,-0.0146590697,0,0,0,0,observed,observed_no_vendor_cash_event,
+2026-11-03,USLCAP3X,USD,27324.23790863,0.0091275282,0,0.0091275282,0,0,0,0,observed,observed_no_vendor_cash_event,

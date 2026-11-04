@@ -14329,3 +14329,4 @@ Date,Asset,Currency,Unit Price USD,Total Return,Distribution Return,Return Ex Di
 2026-10-29,GLSTBOND,USD,555.1977674,0.0005140523,0,0.0005140523,0,0,0,-0,observed,observed_no_vendor_cash_event,
 2026-10-30,GLSTBOND,USD,556.12882228,0.0016769788,0,0.0016769788,0,0,0,-0,observed,observed_no_vendor_cash_event,
 2026-11-02,GLSTBOND,USD,553.73525542,-0.0023119171,0.001992062055,-0.004303979155,1.10784312434,0,0,1.10784312434,observed,observed_issuer;observed_no_vendor_cash_event,
+2026-11-03,GLSTBOND,USD,553.33684191,-0.0007195018,0,-0.0007195018,0,0,0,1.10784312434,observed,observed_no_vendor_cash_event,

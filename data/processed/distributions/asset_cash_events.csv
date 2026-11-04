@@ -20599,6 +20599,7 @@ USLCAP,2026-10-28,INDEX,0.000006547934,0.063212272911,,2026-11-18,assumed_index_
 USLCAP,2026-10-29,INDEX,0.000003161754,0.030607360762,,2026-11-19,assumed_index_lag_21_calendar_days,inferred,inferred_index_rounding_reconciled,usd_cash_v1:c85300c888bc
 USLCAP,2026-10-30,INDEX,0.00007743479,0.747323972699,,2026-11-20,assumed_index_lag_21_calendar_days,inferred,inferred_index_rounding_reconciled,usd_cash_v1:c85300c888bc
 USLCAP,2026-11-02,INDEX,0.0000560042,0.530673447219,,2026-11-23,assumed_index_lag_21_calendar_days,inferred,inferred_matching_index_dividend,usd_cash_v1:c85300c888bc
+USLCAP,2026-11-03,INDEX,0.0000044979,0.042402876645,,2026-11-24,assumed_index_lag_21_calendar_days,inferred,inferred_matching_index_dividend,usd_cash_v1:c85300c888bc
 USLCAP2X,1970-03-23,SSO,0.004803528514,0.416475904808,,1970-03-30,modeled_current_fund_payment_lag,modeled,modeled_current_fund_income_state_extrapolated,usd_cash_v1:c85300c888bc
 USLCAP2X,1970-06-24,SSO,0.003822730946,0.237842240203,,1970-07-01,modeled_current_fund_payment_lag,modeled,modeled_current_fund_income_state_extrapolated,usd_cash_v1:c85300c888bc
 USLCAP2X,1970-09-24,SSO,0.003188888707,0.239813328672,,1970-10-01,modeled_current_fund_payment_lag,modeled,modeled_current_fund_income_state_extrapolated,usd_cash_v1:c85300c888bc
