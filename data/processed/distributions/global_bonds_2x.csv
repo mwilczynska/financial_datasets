@@ -14330,3 +14330,4 @@ Date,Asset,Currency,Unit Price USD,Total Return,Distribution Return,Return Ex Di
 2026-10-30,GLBOND2X,USD,807.57169223,0.0047159876,0,0.0047159876,0,0,0,0,modeled,modeled_no_scheduled_payout,usd_cash_v1:c85300c888bc
 2026-11-02,GLBOND2X,USD,803.68267658,-0.0048156909,0,-0.0048156909,0,0,0,0,modeled,modeled_no_scheduled_payout,usd_cash_v1:c85300c888bc
 2026-11-03,GLBOND2X,USD,799.36787395,-0.0053687889,0,-0.0053687889,0,0,0,0,modeled,modeled_no_scheduled_payout,usd_cash_v1:c85300c888bc
+2026-11-04,GLBOND2X,USD,809.30770834,0.0124346183,0,0.0124346183,0,0,0,0,modeled,modeled_no_scheduled_payout,usd_cash_v1:c85300c888bc
