@@ -3,11 +3,11 @@
   "asset_name": "Short-Term U.S. Treasury / SHY-like Total Return",
   "source": "Federal Reserve nominal yield curve; Yahoo Finance chart API (VFISX and SHY adjusted close)",
   "build_timestamp_utc": "2026-07-23T02:33:09.464667+00:00",
-  "row_count": 14258,
+  "row_count": 14259,
   "first_date": "1970-01-02",
-  "last_date": "2026-11-05",
+  "last_date": "2026-11-06",
   "csv_path": "data/processed/short_term_us_treasury.csv",
-  "csv_sha256": "31febd63c242643739bcdf1932f30029def15a622c23945ecb64e6c8030942d4",
+  "csv_sha256": "34a172a15f5d789251b13d394761f200205bc98ea8a74945b942e6f48d9f29d3",
   "parquet_written": true,
   "quality_flags": [
     "model_fed_yield_curve_2y_par_treasury_total_return",
@@ -15,17 +15,17 @@
     "observed_yahoo_vfisx_short_treasury_total_return_proxy"
   ],
   "notes": "SHY-like short Treasury total-return proxy. Federal Reserve nominal yield curves are used for a synthetic 2-year par Treasury segment before VFISX; VFISX is used before SHY daily history is available.",
-  "last_incremental_update_utc": "2026-11-06T20:27:30.608753+00:00",
+  "last_incremental_update_utc": "2026-11-07T18:49:20.861282+00:00",
   "incremental_update": {
-    "overlap_anchor": "2026-11-04",
-    "requested_end_date": "2026-11-05",
+    "overlap_anchor": "2026-11-05",
+    "requested_end_date": "2026-11-06",
     "recent_sources": {
       "SHY": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/SHY",
         "path": "sources/raw/incremental/short_term_us_treasury_shy.json",
-        "sha256": "5ae13b51f3374765017fcb8db4b292868eaf1a9107c8ac7707471dd43efb026e",
-        "first_date": "2026-10-06",
-        "last_date": "2026-11-05"
+        "sha256": "0a35caf36b0e0843436983d83624f1dfad6ca0fd78a335a054449d214d5e806c",
+        "first_date": "2026-10-07",
+        "last_date": "2026-11-06"
       }
     }
   }
