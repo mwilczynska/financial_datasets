@@ -6,12 +6,12 @@
   "source_url": "https://api.bls.gov/publicAPI/v2/timeseries/data/",
   "source_series": "CUSR0000SA0",
   "build_timestamp_utc": "2026-07-23T02:33:49.566159+00:00",
-  "row_count": 20765,
+  "row_count": 20766,
   "first_date": "1970-01-01",
-  "last_date": "2026-11-07",
+  "last_date": "2026-11-08",
   "latest_monthly_observation": "2026-09-01",
   "csv_path": "data/processed/cpi_inflation.csv",
-  "csv_sha256": "0b33c5a363e69c7174b1a9046404dd87a9f48c0a03bbe03e83942f3cb9e729b4",
+  "csv_sha256": "bc0c8a582ceeae27320097059a298d722d90e75b37ca8b82e8e6252b81792784",
   "parquet_written": true,
   "quality_flags": [
     "carried_forward_latest_monthly_cpi_u_level",
@@ -19,18 +19,18 @@
     "observed_bls_monthly_cpi_u_level"
   ],
   "notes": "Calendar-daily CPI deflator derived from monthly BLS CUSR0000SA0 observations.",
-  "last_incremental_update_utc": "2026-11-08T18:51:14.225834+00:00",
+  "last_incremental_update_utc": "2026-11-09T23:27:19.826621+00:00",
   "incremental_update": {
-    "overlap_anchor": "2026-11-06",
-    "requested_end_date": "2026-11-07",
+    "overlap_anchor": "2026-11-07",
+    "requested_end_date": "2026-11-08",
     "recent_sources": {
       "BLS_CUSR0000SA0": {
         "url": "https://api.bls.gov/publicAPI/v2/timeseries/data/",
         "path": "sources/raw/incremental/cpi_bls_recent.json",
         "series_id": "CUSR0000SA0",
-        "sha256": "6268fac65e8a4923906b10703bb5e2ead4c21507b5d199a85d03e9df92cadc66",
-        "accessed_at_utc": "2026-11-08T18:51:13.589628+00:00",
-        "requested_end_date": "2026-11-07",
+        "sha256": "ae5e4a1e059906af7b7d7e427d3fc9c77baf9e72b2d9e0b7b0e69e60f42a72e5",
+        "accessed_at_utc": "2026-11-09T23:27:19.073752+00:00",
+        "requested_end_date": "2026-11-08",
         "first_date": "2025-01-01",
         "last_date": "2026-09-01"
       }
