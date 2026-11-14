@@ -26,6 +26,9 @@ This file is an index. Each dataset has its own methodology file in `docs/`.
 | `GLSTOCK` | Global All-World Stocks | [methodology_glstock.md](methodology_glstock.md) | complete model-derived public-source proxy; USLCAP/MSCI annual model -> French developed daily -> VT |
 | `GLBOND` | Unhedged Global Bonds | [methodology_glbond.md](methodology_glbond.md) | complete model-derived public-source proxy; JST-anchored daily FX (BIS) + daily bond TR for US/JP/UK (in-repo Treasury, MoF, BoE) + OECD MEI monthly yields elsewhere -> BND/BWX unhedged daily blend |
 | `GLSTBOND` | Unhedged Global Short-Term (1-3yr) Govt Bonds | [methodology_glstbond.md](methodology_glstbond.md) | complete model-derived public-source proxy; direct (no JST overlay) daily FX (BIS) + daily 2yr US/JP/UK (STT, MoF 2yr from 1974, BoE 2yr) + OECD 2yr-interpolated yields elsewhere -> GDP-weighted SHY+ISHG/BWZ blend; modeled fees (Close gross, Adj Close net) |
+| `AUDUSD` | Australian dollar spot rate, USD per AUD | [methodology_fx.md](methodology_fx.md) | observed daily rates; BIS 1971-1998 (1970 modeled from the sterling peg), ECB reference-rate cross from 1999 |
+| `EURUSD` | Euro spot rate, USD per EUR | [methodology_fx.md](methodology_fx.md) | observed daily rates; BIS Deutsche Mark at the fixed euro conversion rate through 1998 (proxy), ECB reference rate from 1999 |
+| `GBPUSD` | Pound sterling spot rate, USD per GBP | [methodology_fx.md](methodology_fx.md) | observed daily rates; BIS through 1998, ECB reference-rate cross from 1999 |
 
 ## Required Methodology Template
 

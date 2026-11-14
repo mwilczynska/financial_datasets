@@ -85,6 +85,9 @@ dataset in different formats.
 | STT2X | 2x daily-reset short-term Treasury, modeled with UST-style fees (no 2x fund exists) | 1970-01-02 | 2026-11-10 | [CSV](data/processed/short_term_us_treasury_2x.csv) | [Parquet](data/processed/short_term_us_treasury_2x.parquet) | [STT2X](docs/methodology_stt2x.md) |
 | ITT2X | 2x daily-reset intermediate-term Treasury, UST-like | 1970-01-02 | 2026-11-10 | [CSV](data/processed/intermediate_term_us_treasury_2x.csv) | [Parquet](data/processed/intermediate_term_us_treasury_2x.parquet) | [ITT2X](docs/methodology_itt2x.md) |
 | LTT2X | 2x daily-reset long-term Treasury, UBT-like | 1970-01-02 | 2026-11-10 | [CSV](data/processed/long_term_us_treasury_2x.csv) | [Parquet](data/processed/long_term_us_treasury_2x.parquet) | [LTT2X](docs/methodology_ltt2x.md) |
+| AUDUSD | Australian dollar spot rate, USD per AUD | 1970-01-02 | 2026-11-13 | [CSV](data/processed/fx_aud_usd.csv) | [Parquet](data/processed/fx_aud_usd.parquet) | [AUDUSD](docs/methodology_fx.md) |
+| EURUSD | Euro spot rate, USD per EUR | 1970-01-02 | 2026-11-13 | [CSV](data/processed/fx_eur_usd.csv) | [Parquet](data/processed/fx_eur_usd.parquet) | [EURUSD](docs/methodology_fx.md) |
+| GBPUSD | Pound sterling spot rate, USD per GBP | 1970-01-02 | 2026-11-13 | [CSV](data/processed/fx_gbp_usd.csv) | [Parquet](data/processed/fx_gbp_usd.parquet) | [GBPUSD](docs/methodology_fx.md) |
 
 The daily workflow regenerates these start and end dates from the processed
 CSVs after validation and commits the README alongside changed datasets.
@@ -109,6 +112,14 @@ back-calculated history preceding the index's May 1991 launch, and source
 holidays may carry prior levels. The [CMDTY methodology](docs/methodology_cmdty.md)
 records source checks, benchmark changes, rights caveats, and the independent
 Astra Max research and implementation reviews.
+
+Exchange rates (`AUDUSD`, `EURUSD`, `GBPUSD`) are daily spot rates in USD per
+one unit of foreign currency: BIS daily rates through 1998, then ECB reference
+rates. They carry no interest income and follow the source calendars, not the
+U.S. trading calendar. `EURUSD` before 1999 is the Deutsche Mark at the fixed
+euro conversion rate, and `AUDUSD` for 1970 is modeled from sterling because
+the Australian dollar was pegged to it. ECB rates are set around 14:15 CET,
+hours before the U.S. close. See the [FX methodology](docs/methodology_fx.md).
 
 Leveraged 2x datasets follow current 2x funds: `USLCAP2X` (ProShares SSO),
 `GLSTOCK2X` (Leverage Shares WLDU, 2x VT), `ITT2X` (ProShares UST) and `LTT2X`
@@ -172,7 +183,7 @@ Refresh the complete dependency graph. The end date is inclusive:
 
     python src/update_all_datasets.py --end-date YYYY-MM-DD
 
-This extends all 20 datasets from their committed processed CSVs. Market
+This extends all 23 datasets from their committed processed CSVs. Market
 datasets use a 14-calendar-day overlap to check revisions and append new days;
 CSV/Parquet are rewritten together when observations change. CPI fetches a recent
 monthly window and can revise recently carried-forward daily values when BLS

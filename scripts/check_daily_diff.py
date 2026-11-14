@@ -235,6 +235,9 @@ def check_one(root: Path, ref: str, stem: str, end: date) -> str:
         if (end - latest_monthly).days > 90 or metadata.get("latest_monthly_observation") != latest_monthly.isoformat():
             fail(stem, "CPI monthly observation is stale or metadata disagrees")
         check_source_tail(stem, candidate, {}, root, metadata, set(changed + inserted), monthly)
+    elif asset.kind == "fx":
+        from fx_rates import check_recent
+        check_recent(root, stem, candidate, end, set(changed + inserted))
     else:
         windows = {symbol: source_record(root, stem, symbol, end) for symbol in asset.symbols}
         source_latest = [max(rows) for rows in windows.values()]

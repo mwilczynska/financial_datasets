@@ -28,6 +28,9 @@ The public repository excludes downloaded files under `sources/raw/`. A fresh ch
 | STT2X | None; every row is modeled | Yahoo `^IRX`, refreshed STT dependency |
 | ITT2X | `^IRX` for historical leverage model | Yahoo UST, refreshed ITT dependency |
 | LTT2X | `^IRX` for historical leverage model | Yahoo UBT, refreshed LTT dependency |
+| AUDUSD | Cached BIS `WS_XRU` daily history through 1998 | ECB `eurofxref-hist.zip` reference rates |
+| EURUSD | Cached BIS `WS_XRU` daily history through 1998 | ECB `eurofxref-hist.zip` reference rates |
+| GBPUSD | Cached BIS `WS_XRU` daily history through 1998 | ECB `eurofxref-hist.zip` reference rates |
 
 ## CPI delivery fallback
 
@@ -62,9 +65,19 @@ continues to retrieve BLS history in 10-year chunks. See the
 [CPI methodology](methodology_cpi.md) and
 [operations guide](operations/daily-refresh.md).
 
+## FX reference rates
+
+`AUDUSD`, `EURUSD`, and `GBPUSD` update from the ECB history file alone. The
+committed row more than 14 days before the committed end must match the fresh
+ECB value within `1e-9`; later rows are recalculated from the file, and the
+latest ECB observation must be within five days of the target. BIS is not a
+current source because it releases weekly. There is no fallback route: an
+unavailable ECB file blocks the refresh. See the
+[FX methodology](methodology_fx.md).
+
 ## Deliberate historical changes
 
-`python src/update_all_datasets.py --refresh-historical-sources` invokes the historical builders for USLCAP, STT, ITT, LTT, CMDTY, and GLSTOCK. `--refresh-static-sources` invokes the historical GLBOND and GLSTBOND builders. Neither option permits an unavailable current source to be silently replaced with an old raw file. The unattended workflow never uses either option.
+`python src/update_all_datasets.py --refresh-historical-sources` invokes the historical builders for USLCAP, STT, ITT, LTT, CMDTY, GLSTOCK, and the three FX datasets (refetching their BIS history). `--refresh-static-sources` invokes the historical GLBOND and GLSTBOND builders. Neither option permits an unavailable current source to be silently replaced with an old raw file. The unattended workflow never uses either option.
 
 CMDTY's explicit `python src/build_broad_commodities.py --migrate-gsci` path
 replaces its early history with daily GSCI ER/TR while retaining the versioned
