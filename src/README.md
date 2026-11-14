@@ -12,6 +12,7 @@ Expected modules and scripts:
 - Incremental update scripts that refetch recent API data, stitch by date, recompute returns, and rewrite synchronized CSV/Parquet outputs.
 - `update_all_datasets.py`, the top-level updater for the full processed dataset suite.
 - `incremental_update.py`, shared overlap, source retrieval, and output logic.
+- `fx_rates.py`, BIS/ECB exchange-rate retrieval, the full FX builder, the ECB incremental update, and its publication-gate check.
 - `cpi_sources.py`, BLS/FRED delivery, CPI overlap checks, and source-evidence validation used by the publication gate.
 
 ## Updating All Datasets
@@ -24,7 +25,7 @@ python src\update_all_datasets.py
 
 The script updates all processed datasets in dependency order:
 
-1. Base datasets: `USLCAP`, `STT`, `ITT`, `LTT`, `GOLDPM`, `CMDTY`, `CPI`.
+1. Base datasets: `USLCAP`, `STT`, `ITT`, `LTT`, `GOLDPM`, `CMDTY`, `CPI`, and the spot exchange rates `AUDUSD`, `EURUSD`, `GBPUSD`.
 2. Global blends that depend on base datasets: `GLSTOCK`, `GLBOND`, `GLSTBOND`.
 3. Leveraged derived datasets: `USLCAP3X`, `LTT3X`, `ITT3X`, `GOLD2X`, and the 2x datasets
    `USLCAP2X`, `GLSTOCK2X`, `GLBOND2X`, `STT2X`, `ITT2X`, `LTT2X` (shared `leveraged_2x.py`).
@@ -63,6 +64,7 @@ Notes:
 - Full `GLBOND` and `GLSTBOND` builders reuse cached historical JST/BIS/OECD/MoF/BoE raw files by default. Their ordinary updates need only the committed baselines, refreshed dependencies, and live ETF tails. Use `--refresh-static-sources` to invoke those historical builders and refetch their heavy inputs deliberately.
 - Ordinary updates preserve fixed history from the committed CSV without opening its historical raw caches. The full builders for `USLCAP`, `STT`, `ITT`, `LTT`, `CMDTY`, and `GLSTOCK` validate and reuse those inputs. Use `--refresh-historical-sources` to invoke those builders and try refreshing their historical inputs; a valid cache is retained if an optional historical refresh fails.
 - CPI tries BLS first, then FRED's standard CPIAUCSL CSV export after transient BLS failures, then FRED's public data table after a transient CSV failure. The same BLS monthly series, exact committed overlap, and fresh source evidence are required on every accepted route. Repeat CPI updates refresh the evidence metadata even when daily rows are unchanged. The explicit full CPI builder still requires BLS access.
+- `AUDUSD`, `EURUSD`, and `GBPUSD` update from the ECB reference-rate history file only. Their full builders reuse cached BIS history for 1970-1998; `--refresh-historical-sources` refetches it. See [the FX methodology](../docs/methodology_fx.md).
 - CMDTY now uses a hash-pinned daily GSCI ER/TR workbook on its preserved historical dates. `python src/build_broad_commodities.py --migrate-gsci` replaces the early segment while preserving a committed processed tail, with no Yahoo requests. Ordinary updates still fetch recent DBC only; raw-source full rebuilds need permitted BCOM/IRX historical caches. See [the methodology](../docs/methodology_cmdty.md).
 
 The scheduled publisher runs the same two test suites, then

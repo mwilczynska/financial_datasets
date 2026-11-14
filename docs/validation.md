@@ -14,7 +14,10 @@ output returns or CPI levels against the freshly fetched Yahoo or BLS/FRED sourc
 responses. A weekend or holiday may add zero market rows, but the source and
 output may be no more than five calendar days behind the requested end date;
 CPI's daily output must reach the target date, with a monthly observation no
-older than 90 days. Any failure prevents the push.
+older than 90 days. The three FX datasets are checked against the saved ECB
+reference-rate file instead of Yahoo: their last row must be the latest ECB
+date on or before the target, and recent rates and dates must equal that file.
+Any failure prevents the push.
 
 For CPI, `src/cpi_sources.py` verifies the recorded delivery route instead of
 assuming a BLS JSON file is always present. It accepts the BLS API, FRED's

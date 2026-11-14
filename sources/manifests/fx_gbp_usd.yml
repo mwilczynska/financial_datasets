@@ -1,0 +1,53 @@
+asset_id: fx_gbp_usd
+asset_name: Pound sterling spot rate, USD per GBP
+alias: GBPUSD
+quote_convention: USD per 1 GBP
+minimum_start_date: 1970-01-02
+target_frequency: daily_source_observation_days
+output_contract: yahoo_compatible_ohlcv_plus_returns
+status: observed_daily_reference_rates
+methodology: docs/methodology_fx.md
+citation: sources/citations/fx_rates.md
+sources:
+  - name: BIS bilateral exchange rates (WS_XRU), daily, local currency per USD
+    role: historical_daily_rate_1970_to_1998
+    status: historical_only
+    series: D.GB.GBP.A
+    url: https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/D.GB.GBP.A
+    coverage_used: 1970-01-02 through 1998-12-31, plus 1999 for the splice check
+    notes: Fetched in decade chunks; NaN non-observation days dropped. Weekly release, so not used for daily updates.
+  - name: ECB euro foreign exchange reference rates
+    role: daily_rate_from_1999_and_current_source
+    status: active
+    url: https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.zip
+    coverage_used: 1999-01-04 onward
+    notes: Set around 14:15 CET on TARGET business days and published for information purposes only.
+method:
+  close: spot rate, USD per 1 GBP
+  adj_close: equal to Close; no interest carry
+  returns: daily change in the spot rate
+  before_1999: BIS WS_XRU D.GB.GBP.A, inverted
+  from_1999: ECB USD/EUR reference rate divided by the GBP/EUR reference rate
+  splice_check: inverse BIS rate must match the ECB value within 1e-5 relative on at least 200 days of 1999
+validation:
+  required_checks:
+    - yahoo_schema
+    - start_1970_01_02
+    - sorted_unique_weekday_dates
+    - spot_only_columns
+    - level_bounds
+    - return_arithmetic
+    - documented_segment_flags
+    - quote_direction_dated_events
+    - splice_continuity
+    - csv_parquet_metadata_agreement
+unresolved:
+  - BIS does not state a fixing time for pre-1999 daily observations.
+  - Not cross-validated against FRED H.10 or RBA history; both downloads failed on 2026-11-14.
+  - ECB reuse wording was read from a page summary, not verbatim.
+automated_publication:
+  mode: incremental_from_committed_processed_csv
+  historical_raw_required: false
+  current_source: ECB eurofxref-hist.zip saved under sources/raw/incremental/
+  recent_source_validation: scripts/check_daily_diff.py
+  staleness_limit_days: 5

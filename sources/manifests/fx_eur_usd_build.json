@@ -1,0 +1,47 @@
+{
+  "asset_id": "fx_eur_usd",
+  "asset_name": "Euro spot rate, USD per EUR",
+  "alias": "EURUSD",
+  "quote_convention": "USD per 1 EUR",
+  "build_timestamp_utc": "2026-11-14T01:58:07.087518+00:00",
+  "row_count": 14452,
+  "first_date": "1970-01-02",
+  "last_date": "2026-11-13",
+  "csv_path": "data/processed/fx_eur_usd.csv",
+  "csv_sha256": "cae924235704b7bff8f9546c40d2e6786e4237e1b85f3da61dfed8056042ebee",
+  "parquet_written": true,
+  "quality_flags": [
+    "observed_ecb_reference_rate_eur_usd",
+    "proxy_bis_deutsche_mark_at_fixed_euro_conversion_rate"
+  ],
+  "segment_row_counts": {
+    "observed_ecb_reference_rate_eur_usd": 7136,
+    "proxy_bis_deutsche_mark_at_fixed_euro_conversion_rate": 7316
+  },
+  "historical_sources": {
+    "BIS_WS_XRU": {
+      "url": "https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/D.DE.EUR.A",
+      "series": "D.DE.EUR.A",
+      "path": "sources/raw/fx_rates_bis_xru_de_eur.csv",
+      "sha256": "0d9ae7f15dbba58e0291a1fb04b67796aeca8d05b5dca7335a4c4cac2fb0fc51",
+      "first_date": "1969-12-01",
+      "last_date": "1999-12-30",
+      "observations": 7596
+    },
+    "ECB_EUROFXREF": {
+      "url": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.zip",
+      "path": "sources/raw/fx_eur_usd_ecb_eurofxref_hist.zip",
+      "sha256": "49d0b2a0fb8611e6063704b5229c356dc2f11f2a08fadcd097c99dcca2ec2937",
+      "first_date": "1999-01-04",
+      "last_date": "2026-11-13",
+      "accessed_at_utc": "2026-11-14T01:58:04.539916+00:00"
+    }
+  },
+  "bis_ecb_overlap": {
+    "days": 259,
+    "first_date": "1999-01-04",
+    "last_date": "1999-12-30",
+    "max_relative_difference": "5.746E-7"
+  },
+  "notes": "Spot exchange rate. Adj Close equals Close; the series carries no interest income."
+}

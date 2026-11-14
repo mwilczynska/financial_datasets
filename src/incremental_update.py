@@ -31,6 +31,7 @@ try:
     from . import build_gold_2x as gold2x_build
     from . import build_global_short_term_bonds as glstbond_build
     from . import cpi_sources
+    from . import fx_rates
     from . import leveraged_2x
 except ImportError:  # direct execution from src/
     import build_cpi_inflation as cpi_build
@@ -38,6 +39,7 @@ except ImportError:  # direct execution from src/
     import build_gold_2x as gold2x_build
     import build_global_short_term_bonds as glstbond_build
     import cpi_sources
+    import fx_rates
     import leveraged_2x
 
 
@@ -77,6 +79,9 @@ ASSETS = {
     "intermediate_term_us_treasury_3x": Asset("intermediate_term_us_treasury_3x", "adj_only", ("TYD",), "intermediate_term_us_treasury", "observed_tyd_etf_adjusted_total_return", "build_intermediate_treasury_3x.py"),
     "gold_2x": Asset("gold_2x", "gold2x", ("UGL",), "gold", "observed_ugl_etf_adjusted_total_return"),
 }
+# Spot exchange rates extend from the ECB reference-rate file, not from Yahoo.
+for _stem in fx_rates.PAIRS:
+    ASSETS[_stem] = Asset(_stem, "fx", expected_flag=fx_rates.PAIRS[_stem].ecb_flag)
 # 2x datasets: a live fund updates like the 3x datasets; a fundless exposure
 # extends its daily-reset model from the base dataset and current ^IRX.
 for _config in leveraged_2x.CONFIGS.values():
@@ -437,6 +442,9 @@ def update_asset(stem: str, root: Path, end: date, overlap_days: int = 14,
                 allowed_methods=frozenset({"GET"}), respect_retry_after_header=True)))
     if asset.kind == "cpi":
         rows, records, monthly_date, anchor_day = build_cpi_recent(root, existing, end, session)
+    elif asset.kind == "fx":
+        rows, records, anchor_day = fx_rates.update_recent(root, stem, existing, end, overlap_days, session)
+        monthly_date = ""
     else:
         anchor_candidates = [row for row in existing if row["Date"] < (date.fromisoformat(existing[-1]["Date"]) - timedelta(days=overlap_days)).isoformat()]
         if not anchor_candidates:

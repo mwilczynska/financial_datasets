@@ -1,0 +1,47 @@
+{
+  "asset_id": "fx_gbp_usd",
+  "asset_name": "Pound sterling spot rate, USD per GBP",
+  "alias": "GBPUSD",
+  "quote_convention": "USD per 1 GBP",
+  "build_timestamp_utc": "2026-11-14T01:57:07.987901+00:00",
+  "row_count": 14456,
+  "first_date": "1970-01-02",
+  "last_date": "2026-11-13",
+  "csv_path": "data/processed/fx_gbp_usd.csv",
+  "csv_sha256": "06e3d25c6d32f18eb41a9f3120434c6b75dfa7f41396d0fa187a3fc8615b4b94",
+  "parquet_written": true,
+  "quality_flags": [
+    "observed_bis_daily_gbp_usd",
+    "observed_ecb_reference_rate_cross_gbp_usd"
+  ],
+  "segment_row_counts": {
+    "observed_bis_daily_gbp_usd": 7320,
+    "observed_ecb_reference_rate_cross_gbp_usd": 7136
+  },
+  "historical_sources": {
+    "BIS_WS_XRU": {
+      "url": "https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/D.GB.GBP.A",
+      "series": "D.GB.GBP.A",
+      "path": "sources/raw/fx_rates_bis_xru_gb_gbp.csv",
+      "sha256": "429e13e56b5369440b09b59652bfcc2b66eabfc1cc4899fa93e781db315c9070",
+      "first_date": "1969-12-01",
+      "last_date": "1999-12-30",
+      "observations": 7600
+    },
+    "ECB_EUROFXREF": {
+      "url": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.zip",
+      "path": "sources/raw/fx_gbp_usd_ecb_eurofxref_hist.zip",
+      "sha256": "49d0b2a0fb8611e6063704b5229c356dc2f11f2a08fadcd097c99dcca2ec2937",
+      "first_date": "1999-01-04",
+      "last_date": "2026-11-13",
+      "accessed_at_utc": "2026-11-14T01:57:00.562305+00:00"
+    }
+  },
+  "bis_ecb_overlap": {
+    "days": 259,
+    "first_date": "1999-01-04",
+    "last_date": "1999-12-30",
+    "max_relative_difference": "8.002E-7"
+  },
+  "notes": "Spot exchange rate. Adj Close equals Close; the series carries no interest income."
+}

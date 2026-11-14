@@ -1,0 +1,66 @@
+{
+  "asset_id": "fx_aud_usd",
+  "asset_name": "Australian dollar spot rate, USD per AUD",
+  "alias": "AUDUSD",
+  "quote_convention": "USD per 1 AUD",
+  "build_timestamp_utc": "2026-11-14T02:02:12.947060+00:00",
+  "row_count": 14444,
+  "first_date": "1970-01-02",
+  "last_date": "2026-11-13",
+  "csv_path": "data/processed/fx_aud_usd.csv",
+  "csv_sha256": "e0b0cc0af1cd5edf5754bc488c051eea38cd49b9fa8a52a185db683b7d17183b",
+  "parquet_written": true,
+  "quality_flags": [
+    "model_sterling_peg_cross_from_bis_gbp_usd",
+    "observed_bis_daily_aud_usd",
+    "observed_ecb_reference_rate_cross_aud_usd"
+  ],
+  "segment_row_counts": {
+    "model_sterling_peg_cross_from_bis_gbp_usd": 251,
+    "observed_bis_daily_aud_usd": 7057,
+    "observed_ecb_reference_rate_cross_aud_usd": 7136
+  },
+  "historical_sources": {
+    "BIS_WS_XRU": {
+      "url": "https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/D.AU.AUD.A",
+      "series": "D.AU.AUD.A",
+      "path": "sources/raw/fx_rates_bis_xru_au_aud.csv",
+      "sha256": "001110e84eb0025d5f226f2b6d62519d98884395c1fd17273023e62948767548",
+      "first_date": "1971-01-04",
+      "last_date": "1999-12-30",
+      "observations": 7316
+    },
+    "BIS_WS_XRU_GBP": {
+      "url": "https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/D.GB.GBP.A",
+      "series": "D.GB.GBP.A",
+      "path": "sources/raw/fx_rates_bis_xru_gb_gbp.csv",
+      "sha256": "429e13e56b5369440b09b59652bfcc2b66eabfc1cc4899fa93e781db315c9070",
+      "first_date": "1969-12-01",
+      "last_date": "1999-12-30",
+      "observations": 7600
+    },
+    "ECB_EUROFXREF": {
+      "url": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.zip",
+      "path": "sources/raw/fx_aud_usd_ecb_eurofxref_hist.zip",
+      "sha256": "49d0b2a0fb8611e6063704b5229c356dc2f11f2a08fadcd097c99dcca2ec2937",
+      "first_date": "1999-01-04",
+      "last_date": "2026-11-13",
+      "accessed_at_utc": "2026-11-14T02:02:08.928961+00:00"
+    }
+  },
+  "sterling_peg": {
+    "aud_per_gbp_ratio": "2.1514008194",
+    "calibration_window": [
+      "1971-01-04",
+      "1971-06-30"
+    ],
+    "modeled_through": "1970-12-31"
+  },
+  "bis_ecb_overlap": {
+    "days": 259,
+    "first_date": "1999-01-04",
+    "last_date": "1999-12-30",
+    "max_relative_difference": "3.279E-7"
+  },
+  "notes": "Spot exchange rate. Adj Close equals Close; the series carries no interest income."
+}

@@ -23,6 +23,12 @@ Source identity, coverage, corroboration, and the unresolved rights are recorded
 in [the CMDTY source notes](sources/citations/broad_commodities.md) and
 [manifest](sources/manifests/broad_commodities.yml).
 
+The AUDUSD, EURUSD, and GBPUSD files derive from BIS bilateral exchange rates
+and ECB euro foreign exchange reference rates. Both sources require
+attribution, and the BIS terms do not permit commercial use that adds a charge
+for users. The terms as read, and what remains unconfirmed, are recorded in
+[the FX source notes](sources/citations/fx_rates.md).
+
 Before redistributing or using a file commercially:
 
 1. Check its source manifest under sources/manifests/.

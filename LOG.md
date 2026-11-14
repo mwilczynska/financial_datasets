@@ -1,5 +1,26 @@
 # Project Log
 
+## 2026-11-14 — Daily spot exchange rates (AUDUSD, EURUSD, GBPUSD)
+
+- Added three spot-rate datasets in USD per unit of foreign currency, built by
+  `src/fx_rates.py`: BIS `WS_XRU` daily rates for 1970-01-02 to 1998-12-31 and
+  ECB euro reference rates from 1999-01-04 (`EURUSD` as published; `AUDUSD` and
+  `GBPUSD` as crosses). First build covers 1970-01-02 to 2026-11-13 with 14,444
+  (AUD), 14,452 (EUR) and 14,456 (GBP) rows. `Adj Close` equals `Close`; no
+  interest carry is modeled and the series are outside the cash companions.
+- Two segments are not plain observations. `EURUSD` before 1999 is the BIS
+  German series, the Deutsche Mark at 1.95583 per euro. BIS has no daily AUD
+  before 1971-01-04, so the 251 `AUDUSD` rows for 1970 are the observed daily
+  sterling rate divided by the median AUD/GBP ratio of January-June 1971
+  (2.1514), when the AUD was pegged to sterling.
+- ECB replaced BIS from 1999 because BIS releases weekly (last observation
+  2026-11-10 on 2026-11-14) and would breach the five-day publication limit.
+  The BIS AUD series equalled the ECB cross at six decimals on all 7,133
+  common days since 1999; the builder enforces agreement on the 1999 overlap.
+- Daily updates read only the ECB history file; the publication gate rechecks
+  the saved file. The suite of datasets is now 23. FRED H.10 and RBA history
+  were unreachable and are not yet used as independent validation.
+
 ## 2026-10-31 — 2x daily-reset datasets
 
 - Added six 2x datasets built by `src/leveraged_2x.py`, matched to current funds

@@ -860,3 +860,37 @@ elsewhere.
 - Status: `candidate_upgrade`
 - Candidate sources: FTSE WGBI Developed 1-3yr, Bloomberg Short Global Treasury unhedged daily
   total return, or daily per-country 2yr sovereign yields for the remaining markets.
+
+## Spot Exchange Rates / AUDUSD, EURUSD, GBPUSD
+
+Daily spot rates in USD per unit of foreign currency. Details, hashes and terms are in
+`sources/citations/fx_rates.md` and [the FX methodology](methodology_fx.md).
+
+### BIS bilateral exchange rates (`WS_XRU`, direct SDMX API)
+
+- Status: `approved` (historical segment only)
+- Endpoint: https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/D.<area>.<ccy>.A
+- Role: daily rates for 1970-01-02 to 1998-12-31 (`D.AU.AUD.A`, `D.DE.EUR.A`, `D.GB.GBP.A`), inverted to USD per unit.
+- Current finding (2026-11-14): GBP and the German series cover 1970 fully; AUD starts 1971-01-04. Whole-series requests
+  arrived truncated, so the builder fetches decade chunks. BIS releases weekly and names the ECB as its primary source of
+  recent daily data. The DBnomics mirror used by GLBOND ended on 2025-07-08.
+- Caveats: fixing time of pre-1999 observations is not stated; the German series before 1999 is the Deutsche Mark at
+  1.95583 per euro; 1970 AUD is modeled from sterling. Terms require citing the BIS and restrict commercial use that adds a
+  charge for users.
+
+### ECB euro foreign exchange reference rates
+
+- Status: `approved`
+- Endpoint: https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.zip
+- Role: every row from 1999-01-04 and the current source for daily updates. EURUSD is the published rate; AUDUSD and GBPUSD
+  are crosses through the euro.
+- Current finding (2026-11-14): coverage 1999-01-04 to 2026-11-13. The BIS AUD series equals the ECB cross at six decimals
+  on all 7,133 common days since 1999, and all three pairs agree within 8.0e-7 relative on the 1999 overlap.
+- Caveats: set around 14:15 CET, not at the U.S. close; published on TARGET business days for information purposes only;
+  reuse requires citing the ECB (wording read from a page summary, not verbatim).
+
+### FRED H.10 and RBA historical rates
+
+- Status: `candidate` (validation)
+- Finding: both downloads failed from the build machine on 2026-11-14 (FRED connection failure; RBA HTTP 403), so neither
+  was evaluated. They remain the natural independent checks, particularly for AUD before 1984.
