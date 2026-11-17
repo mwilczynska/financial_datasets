@@ -9,14 +9,14 @@
   "financing_benchmark": "^IRX",
   "observed_etf": "UGL",
   "build_timestamp_utc": "2026-07-23T02:34:14.923561+00:00",
-  "row_count": 14303,
+  "row_count": 14304,
   "first_date": "1970-01-02",
-  "last_date": "2026-11-13",
+  "last_date": "2026-11-16",
   "synthetic_rows": 9789,
   "observed_etf_rows": 4433,
   "us_holiday_flat_rows": 0,
   "csv_path": "data/processed/gold_2x.csv",
-  "csv_sha256": "c45b6be32c194d98fb10aa2ddbe8476f356a0f811642915680c2cdd830b6ef53",
+  "csv_sha256": "60bca5060d77c15f9e8df587291538dd4b0c474f8a14da21353cba2be729826f",
   "parquet_written": true,
   "quality_flags": [
     "model_2x_daily_reset_synthetic_from_goldpm_spot_price_return_minus_financing_and_fee",
@@ -33,17 +33,17 @@
     "etf_inception": "2008-12-03"
   },
   "notes": "Synthetic 2x daily-reset gold total-return NAV: lev_ret = 2*GOLDPM_spot_price_return - 1*(^IRX/100)*days/360 - 0.0095*days/365. Uses preserved historical spot inputs so fund fees are applied once. Close == Adj Close. Model-derived, not observed UGL history.",
-  "last_incremental_update_utc": "2026-11-14T19:11:43.899819+00:00",
+  "last_incremental_update_utc": "2026-11-17T22:26:38.713537+00:00",
   "incremental_update": {
-    "overlap_anchor": "2026-11-12",
-    "requested_end_date": "2026-11-13",
+    "overlap_anchor": "2026-11-13",
+    "requested_end_date": "2026-11-16",
     "recent_sources": {
       "UGL": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/UGL",
         "path": "sources/raw/incremental/gold_2x_ugl.json",
-        "sha256": "4843490e4af49e0f35e2a5b502375a4536f58d22032ddd23e28d2ef13df57d43",
-        "first_date": "2026-10-14",
-        "last_date": "2026-11-13"
+        "sha256": "f0b958168c97423f11def0ff8f91838ee333dbb9431a10f4b0c7351038c2fb3c",
+        "first_date": "2026-10-15",
+        "last_date": "2026-11-16"
       }
     }
   },
