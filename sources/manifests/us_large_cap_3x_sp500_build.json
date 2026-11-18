@@ -8,13 +8,13 @@
   "financing_benchmark": "^IRX",
   "observed_etf": "UPRO",
   "build_timestamp_utc": "2026-07-23T02:34:06.613813+00:00",
-  "row_count": 14341,
+  "row_count": 14342,
   "first_date": "1970-01-02",
-  "last_date": "2026-11-16",
+  "last_date": "2026-11-17",
   "synthetic_rows": 9966,
   "observed_upro_rows": 4293,
   "csv_path": "data/processed/us_large_cap_3x_sp500.csv",
-  "csv_sha256": "4258444cf78fa912fcfc8ca18929d919df99b78a3569b77c32915d91d479167c",
+  "csv_sha256": "07d6a1afb7be75749a098039c797bd987626e4e0f501d563a9f506e562663a0f",
   "parquet_written": true,
   "quality_flags": [
     "model_3x_daily_reset_synthetic_from_uslcap_total_return_minus_financing_and_fee",
@@ -31,17 +31,17 @@
     "upro_inception": "2009-06-25"
   },
   "notes": "Synthetic 3x daily-reset S&P 500 total-return NAV: lev_ret = 3*USLCAP_total_return - 2*(^IRX/100)*days/360 - 0.0091*days/365. Close == Adj Close. Model-derived, not observed UPRO history.",
-  "last_incremental_update_utc": "2026-11-17T22:26:36.198836+00:00",
+  "last_incremental_update_utc": "2026-11-18T21:59:19.036762+00:00",
   "incremental_update": {
-    "overlap_anchor": "2026-11-13",
-    "requested_end_date": "2026-11-16",
+    "overlap_anchor": "2026-11-16",
+    "requested_end_date": "2026-11-17",
     "recent_sources": {
       "UPRO": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/UPRO",
         "path": "sources/raw/incremental/us_large_cap_3x_sp500_upro.json",
-        "sha256": "e1f6a3ff7fe1980b97f7056acd568d25e1c27451a8a3a29885bf8e9bfe3a29dd",
-        "first_date": "2026-10-15",
-        "last_date": "2026-11-16"
+        "sha256": "4173df6c37546dc1c14021ec3881df7bab25e440d6b1c37818f829e8e5420dea",
+        "first_date": "2026-10-16",
+        "last_date": "2026-11-17"
       }
     }
   }
