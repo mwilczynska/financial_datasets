@@ -9,13 +9,13 @@
   "observed_etf": "SSO",
   "reference_fund": "ProShares Ultra S&P500",
   "build_timestamp_utc": "2026-10-31T17:56:40.811000+00:00",
-  "row_count": 14343,
+  "row_count": 14344,
   "first_date": "1970-01-02",
-  "last_date": "2026-11-18",
+  "last_date": "2026-11-19",
   "synthetic_rows": 9208,
   "observed_etf_rows": 5119,
   "csv_path": "data/processed/us_large_cap_2x_sp500.csv",
-  "csv_sha256": "b044e2820f5c1f65d2e4fcc8a0a2583276da16e1c28c55cc96a6c44e8935f972",
+  "csv_sha256": "afd2d98bcccb05e5917ad8f4c6744b0fb7c482aa4922c3f9597daa4eee8ded5a",
   "parquet_written": true,
   "quality_flags": [
     "model_2x_daily_reset_synthetic_from_uslcap_total_return_minus_financing_and_sso_fee",
@@ -32,17 +32,17 @@
     "etf_inception": "2006-06-21"
   },
   "notes": "Synthetic 2x daily-reset total-return NAV: lev_ret = 2*USLCAP_total_return - 1*(^IRX/100+0.0080)*days/360 - 0.0084*days/365. Close == Adj Close. Model-derived, not observed SSO history.",
-  "last_incremental_update_utc": "2026-11-19T22:11:08.749057+00:00",
+  "last_incremental_update_utc": "2026-11-20T21:50:32.795700+00:00",
   "incremental_update": {
-    "overlap_anchor": "2026-11-17",
-    "requested_end_date": "2026-11-18",
+    "overlap_anchor": "2026-11-18",
+    "requested_end_date": "2026-11-19",
     "recent_sources": {
       "SSO": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/SSO",
         "path": "sources/raw/incremental/us_large_cap_2x_sp500_sso.json",
-        "sha256": "f9139403b7098ff99b96c4cb771fd12e35cf5148990962d80ec69e119c81948d",
-        "first_date": "2026-10-19",
-        "last_date": "2026-11-18"
+        "sha256": "250868ca1b1af246a2f7f6fdb0797aafcbb870d5c34fe87db935a0a76a18a581",
+        "first_date": "2026-10-20",
+        "last_date": "2026-11-19"
       }
     }
   }

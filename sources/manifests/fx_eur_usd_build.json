@@ -4,11 +4,11 @@
   "alias": "EURUSD",
   "quote_convention": "USD per 1 EUR",
   "build_timestamp_utc": "2026-11-14T01:58:07.087518+00:00",
-  "row_count": 14455,
+  "row_count": 14456,
   "first_date": "1970-01-02",
-  "last_date": "2026-11-18",
+  "last_date": "2026-11-19",
   "csv_path": "data/processed/fx_eur_usd.csv",
-  "csv_sha256": "0b4e0c70b0c4c26aaee5aa6abb02a261a7b05ebb599af1043cedcb2bbee510a7",
+  "csv_sha256": "9391c49f2b7cbb0b3cb17b00bca378a690d953db599f1bab6b7ac964092cacf9",
   "parquet_written": true,
   "quality_flags": [
     "observed_ecb_reference_rate_eur_usd",
@@ -44,18 +44,18 @@
     "max_relative_difference": "5.746E-7"
   },
   "notes": "Spot exchange rate. Adj Close equals Close; the series carries no interest income.",
-  "last_incremental_update_utc": "2026-11-19T22:11:00.030364+00:00",
+  "last_incremental_update_utc": "2026-11-20T21:50:21.261192+00:00",
   "incremental_update": {
-    "overlap_anchor": "2026-11-02",
-    "requested_end_date": "2026-11-18",
+    "overlap_anchor": "2026-11-03",
+    "requested_end_date": "2026-11-19",
     "recent_sources": {
       "ECB_EUROFXREF": {
         "url": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.zip",
         "path": "sources/raw/incremental/fx_eur_usd_ecb_eurofxref_hist.zip",
-        "sha256": "b1c3afd354115a48ce46089ea67623cf3297d321e3c4ebe0638e4a214813f25d",
+        "sha256": "e9eb14dc6b891d182675809374bcc34f2afb3418d1142a3e05fa0bd13637804e",
         "first_date": "1999-01-04",
-        "last_date": "2026-11-19",
-        "accessed_at_utc": "2026-11-19T22:10:59.670313+00:00"
+        "last_date": "2026-11-20",
+        "accessed_at_utc": "2026-11-20T21:50:20.773123+00:00"
       }
     }
   }

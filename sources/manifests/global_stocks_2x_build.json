@@ -9,13 +9,13 @@
   "observed_etf": "WLDU",
   "reference_fund": "Leverage Shares 2x Long World Stock Daily ETF",
   "build_timestamp_utc": "2026-10-31T17:56:46.399744+00:00",
-  "row_count": 14502,
+  "row_count": 14503,
   "first_date": "1970-01-02",
-  "last_date": "2026-11-18",
+  "last_date": "2026-11-19",
   "synthetic_rows": 14326,
   "observed_etf_rows": 160,
   "csv_path": "data/processed/global_stocks_2x.csv",
-  "csv_sha256": "6d2665130219583810af39ddf5ae2c8c0e0c5ccaab91ab96998023342b0fb282",
+  "csv_sha256": "3584b29144cc727f2dbf624c95e5c2f6dbce21b84c0af83b25285dd3351fd3fa",
   "parquet_written": true,
   "quality_flags": [
     "model_2x_daily_reset_synthetic_from_glstock_total_return_minus_financing_and_wldu_fee",
@@ -32,17 +32,17 @@
     "etf_inception": "2026-03-10"
   },
   "notes": "Synthetic 2x daily-reset total-return NAV: lev_ret = 2*GLSTOCK_total_return - 1*(^IRX/100+0.0080)*days/360 - 0.0075*days/365. Close == Adj Close. Model-derived, not observed WLDU history.",
-  "last_incremental_update_utc": "2026-11-19T22:11:09.631962+00:00",
+  "last_incremental_update_utc": "2026-11-20T21:50:34.024721+00:00",
   "incremental_update": {
-    "overlap_anchor": "2026-11-17",
-    "requested_end_date": "2026-11-18",
+    "overlap_anchor": "2026-11-18",
+    "requested_end_date": "2026-11-19",
     "recent_sources": {
       "WLDU": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/WLDU",
         "path": "sources/raw/incremental/global_stocks_2x_wldu.json",
-        "sha256": "049cf5274523a5ce6b0e3f5b40d298fd0d00b7b9d197610d1a526d757a057f90",
-        "first_date": "2026-10-19",
-        "last_date": "2026-11-18"
+        "sha256": "22bad7037186ec9c35e680f47ae0d44fd1dfc9329b17ab009ff84fd343488db5",
+        "first_date": "2026-10-20",
+        "last_date": "2026-11-19"
       }
     }
   }

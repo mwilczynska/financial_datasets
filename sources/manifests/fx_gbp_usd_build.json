@@ -4,11 +4,11 @@
   "alias": "GBPUSD",
   "quote_convention": "USD per 1 GBP",
   "build_timestamp_utc": "2026-11-14T01:57:07.987901+00:00",
-  "row_count": 14459,
+  "row_count": 14460,
   "first_date": "1970-01-02",
-  "last_date": "2026-11-18",
+  "last_date": "2026-11-19",
   "csv_path": "data/processed/fx_gbp_usd.csv",
-  "csv_sha256": "3a886518a4d486f5b541aa6da2d3b18292f194c702d3f33d4454fc99f7be5d37",
+  "csv_sha256": "0836102bcacd5e1b1f11758a23321acdd239693b1e97317a110588fc232fca81",
   "parquet_written": true,
   "quality_flags": [
     "observed_bis_daily_gbp_usd",
@@ -44,18 +44,18 @@
     "max_relative_difference": "8.002E-7"
   },
   "notes": "Spot exchange rate. Adj Close equals Close; the series carries no interest income.",
-  "last_incremental_update_utc": "2026-11-19T22:11:02.054312+00:00",
+  "last_incremental_update_utc": "2026-11-20T21:50:23.231814+00:00",
   "incremental_update": {
-    "overlap_anchor": "2026-11-02",
-    "requested_end_date": "2026-11-18",
+    "overlap_anchor": "2026-11-03",
+    "requested_end_date": "2026-11-19",
     "recent_sources": {
       "ECB_EUROFXREF": {
         "url": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.zip",
         "path": "sources/raw/incremental/fx_gbp_usd_ecb_eurofxref_hist.zip",
-        "sha256": "b1c3afd354115a48ce46089ea67623cf3297d321e3c4ebe0638e4a214813f25d",
+        "sha256": "e9eb14dc6b891d182675809374bcc34f2afb3418d1142a3e05fa0bd13637804e",
         "first_date": "1999-01-04",
-        "last_date": "2026-11-19",
-        "accessed_at_utc": "2026-11-19T22:11:01.706291+00:00"
+        "last_date": "2026-11-20",
+        "accessed_at_utc": "2026-11-20T21:50:22.759668+00:00"
       }
     }
   }
