@@ -9,13 +9,13 @@
   "observed_etf": null,
   "reference_fund": "none (modeled with ProShares UST parameters)",
   "build_timestamp_utc": "2026-10-31T17:56:51.193600+00:00",
-  "row_count": 14345,
+  "row_count": 14346,
   "first_date": "1970-01-02",
-  "last_date": "2026-11-23",
+  "last_date": "2026-11-24",
   "synthetic_rows": 14326,
   "observed_etf_rows": 0,
   "csv_path": "data/processed/global_bonds_2x.csv",
-  "csv_sha256": "10fbde71d10154a524ec72babc533aea745ca38f598d93460ac92f40e929f173",
+  "csv_sha256": "dd86ca087f815b5937cf2a7a1fbf4178a33acf9b4c3a0821a1e874ad1e92440d",
   "parquet_written": true,
   "quality_flags": [
     "model_2x_daily_reset_synthetic_from_glbond_total_return_minus_financing_and_proshares_treasury_style_fee"
@@ -25,17 +25,17 @@
     "etf_inception": null
   },
   "notes": "Synthetic 2x daily-reset total-return NAV: lev_ret = 2*GLBOND_total_return - 1*(^IRX/100+-0.0033)*days/360 - 0.0095*days/365. Close == Adj Close. Model-derived, not observed fund history; no 2x fund exists.",
-  "last_incremental_update_utc": "2026-11-24T23:30:04.378942+00:00",
+  "last_incremental_update_utc": "2026-11-25T23:07:57.832623+00:00",
   "incremental_update": {
-    "overlap_anchor": "2026-11-20",
-    "requested_end_date": "2026-11-23",
+    "overlap_anchor": "2026-11-23",
+    "requested_end_date": "2026-11-24",
     "recent_sources": {
       "^IRX": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/%5EIRX",
         "path": "sources/raw/incremental/global_bonds_2x_irx.json",
-        "sha256": "24b87bf3ef4abd7b9d3918dfa2e0abb2224a1b321a389b5d837a2a2f29a2e3ea",
-        "first_date": "2026-10-22",
-        "last_date": "2026-11-23"
+        "sha256": "746c702ee077c5e76435e0e72f37943bd8f579e251846dc988ff29b416834636",
+        "first_date": "2026-10-23",
+        "last_date": "2026-11-24"
       }
     }
   }

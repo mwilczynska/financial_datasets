@@ -3,11 +3,11 @@
   "asset_name": "Global All-World Stocks Total-Return Proxy",
   "alias": "GLSTOCK",
   "build_timestamp_utc": "2026-07-23T02:33:54.008767+00:00",
-  "row_count": 14505,
+  "row_count": 14506,
   "first_date": "1970-01-02",
-  "last_date": "2026-11-23",
+  "last_date": "2026-11-24",
   "csv_path": "data/processed/global_stocks.csv",
-  "csv_sha256": "ad189b7ad05a5d95712c2c938c6e9a0666ad6ca9ad0ad2bf17f361b766d3d18f",
+  "csv_sha256": "1e2eceb4fc19cdd2766761733e4727ab9151b10db64e0840b023814aaa756294",
   "parquet_written": true,
   "quality_flags": [
     "model_msci_world_annual_return_scaled_uslcap_daily_proxy",
@@ -23,17 +23,17 @@
     "observed_fama_french_developed_market_total_return": 4694,
     "observed_vt_etf_adjusted_total_return": 4544
   },
-  "last_incremental_update_utc": "2026-11-24T23:29:55.559730+00:00",
+  "last_incremental_update_utc": "2026-11-25T23:07:46.632637+00:00",
   "incremental_update": {
-    "overlap_anchor": "2026-11-20",
-    "requested_end_date": "2026-11-23",
+    "overlap_anchor": "2026-11-23",
+    "requested_end_date": "2026-11-24",
     "recent_sources": {
       "VT": {
         "url": "https://query1.finance.yahoo.com/v8/finance/chart/VT",
         "path": "sources/raw/incremental/global_stocks_vt.json",
-        "sha256": "77d3b7f8f30faa63f9c2547e24609f38e6b334423990b9101ee0bb275184c7f0",
-        "first_date": "2026-10-22",
-        "last_date": "2026-11-23"
+        "sha256": "3178b36094adb2ebcc2111160cbb94db63229b16c161f1339339297d394acb74",
+        "first_date": "2026-10-23",
+        "last_date": "2026-11-24"
       }
     }
   }
