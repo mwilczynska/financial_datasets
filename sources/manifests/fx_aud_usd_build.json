@@ -4,11 +4,11 @@
   "alias": "AUDUSD",
   "quote_convention": "USD per 1 AUD",
   "build_timestamp_utc": "2026-11-14T02:02:12.947060+00:00",
-  "row_count": 14451,
+  "row_count": 14452,
   "first_date": "1970-01-02",
-  "last_date": "2026-11-24",
+  "last_date": "2026-11-25",
   "csv_path": "data/processed/fx_aud_usd.csv",
-  "csv_sha256": "0ba13500757c6493ec03856d2dd3bb18c6075ddf1baa7901ec356e2d241c7ed8",
+  "csv_sha256": "dc1f556a3b21bbcb516d02bd29165e4462d09cfe2d99418176cb78ac0b9d2dba",
   "parquet_written": true,
   "quality_flags": [
     "model_sterling_peg_cross_from_bis_gbp_usd",
@@ -63,18 +63,18 @@
     "max_relative_difference": "3.279E-7"
   },
   "notes": "Spot exchange rate. Adj Close equals Close; the series carries no interest income.",
-  "last_incremental_update_utc": "2026-11-25T23:07:41.372244+00:00",
+  "last_incremental_update_utc": "2026-11-26T23:00:20.994267+00:00",
   "incremental_update": {
-    "overlap_anchor": "2026-11-06",
-    "requested_end_date": "2026-11-24",
+    "overlap_anchor": "2026-11-09",
+    "requested_end_date": "2026-11-25",
     "recent_sources": {
       "ECB_EUROFXREF": {
         "url": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.zip",
         "path": "sources/raw/incremental/fx_aud_usd_ecb_eurofxref_hist.zip",
-        "sha256": "bea43997c04ac4db8e59be415b522d3caec5d1fa864bea2afd524df854360039",
+        "sha256": "9df8fb3c6e3d69bc5203370edadd14775e01cec6c48c9920880beee4145047b4",
         "first_date": "1999-01-04",
-        "last_date": "2026-11-25",
-        "accessed_at_utc": "2026-11-25T23:07:40.845961+00:00"
+        "last_date": "2026-11-26",
+        "accessed_at_utc": "2026-11-26T23:00:20.609232+00:00"
       }
     }
   }
