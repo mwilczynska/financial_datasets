@@ -75,7 +75,7 @@ dataset in different formats.
 | GOLDPM | Gold — GLD price and total return with modeled history | 1970-01-02 | 2026-11-25 | [CSV](data/processed/gold.csv) | [Parquet](data/processed/gold.parquet) | [GOLDPM](docs/methodology_goldpm.md) |
 | GOLD2X | 2x daily-reset gold, UGL-like | 1970-01-02 | 2026-11-25 | [CSV](data/processed/gold_2x.csv) | [Parquet](data/processed/gold_2x.parquet) | [GOLD2X](docs/methodology_gold2x.md) |
 | CMDTY | Broad commodities, DBC-like | 1970-01-02 | 2026-11-25 | [CSV](data/processed/broad_commodities.csv) | [Parquet](data/processed/broad_commodities.parquet) | [CMDTY](docs/methodology_cmdty.md) |
-| CPI | U.S. CPI-U daily model-derived deflator | 1970-01-01 | 2026-11-25 | [CSV](data/processed/cpi_inflation.csv) | [Parquet](data/processed/cpi_inflation.parquet) | [CPI](docs/methodology_cpi.md) |
+| CPI | U.S. CPI-U daily model-derived deflator | 1970-01-01 | 2026-11-26 | [CSV](data/processed/cpi_inflation.csv) | [Parquet](data/processed/cpi_inflation.parquet) | [CPI](docs/methodology_cpi.md) |
 | GLSTOCK | Global all-world stocks proxy | 1970-01-02 | 2026-11-25 | [CSV](data/processed/global_stocks.csv) | [Parquet](data/processed/global_stocks.parquet) | [GLSTOCK](docs/methodology_glstock.md) |
 | GLBOND | Unhedged global bonds proxy | 1970-01-02 | 2026-11-25 | [CSV](data/processed/global_bonds.csv) | [Parquet](data/processed/global_bonds.parquet) | [GLBOND](docs/methodology_glbond.md) |
 | GLSTBOND | Unhedged global short-term government bonds proxy | 1970-01-02 | 2026-11-25 | [CSV](data/processed/global_short_term_bonds.csv) | [Parquet](data/processed/global_short_term_bonds.parquet) | [GLSTBOND](docs/methodology_glstbond.md) |
@@ -85,9 +85,9 @@ dataset in different formats.
 | STT2X | 2x daily-reset short-term Treasury, modeled with UST-style fees (no 2x fund exists) | 1970-01-02 | 2026-11-25 | [CSV](data/processed/short_term_us_treasury_2x.csv) | [Parquet](data/processed/short_term_us_treasury_2x.parquet) | [STT2X](docs/methodology_stt2x.md) |
 | ITT2X | 2x daily-reset intermediate-term Treasury, UST-like | 1970-01-02 | 2026-11-25 | [CSV](data/processed/intermediate_term_us_treasury_2x.csv) | [Parquet](data/processed/intermediate_term_us_treasury_2x.parquet) | [ITT2X](docs/methodology_itt2x.md) |
 | LTT2X | 2x daily-reset long-term Treasury, UBT-like | 1970-01-02 | 2026-11-25 | [CSV](data/processed/long_term_us_treasury_2x.csv) | [Parquet](data/processed/long_term_us_treasury_2x.parquet) | [LTT2X](docs/methodology_ltt2x.md) |
-| AUDUSD | Australian dollar spot rate, USD per AUD | 1970-01-02 | 2026-11-25 | [CSV](data/processed/fx_aud_usd.csv) | [Parquet](data/processed/fx_aud_usd.parquet) | [AUDUSD](docs/methodology_fx.md) |
-| EURUSD | Euro spot rate, USD per EUR | 1970-01-02 | 2026-11-25 | [CSV](data/processed/fx_eur_usd.csv) | [Parquet](data/processed/fx_eur_usd.parquet) | [EURUSD](docs/methodology_fx.md) |
-| GBPUSD | Pound sterling spot rate, USD per GBP | 1970-01-02 | 2026-11-25 | [CSV](data/processed/fx_gbp_usd.csv) | [Parquet](data/processed/fx_gbp_usd.parquet) | [GBPUSD](docs/methodology_fx.md) |
+| AUDUSD | Australian dollar spot rate, USD per AUD | 1970-01-02 | 2026-11-26 | [CSV](data/processed/fx_aud_usd.csv) | [Parquet](data/processed/fx_aud_usd.parquet) | [AUDUSD](docs/methodology_fx.md) |
+| EURUSD | Euro spot rate, USD per EUR | 1970-01-02 | 2026-11-26 | [CSV](data/processed/fx_eur_usd.csv) | [Parquet](data/processed/fx_eur_usd.parquet) | [EURUSD](docs/methodology_fx.md) |
+| GBPUSD | Pound sterling spot rate, USD per GBP | 1970-01-02 | 2026-11-26 | [CSV](data/processed/fx_gbp_usd.csv) | [Parquet](data/processed/fx_gbp_usd.parquet) | [GBPUSD](docs/methodology_fx.md) |
 
 The daily workflow regenerates these start and end dates from the processed
 CSVs after validation and commits the README alongside changed datasets.
